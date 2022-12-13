@@ -48,6 +48,9 @@ module.exports = {
       padding: {
         sidebar: "120px",
       },
+      borderRadius: {
+        normal: "4px",
+      }
     },
   },
   plugins: [],

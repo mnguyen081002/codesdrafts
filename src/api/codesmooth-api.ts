@@ -1,5 +1,6 @@
 import axiosClient from "./axiosClient";
 import type { TestResult } from "../utils/example";
+import { ICodeComponent, LessionComponentProps } from "../shared/interface";
 
 interface ExecuteRequest {
   code: string | undefined;
@@ -17,36 +18,19 @@ interface ExecuteRequest {
   executeCode: string | undefined;
 }
 
-interface ContentCode {
-  content: {
-    code: string | undefined;
-    judgeContent: {
-      testCode: string | undefined;
-      executeCode: string | undefined;
-    };
-    language: string;
-    runable: boolean;
-    timeLimit: number;
-    allowDownload: false;
-  };
-  type: string;
-}
 
-interface LessionComponent {
-  type: string;
-  content: ContentCode | any;
-}
 interface CreateLessionRequest {
   title: string;
-  components: LessionComponent[];
+  components: LessionComponentProps[];
 }
 
 export const CodeSmoothApi = {
   execute: ({ code, testCode, language, executeCode }: ExecuteRequest) => {
-    return axiosClient.post<ExecuteResponse>(`/api/execute/${language}`, {
+    return axiosClient.post<ExecuteResponse>(`/api/execute/`, {
       code,
       testCode,
       executeCode,
+      language,
     });
   },
 
@@ -66,7 +50,7 @@ export const CodeSmoothApi = {
     return axiosClient.get(`/api/admin/sample/${language}`);
   },
 
-  createSampleForLanguage: (language: string, sample: ContentCode) => {
+  createSampleForLanguage: (language: string, sample: ICodeComponent) => {
     return axiosClient.post(`/api/admin/sample`, {
       language,
       sample,

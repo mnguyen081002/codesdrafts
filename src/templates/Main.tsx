@@ -10,10 +10,9 @@ type IMainProps = {
   children?: ReactNode;
 };
 
-const Main = (props: IMainProps) => {
+export const Header = () => {
   return (
-    <div>
-      <nav className="fixed top-0 z-10 flex h-16 w-full border-0 border-b border-solid border-gray-300 bg-white transition duration-300 ease-in-out dark:border-gray-700 dark:bg-dark-90 sm:h-16 items-center">
+     <nav className="fixed top-0 z-10 flex h-16 w-full border-0 border-b border-solid border-gray-300 bg-white transition duration-300 ease-in-out dark:border-gray-700 dark:bg-dark-90 sm:h-16 items-center">
         <span className="px-2 flex justify-start items-center gap-2">
           <img src="/logo-96.png" alt="Logo" className="h-8 w-8 ml-4" />
           <span className="font-bold text-lg">Code Smooth</span>
@@ -37,8 +36,15 @@ const Main = (props: IMainProps) => {
             />
           </div>
         </div>
-      </nav>
-      <nav className="fixed top-16 z-50 h-full w-sidebar bg-gray-200 flex">
+    </nav>
+  );
+};
+
+const Main = (props: IMainProps) => {
+  return (
+    <div>
+      <Header/>
+      {/* <nav className="fixed top-16 z-50 h-full w-sidebar bg-gray-200 flex">
         <Link
           href="/"
           className="h-20 flex flex-col items-center w-full cursor-pointer py-3 px-1 hover:text-white focus:text-white"
@@ -46,8 +52,8 @@ const Main = (props: IMainProps) => {
           <AutoStoriesOutlinedIcon style={{ color: "#505050" }} />
           Course
         </Link>
-      </nav>
-      <div className="flex flex-1 flex-col bg-white pl-sidebar pt-16 items-center">
+      </nav> */}
+      <div className="flex flex-col bg-white pt-16 items-center">
         {props.children}
       </div>
     </div>
