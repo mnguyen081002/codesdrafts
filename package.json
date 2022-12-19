@@ -65,6 +65,7 @@
     "@testing-library/cypress": "^8.0.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@types/escape-html": "^1.0.2",
     "@types/is-url": "^1.2.30",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.10",

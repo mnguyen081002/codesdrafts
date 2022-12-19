@@ -5,9 +5,9 @@ import { editor } from "monaco-editor";
 import { FC, useState } from "react";
 import { CodeSmoothApi } from "../api/codesmooth-api";
 import { useAppDispatch } from "../app/hooks";
-import { setCode, setComponent, setIsTest, setLanguage } from "../features/auth/LessonSlice";
+import { setCode, setIsTest, setLanguage } from "../features/auth/LessonSlice";
 import { ComponentType } from "../shared/enum/component";
-import { ICodeComponentProps, IComponentProps } from "../shared/interface";
+import { ICodeComponentProps } from "../shared/interface";
 import { TestResult } from "../utils/example";
 import { BaseComponent } from "./BaseComponent";
 

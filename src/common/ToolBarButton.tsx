@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes, MouseEventHandler, PropsWithChildren } from "react";
 import { ReactEditor, useSlate } from "slate-react";
-import CustomEditor from "../utils/custom";
+import CustomEditor from "../utils/CustomEditor";
 import { ToolbarButton } from "./SlateCommonComponents";
 
 

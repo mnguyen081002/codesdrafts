@@ -16,7 +16,6 @@ import {
 import isUrl from "is-url";
 import imageExtensions from "image-extensions";
 import { jsx } from "slate-hyperscript";
-import { deserialize } from "v8";
 
 const CustomEditor = {
   isMarkActive(editor: any, format: any) {

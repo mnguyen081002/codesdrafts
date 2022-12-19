@@ -18,7 +18,7 @@ import { addComponent, deleteComponentByIndex, setComponent } from "../features/
 import { InputTextComponentProps } from "../shared/interface";
 import { BaseComponent } from "./BaseComponent";
 import { Toolbar, ToolbarButton } from "../common/SlateCommonComponents";
-import CustomEditor from "../utils/custom";
+import CustomEditor from "../utils/CustomEditor";
 import isHotkey from "is-hotkey";
 
 const Leaf = ({ attributes, children, leaf }: any) => {

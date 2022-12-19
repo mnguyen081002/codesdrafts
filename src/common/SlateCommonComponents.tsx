@@ -1,6 +1,6 @@
 import React, { Ref, PropsWithChildren } from "react";
 import { useSlate, useSlateStatic } from "slate-react";
-import CustomEditor from "../utils/custom";
+import CustomEditor from "../utils/CustomEditor";
 interface BaseProps {
   className: string;
   [key: string]: unknown;
