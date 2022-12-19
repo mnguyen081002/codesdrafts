@@ -3,11 +3,16 @@ import { FC } from "react";
 interface IProps {
   icon?: React.ReactNode;
   text: string;
+  className?: string;
+  onClick?:any
 }
 
 const Button:FC<IProps> = (params) => {
   return (
-    <button className="flex justify-start py-2 px-3 border border-gray-300 rounded-[4px] gap-2">
+    <button
+      className={`flex justify-start py-2 px-3 border border-gray-300 rounded-[4px] gap-2 ${params.className}`}
+      onClick={params.onClick}
+    >
       <span>{params.text}</span>
       {params.icon}
     </button>

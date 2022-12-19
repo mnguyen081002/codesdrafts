@@ -1,15 +1,15 @@
 import createSagaMiddleware from "@redux-saga/core";
 import { Action, configureStore, Store, ThunkAction } from "@reduxjs/toolkit";
 
-import componentReducer from "../features/auth/componentsSlice";
+import lessonReducer from "../features/auth/LessonSlice";
 import rootSaga from "./rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
-export const store:Store = configureStore({
+export const store: Store = configureStore({
   reducer: {
-    components: componentReducer,
+    lesson: lessonReducer,
   },
-  middleware: (getDefaultMiddleware:any) => getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware: any) => getDefaultMiddleware().concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

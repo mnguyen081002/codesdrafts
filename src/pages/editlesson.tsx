@@ -3,15 +3,11 @@ import React, {  FC, useEffect, useRef, useState } from "react";
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { onDrag, selectComponents, setComponents } from "../features/auth/componentsSlice";
+import { onDrag, selectComponents, selectLesson, setComponents, setLession, setSummary, setTitle } from "../features/auth/LessonSlice";
 import { LessionComponent } from "../components/LessionComponent";
 import { LessionComponentProps } from "../shared/interface";
-
-
-
-
-
-
+import Button from "../common/Button";
+import { CodeSmoothApi } from "../api/codesmooth-api";
 
 const Course = () => {
   // const { courseId } = useParams();
@@ -19,14 +15,19 @@ const Course = () => {
 
   // if (error) return <div>failed to load</div>;
   // if (!data) return <div>loading...</div>;
-  const components = useAppSelector(selectComponents);
-  console.log(components);
-  
+  // const components = useAppSelector(selectComponents);
+  const lession = useAppSelector(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
-  console.log("Course");
-  
+  console.log("Lession")
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    CodeSmoothApi.getLession().then((res) => {
+      dispatch(setLession(res.data));
+    }
+    );
+  }, []);
+  
   return (
     <Main
       meta={
@@ -34,6 +35,16 @@ const Course = () => {
           title="Next.js Boilerplate Presentation"
           description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
         />
+      }
+      headerChildren={
+        <div className="flex flex-1 justify-end mr-28">
+          <Button onClick={
+            () => {
+              CodeSmoothApi.createLession(lession).then((res) => {
+              });
+            }
+          } text="Save" className="bg-light-primary text-white" />
+        </div>
       }
     >
       <div className="w-full flex justify-start">
@@ -44,18 +55,26 @@ const Course = () => {
               type="text"
               placeholder="Title"
               className="border w-full mb-12 rounded-normal p-2 border-gray-400 outline-none"
+              value={lession.title}
+              onChange={(e) => {
+                dispatch(setTitle(e.target.value));
+              }}
             />
 
             <textarea
               placeholder="Summary"
               className="border w-full rounded-normal h-36 p-2 border-gray-400 resize-none outline-none"
+              value={lession.summary}
+              onChange={(e) => {
+                dispatch(setSummary(e.target.value));
+              }}
             />
 
             <div className="flex flex-col mt-8 gap-2">
-              {components.map((component: LessionComponentProps, index: number) => {
+              {lession.components.map((component: LessionComponentProps, index: number) => {
                 return (
                   <LessionComponent
-                    isLast={index === components.length - 1}
+                    isLast={index === lession.components.length - 1}
                     component={component}
                     index={index}
                     onDragStart={(e: any) => {
@@ -65,7 +84,6 @@ const Course = () => {
                       dragItemOverRef.current = index;
                     }}
                     onDragEnd={(e: any) => {
-                      console.log(dragItemRef.current, dragItemOverRef.current);
                       dispatch(
                         onDrag({
                           dragIndex: dragItemRef.current,
@@ -73,6 +91,7 @@ const Course = () => {
                         }),
                       );
                     }}
+                    isFocus={component.isFocus}
                   />
                 );
               })}

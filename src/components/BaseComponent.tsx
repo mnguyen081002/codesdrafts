@@ -11,7 +11,7 @@ import {
   setComponents,
   setComponentType,
   setFocus,
-} from "../features/auth/componentsSlice";
+} from "../features/auth/LessonSlice";
 
 export const BaseComponent: FC<IBaseComponentProps> = (params) => {
   const [isHover, setIsHover] = useState(false);
@@ -63,11 +63,11 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
         };
     }
     setComponent({ component, index: params.index });
-    dispatch(setComponentType({ type, index: params.index }));
+    dispatch(setComponentType({ type, index: params.index! }));
   };
 
   const handleFocus = () => {
-    dispatch(setFocus(params.index));
+    dispatch(setFocus(params.index!));
   };
   return (
     <div

@@ -21,6 +21,7 @@ interface ExecuteRequest {
 
 interface CreateLessionRequest {
   title: string;
+  summary: string;
   components: LessionComponentProps[];
 }
 
@@ -36,14 +37,15 @@ export const CodeSmoothApi = {
 
   createLession: (params: CreateLessionRequest) => {
     return axiosClient.post("/api/admin/lession", {
-      title: "Test lession",
+      title: params.title,
+      summary: params.summary,
       components: params.components,
       course_category_id: 544733825231424000,
     });
   },
 
   getLession: () => {
-    return axiosClient.get("/api/admin/lession/624938522807339300");
+    return axiosClient.get("/api/admin/lession/208373742449402620");
   },
 
   getSampleForLanguage: (language: string) => {

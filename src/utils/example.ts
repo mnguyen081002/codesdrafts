@@ -175,7 +175,7 @@ function executeTests() {
       String(expected_results[i]),
       String(output),
     );
-    results.push(result);
+    // results.push(result);
   }
 
   return results;
@@ -183,8 +183,6 @@ function executeTests() {
 function main() {
   let results = executeTests();
   let output = { test_results: results };
-
-  console.log(JSON.stringify(output));
 }
 
 main();

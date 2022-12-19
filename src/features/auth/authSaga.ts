@@ -7,8 +7,6 @@ import { ReqLogin, ReqRegister } from "../../shared/types/authType";
 import { login, loginFailed, logout, register, registerFailed } from "./authSlice";
 
 export function* handleLogin(params: ReqLogin) {
-  console.log(params);
-
   try {
     yield call(async () => {
       // const res = await CmsApi.login({
@@ -33,8 +31,6 @@ function* handleLogout() {
 }
 
 function* handleRegister(params: ReqRegister) {
-  console.log(params);
-
   try {
     yield call(async () => {
       // const res = await CmsApi.register({

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ICodeContent, IComponentProps, ITextContent, ITextComponent } from "../shared/interface";
+import { ICodeContent, IComponentProps, ITextContent, ITextComponent, ICodeComponent } from "../shared/interface";
 import { CodeComponent } from "./CodeComponent";
 import { InputTextComponent } from "./InputComponent";
 
@@ -15,14 +15,19 @@ export const LessionComponent: FC<IComponentProps> = (params) => {
           component={params.component as ITextComponent}
           index={params.index}
           isLast={params.isLast}
+          isFocus={params.isFocus}
         />
       );
     case "Code":
       return (
         <CodeComponent
           isLast={params.isLast}
-          component={params.component}
+          onDragStart={params.onDragStart}
+          onDragEnter={params.onDragEnter}
+          onDragEnd={params.onDragEnd}
+          component={params.component as ICodeComponent}
           index={params.index}
+          isFocus={params.isFocus}
         />
       );
     default:
@@ -34,6 +39,7 @@ export const LessionComponent: FC<IComponentProps> = (params) => {
           component={params.component as ITextComponent}
           index={params.index}
           isLast={params.isLast}
+          isFocus={params.isFocus}
         />
       );
   }

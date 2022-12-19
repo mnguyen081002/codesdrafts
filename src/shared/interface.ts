@@ -1,10 +1,5 @@
 export interface IContent {}
 
-export interface ICodeComponent {
-  content: ICodeContent;
-  type: string;
-}
-
 export interface ICodeContent extends IContent {
   code?: string;
   judgeContent: {
@@ -15,15 +10,12 @@ export interface ICodeContent extends IContent {
   runable: boolean;
   timeLimit: number;
   allowDownload: false;
+  isTest?: boolean;
 }
 
 export interface ITextContent {
   html: string;
 }
-
-
-
-
 
 export interface IBaseComponentProps {
   onClick?: any;
@@ -31,14 +23,12 @@ export interface IBaseComponentProps {
   onDragStart?: any;
   onDragEnter?: any;
   onDragEnd?: any;
-  index: number;
+  index?: number;
   children?: any;
   isLast?: boolean;
   className?: string;
+  isFocus?: boolean;
 }
-
-
-
 export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;
 }
@@ -55,12 +45,23 @@ export interface LessionComponentProps {
 export interface InputTextComponentProps extends IBaseComponentProps {
   component: ITextComponent;
 }
+
+export interface ICodeComponentProps extends IBaseComponentProps {
+  component: ICodeComponent;
+}
+
 export interface IComponentProps extends IBaseComponentProps {
   component: LessionComponentProps;
 }
 
 export interface ITextComponent extends IBaseComponentProps {
   content: ITextContent;
+  type: string;
+  isFocus?: boolean;
+}
+
+export interface ICodeComponent extends IBaseComponentProps {
+  content: ICodeContent;
   type: string;
   isFocus?: boolean;
 }

@@ -1,53 +1,122 @@
-import { FC, KeyboardEvent, useState } from "react";
-import ReactTextareaAutosize from "react-textarea-autosize";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import CodeIcon from "@mui/icons-material/Code";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import { FC, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createEditor, Descendant, Editor, Transforms } from "slate";
+import { withHistory } from "slate-history";
+import { Slate, Editable, useSlate, withReact, ReactEditor } from "slate-react";
 import { useAppDispatch } from "../app/hooks";
-import {
-  addComponent,
-  deleteComponentByIndex,
-  setComponent,
-  setTextContent,
-} from "../features/auth/componentsSlice";
-import {  InputTextComponentProps, ITextComponent } from "../shared/interface";
+import { BlockButton, MarkButton } from "../common/ToolBarButton";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import { addComponent, deleteComponentByIndex, setComponent } from "../features/auth/LessonSlice";
+import { InputTextComponentProps } from "../shared/interface";
 import { BaseComponent } from "./BaseComponent";
+import { Toolbar, ToolbarButton } from "../common/SlateCommonComponents";
+import CustomEditor from "../utils/custom";
+import isHotkey from "is-hotkey";
+
+const Leaf = ({ attributes, children, leaf }: any) => {
+  if (leaf.bold) {
+    children = <strong>{children}</strong>;
+  }
+
+  if (leaf.code) {
+    children = <code>{children}</code>;
+  }
+
+  if (leaf.italic) {
+    children = <em>{children}</em>;
+  }
+
+  if (leaf.underline) {
+    children = <u>{children}</u>;
+  }
+
+  return <span {...attributes}>{children}</span>;
+};
+
+const HOTKEYS = {
+  "mod+b": "bold",
+  "mod+i": "italic",
+  "mod+u": "underline",
+  "mod+`": "code",
+};
+
+// const isMarkActive = (editor: any, format: any) => {
+//   const marks = Editor.marks(editor) as any;
+//   return marks ? marks[format] === true : false;
+// };
+
+// const toggleMark = (editor: any, format: string) => {
+//   const isActive = isMarkActive(editor, format);
+
+//   if (isActive) {
+//     Editor.removeMark(editor, format);
+//   } else {
+//     Editor.addMark(editor, format, true);
+//   }
+// };
+
+const Element = ({ attributes, children, element }: any) => {
+  const style = { textAlign: element.align };
+  switch (element.type) {
+    case "block-quote":
+      return (
+        <blockquote style={style} {...attributes}>
+          {children}
+        </blockquote>
+      );
+    case "bulleted-list":
+      return (
+        <ul style={style} {...attributes}>
+          {children}
+        </ul>
+      );
+    case "heading-one":
+      return (
+        <h1 style={style} {...attributes}>
+          {children}
+        </h1>
+      );
+    case "heading-two":
+      return (
+        <h2 style={style} {...attributes}>
+          {children}
+        </h2>
+      );
+    case "list-item":
+      return (
+        <li style={style} {...attributes}>
+          {children}
+        </li>
+      );
+    case "numbered-list":
+      return (
+        <ol style={style} {...attributes}>
+          {children}
+        </ol>
+      );
+    default:
+      return (
+        <p style={style} {...attributes}>
+          {children}
+        </p>
+      );
+  }
+};
 
 export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
   const [placeholder, setPlaceholder] = useState("");
-  const [isFocus, setIsFocus] = useState(params.index !== 0);
   const dispatch = useAppDispatch();
-
-  const _handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Backspace" && params.component.content.html === "") {
-      dispatch(deleteComponentByIndex(params.index));
-      return false;
-    }
-    if (event.key === "Enter" && event.shiftKey) {
-      return true;
-    }
-    if (event.key == "Enter" && !event.shiftKey) {
-      setIsFocus(false);
-      handleEnter();
-      return false;
-    }
-    return false;
-  };
-
-  const onChange = (e: any) => {
-    if (e.target.value === "") {
-      return;
-    }
-    if (e.target.value === "\n") {
-      return;
-    }
-    const newObject:ITextComponent = {
-      content: {
-        html: e.target.value,
-      },
-      type: "Text",
-      index: params.index,
-    };
-
-    dispatch(setComponent({ component:newObject, index: params.index }));
-  };
+  const renderElement = useCallback((props: any) => <Element {...props} />, []);
+  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const [editor] = useState(withHistory(withReact(createEditor())));
 
   const handleEnter = () => {
     if (params.isLast) {
@@ -55,25 +124,90 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
     }
   };
 
+  const onKeyDown = (event) => {
+    if (event.key === "Backspace" && params.component.content.html === "") {
+      dispatch(deleteComponentByIndex(params.index!));
+      return false;
+    }
+    if (event.key === "Enter" && event.shiftKey) {
+      return true;
+    }
+    if (event.key == "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleEnter();
+    }
+
+    for (const hotkey in HOTKEYS) {
+      if (isHotkey(hotkey, event as any)) {
+        event.preventDefault();
+        const mark = HOTKEYS[hotkey as keyof typeof HOTKEYS];
+        CustomEditor.toggleMark(editor, mark);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (params.index !== 0) {
+      // Transforms.select(editor, { offset: 0, path: [0, 0] });
+      // ReactEditor.focus(editor);
+    }
+    // Transforms.select(editor, Editor.end(editor, []));
+    // ReactEditor.focus(editor);
+  }, []);
+
+
+
+  const initialValue: Descendant[] = CustomEditor.deserializeFromHtml(params.component.content.html);
+  console.log({ initialValue });
   return (
     <>
       <BaseComponent {...params}>
-        <ReactTextareaAutosize
-          onFocus={() => {
-            setPlaceholder("Type for widget"), setIsFocus(true);
+        <Slate
+          editor={editor}
+          value={initialValue}
+          onChange={(v: any) => {
+            dispatch(
+              setComponent({
+                component: {
+                  ...params.component,
+                  content: { html: CustomEditor.serialize({ children: v }) },
+                },
+                index: params.index,
+              }),
+            );
           }}
-          onBlur={() => {
-            setPlaceholder(""), setIsFocus(false);
-          }}
-          autoFocus={isFocus}
-          onMouseEnter={() => !isFocus && setPlaceholder("Start typing")}
-          onMouseLeave={() => !isFocus && setPlaceholder("")}
-          placeholder={placeholder}
-          className="outline-none px-2 w-full resize-none"
-          onKeyDown={_handleKeyDown}
-          value={params.component.content.html}
-          onChange={onChange}
-        />
+        >
+          <Toolbar>
+            <MarkButton format="bold" icon={<FormatBoldIcon />} />
+            <MarkButton format="italic" icon={<FormatItalicIcon />} />
+            <MarkButton format="underline" icon={<FormatUnderlinedIcon />} />
+            <MarkButton format="code" icon={<CodeIcon />} />
+            {/* <BlockButton format="heading-one" icon="looks_one" />
+            <BlockButton format="heading-two" icon="looks_two" /> */}
+            <BlockButton format="block-quote" icon={<FormatQuoteIcon />} />
+            <BlockButton format="numbered-list" icon={<FormatListNumberedIcon />} />
+            <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon />} />
+            <BlockButton format="left" icon={<FormatAlignLeftIcon />} />
+            <BlockButton format="center" icon={<FormatAlignCenterIcon />} />
+            <BlockButton format="right" icon={<FormatAlignRightIcon />} />
+          </Toolbar>
+          <Editable
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            autoFocus={params.isFocus}
+            spellCheck
+            onFocus={() => {
+              setPlaceholder("Type for widget");
+            }}
+            onBlur={() => {
+              setPlaceholder("");
+            }}
+            onMouseEnter={() => !params.isFocus && setPlaceholder("Start typing")}
+            onMouseLeave={() => !params.isFocus && setPlaceholder("")}
+            placeholder={placeholder}
+            onKeyDown={onKeyDown}
+          />
+        </Slate>
       </BaseComponent>
     </>
   );
