@@ -1,11 +1,19 @@
 // const fetcher = (url: string) => fetch(url).then((res) => res.json());
-import React, {  FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Meta } from "@/layouts/Meta";
 import { Main } from "@/templates/Main";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { onDrag, selectComponents, selectLesson, setComponents, setLession, setSummary, setTitle } from "../features/auth/LessonSlice";
+import {
+  onDrag,
+  selectComponents,
+  selectLesson,
+  setComponents,
+  setLession,
+  setSummary,
+  setTitle,
+} from "../features/auth/LessonSlice";
 import { LessionComponent } from "../components/LessionComponent";
-import { LessionComponentProps } from "../shared/interface";
+import { ILesson, LessionComponentProps } from "../shared/interface";
 import Button from "../common/Button";
 import { CodeSmoothApi } from "../api/codesmooth-api";
 
@@ -16,18 +24,17 @@ const Course = () => {
   // if (error) return <div>failed to load</div>;
   // if (!data) return <div>loading...</div>;
   // const components = useAppSelector(selectComponents);
-  const lession = useAppSelector(selectLesson);
+  const lession = useAppSelector<ILesson>(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
-  console.log("Lession")
+  console.log("Lession");
   const dispatch = useAppDispatch();
   useEffect(() => {
     CodeSmoothApi.getLession().then((res) => {
       dispatch(setLession(res.data));
-    }
-    );
+    });
   }, []);
-  
+
   return (
     <Main
       meta={
@@ -38,17 +45,24 @@ const Course = () => {
       }
       headerChildren={
         <div className="flex flex-1 justify-end mr-28">
-          <Button onClick={
-            () => {
-              CodeSmoothApi.createLession(lession).then((res) => {
-              });
-            }
-          } text="Save" className="bg-light-primary text-white" />
+          <Button
+            onClick={() => {
+              CodeSmoothApi.createLession(lession).then((res) => {});
+            }}
+            text="Save"
+            className="bg-light-primary text-white"
+          />
         </div>
       }
     >
       <div className="w-full flex justify-start">
-        <div className="w-[15%]">Hello</div>
+        <div className="w-[15%] bg-slate-100">
+          <div className="flex flex-col gap-4 p-4">
+            <div className="flex flex-col gap-2">
+              <div className="text-sm text-gray-400">{lession.title}</div>
+            </div>
+          </div>
+        </div>
         <div className="w-[85%] flex justify-center">
           <div className="w-[70%] flex flex-col my-20">
             <input

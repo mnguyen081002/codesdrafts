@@ -1,15 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "../../app/store";
-import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeComponent } from "../../shared/interface";
+import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeComponent, ILesson } from "../../shared/interface";
 
-interface InitialState {
-  title: string;
-  summary: string;
-  components: LessionComponentProps[];
-}
-
-const initialState: InitialState = {
+const initialState: ILesson = {
+  name: "",
   title: "",
   summary: "",
   components: [
@@ -27,7 +22,7 @@ const LessonSlice = createSlice({
   name: "lesson",
   initialState: initialState,
   reducers: {
-    setLession(state, action: PayloadAction<InitialState>) {
+    setLession(state, action: PayloadAction<ILesson>) {
       state.title = action.payload.title;
       state.summary = action.payload.summary;
       state.components = action.payload.components;
@@ -121,7 +116,12 @@ const LessonSlice = createSlice({
     },
     setCode(
       state,
-      action: PayloadAction<{ code?: string; testCode?: string; executeCode?: string; index: number }>,
+      action: PayloadAction<{
+        code?: string;
+        testCode?: string;
+        executeCode?: string;
+        index: number;
+      }>,
     ) {
       const copy: any = state.components;
 
@@ -134,7 +134,8 @@ const LessonSlice = createSlice({
           judgeContent: {
             ...currComponent.content.judgeContent,
             testCode: action.payload.testCode ?? currComponent.content.judgeContent.testCode,
-            executeCode: action.payload.executeCode ?? currComponent.content.judgeContent.executeCode,
+            executeCode:
+              action.payload.executeCode ?? currComponent.content.judgeContent.executeCode,
           },
         },
       };

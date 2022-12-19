@@ -65,3 +65,10 @@ export interface ICodeComponent extends IBaseComponentProps {
   type: string;
   isFocus?: boolean;
 }
+
+export interface ILesson {
+  name: string;
+  title: string;
+  summary: string;
+  components: LessionComponentProps[];
+}
