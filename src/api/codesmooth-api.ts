@@ -1,7 +1,6 @@
 import axiosClient from "./axiosClient";
 import type { TestResult } from "../utils/example";
 import { ICodeComponent, LessionComponentProps } from "../shared/interface";
-import { AxiosResponse } from "axios";
 
 interface ExecuteRequest {
   code: string | undefined;

@@ -2,7 +2,6 @@ import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CodeSmoothApi, CodeSmoothApiResponse, CourseResponse } from "../api/codesmooth-api";
-import BigCourseCard from "./BigCourseCard";
 import SmallCourseCard from "./SmallCourseCard";
 
 const Teach = () => {

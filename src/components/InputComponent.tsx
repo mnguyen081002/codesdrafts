@@ -48,21 +48,6 @@ const HOTKEYS = {
   "mod+`": "code",
 };
 
-// const isMarkActive = (editor: any, format: any) => {
-//   const marks = Editor.marks(editor) as any;
-//   return marks ? marks[format] === true : false;
-// };
-
-// const toggleMark = (editor: any, format: string) => {
-//   const isActive = isMarkActive(editor, format);
-
-//   if (isActive) {
-//     Editor.removeMark(editor, format);
-//   } else {
-//     Editor.addMark(editor, format, true);
-//   }
-// };
-
 const Element = ({ attributes, children, element }: any) => {
   const style = { textAlign: element.align };
   switch (element.type) {

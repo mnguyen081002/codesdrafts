@@ -5,7 +5,6 @@ import { ReactEditor } from "slate-react";
 import escapeHtml from "escape-html";
 
 import {
-  CustomElement,
   CustomText,
   EditableCardElement,
   EmbedElement,
