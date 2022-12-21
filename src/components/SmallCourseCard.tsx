@@ -8,7 +8,7 @@ import { FC } from "react";
 interface SmallCourseCardProps {
   id: number;
   name: string;
-  image_url: string;
+  thumbnail: string;
   completed_percent: number;
   author: string;
   author_avatar: string;
@@ -17,11 +17,11 @@ interface SmallCourseCardProps {
 const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
   return (
     <Link
-      href={`/course/${props.id}`}
-      className="flex h-[380px] flex-col w-72 rounded transition transform hover:-translate-y-2 shadow-md hover:shadow-lg duration-500 mb-3 justify-center border border-gray-200 bg-white"
+      href={`/course/${props.id}?draft=true`}
+      className="flex h-[370px] flex-col w-72 rounded transition transform hover:-translate-y-2 shadow-md hover:shadow-lg duration-500 mb-3 justify-center border border-gray-200 bg-white"
     >
       <img
-        src="https://www.educative.io/cdn-cgi/image/format=auto,width=350,quality=75/v2api/collection/10370001/6289391964127232/image/5627886733099008"
+        src={props.thumbnail}
         className="flex flex-row justify-between h-[40%] border-b-2"
       />
       <div className="flex flex-col h-[30%] px-3 py-4 gap-2">

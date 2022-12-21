@@ -58,27 +58,42 @@ export const CodeSmoothApi = {
     });
   },
   //: Promise<CodeSmoothApiResponse<ListCourseResponse>>
-  getCourses: async (): Promise<CodeSmoothApiResponse<CourseResponse>> => {
+  getListCourses: async (): Promise<CodeSmoothApiResponseList<CourseResponse>> => {
     const response = await axiosClient.get("/api/admin/course");
+    return response.data;
+  },
+
+  getCourseById: async (id: number): Promise<CodeSmoothApiResponse<CourseResponse>> => {
+    const response = await axiosClient.get(`/api/admin/course/${id}`);
     return response.data;
   },
 };
 
-export interface CodeSmoothApiResponse<T> {
+export interface CodeSmoothApiResponseList<T> {
   data: T[];
   meta: Meta;
   message: string;
 }
 
+export interface CodeSmoothApiResponse<T> {
+  data: T;
+  message: string;
+}
+
 export interface CourseResponse {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: null;
+  id?: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: null;
+  thumbnail: string;
+  detail: string;
+  target_audience: string;
+  skills: string[];
+  tags: string[];
+  summary: string;
   name: string;
-  description: string;
   price: number;
-  isPublished: boolean;
+  is_published: boolean;
 }
 
 export interface Meta {
