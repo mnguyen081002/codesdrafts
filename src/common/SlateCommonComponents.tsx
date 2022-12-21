@@ -1,23 +1,27 @@
-import React, { Ref, PropsWithChildren } from "react";
-import { useSlate, useSlateStatic } from "slate-react";
-import CustomEditor from "../utils/CustomEditor";
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/display-name */
+import type { PropsWithChildren, Ref } from 'react';
+import React from 'react';
+import { useSlate, useSlateStatic } from 'slate-react';
+
+import CustomEditor from '../utils/CustomEditor';
+
 interface BaseProps {
   className: string;
   [key: string]: unknown;
 }
-type OrNull<T> = T | null;
 
 const ButtonSTY = (active: boolean, reversed: boolean, disabled: boolean) => {
   return {
     color: reversed
       ? disabled
-        ? "rgba(241, 241, 241,25%)"
+        ? 'rgba(241, 241, 241,25%)'
         : active
-        ? "#black"
-        : "#d8d8d8"
+        ? '#black'
+        : '#d8d8d8'
       : active
-      ? "black"
-      : "#d8d8d8",
+      ? 'black'
+      : '#d8d8d8',
   };
 };
 export const ToolbarButton = React.forwardRef(
@@ -34,10 +38,10 @@ export const ToolbarButton = React.forwardRef(
         reversed: boolean;
       } & BaseProps
     >,
-    ref: Ref<HTMLSpanElement>
+    ref: Ref<HTMLSpanElement>,
   ) => (
     <span
-      {...props}  
+      {...props}
       ref={ref}
       className="cursor-pointer"
       style={ButtonSTY(active, reversed, disabled)}
@@ -46,28 +50,32 @@ export const ToolbarButton = React.forwardRef(
 );
 export const DeleButton = React.forwardRef(
   ({ ...props }: PropsWithChildren<{} & BaseProps>, ref: Ref<HTMLSpanElement>) => (
-    <span {...props} ref={ref} className="cursor-pointer text-red-600  absolute  top-2 left-2" />
+    <span {...props} ref={ref} className="absolute top-2  left-2  cursor-pointer text-red-600" />
   ),
 );
 export const AltButton = React.forwardRef(
   ({ ...props }: PropsWithChildren<{} & BaseProps>, ref: Ref<HTMLSpanElement>) => (
-    <span {...props} ref={ref} className="cursor-pointer text-blue-600  absolute  top-2 left-10" />
+    <span {...props} ref={ref} className="absolute top-2  left-10  cursor-pointer text-blue-600" />
   ),
 );
 
 export const Icon = React.forwardRef(
   ({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLSpanElement>) => (
-    <span {...props} ref={ref} className="material-icons  text-2xl align-text-bottom mx-1" />
+    <span {...props} ref={ref} className="mx-1 align-text-bottom text-2xl" />
   ),
 );
 export const BlockIcon = React.forwardRef(
   ({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLSpanElement>) => (
-    <span {...props} ref={ref} className="material-icons  text-3xl align-text-bottom mx-1 my-1" />
+    <span {...props} ref={ref} className="m-1 align-text-bottom text-3xl" />
   ),
 );
 export const Toolbar = React.forwardRef(
-  ({ className, ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLDivElement>) => (
-    <div {...props} ref={ref} className="relative toolbar" />
+  ({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<HTMLDivElement>) => (
+    <div
+      {...props}
+      ref={ref}
+      className="absolute -top-10 z-10 flex gap-4 rounded-lg bg-white p-2 shadow-forfun"
+    />
   ),
 );
 
@@ -89,7 +97,7 @@ export const Toolbar = React.forwardRef(
 //     </Button>
 //   );
 // };
-export const BlockButton = ({ format, icon, title }:any) => {
+export const BlockButton = ({ format, icon, title }: any) => {
   const editor = useSlate();
   return (
     <ToolbarButton
@@ -97,9 +105,9 @@ export const BlockButton = ({ format, icon, title }:any) => {
       active={CustomEditor.isBlockActive(
         editor,
         format,
-        CustomEditor.Text_Align_Types.includes(format) ? "align" : "type",
+        CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type',
       )}
-      onMouseDown={(event:any) => {
+      onMouseDown={(event: any) => {
         event.preventDefault();
         CustomEditor.toggleBlock(editor, format);
       }}
@@ -113,13 +121,13 @@ export const InsertImageButton = () => {
   const editor = useSlateStatic();
   return (
     <ToolbarButton
-      data-title={"使用相片連結"}
+      data-title={'使用相片連結'}
       onMouseDown={(event) => {
         event.preventDefault();
-        const url = window.prompt("加入相片連結:");
+        const url = window.prompt('加入相片連結:');
         const alt = null;
         if (url && !CustomEditor.isImageUrl(url)) {
-          alert("必須填入正確連結");
+          alert('必須填入正確連結');
           return;
         }
         if (!url) return;
@@ -130,7 +138,7 @@ export const InsertImageButton = () => {
     </ToolbarButton>
   );
 };
-//上傳照片
+// 上傳照片
 // TODO: Open this
 // export const UploadImageButton = () => {
 //   const editor = useSlateStatic();
@@ -193,9 +201,9 @@ export const AddLinkButton = () => {
       active={CustomEditor.isLinkActive(editor)}
       onMouseDown={(event) => {
         event.preventDefault();
-        const url = window.prompt("輸入超連結網址:");
+        const url = window.prompt('輸入超連結網址:');
         if (!url) {
-          alert("請輸入正確超連結!");
+          alert('請輸入正確超連結!');
           return;
         }
         CustomEditor.insertLink(editor, url);
@@ -212,7 +220,7 @@ export const RemoveLinkButton = () => {
     <ToolbarButton
       reversed
       active={CustomEditor.isLinkActive(editor)}
-      onMouseDown={(event) => {
+      onMouseDown={() => {
         if (CustomEditor.isLinkActive(editor)) {
           CustomEditor.unwrapLink(editor);
         }
@@ -228,7 +236,7 @@ export const EmbedButton = () => {
   const editor = useSlateStatic();
   return (
     <ToolbarButton
-      data-title={"嵌入連結"}
+      data-title={'嵌入連結'}
       onMouseDown={(event) => {
         event.preventDefault();
         CustomEditor.embed(editor);
@@ -243,7 +251,7 @@ export const InsertEditableCardButton = () => {
   const editor = useSlateStatic();
   return (
     <ToolbarButton
-      data-title={"新增自訂區塊"}
+      data-title={'新增自訂區塊'}
       onMouseDown={(event) => {
         event.preventDefault();
         CustomEditor.insertEditableCard(editor);

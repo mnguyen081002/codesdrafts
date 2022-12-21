@@ -1,21 +1,21 @@
 // const fetcher = (url: string) => fetch(url).then((res) => res.json());
-import React, { FC, useEffect, useRef, useState } from "react";
-import { Meta } from "@/layouts/Meta";
-import { Main } from "@/templates/Main";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import React, { useEffect, useRef } from 'react';
+
+import { Meta } from '@/layouts/Meta';
+import { Main } from '@/templates/Main';
+
+import { CodeSmoothApi } from '../api/codesmooth-api';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import Button from '../common/Button';
+import { LessionComponent } from '../components/LessionComponent';
 import {
   onDrag,
-  selectComponents,
   selectLesson,
-  setComponents,
   setLession,
   setSummary,
   setTitle,
-} from "../features/auth/LessonSlice";
-import { LessionComponent } from "../components/LessionComponent";
-import { ILesson, LessionComponentProps } from "../shared/interface";
-import Button from "../common/Button";
-import { CodeSmoothApi } from "../api/codesmooth-api";
+} from '../features/auth/LessonSlice';
+import type { ILesson, LessionComponentProps } from '../shared/interface';
 
 const Course = () => {
   // const { courseId } = useParams();
@@ -27,7 +27,7 @@ const Course = () => {
   const lession = useAppSelector<ILesson>(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
-  console.log("Lession");
+  console.log('Lession');
   const dispatch = useAppDispatch();
   useEffect(() => {
     CodeSmoothApi.getLession().then((res) => {
@@ -44,10 +44,10 @@ const Course = () => {
         />
       }
       headerChildren={
-        <div className="flex flex-1 justify-end mr-28">
+        <div className="mr-28 flex flex-1 justify-end">
           <Button
             onClick={() => {
-              CodeSmoothApi.createLession(lession).then((res) => {});
+              CodeSmoothApi.createLession(lession).then(() => {});
             }}
             text="Save"
             className="bg-light-primary text-white"
@@ -55,7 +55,7 @@ const Course = () => {
         </div>
       }
     >
-      <div className="w-full flex justify-start">
+      <div className="flex w-full justify-start">
         <div className="w-[15%] bg-slate-100">
           <div className="flex flex-col gap-4 p-4">
             <div className="flex flex-col gap-2">
@@ -63,12 +63,12 @@ const Course = () => {
             </div>
           </div>
         </div>
-        <div className="w-[85%] flex justify-center">
-          <div className="w-[70%] flex flex-col my-20">
+        <div className="flex w-[85%] justify-center">
+          <div className="my-20 flex w-[70%] flex-col">
             <input
               type="text"
               placeholder="Title"
-              className="border w-full mb-12 rounded-normal p-2 border-gray-400 outline-none"
+              className="mb-12 w-full rounded-normal border border-gray-400 p-2 outline-none"
               value={lession.title}
               onChange={(e) => {
                 dispatch(setTitle(e.target.value));
@@ -77,27 +77,28 @@ const Course = () => {
 
             <textarea
               placeholder="Summary"
-              className="border w-full rounded-normal h-36 p-2 border-gray-400 resize-none outline-none"
+              className="h-36 w-full resize-none rounded-normal border border-gray-400 p-2 outline-none"
               value={lession.summary}
               onChange={(e) => {
                 dispatch(setSummary(e.target.value));
               }}
             />
 
-            <div className="flex flex-col mt-8 gap-2">
+            <div className="mt-8 flex flex-col gap-2">
               {lession.components.map((component: LessionComponentProps, index: number) => {
                 return (
                   <LessionComponent
+                    key={index}
                     isLast={index === lession.components.length - 1}
                     component={component}
                     index={index}
-                    onDragStart={(e: any) => {
+                    onDragStart={() => {
                       dragItemRef.current = index;
                     }}
-                    onDragEnter={(e: any) => {
+                    onDragEnter={() => {
                       dragItemOverRef.current = index;
                     }}
-                    onDragEnd={(e: any) => {
+                    onDragEnd={() => {
                       dispatch(
                         onDrag({
                           dragIndex: dragItemRef.current,

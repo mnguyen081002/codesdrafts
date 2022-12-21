@@ -1,9 +1,9 @@
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
+import Link from 'next/link';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 import Navigate from '@/common/Navigate';
-import Link from 'next/link';
 
 type IMainProps = {
   meta: ReactNode;
@@ -11,12 +11,12 @@ type IMainProps = {
   headerChildren?: ReactNode;
 };
 
-export const Header:FC<PropsWithChildren> = (props) => {
+export const Header: FC<PropsWithChildren> = (props) => {
   return (
-    <nav className="fixed top-0 z-10 flex h-16 w-full border-0 border-b border-solid border-gray-300 bg-white transition duration-300 ease-in-out dark:border-gray-700 dark:bg-dark-90 sm:h-16 items-center">
-      <span className="px-2 flex justify-start items-center gap-2">
-        <img src="/logo-96.png" alt="Logo" className="h-8 w-8 ml-4" />
-        <span className="font-bold text-lg">Code Smooth</span>
+    <nav className="fixed top-0 z-10 flex h-16 w-full items-center border-0 border-b border-solid border-gray-300 bg-white transition duration-300 ease-in-out dark:border-gray-700 dark:bg-dark-90 sm:h-16">
+      <span className="flex items-center justify-start gap-2 px-2">
+        <img src="/logo-96.png" alt="Logo" className="ml-4 h-8 w-8" />
+        <span className="text-lg font-bold">Code Smooth</span>
       </span>
       <div className="h-full flex-row pl-8">
         <Navigate />
@@ -45,9 +45,7 @@ export const Header:FC<PropsWithChildren> = (props) => {
 const Main = (props: IMainProps) => {
   return (
     <div>
-      <Header>
-        {props.headerChildren}
-      </Header>
+      <Header>{props.headerChildren}</Header>
       {/* <nav className="fixed top-16 z-50 h-full w-sidebar bg-gray-200 flex">
         <Link
           href="/"
@@ -57,7 +55,7 @@ const Main = (props: IMainProps) => {
           Course
         </Link>
       </nav> */}
-      <div className="flex flex-col bg-white pt-16 items-center">{props.children}</div>
+      <div className="flex flex-col items-center bg-white pt-16">{props.children}</div>
     </div>
   );
 };

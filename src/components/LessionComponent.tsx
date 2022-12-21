@@ -1,12 +1,13 @@
-import { FC } from "react";
-import { ICodeContent, IComponentProps, ITextContent, ITextComponent, ICodeComponent } from "../shared/interface";
-import { CodeComponent } from "./CodeComponent";
-import { InputTextComponent } from "./InputComponent";
+import type { FC } from 'react';
+
+import type { ICodeComponent, IComponentProps, ITextComponent } from '../shared/interface';
+import { ICodeContent, ITextContent } from '../shared/interface';
+import { CodeComponent } from './CodeComponent';
+import { InputTextComponent } from './InputComponent';
 
 export const LessionComponent: FC<IComponentProps> = (params) => {
-  
   switch (params.component.type) {
-    case "Text":
+    case 'Text':
       return (
         <InputTextComponent
           onDragStart={params.onDragStart}
@@ -18,7 +19,7 @@ export const LessionComponent: FC<IComponentProps> = (params) => {
           isFocus={params.isFocus}
         />
       );
-    case "Code":
+    case 'Code':
       return (
         <CodeComponent
           isLast={params.isLast}

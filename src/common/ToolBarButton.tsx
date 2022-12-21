@@ -1,8 +1,8 @@
-import { DetailedHTMLProps, HTMLAttributes, MouseEventHandler, PropsWithChildren } from "react";
-import { ReactEditor, useSlate } from "slate-react";
-import CustomEditor from "../utils/CustomEditor";
-import { ToolbarButton } from "./SlateCommonComponents";
+import { DetailedHTMLProps, HTMLAttributes, MouseEventHandler, PropsWithChildren } from 'react';
+import { ReactEditor, useSlate } from 'slate-react';
 
+import CustomEditor from '../utils/CustomEditor';
+import { ToolbarButton } from './SlateCommonComponents';
 
 interface ToolBarButtonProps {
   active: boolean;
@@ -41,14 +41,14 @@ const MarkButton = ({ format, icon }: any) => {
   );
 };
 
-const BlockButton = ({ format, icon }:any) => {
+const BlockButton = ({ format, icon }: any) => {
   const editor = useSlate();
   return (
     <ToolbarButton
       active={CustomEditor.isBlockActive(
         editor,
         format,
-        CustomEditor.Text_Align_Types.includes(format) ? "align" : "type",
+        CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type',
       )}
       onMouseDown={(event: any) => {
         event.preventDefault();
@@ -118,7 +118,4 @@ const BlockButton = ({ format, icon }:any) => {
 //   return marks ? marks[format] === true : false;
 // };
 
-export {
-  BlockButton,
-  MarkButton,
-};
+export { BlockButton, MarkButton };
