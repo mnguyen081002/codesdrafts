@@ -16,7 +16,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        light: { primary: '#5553ff' },
+        light: { primary: '#63b3ed' },
         dark: { 90: '#1e1e27' },
         gray: {
           100: '#f7fafc',
@@ -53,6 +53,10 @@ module.exports = {
       },
       boxShadow: {
         forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
+        normal: '4px',
+      },
+      borderColor: {
+        light: { primary: '#63b3ed' },
       },
     },
   },
