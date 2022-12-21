@@ -26,7 +26,7 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
       />
       <div className="flex flex-col h-[30%] px-3 py-4 gap-2">
         <div className="flex justify-start items-center gap-2">
-          <img src="./logo-96.png" alt="avatar" className="h-6 w-6 rounded-full" />
+          <img src="/logo-96.png" alt="avatar" className="h-6 w-6 rounded-full" />
           <p className="text-sm">Code Smooth</p>
         </div>
         <p className="font-medium text-">{props.name}</p>

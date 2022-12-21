@@ -16,7 +16,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        light: { primary: "#5553ff" },
+        light: { primary: "#63b3ed" },
         dark: { 90: "#1e1e27" },
         gray: {
           100: "#f7fafc",
@@ -50,7 +50,10 @@ module.exports = {
       },
       borderRadius: {
         normal: "4px",
-      }
+      },
+      borderColor: {
+        light: { primary: "#63b3ed" },
+      },
     },
   },
   plugins: [],
