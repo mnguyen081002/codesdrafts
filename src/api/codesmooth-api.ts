@@ -37,6 +37,18 @@ interface SaveCourseRequest {
 }
 
 export const CodeSmoothApi = {
+  uploadFiles: (files: File[]) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    return axiosClient.post("/api/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+
   execute: ({ code, testCode, language, executeCode }: ExecuteRequest) => {
     return axiosClient.post<ExecuteResponse>(`/api/execute/`, {
       code,

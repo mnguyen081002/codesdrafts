@@ -45,7 +45,7 @@ const Course = (props) => {
   const [course, setCourse] = useState<CourseResponse>(defaultCourse);
 
   const [queryLessionPage, setQueryLessionPage] = useState("");
-
+  const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   useEffect(() => {
     if (router.isReady) {
       const { id, draft } = router.query;
@@ -81,7 +81,10 @@ const Course = (props) => {
       headerChildren={
         <div className="mr-28 flex flex-1 justify-end">
           <Button
-            onClick={() => {
+            onClick={async () => {
+              const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
+              setCourse({ ...course, thumbnail: uploadRes.data.urls[0] });
+
               CodeSmoothApi.saveCourse(course).then((data) => {
                 alert("Saved");
               });
@@ -96,11 +99,28 @@ const Course = (props) => {
         <div className="w-[50%]">
           <div className="flex justify-start py-5 h-60">
             <div className="w-[50%] px-10 h-full">
-              <div className="bg-gradient-to-bl from-sky-100 cursor-pointer to-blue-400 rounded-normal flex justify-center h-full items-center">
-                <div className="rounded-lg bg-white p-2">
-                  <WallpaperIcon style={{ fontSize: "30px" }} />
+              {!thumbnailUpload && !course.thumbnail ? (
+                <div className="relative bg-gradient-to-bl from-sky-100 to-blue-400 rounded-normal flex justify-center h-full items-center">
+                  <input
+                    type="file"
+                    className="absolute opacity-0 cursor-pointer z-10 h-12 w-12"
+                    onChange={(event) => {
+                      if (event.target.files) {
+                        setThumbnailUpload(event.target.files[0]);
+                      }
+                    }}
+                  />
+                  <div className="rounded-lg bg-white cursor-pointer p-2">
+                    <WallpaperIcon style={{ fontSize: "30px", cursor: "pointer" }} />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <img
+                  src={thumbnailUpload ? URL.createObjectURL(thumbnailUpload) : course.thumbnail}
+                  className="rounded-normal"
+                  alt="thumbnail"
+                />
+              )}
             </div>
             <div className="flex flex-col w-[50%]">
               <span className="font-semibold">Course Authors:</span>
