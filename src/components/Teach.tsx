@@ -39,7 +39,7 @@ const Teach = () => {
     <>
       <div className="grid grid-cols-5 justify-center items-center flex-wrap gap-5 mt-16">
         <Link
-          href={`/course/${generateId(18)}`}
+          href={`/editcourse/${generateId(18)}`}
           className="flex h-[370px] flex-col w-72 rounded hover:shadow-lg duration-500 justify-center items-center cursor-pointer border border-gray-200 bg-gray-200"
         >
           <div className="flex flex-col items-center">
@@ -50,15 +50,17 @@ const Teach = () => {
 
         {isLoading
           ? [...Array(9)].map((item) => {
-              return <SmallCourseCard isLoading={true} />;
+            return <SmallCourseCard isLoading={true} key={item} />;
             })
           : listCourses.data.map((course: CourseResponse) => {
               return (
                 <SmallCourseCard
+                
                   isLoading={isLoading}
                   author="Code Smooth"
                   author_avatar="./logo-96.png"
                   completed_percent={30}
+                  summary={course.summary}
                   id={course.id!}
                   thumbnail={course.thumbnail}
                   name={course.name}

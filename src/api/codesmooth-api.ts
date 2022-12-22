@@ -21,7 +21,7 @@ interface ExecuteRequest {
 
 interface SaveLessionRequest {
   id: number;
-  category_id: number;
+  course_category_id: number;
   title: string;
   summary: string;
   components: LessionComponentProps[];
@@ -61,7 +61,7 @@ export const CodeSmoothApi = {
   createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
     return axiosClient.post("/api/admin/category", {
       title,
-      course_category_id: id,
+      id: id,
       type,
       courseId: course_id,
     });
@@ -72,11 +72,10 @@ export const CodeSmoothApi = {
 
     return axiosClient.post("/api/admin/lession", {
       id: params.id,
-      category_id: params.category_id,
       title: params.title,
       summary: params.summary,
       components: params.components,
-      course_category_id: 544733825231424000,
+      course_category_id: params.course_category_id,
     });
   },
 
@@ -133,8 +132,8 @@ export interface CourseResponse {
   created_at: Date;
   updated_at: Date;
   deleted_at?: null;
-  thumbnail: string;
   detail: string;
+  thumbnail: string;
   target_audience: string;
   skills: string[];
   tags: string[];

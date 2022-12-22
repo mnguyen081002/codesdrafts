@@ -5,7 +5,7 @@ import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeCompone
 
 const initialState: ILesson = {
   id: 0,
-  category_id: 0,
+  course_category_id: 0,
   name: "",
   title: "",
   summary: "",
@@ -26,7 +26,7 @@ const LessonSlice = createSlice({
   reducers: {
     setLession(state, action: PayloadAction<ILesson>) {
       state.id = action.payload.id;
-      state.category_id = action.payload.category_id;
+      state.course_category_id = action.payload.course_category_id;
       state.title = action.payload.title;
       state.summary = action.payload.summary;
       state.components = action.payload.components;

@@ -28,7 +28,7 @@ const tagOptions = [
 export const defaultCourse = {
   id: generateId(18),
   name: "",
-  thumbnail: "",
+  thumbnail: "https://picsum.photos/200/300123",
   summary: "",
   created_at: new Date(),
   updated_at: new Date(),
@@ -54,15 +54,16 @@ const Course = (props) => {
         CodeSmoothApi.getCourseById(Number(id)).then((data) => {
           setCourse(data.data);
           let query = "";
-          if (data.data.category.length > 0) {
-            if (data.data.category[0]?.lessions?.length! > 0) {
-              query = data.data.category[0]?.lessions[0]?.id! + "?draft=true";
-            }
+          if (data.data.category.length > 0 && data.data.category[0]?.lessions?.length! > 0) {
+            query = data.data.category[0]?.lessions[0]?.id! + "?draft=true";
           } else {
             query = generateId(18).toString();
           }
+          console.log({ query });
           setQueryLessionPage(query);
         });
+      } else {
+        setQueryLessionPage(generateId(18).toString());
       }
       if (id) {
         // set course id
@@ -119,6 +120,9 @@ const Course = (props) => {
                   src={thumbnailUpload ? URL.createObjectURL(thumbnailUpload) : course.thumbnail}
                   className="rounded-normal"
                   alt="thumbnail"
+                  onError={(e) => {
+                    e.currentTarget.src = "/logo-96.png";
+                  }}
                 />
               )}
             </div>

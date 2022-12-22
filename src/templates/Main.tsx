@@ -55,7 +55,7 @@ const Main = (props: IMainProps) => {
           Course
         </Link>
       </nav> */}
-      <div className="flex flex-col items-center bg-white pt-16">{props.children}</div>
+      <div className="flex h-screen flex-col items-center bg-white pt-16">{props.children}</div>
     </div>
   );
 };
