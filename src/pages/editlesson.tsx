@@ -47,7 +47,7 @@ const Course = () => {
         <div className="mr-28 flex flex-1 justify-end">
           <Button
             onClick={() => {
-              CodeSmoothApi.createLession(lession).then(() => {});
+              CodeSmoothApi.saveLession(lession).then(() => {});
             }}
             text="Save"
             className="bg-light-primary text-white"

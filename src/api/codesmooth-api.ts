@@ -1,6 +1,7 @@
 import axiosClient from "./axiosClient";
 import type { TestResult } from "../utils/example";
 import { ICodeComponent, LessionComponentProps } from "../shared/interface";
+import { CourseCategoryType } from "../shared/enum/category";
 
 interface ExecuteRequest {
   code: string | undefined;
@@ -18,10 +19,21 @@ interface ExecuteRequest {
   executeCode: string | undefined;
 }
 
-interface CreateLessionRequest {
+interface SaveLessionRequest {
+  id: number;
+  category_id: number;
   title: string;
   summary: string;
   components: LessionComponentProps[];
+}
+
+interface SaveCourseRequest {
+  id: number;
+  name: string;
+  summary: string;
+  thumbnail: string;
+  price: number;
+  tags: string[];
 }
 
 export const CodeSmoothApi = {
@@ -34,8 +46,21 @@ export const CodeSmoothApi = {
     });
   },
 
-  createLession: (params: CreateLessionRequest) => {
+  createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
+    return axiosClient.post("/api/admin/category", {
+      title,
+      course_category_id: id,
+      type,
+      courseId: course_id,
+    });
+  },
+
+  saveLession: (params: SaveLessionRequest) => {
+    console.log(params);
+
     return axiosClient.post("/api/admin/lession", {
+      id: params.id,
+      category_id: params.category_id,
       title: params.title,
       summary: params.summary,
       components: params.components,
@@ -43,8 +68,8 @@ export const CodeSmoothApi = {
     });
   },
 
-  getLession: (id:number) => {
-    return axiosClient.get("/api/admin/lession/"+id);
+  getLession: (id: number) => {
+    return axiosClient.get("/api/admin/lession/" + id);
   },
 
   getSampleForLanguage: (language: string) => {
@@ -55,6 +80,17 @@ export const CodeSmoothApi = {
     return axiosClient.post(`/api/admin/sample`, {
       language,
       sample,
+    });
+  },
+
+  saveCourse: (params: SaveCourseRequest) => {
+    return axiosClient.post("/api/admin/course", {
+      id:Number(params.id),
+      name:params.name,
+      summary:params.summary,
+      thumbnail: params.thumbnail,
+      price: params.price,
+      tags: params.tags,
     });
   },
   //: Promise<CodeSmoothApiResponse<ListCourseResponse>>
@@ -81,7 +117,7 @@ export interface CodeSmoothApiResponse<T> {
 }
 
 export interface CourseResponse {
-  id?: number;
+  id: number;
   created_at: Date;
   updated_at: Date;
   deleted_at?: null;

@@ -1,16 +1,20 @@
 // const fetcher = (url: string) => fetch(url).then((res) => res.json());
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Meta } from '@/layouts/Meta';
 import { Main } from '@/templates/Main';
 
-import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import { CodeSmoothApi, CourseResponse } from '../../../api/codesmooth-api';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks';
 import { LessionComponent } from '../../../components/LessionComponent';
 import { selectLesson, setLession, setTitle, setSummary, onDrag } from '../../../features/auth/LessonSlice';
 import { ILesson, LessionComponentProps } from '../../../shared/interface';
 import Button from '../../../common/Button';
 import { useRouter } from 'next/router';
+import { defaultCourse } from '../../course/[id]';
+import { generateId } from '../../../utils/genId';
+import { CourseCategoryType } from '../../../shared/enum/category';
+import { ComponentType } from '../../../shared/enum/component';
 
 
 
@@ -19,15 +23,17 @@ const EditLession = () => {
   // const { data, error } = useSWR(`/api/courses/${courseId}`, fetcher);
 
   // if (error) return <div>failed to load</div>;
-  // if (!data) return <div>loading...</div>;
   // const components = useAppSelector(selectComponents);
   const lession = useAppSelector<ILesson>(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
-  console.log('Lession');
+  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
+
+  console.log('Lession',lession);
   const dispatch = useAppDispatch();
 
   const router = useRouter();
+  if (!course && !lession.title) return <div>loading...</div>;
 
   useEffect(() => {
     if (router.isReady) {
@@ -36,10 +42,47 @@ const EditLession = () => {
         CodeSmoothApi.getLession(Number(lessionid)).then((res) => {
           dispatch(setLession(res.data));
         });
+
+        CodeSmoothApi.getCourseById(Number(courseid)).then((res) => {
+          setCourse(res.data);
+        });
+      } else {
+        CodeSmoothApi.getLession(Number(lessionid)).then((res) => {
+          dispatch(setLession(res.data));
+        }).catch(() => { 
+          const cateId = generateId(18)
+          const lession = {
+            id: Number(lessionid),
+            category_id: cateId,
+            components: [
+              {
+                content: {
+                  html: "",
+                },
+                type: ComponentType.Text,
+              },
+            ],
+            name: "",
+            summary: "",
+            title: "",
+          };
+        CodeSmoothApi.createCategory(
+          "New Category",
+          cateId,
+          Number(courseid),
+          CourseCategoryType.ASSESMENT,
+        ).then(() => {
+          dispatch(setLession(lession));
+        });
+
+        CodeSmoothApi.getCourseById(Number(courseid)).then((res) => {
+          setCourse(res.data);
+        }).catch(() => { });
+        console.log(lessionid);
+        }).catch(() => { });
       }
-      
     }
-  }, []);
+  }, [router.isReady]);
 
   return (
     <Main
@@ -53,7 +96,7 @@ const EditLession = () => {
         <div className="mr-28 flex flex-1 justify-end">
           <Button
             onClick={() => {
-              CodeSmoothApi.createLession(lession).then(() => {});
+              CodeSmoothApi.saveLession(lession).then(() => {});
             }}
             text="Save"
             className="bg-light-primary text-white"

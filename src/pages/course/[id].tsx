@@ -10,6 +10,7 @@ import { CodeSmoothApi, CourseResponse } from "../../api/codesmooth-api";
 import { Tags } from "../../common/Tags";
 import Link from "next/link";
 import { generateId } from "../../utils/genId";
+import Button from "../../common/Button";
 
 const tagOptions = [
   "React",
@@ -24,24 +25,24 @@ const tagOptions = [
   "JavaScript",
   "HTML",
 ];
-
+export const defaultCourse = {
+  id: generateId(18),
+  name: "",
+  thumbnail: "",
+  summary: "",
+  created_at: new Date(),
+  updated_at: new Date(),
+  detail: "",
+  is_published: false,
+  price: 0,
+  skills: [],
+  tags: ["React", "NextJS", "TailwindCSS"],
+  target_audience: "Everyone",
+  category: [],
+};
 const Course = (props) => {
   const router = useRouter();
-  const [courseid, setId] = useState<string | string[]>("");
-  const [course, setCourse] = useState<CourseResponse>({
-    name: "",
-    thumbnail: "",
-    summary: "",
-    created_at: new Date(),
-    updated_at: new Date(),
-    detail: "",
-    is_published: false,
-    price: 0,
-    skills: [],
-    tags: ["React", "NextJS", "TailwindCSS"],
-    target_audience: "Everyone",
-    category: [],
-  });
+  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
 
   const [queryLessionPage, setQueryLessionPage] = useState("");
 
@@ -55,16 +56,17 @@ const Course = (props) => {
           let query = "";
           if (data.data.category.length > 0) {
             if (data.data.category[0]?.lessions?.length! > 0) {
-              query = data.data.category[0]?.lessions[0]?.id!+"?draft=true";
+              query = data.data.category[0]?.lessions[0]?.id! + "?draft=true";
             }
           } else {
-            query = generateId(18).toString()
+            query = generateId(18).toString();
           }
           setQueryLessionPage(query);
         });
       }
       if (id) {
-        setId(id);
+        // set course id
+        setCourse({ ...course, id: Number(id) });
       }
     }
   }, [router.isReady]);
@@ -74,7 +76,22 @@ const Course = (props) => {
   };
 
   return (
-    <Main meta={<Meta title={courseid!.toString()} description="Lorem ipsum" />}>
+    <Main
+      meta={<Meta title={course.id!.toString()} description="Lorem ipsum" />}
+      headerChildren={
+        <div className="mr-28 flex flex-1 justify-end">
+          <Button
+            onClick={() => {
+              CodeSmoothApi.saveCourse(course).then((data) => {
+                alert("Saved");
+              });
+            }}
+            text="Save"
+            className="bg-light-primary text-white"
+          />
+        </div>
+      }
+    >
       <div className="flex mt-10 w-full justify-center">
         <div className="w-[50%]">
           <div className="flex justify-start py-5 h-60">
@@ -104,6 +121,9 @@ const Course = (props) => {
               <input
                 type="text"
                 value={course.name}
+                onChange={(e) => {
+                  setCourse({ ...course, name: e.target.value });
+                }}
                 placeholder="Give a name to your course"
                 className=" placeholder-slate-500 border-none text-lg bg-white"
               />
@@ -111,23 +131,31 @@ const Course = (props) => {
             <input
               type="text"
               value={course.summary}
+              onChange={(e) => {
+                setCourse({ ...course, summary: e.target.value });
+              }}
               placeholder="Give a short description to your course"
               className="pl-8 h-14 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-400"
             />
             <input
               type="text"
               value={course.target_audience}
+              onChange={(e) => {
+                setCourse({ ...course, target_audience: e.target.value });
+              }}
               placeholder="Who is this course for?"
               className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
             />
             <input
               type="text"
               value={course.detail}
+              onChange={(e) => {
+                setCourse({ ...course, detail: e.target.value });
+              }}
               placeholder="What will students learn in this course?"
               className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
             />
             <Tags
-              // value={course.tags}
               options={tagOptions}
               value={course.tags}
               placeholder="Add tags to your course"
@@ -141,7 +169,10 @@ const Course = (props) => {
                 Lession
               </span>
               <div className="w-full flex items-center justify-center">
-                <Link href={`/editlession/${courseid}/${queryLessionPage}`} className="flex items-center w-60 justify-center border border-slate-400 py-2 rounded-normal">
+                <Link
+                  href={`/editlession/${course.id}/${queryLessionPage}`}
+                  className="flex items-center w-60 justify-center border border-slate-400 py-2 rounded-normal"
+                >
                   <span className="text-xs uppercase">Edit Course Content</span>
                   <EditIcon style={{ fontSize: "18px", marginLeft: "10px" }} />
                 </Link>

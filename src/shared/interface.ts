@@ -67,6 +67,8 @@ export interface ICodeComponent extends IBaseComponentProps {
 }
 
 export interface ILesson {
+  id: number;
+  category_id: number;
   name: string;
   title: string;
   summary: string;

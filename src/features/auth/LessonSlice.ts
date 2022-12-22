@@ -4,6 +4,8 @@ import { RootState } from "../../app/store";
 import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeComponent, ILesson } from "../../shared/interface";
 
 const initialState: ILesson = {
+  id: 0,
+  category_id: 0,
   name: "",
   title: "",
   summary: "",
@@ -23,6 +25,8 @@ const LessonSlice = createSlice({
   initialState: initialState,
   reducers: {
     setLession(state, action: PayloadAction<ILesson>) {
+      state.id = action.payload.id;
+      state.category_id = action.payload.category_id;
       state.title = action.payload.title;
       state.summary = action.payload.summary;
       state.components = action.payload.components;
