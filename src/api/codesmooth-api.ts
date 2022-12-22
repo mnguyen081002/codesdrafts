@@ -43,8 +43,8 @@ export const CodeSmoothApi = {
     });
   },
 
-  getLession: () => {
-    return axiosClient.get("/api/admin/lession/208373742449402620");
+  getLession: (id:number) => {
+    return axiosClient.get("/api/admin/lession/"+id);
   },
 
   getSampleForLanguage: (language: string) => {
@@ -94,6 +94,16 @@ export interface CourseResponse {
   name: string;
   price: number;
   is_published: boolean;
+  category: CategoryResponse[];
+}
+
+export interface CategoryResponse {
+  id: number;
+  title: string;
+  lessions: {
+    id: number;
+    title: string;
+  }[];
 }
 
 export interface Meta {

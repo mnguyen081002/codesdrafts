@@ -1,3 +1,4 @@
+import EditIcon from "@mui/icons-material/Edit";
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import { Meta } from "@/layouts/Meta";
@@ -6,9 +7,27 @@ import router, { useRouter } from "next/router";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import { useEffect, useState } from "react";
 import { CodeSmoothApi, CourseResponse } from "../../api/codesmooth-api";
+import { Tags } from "../../common/Tags";
+import Link from "next/link";
+import { generateId } from "../../utils/genId";
+
+const tagOptions = [
+  "React",
+  "NextJS",
+  "TailwindCSS",
+  "NodeJS",
+  "ExpressJS",
+  "MongoDB",
+  "MySQL",
+  "GraphQL",
+  "TypeScript",
+  "JavaScript",
+  "HTML",
+];
+
 const Course = (props) => {
   const router = useRouter();
-  const [id, setId] = useState<string | string[]>("");
+  const [courseid, setId] = useState<string | string[]>("");
   const [course, setCourse] = useState<CourseResponse>({
     name: "",
     thumbnail: "",
@@ -19,20 +38,30 @@ const Course = (props) => {
     is_published: false,
     price: 0,
     skills: [],
-    tags: [],
-    target_audience:"Everyone"
+    tags: ["React", "NextJS", "TailwindCSS"],
+    target_audience: "Everyone",
+    category: [],
   });
+
+  const [queryLessionPage, setQueryLessionPage] = useState("");
 
   useEffect(() => {
     if (router.isReady) {
       const { id, draft } = router.query;
-      console.log(id);
 
       if (draft) {
-        // TODO: call api to get course
         CodeSmoothApi.getCourseById(Number(id)).then((data) => {
           setCourse(data.data);
-        })
+          let query = "";
+          if (data.data.category.length > 0) {
+            if (data.data.category[0]?.lessions?.length! > 0) {
+              query = data.data.category[0]?.lessions[0]?.id!+"?draft=true";
+            }
+          } else {
+            query = generateId(18).toString()
+          }
+          setQueryLessionPage(query);
+        });
       }
       if (id) {
         setId(id);
@@ -40,8 +69,12 @@ const Course = (props) => {
     }
   }, [router.isReady]);
 
+  const handleSetTags = (tags: string[]) => {
+    setCourse({ ...course, tags });
+  };
+
   return (
-    <Main meta={<Meta title={id!.toString()} description="Lorem ipsum" />}>
+    <Main meta={<Meta title={courseid!.toString()} description="Lorem ipsum" />}>
       <div className="flex mt-10 w-full justify-center">
         <div className="w-[50%]">
           <div className="flex justify-start py-5 h-60">
@@ -93,12 +126,27 @@ const Course = (props) => {
               placeholder="What will students learn in this course?"
               className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
             />
-            <input
-              type="text"
+            <Tags
+              // value={course.tags}
+              options={tagOptions}
               value={course.tags}
               placeholder="Add tags to your course"
-              className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
+              setValue={(value) => {
+                handleSetTags(value);
+              }}
+              // className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
             />
+            <div className="w-full flex flex-col">
+              <span className="text-lg text-slate-500 tracking-widest uppercase font-semibold">
+                Lession
+              </span>
+              <div className="w-full flex items-center justify-center">
+                <Link href={`/editlession/${courseid}/${queryLessionPage}`} className="flex items-center w-60 justify-center border border-slate-400 py-2 rounded-normal">
+                  <span className="text-xs uppercase">Edit Course Content</span>
+                  <EditIcon style={{ fontSize: "18px", marginLeft: "10px" }} />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

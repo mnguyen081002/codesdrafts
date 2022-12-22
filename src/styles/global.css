@@ -17,13 +17,13 @@ ol {
 }
 
 ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }
 
 pre {
@@ -89,4 +89,15 @@ iframe {
 
 [data-slate-editor] > * + * {
   margin-top: 1em;
+}
+
+.Mui-focused .MuiInputLabel-outlined {
+  color: "red";
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: "red";
+}
+
+.MuiInputBase-colorPrimary {
+  color: "red";
 }

@@ -14,10 +14,10 @@ type IMainProps = {
 export const Header: FC<PropsWithChildren> = (props) => {
   return (
     <nav className="fixed top-0 z-10 flex h-16 w-full items-center border-0 border-b border-solid border-gray-300 bg-white transition duration-300 ease-in-out dark:border-gray-700 dark:bg-dark-90 sm:h-16">
-      <span className="flex items-center justify-start gap-2 px-2">
+      <Link href="/" className="flex items-center justify-start gap-2 px-2">
         <img src="/logo-96.png" alt="Logo" className="ml-4 h-8 w-8" />
         <span className="text-lg font-bold">Code Smooth</span>
-      </span>
+      </Link>
       <div className="h-full flex-row pl-8">
         <Navigate />
       </div>
