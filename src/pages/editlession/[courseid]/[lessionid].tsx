@@ -91,6 +91,14 @@ const EditLession = () => {
     handleLoad();
   }, [router.isReady]);
 
+  const onClickLession = async (lessionId: number) => {
+    router.push(`/editlession/${course.id}/${lessionId}`);
+    const res = await CodeSmoothApi.getLession(Number(lessionId));
+    const newLession = res.data;
+
+    dispatch(setLession(newLession));
+  };
+
   const handleSave = async () => {
     setIsLoading(true);
     if (lession.course_category_id) {
@@ -108,6 +116,16 @@ const EditLession = () => {
     setIsLoading(false);
   };
 
+  const onCategoryChange = (cate: string, cate_id: number) => {
+    for (let i = 0; i < course.category.length; i++) {
+      if (course.category[i]!.id === cate_id) {
+        course.category[i]!.title = cate;
+        break;
+      }
+    }
+    setCourse({ ...course });
+  };
+
   return (
     <Main
       meta={
@@ -117,21 +135,29 @@ const EditLession = () => {
         />
       }
       headerChildren={
-        <div className="mr-28 flex flex-1 justify-end">
-          <Button onClick={handleSave} text="Save" className="bg-light-primary text-white" />
+        <div className="mr-20 flex flex-1 justify-end">
+          <Button
+            onClick={handleSave}
+            text="Save"
+            className="w-24 bg-light-secondary font-semibold uppercase text-white"
+          />
         </div>
       }
     >
       <div className="flex h-full w-full justify-start">
-        <div className="h-full w-[15%] bg-slate-100">
-          <LessionNav category={course.category} />
+        <div className="fixed h-full w-[20%] bg-slate-100">
+          <LessionNav
+            onCategoryChange={onCategoryChange}
+            onClickLession={onClickLession}
+            category={course.category}
+          />
         </div>
-        <div className="flex w-[85%] justify-center">
+        <div className="ml-[20%] flex w-[85%] justify-center">
           <div className="my-20 flex w-[70%] flex-col">
             <input
               type="text"
-              placeholder="Title"
-              className="mb-12 w-full rounded-normal border border-gray-400 p-2 outline-none"
+              placeholder="What is the title of your lession?"
+              className="mb-12 w-full rounded-normal border border-gray-400 p-2 py-3 text-lg outline-none"
               value={lession.title}
               onChange={(e) => {
                 dispatch(setTitle(e.target.value));

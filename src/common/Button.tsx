@@ -10,7 +10,7 @@ interface IProps {
 const Button: FC<IProps> = (params) => {
   return (
     <button
-      className={`flex justify-start gap-2 rounded-[4px] border border-gray-300 py-2 px-3 ${params.className}`}
+      className={`flex items-center justify-center gap-2 rounded-[4px] border border-gray-300 py-2 px-3 ${params.className}`}
       onClick={params.onClick}
     >
       <span>{params.text}</span>

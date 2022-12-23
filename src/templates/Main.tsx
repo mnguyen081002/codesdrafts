@@ -44,7 +44,7 @@ const Main = (props: IMainProps) => {
   return (
     <div>
       <Header>{props.headerChildren}</Header>
-      <div className="flex h-screen flex-col items-center bg-white pt-16">{props.children}</div>
+      <div className="flex flex-col items-center bg-white pt-16">{props.children}</div>
     </div>
   );
 };

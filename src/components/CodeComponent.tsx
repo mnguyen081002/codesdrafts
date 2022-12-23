@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import { CodeSmoothApi } from '../api/codesmooth-api';
 import { useAppDispatch } from '../app/hooks';
+import Button from '../common/Button';
 import { setCode, setIsTest, setLanguage } from '../features/auth/LessonSlice';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentProps } from '../shared/interface';
@@ -192,9 +193,10 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               language={lang}
             />
             {!params.component.isFocus && isTest && (
-              <button className="mt-4 ml-3 rounded-normal bg-light-primary px-8 py-2 text-white">
-                Test
-              </button>
+              <Button
+                text="Test"
+                className="mt-4 ml-3 rounded-normal bg-light-secondary px-8 py-2 font-bold text-white"
+              />
             )}
           </div>
 

@@ -61,6 +61,7 @@
         "no-param-reassign": "off",
         "no-shadow": "off",
         "no-alert": "off",
+        "tailwindcss/migration-from-tailwind-2": "off",
         "no-plusplus": [
           "error",
           {

@@ -67,6 +67,12 @@ export const CodeSmoothApi = {
     });
   },
 
+  updateCategory: (title: string, id: number) => {
+    return axiosClient.patch(`/api/admin/category/${id}`, {
+      title,
+    });
+  },
+
   saveLession: (params: SaveLessionRequest) => {
     const copy = params.components.map((component) => {
       return {
