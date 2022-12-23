@@ -55,13 +55,12 @@
         "unused-imports/no-unused-imports": "error",
         "import/no-mutable-exports": "off",
         "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-shadow": "off",
         "unused-imports/no-unused-vars": "off",
-        "no-param-reassign": [
-          "error",
-          {
-            "props": false
-          }
-        ],
+        "no-console": "off",
+        "no-param-reassign": "off",
+        "no-shadow": "off",
+        "no-alert": "off",
         "no-plusplus": [
           "error",
           {

@@ -233,6 +233,8 @@ const CustomEditor = {
 
   serialize(node: any): string {
     if (Text.isText(node)) {
+      console.log('node', node);
+
       let string = escapeHtml(node.text);
       const n: CustomText = node;
       if (n.code) {
@@ -249,7 +251,7 @@ const CustomEditor = {
       if (n.underline) {
         string = `<u>${string}</u>`;
       }
-      return `<p>${string}</p>`;
+      return `${string}`;
     }
 
     const children = node.children.map((n) => this.serialize(n)).join('');

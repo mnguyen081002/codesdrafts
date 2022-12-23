@@ -1,6 +1,6 @@
-import ClearIcon from "@mui/icons-material/Clear";
-import { TextField, Autocomplete } from "@mui/material";
-import { FC, useState } from "react";
+import ClearIcon from '@mui/icons-material/Clear';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 interface TagsProps {
   className?: string;
@@ -29,7 +29,7 @@ interface AutocompleteProps<T, Multiple extends boolean | undefined> {
 export function Autocomplete2<T, Multiple extends boolean | undefined>(
   props: AutocompleteProps<T, Multiple>,
 ) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -40,11 +40,11 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
   };
   return (
     <div
-      className="flex relative rounded-md py-1 border border-slate-300 items-center "
+      className="relative flex items-center rounded-md border border-slate-300 py-1 "
       onFocus={() => handleFocus(true)}
       tabIndex={100}
       onBlur={(e) => {
-        const currentTarget = e.currentTarget;
+        const { currentTarget } = e;
 
         // Give browser time to focus the next element
         requestAnimationFrame(() => {
@@ -55,15 +55,18 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
         });
       }}
     >
-      <div className="flex flex-row h-full w-full items-center flex-wrap">
+      <div className="flex h-full w-full flex-row flex-wrap items-center">
         {props.value instanceof Array ? (
           props.value.map((tag) => {
             return (
-              <div className="flex ml-2 items-center justify-center h-7 px-3 bg-gray-200 rounded-full">
-                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{tag}</span>
-                <div className="flex ml-2 h-4 w-4 bg-slate-300 rounded-full items-center justify-center cursor-pointer">
+              <div
+                key={tag}
+                className="ml-2 flex h-7 items-center justify-center rounded-full bg-gray-200 px-3"
+              >
+                <span className="whitespace-nowrap text-sm font-medium text-gray-700">{tag}</span>
+                <div className="ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-slate-300">
                   <ClearIcon
-                    style={{ color: "#fff", fontSize: "14px" }}
+                    style={{ color: '#fff', fontSize: '14px' }}
                     onClick={() => {
                       if (props.setValue) {
                         props.setValue(props.value.filter((t) => t !== tag));
@@ -80,11 +83,11 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
         <input
           type="text"
           placeholder={props.placeholder}
-          className="flex-1 border-none pl-3 bg-white"
+          className="flex-1 border-none bg-white pl-3"
           onChange={handleInputChange}
         />
         {isFocused && (
-          <div className="absolute top-10 h-40 overflow-y-scroll w-full bg-white border border-slate-300">
+          <div className="absolute top-10 h-40 w-full overflow-y-scroll border border-slate-300 bg-white">
             {props.options
               .filter((tag) => {
                 if (props.filterSelectedOptions) {
@@ -95,9 +98,9 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
               .map((tag) => {
                 return (
                   <div
-                    className="px-3 text-sm font-normal py-2 cursor-pointer hover:bg-gray-200"
-                    onClick={(e) => {
-                      console.log(props.value);
+                    key={tag}
+                    className="cursor-pointer px-3 py-2 text-sm font-normal hover:bg-gray-200"
+                    onClick={(_) => {
                       if (props.setValue) {
                         props.value.push(tag);
                         props.setValue(props.value);
@@ -130,4 +133,3 @@ export const Tags: FC<TagsProps> = (props) => {
     />
   );
 };
-

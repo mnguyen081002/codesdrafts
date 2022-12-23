@@ -52,7 +52,7 @@ module.exports = {
         normal: '4px',
       },
       boxShadow: {
-        forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
+        forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
         normal: '4px',
       },
       borderColor: {

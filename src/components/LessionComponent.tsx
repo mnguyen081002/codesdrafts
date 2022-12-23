@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 
 import type { ICodeComponent, IComponentProps, ITextComponent } from '../shared/interface';
-import { ICodeContent, ITextContent } from '../shared/interface';
 import { CodeComponent } from './CodeComponent';
 import { InputTextComponent } from './InputComponent';
 

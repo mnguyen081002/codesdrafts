@@ -1,7 +1,8 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from "../../app/store";
-import { ReqLogin, ReqRegister, Token, User } from "../../shared/types/authType";
+import type { RootState } from '../../app/store';
+import type { ReqLogin, ReqRegister, Token, User } from '../../shared/types/authType';
 
 interface InitialState {
   user: User | null;
@@ -34,10 +35,10 @@ const initialState: InitialState = {
 };
 
 const componentsSlice = createSlice({
-  name: "auth",
-  initialState: initialState,
+  name: 'auth',
+  initialState,
   reducers: {
-    login(state, action: PayloadAction<ReqLogin>) {
+    login(state, _: PayloadAction<ReqLogin>) {
       state.login.loading = true;
     },
 

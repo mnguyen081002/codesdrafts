@@ -16,10 +16,7 @@ describe('Navigation', () => {
       cy.url().should('include', '/about');
 
       // The new page should contain two "lorem ipsum" paragraphs
-      cy.findAllByText('Lorem ipsum dolor sit amet', { exact: false }).should(
-        'have.length',
-        2
-      );
+      cy.findAllByText('Lorem ipsum dolor sit amet', { exact: false }).should('have.length', 2);
     });
 
     it('should take screenshot of the homepage', () => {

@@ -1,5 +1,3 @@
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import SearchIcon from '@mui/icons-material/Search';
 import Link from 'next/link';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
@@ -46,15 +44,6 @@ const Main = (props: IMainProps) => {
   return (
     <div>
       <Header>{props.headerChildren}</Header>
-      {/* <nav className="fixed top-16 z-50 h-full w-sidebar bg-gray-200 flex">
-        <Link
-          href="/"
-          className="h-20 flex flex-col items-center w-full cursor-pointer py-3 px-1 hover:text-white focus:text-white"
-        >
-          <AutoStoriesOutlinedIcon style={{ color: "#505050" }} />
-          Course
-        </Link>
-      </nav> */}
       <div className="flex h-screen flex-col items-center bg-white pt-16">{props.children}</div>
     </div>
   );

@@ -68,7 +68,6 @@ const Course = (_) => {
           } else {
             query = generateId(18).toString();
           }
-          console.log({ query });
           setQueryLessionPage(query);
         } else {
           setQueryLessionPage(generateId(18).toString());
@@ -88,8 +87,6 @@ const Course = (_) => {
       await CodeSmoothApi.deleteCourseById(course.id!);
       router.push('/');
     } catch (error) {
-      console.log(error);
-
       alert('Error');
     }
   };
@@ -169,7 +166,6 @@ const Course = (_) => {
                               setIsChoosingThumbnail(false);
                             }}
                             onClick={(event) => {
-                              console.log('event.currentTarget.value');
                               setIsChoosingThumbnail(true);
                               event.currentTarget.value = '';
                             }}
@@ -193,7 +189,7 @@ const Course = (_) => {
             </div>
             <div className="flex flex-col gap-5">
               <div className="flex h-20 flex-col rounded-normal border border-slate-400 px-5 pl-8 text-base outline-none">
-                <div className="flex-rows mt-2 flex w-full items-center justify-between">
+                <div className="mt-2 flex w-full flex-row items-center justify-between">
                   <span className="text-xs uppercase tracking-widest text-slate-400">
                     Course Name:
                   </span>

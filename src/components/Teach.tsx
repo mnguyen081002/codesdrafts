@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 import type { CodeSmoothApiResponseList, CourseResponse } from '../api/codesmooth-api';
 import { CodeSmoothApi } from '../api/codesmooth-api';
+import { useAppDispatch } from '../app/hooks';
+import { resetLession } from '../features/auth/LessonSlice';
 import { generateId } from '../utils/genId';
 import SmallCourseCard from './SmallCourseCard';
 
@@ -20,19 +22,19 @@ const Teach = () => {
       take: 0,
     },
   });
-
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLoading(true);
     CodeSmoothApi.getListCourses()
       .then((data) => {
-        console.log(data);
         setListCourses(data);
       })
       .finally(() => {
         setIsLoading(false);
       });
+    dispatch(resetLession());
   }, []);
 
   return (

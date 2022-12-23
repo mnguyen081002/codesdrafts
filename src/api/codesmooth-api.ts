@@ -61,20 +61,31 @@ export const CodeSmoothApi = {
   createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
     return axiosClient.post('/api/admin/category', {
       title,
-      id,
+      id: Number(id),
       type,
-      courseId: course_id,
+      courseId: Number(course_id),
     });
   },
 
   saveLession: (params: SaveLessionRequest) => {
-    console.log(params);
+    const copy = params.components.map((component) => {
+      return {
+        ...component,
+        content: {
+          ...component.content,
+        },
+      };
+    });
+    // delete isFocus
+    copy.forEach((component) => {
+      delete component.isFocus;
+    });
 
     return axiosClient.post('/api/admin/lession', {
       id: Number(params.id),
       title: params.title,
       summary: params.summary,
-      components: params.components,
+      components: copy,
       course_category_id: Number(params.course_category_id),
     });
   },

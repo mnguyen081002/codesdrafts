@@ -30,6 +30,13 @@ const LessonSlice = createSlice({
   name: 'lesson',
   initialState,
   reducers: {
+    resetLession(state) {
+      state.id = 0;
+      state.course_category_id = 0;
+      state.title = '';
+      state.summary = '';
+      state.components = [];
+    },
     setLession(state, action: PayloadAction<ILesson>) {
       state.id = action.payload.id;
       state.course_category_id = action.payload.course_category_id;
@@ -178,6 +185,7 @@ const LessonSlice = createSlice({
 });
 
 export const {
+  resetLession,
   setLanguage,
   setIsTest,
   setCode,

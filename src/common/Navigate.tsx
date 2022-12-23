@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { MenuItem, MenuList, Paper, Stack } from '@mui/material';
-import React from 'react';
 
 interface INavigate {
   title: string;
@@ -37,7 +36,7 @@ const Navigate = () => {
             <ItemPopover elevation={2}>
               <MenuList>
                 {item.main.map((subItem) => {
-                  return <MenuItem>{subItem}</MenuItem>;
+                  return <MenuItem key={subItem}>{subItem}</MenuItem>;
                 })}
               </MenuList>
             </ItemPopover>

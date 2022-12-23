@@ -154,6 +154,7 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
         CustomEditor.toggleMark(editor, mark);
       }
     });
+    return true;
   };
 
   useEffect(() => {
@@ -170,87 +171,85 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
   );
   console.log({ initialValue });
   return (
-    <>
-      <BaseComponent {...params}>
-        <Slate
-          editor={editor}
-          value={initialValue}
-          onChange={(v: any) => {
-            dispatch(
-              setComponent({
-                component: {
-                  ...params.component,
-                  content: { html: CustomEditor.serialize({ children: v }) },
-                },
-                index: params.index,
-              }),
-            );
+    <BaseComponent {...params}>
+      <Slate
+        editor={editor}
+        value={initialValue}
+        onChange={(v: any) => {
+          dispatch(
+            setComponent({
+              component: {
+                ...params.component,
+                content: { html: CustomEditor.serialize({ children: v }) },
+              },
+              index: params.index,
+            }),
+          );
+        }}
+      >
+        {isHidden ? (
+          <Toolbar>
+            <div
+              onClick={() => {
+                setIsShowParagraph(!isShowParagraph);
+              }}
+              onMouseDown={(event: any) => {
+                event.preventDefault();
+              }}
+              className="relative cursor-pointer gap-2 border-r pr-4"
+            >
+              <span className="h-full w-full">
+                <span className="w-24">Paragraph</span>
+                <ArrowDropDownIcon />
+              </span>
+              {isShowParagraph ? (
+                <div className="absolute top-10 -left-2 flex w-full flex-col items-center gap-2 rounded-lg bg-white p-2 shadow-forfun ">
+                  <BlockButton format="heading-one" icon="Heading 1" />
+                  <BlockButton format="heading-two" icon="Heading 2" />
+                  <BlockButton format="heading-three" icon="Heading 3" />
+                  <BlockButton format="heading-four" icon="Heading 4" />
+                  <BlockButton format="heading-five" icon="Heading 5" />
+                </div>
+              ) : null}
+            </div>
+            <div className="flex gap-2 border-r pr-4">
+              <MarkButton format="bold" icon={<FormatBoldIcon />} />
+              <MarkButton format="italic" icon={<FormatItalicIcon />} />
+              <MarkButton format="underline" icon={<FormatUnderlinedIcon />} />
+              <MarkButton format="code" icon={<CodeIcon />} />
+            </div>
+            <div className="flex gap-2 border-r pr-4">
+              <BlockButton format="block-quote" icon={<FormatQuoteIcon />} />
+              <BlockButton format="numbered-list" icon={<FormatListNumberedIcon />} />
+              <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon />} />
+            </div>
+            <div className="flex gap-2">
+              <BlockButton format="left" icon={<FormatAlignLeftIcon />} />
+              <BlockButton format="center" icon={<FormatAlignCenterIcon />} />
+              <BlockButton format="right" icon={<FormatAlignRightIcon />} />
+            </div>
+          </Toolbar>
+        ) : null}
+        <Editable
+          className="mt-4"
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          autoFocus={params.isFocus}
+          spellCheck
+          onFocus={() => {
+            setPlaceholder('Type for widget');
+            setHidden(true);
           }}
-        >
-          {isHidden ? (
-            <Toolbar>
-              <div
-                onClick={() => {
-                  setIsShowParagraph(!isShowParagraph);
-                }}
-                onMouseDown={(event: any) => {
-                  event.preventDefault();
-                }}
-                className="relative cursor-pointer gap-2 border-r pr-4"
-              >
-                <span className="h-full w-full">
-                  <span className="w-24">Paragraph</span>
-                  <ArrowDropDownIcon />
-                </span>
-                {isShowParagraph ? (
-                  <div className="absolute top-10 -left-2 flex w-full flex-col items-center gap-2 rounded-lg bg-white p-2 shadow-forfun ">
-                    <BlockButton format="heading-one" icon="Heading 1" />
-                    <BlockButton format="heading-two" icon="Heading 2" />
-                    <BlockButton format="heading-three" icon="Heading 3" />
-                    <BlockButton format="heading-four" icon="Heading 4" />
-                    <BlockButton format="heading-five" icon="Heading 5" />
-                  </div>
-                ) : null}
-              </div>
-              <div className="flex gap-2 border-r pr-4">
-                <MarkButton format="bold" icon={<FormatBoldIcon />} />
-                <MarkButton format="italic" icon={<FormatItalicIcon />} />
-                <MarkButton format="underline" icon={<FormatUnderlinedIcon />} />
-                <MarkButton format="code" icon={<CodeIcon />} />
-              </div>
-              <div className="flex gap-2 border-r pr-4">
-                <BlockButton format="block-quote" icon={<FormatQuoteIcon />} />
-                <BlockButton format="numbered-list" icon={<FormatListNumberedIcon />} />
-                <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon />} />
-              </div>
-              <div className="flex gap-2">
-                <BlockButton format="left" icon={<FormatAlignLeftIcon />} />
-                <BlockButton format="center" icon={<FormatAlignCenterIcon />} />
-                <BlockButton format="right" icon={<FormatAlignRightIcon />} />
-              </div>
-            </Toolbar>
-          ) : null}
-          <Editable
-            className="mt-4"
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            autoFocus={params.isFocus}
-            spellCheck
-            onFocus={() => {
-              setPlaceholder('Type for widget');
-              setHidden(true);
-            }}
-            onBlur={() => {
-              setPlaceholder('');
-              setHidden(false);
-            }}
-            onMouseEnter={() => !params.isFocus && setPlaceholder('Start typing')}
-            onMouseLeave={() => !params.isFocus && setPlaceholder('')}
-            placeholder={placeholder}
-            onKeyDown={onKeyDown}
-          />
-        </Slate>
-      </BaseComponent>
-    </>
+          onBlur={() => {
+            setPlaceholder('');
+            setHidden(false);
+          }}
+          onMouseEnter={() => !params.isFocus && setPlaceholder('Start typing')}
+          onMouseLeave={() => !params.isFocus && setPlaceholder('')}
+          placeholder={placeholder}
+          onKeyDown={onKeyDown}
+        />
+      </Slate>
+    </BaseComponent>
   );
 };

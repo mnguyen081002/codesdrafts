@@ -1,8 +1,8 @@
-import createSagaMiddleware from "@redux-saga/core";
-import { Action, configureStore, Store, ThunkAction } from "@reduxjs/toolkit";
+import type { Action, Store, ThunkAction } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import createSagaMiddleware from 'redux-saga';
 
-import lessonReducer from "../features/auth/LessonSlice";
-import rootSaga from "./rootSaga";
+import lessonReducer from '../features/auth/LessonSlice';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store: Store = configureStore({
@@ -11,9 +11,6 @@ export const store: Store = configureStore({
   },
   middleware: (getDefaultMiddleware: any) => getDefaultMiddleware().concat(sagaMiddleware),
 });
-
-sagaMiddleware.run(rootSaga);
-
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
