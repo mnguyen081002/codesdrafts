@@ -17,10 +17,7 @@
   "overrides": [
     // Configuration for TypeScript files
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx"
-      ],
+      "files": ["**/*.ts", "**/*.tsx"],
       "plugins": [
         // "@typescript-eslint",
         "unused-imports",
@@ -56,26 +53,29 @@
         "simple-import-sort/exports": "error", // Export configuration for `eslint-plugin-simple-import-sort`
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
+        "import/no-mutable-exports": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "unused-imports/no-unused-vars": "off",
+        "no-param-reassign": [
           "error",
           {
-            "argsIgnorePattern": "^_"
+            "props": false
           }
-        ]
+        ],
+        "no-plusplus": [
+          "error",
+          {
+            "allowForLoopAfterthoughts": true
+          }
+        ],
+        "no-nested-ternary": "off",
+        "no-useless-escape": "off"
       }
     },
     // Configuration for testing
     {
-      "files": [
-        "**/*.test.ts",
-        "**/*.test.tsx"
-      ],
-      "plugins": [
-        "jest",
-        "jest-formatting",
-        "testing-library",
-        "jest-dom"
-      ],
+      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "plugins": ["jest", "jest-formatting", "testing-library", "jest-dom"],
       "extends": [
         "plugin:jest/recommended",
         "plugin:jest-formatting/recommended",
@@ -85,15 +85,9 @@
     },
     // Configuration for e2e testing (Cypress)
     {
-      "files": [
-        "cypress/**/*.ts"
-      ],
-      "plugins": [
-        "cypress"
-      ],
-      "extends": [
-        "plugin:cypress/recommended"
-      ],
+      "files": ["cypress/**/*.ts"],
+      "plugins": ["cypress"],
+      "extends": ["plugin:cypress/recommended"],
       "parserOptions": {
         "project": "./cypress/tsconfig.json"
       }

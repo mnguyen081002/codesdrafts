@@ -1,16 +1,16 @@
-import AddIcon from "@mui/icons-material/Add";
-import course from "next-seo/lib/jsonld/course";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
-import { CodeSmoothApi, CodeSmoothApiResponseList, CourseResponse } from "../api/codesmooth-api";
-import { generateId } from "../utils/genId";
-import SmallCourseCard from "./SmallCourseCard";
+import AddIcon from '@mui/icons-material/Add';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import type { CodeSmoothApiResponseList, CourseResponse } from '../api/codesmooth-api';
+import { CodeSmoothApi } from '../api/codesmooth-api';
+import { generateId } from '../utils/genId';
+import SmallCourseCard from './SmallCourseCard';
 
 const Teach = () => {
   const [listCourses, setListCourses] = useState<CodeSmoothApiResponseList<CourseResponse>>({
     data: [],
-    message: "",
+    message: '',
     meta: {
       hasNextPage: false,
       hasPreviousPage: false,
@@ -37,25 +37,24 @@ const Teach = () => {
 
   return (
     <>
-      <div className="grid grid-cols-5 justify-center items-center flex-wrap gap-5 mt-16">
+      <div className="mt-16 grid grid-cols-5 flex-wrap items-center justify-center gap-5">
         <Link
           href={`/editcourse/${generateId(18)}`}
-          className="flex h-[370px] flex-col w-72 rounded hover:shadow-lg duration-500 justify-center items-center cursor-pointer border border-gray-200 bg-gray-200"
+          className="flex h-[370px] w-72 cursor-pointer flex-col items-center justify-center rounded border border-gray-200 bg-gray-200 duration-500 hover:shadow-lg"
         >
           <div className="flex flex-col items-center">
-            <AddIcon style={{ fontSize: "100px" }} />
+            <AddIcon style={{ fontSize: '100px' }} />
             <p>Create New Course</p>
           </div>
         </Link>
 
         {isLoading
           ? [...Array(9)].map((item) => {
-            return <SmallCourseCard isLoading={true} key={item} />;
+              return <SmallCourseCard isLoading={true} key={item} />;
             })
           : listCourses.data.map((course: CourseResponse) => {
               return (
                 <SmallCourseCard
-                
                   isLoading={isLoading}
                   author="Code Smooth"
                   author_avatar="./logo-96.png"

@@ -1,8 +1,7 @@
-import axiosClient from "./axiosClient";
-import type { TestResult } from "../utils/example";
-import { ICodeComponent, LessionComponentProps } from "../shared/interface";
-import { CourseCategoryType } from "../shared/enum/category";
-import { title } from "process";
+import type { CourseCategoryType } from '../shared/enum/category';
+import type { ICodeComponent, LessionComponentProps } from '../shared/interface';
+import type { TestResult } from '../utils/example';
+import axiosClient from './axiosClient';
 
 interface ExecuteRequest {
   code: string | undefined;
@@ -41,11 +40,11 @@ export const CodeSmoothApi = {
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append('files', file);
     });
-    return axiosClient.post("/api/upload", formData, {
+    return axiosClient.post('/api/upload', formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     });
   },
@@ -60,9 +59,9 @@ export const CodeSmoothApi = {
   },
 
   createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
-    return axiosClient.post("/api/admin/category", {
+    return axiosClient.post('/api/admin/category', {
       title,
-      id: id,
+      id,
       type,
       courseId: course_id,
     });
@@ -71,7 +70,7 @@ export const CodeSmoothApi = {
   saveLession: (params: SaveLessionRequest) => {
     console.log(params);
 
-    return axiosClient.post("/api/admin/lession", {
+    return axiosClient.post('/api/admin/lession', {
       id: Number(params.id),
       title: params.title,
       summary: params.summary,
@@ -81,7 +80,7 @@ export const CodeSmoothApi = {
   },
 
   getLession: (id: number) => {
-    return axiosClient.get("/api/admin/lession/" + id);
+    return axiosClient.get(`/api/admin/lession/${id}`);
   },
 
   getSampleForLanguage: (language: string) => {
@@ -96,23 +95,28 @@ export const CodeSmoothApi = {
   },
 
   saveCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post("/api/admin/course", {
-      id:Number(params.id),
-      name:params.name,
-      summary:params.summary,
+    return axiosClient.post('/api/admin/course', {
+      id: Number(params.id),
+      name: params.name,
+      summary: params.summary,
       thumbnail: params.thumbnail,
       price: params.price,
       tags: params.tags,
     });
   },
-  //: Promise<CodeSmoothApiResponse<ListCourseResponse>>
+  // : Promise<CodeSmoothApiResponse<ListCourseResponse>>
   getListCourses: async (): Promise<CodeSmoothApiResponseList<CourseResponse>> => {
-    const response = await axiosClient.get("/api/admin/course");
+    const response = await axiosClient.get('/api/admin/course');
     return response.data;
   },
 
   getCourseById: async (id: number): Promise<CodeSmoothApiResponse<CourseResponse>> => {
     const response = await axiosClient.get(`/api/admin/course/${id}`);
+    return response.data;
+  },
+
+  deleteCourseById: async (id: number): Promise<CodeSmoothApiResponse<CourseResponse>> => {
+    const response = await axiosClient.delete(`/api/admin/course/${id}`);
     return response.data;
   },
 };

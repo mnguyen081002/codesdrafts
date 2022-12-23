@@ -121,9 +121,9 @@ int main() {
 executeCode = executeCode.replace(/"/g, '\\"');
 
 // replace \n with \r\n
-executeCode = executeCode.replace(/\\n/g, "\\r\\n");
+executeCode = executeCode.replace(/\\n/g, '\\r\\n');
 
-export { testExample, codeExample, executeCode };
+export { codeExample, executeCode, testExample };
 
 const square = (x: number | undefined) => {
   if (x === undefined) {
@@ -133,9 +133,13 @@ const square = (x: number | undefined) => {
 };
 export class TestResult {
   succeeded: boolean;
+
   reason: string;
+
   input: string;
+
   expected_output: string;
+
   actual_output: string;
 
   constructor(
@@ -155,20 +159,20 @@ export class TestResult {
 
 function executeTests() {
   const inputs = [0, 1, 2, 5];
-  let expected_results = [0, 1, 4, 25];
-  let results = [];
+  const expected_results = [0, 1, 4, 25];
+  const results = [];
 
   for (let i = 0; i < inputs.length; i++) {
-    let output = square(inputs[i]);
+    const output = square(inputs[i]);
     let succeeded = false;
-    let reason = "Incorrect Output!";
+    let reason = 'Incorrect Output!';
 
-    if (output == expected_results[i]) {
+    if (output === expected_results[i]) {
       succeeded = true;
-      reason = "Succeeded";
+      reason = 'Succeeded';
     }
 
-    let result = new TestResult(
+    const result = new TestResult(
       succeeded,
       reason,
       String(inputs[i]),
@@ -181,8 +185,8 @@ function executeTests() {
   return results;
 }
 function main() {
-  let results = executeTests();
-  let output = { test_results: results };
+  const results = executeTests();
+  const output = { test_results: results };
 }
 
 main();

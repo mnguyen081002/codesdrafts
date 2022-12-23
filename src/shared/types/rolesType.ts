@@ -22,8 +22,8 @@ export interface User {
 }
 
 export enum Role {
-  Adminstrator = "ADMINSTRATOR",
-  User = "USER",
+  Adminstrator = 'ADMINSTRATOR',
+  User = 'USER',
 }
 
 export interface Meta {

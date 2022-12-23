@@ -1,14 +1,20 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from "../../app/store";
-import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeComponent, ILesson } from "../../shared/interface";
+import type { RootState } from '../../app/store';
+import type {
+  ICodeComponent,
+  ILesson,
+  ITextComponent,
+  LessionComponentProps,
+} from '../../shared/interface';
 
 const initialState: ILesson = {
   id: 0,
   course_category_id: 0,
-  name: "",
-  title: "",
-  summary: "",
+  name: '',
+  title: '',
+  summary: '',
   components: [
     // {
     //   content: {
@@ -21,8 +27,8 @@ const initialState: ILesson = {
 };
 
 const LessonSlice = createSlice({
-  name: "lesson",
-  initialState: initialState,
+  name: 'lesson',
+  initialState,
   reducers: {
     setLession(state, action: PayloadAction<ILesson>) {
       state.id = action.payload.id;
@@ -57,27 +63,27 @@ const LessonSlice = createSlice({
     setComponentType(state, action: PayloadAction<{ type: string; index: number }>) {
       const copy: any = state.components;
       let component: LessionComponentProps;
-      if (action.payload.type === "Code") {
+      if (action.payload.type === 'Code') {
         component = {
           content: {
-            code: "",
+            code: '',
             judgeContent: {
-              testCode: "",
-              executeCode: "",
+              testCode: '',
+              executeCode: '',
             },
-            language: "typescript",
+            language: 'typescript',
             runable: false,
             timeLimit: 1000,
             allowDownload: false,
           },
-          type: "Code",
+          type: 'Code',
         };
       } else {
         component = {
           content: {
-            html: "",
+            html: '',
           },
-          type: "Text",
+          type: 'Text',
         };
       }
       copy[action.payload.index] = component;

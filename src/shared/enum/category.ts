@@ -1,5 +1,5 @@
 export enum CourseCategoryType {
-  ASSESMENT = "ASSESMENT",
-  SECTION = "SECTION",
-  PROJECT = "PROJECT",
+  ASSESMENT = 'ASSESMENT',
+  SECTION = 'SECTION',
+  PROJECT = 'PROJECT',
 }

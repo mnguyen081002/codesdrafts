@@ -1,4 +1,4 @@
 export enum Platform {
-  CMS = "CMS",
-  WEB = "WEB",
+  CMS = 'CMS',
+  WEB = 'WEB',
 }

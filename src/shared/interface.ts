@@ -3,8 +3,8 @@ export interface IContent {}
 export interface ICodeContent extends IContent {
   code?: string;
   judgeContent: {
-    testCode?: string ;
-    executeCode?: string ;
+    testCode?: string;
+    executeCode?: string;
   };
   language: string;
   runable: boolean;
@@ -33,9 +33,6 @@ export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;
 }
 
-export interface IComponentProps extends IBaseComponentProps {
-  component: LessionComponentProps;
-}
 export interface LessionComponentProps {
   type?: string;
   content: ICodeContent | ITextContent;
