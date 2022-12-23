@@ -21,6 +21,7 @@ import { defaultCourse } from "../../editcourse/[id]";
 import { generateId } from "../../../utils/genId";
 import { CourseCategoryType } from "../../../shared/enum/category";
 import { ComponentType } from "../../../shared/enum/component";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 const EditLession = () => {
   // const { courseId } = useParams();
@@ -149,7 +150,7 @@ const EditLession = () => {
             </div>
           </div>
         </div>
-        <div className="flex h-full w-[85%] justify-center">
+        <div className="flex w-[85%] justify-center">
           <div className="my-20 flex w-[70%] flex-col">
             <input
               type="text"
@@ -161,10 +162,12 @@ const EditLession = () => {
               }}
             />
 
-            <textarea
+            <ReactTextareaAutosize
               placeholder="Summary"
+              minRows={6}
               className="h-36 w-full resize-none rounded-normal border border-gray-400 p-2 outline-none"
               value={lession.summary}
+              defaultValue={lession.summary}
               onChange={(e) => {
                 dispatch(setSummary(e.target.value));
               }}

@@ -30,12 +30,12 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
           e.currentTarget.src = "/logo-96.png";
         }}
       />
-      <div className="flex flex-col h-[30%] px-3 py-4 gap-2">
+      <div className="flex flex-col h-[30%] px-3 py-4 gap-2 overflow-hidden">
         <div className="flex justify-start items-center gap-2">
           <img src="/logo-96.png" alt="avatar" className="h-8 w-8 rounded-full" />
           <p className="text-sm">Code Smooth</p>
         </div>
-        <p className="font-medium text-xl">{props.name}</p>
+        <p className="font-medium flex-1 text-xl ">{props.name}</p>
       </div>
       <div className="flex w-full h-[30%] px-3 items-end">
         <div className="justify-between w-full flex flex-row items-end py-4">

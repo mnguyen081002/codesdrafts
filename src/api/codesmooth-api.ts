@@ -2,6 +2,7 @@ import axiosClient from "./axiosClient";
 import type { TestResult } from "../utils/example";
 import { ICodeComponent, LessionComponentProps } from "../shared/interface";
 import { CourseCategoryType } from "../shared/enum/category";
+import { title } from "process";
 
 interface ExecuteRequest {
   code: string | undefined;
@@ -71,11 +72,11 @@ export const CodeSmoothApi = {
     console.log(params);
 
     return axiosClient.post("/api/admin/lession", {
-      id: params.id,
+      id: Number(params.id),
       title: params.title,
       summary: params.summary,
       components: params.components,
-      course_category_id: params.course_category_id,
+      course_category_id: Number(params.course_category_id),
     });
   },
 

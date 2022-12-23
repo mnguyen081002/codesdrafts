@@ -28,7 +28,7 @@ const tagOptions = [
 export const defaultCourse = {
   id: generateId(18),
   name: "",
-  thumbnail: "https://picsum.photos/200/300123",
+  thumbnail: "",
   summary: "",
   created_at: new Date(),
   updated_at: new Date(),
@@ -46,6 +46,8 @@ const Course = (props) => {
 
   const [queryLessionPage, setQueryLessionPage] = useState("");
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
+  const [isHoverUploadImage, setIsHoverUploadImage] = useState(false);
+  const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
   useEffect(() => {
     if (router.isReady) {
       const { id, draft } = router.query;
@@ -83,10 +85,13 @@ const Course = (props) => {
         <div className="mr-28 flex flex-1 justify-end">
           <Button
             onClick={async () => {
-              const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
-              setCourse({ ...course, thumbnail: uploadRes.data.urls[0] });
-
-              CodeSmoothApi.saveCourse(course).then((data) => {
+              let newCourse = { ...course };
+              if (thumbnailUpload) {
+                const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
+                newCourse = { ...newCourse, thumbnail: uploadRes.data.urls[0] };
+              }
+              // TODO: loading save
+              CodeSmoothApi.saveCourse(newCourse).then((data) => {
                 alert("Saved");
               });
             }}
@@ -116,14 +121,43 @@ const Course = (props) => {
                   </div>
                 </div>
               ) : (
-                <img
-                  src={thumbnailUpload ? URL.createObjectURL(thumbnailUpload) : course.thumbnail}
-                  className="rounded-normal"
-                  alt="thumbnail"
-                  onError={(e) => {
-                    e.currentTarget.src = "/logo-96.png";
-                  }}
-                />
+                <div
+                  className="relative h-full w-full"
+                  onMouseEnter={() => setIsHoverUploadImage(true)}
+                  onMouseLeave={() => setIsHoverUploadImage(false)}
+                >
+                  <img
+                    src={thumbnailUpload ? URL.createObjectURL(thumbnailUpload) : course.thumbnail}
+                    className="rounded-normal border border-slate-300 h-full w-full object-fill"
+                    alt="thumbnail"
+                  />
+
+                  {(isHoverUploadImage || isChoosingThumbnail) && (
+                    <div className="absolute flex items-center justify-center top-0  h-full w-full">
+                      <div className="relative">
+                        <input
+                          type="file"
+                          name="thumbnail"
+                          className="absolute opacity-0 cursor-pointer z-10 h-12 w-12"
+                          onChange={(event) => {
+                            if (event.target.files) {
+                              setThumbnailUpload(event.target.files[0]);
+                            }
+                            setIsChoosingThumbnail(false);
+                          }}
+                          onClick={(event) => {
+                            console.log("event.currentTarget.value");
+                            setIsChoosingThumbnail(true);
+                            event.currentTarget.value = "";
+                          }}
+                        />
+                        <div className="top-0 rounded-lg bg-white cursor-pointer p-2">
+                          <WallpaperIcon style={{ fontSize: "30px", cursor: "pointer" }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
             <div className="flex flex-col w-[50%]">
