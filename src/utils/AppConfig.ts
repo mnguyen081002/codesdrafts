@@ -103,3 +103,16 @@ export const WidthProgressBar = [
   'w-[99%]',
   'w-[100%]',
 ];
+
+const arrayLessionsHeight = [
+  'h-[36px]',
+  'h-[72px]',
+  'h-[108px]',
+  'h-[144px]',
+  'h-[180px]',
+  'h-[216px]',
+];
+
+export const getLessionsNavHeight = (length: number) => {
+  return arrayLessionsHeight[length - 1];
+};

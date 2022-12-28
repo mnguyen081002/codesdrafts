@@ -12,7 +12,6 @@ import type {
 const initialState: ILesson = {
   id: 0,
   course_category_id: 0,
-  name: '',
   title: '',
   summary: '',
   components: [
@@ -112,11 +111,11 @@ const LessonSlice = createSlice({
       copy.splice(action.payload, 1);
       state.components = copy;
     },
-    setFocus(state, action: PayloadAction<number>) {
+    setFocus(state, action: PayloadAction<{ index: number; focus: boolean }>) {
       const copy: any = state.components;
       for (let i = 0; i < state.components.length; i++) {
         let isFocus = false;
-        if (i === action.payload) {
+        if (i === action.payload.index) {
           isFocus = true;
         }
         const c = { ...state.components[i], isFocus };

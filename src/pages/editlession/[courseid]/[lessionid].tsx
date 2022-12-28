@@ -21,7 +21,8 @@ import {
 } from '../../../features/auth/LessonSlice';
 import { CourseCategoryType } from '../../../shared/enum/category';
 import { ComponentType } from '../../../shared/enum/component';
-import type { ILesson, LessionComponentProps } from '../../../shared/interface';
+import type { ILesson, ITextContent, LessionComponentProps } from '../../../shared/interface';
+import { generateLession } from '../../../utils/gen';
 import { generateId } from '../../../utils/genId';
 import { defaultCourse } from '../../editcourse/[id]';
 
@@ -49,13 +50,8 @@ const EditLession = () => {
         let newLession: ILesson;
 
         try {
-          if (draft) {
-            const res = await CodeSmoothApi.getLession(Number(lessionid));
-            newLession = res.data;
-          } else {
-            const res = await CodeSmoothApi.getLession(Number(lessionid));
-            newLession = res.data;
-          }
+          const res = await CodeSmoothApi.getLession(Number(lessionid));
+          newLession = res.data;
         } catch (error) {
           const cateId = generateId(18);
           newLession = {
@@ -69,8 +65,7 @@ const EditLession = () => {
                 type: ComponentType.Text,
               },
             ],
-            name: 'New Lession',
-            summary: 'New Summary',
+            summary: '',
             title: 'New Lession',
           };
 
@@ -126,6 +121,52 @@ const EditLession = () => {
     setCourse({ ...course });
   };
 
+  const onAddLession = async (categoryId: number) => {
+    const newLession = generateLession(categoryId);
+    const res = await CodeSmoothApi.saveLession(newLession);
+
+    course.category.forEach((cate) => {
+      if (cate?.id === categoryId) {
+        cate?.lessions.push({ id: res.data.id, title: 'New Lession' });
+      }
+    });
+
+    setCourse({ ...course });
+  };
+
+  course.category.forEach((cate) => {
+    cate?.lessions.forEach((l) => {
+      if (l.id === lession.id) {
+        l.title = lession.title;
+      }
+    });
+  });
+
+  const onAddCategory = async () => {
+    const cateId = generateId(18);
+    const resCat = await CodeSmoothApi.createCategory(
+      'New Category',
+      cateId,
+      course.id,
+      CourseCategoryType.ASSESMENT,
+    );
+
+    const newLession = generateLession(cateId);
+    const resLession = await CodeSmoothApi.saveLession(newLession);
+
+    course.category.push({
+      id: cateId,
+      title: 'New Category',
+      lessions: [
+        {
+          id: newLession.id,
+          title: newLession.title,
+        },
+      ],
+    });
+    setCourse({ ...course });
+  };
+
   return (
     <Main
       meta={
@@ -145,14 +186,16 @@ const EditLession = () => {
       }
     >
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[20%] bg-slate-100">
+        <div className="fixed h-full w-[15%] bg-slate-100">
           <LessionNav
             onCategoryChange={onCategoryChange}
             onClickLession={onClickLession}
-            category={course.category}
+            categories={course.category}
+            onAddLessons={onAddLession}
+            onAddCategory={onAddCategory}
           />
         </div>
-        <div className="ml-[20%] flex w-[85%] justify-center">
+        <div className="ml-[15%] flex w-[85%] justify-center">
           <div className="my-20 flex w-[70%] flex-col">
             <input
               type="text"
@@ -176,6 +219,12 @@ const EditLession = () => {
             />
 
             <div className="mt-8 flex flex-col gap-2">
+              <span>
+                {(function b() {
+                  const a = lession.components[0]?.content as ITextContent;
+                  return a?.html;
+                })()}
+              </span>
               {lession.components.map((component: LessionComponentProps, index: number) => {
                 return (
                   <LessionComponent

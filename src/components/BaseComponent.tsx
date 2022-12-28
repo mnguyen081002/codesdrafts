@@ -69,7 +69,10 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
   };
 
   const handleFocus = () => {
-    dispatch(setFocus(params.index!));
+    dispatch(setFocus({ index: params.index!, focus: true }));
+  };
+  const handleUnfocus = () => {
+    dispatch(setFocus({ index: params.index!, focus: false }));
   };
   return (
     <div
@@ -81,6 +84,7 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
       onDragEnd={params.onDragEnd}
       onDragEnter={params.onDragEnter}
       onFocus={handleFocus}
+      onBlur={handleUnfocus}
     >
       <div className="relative flex h-full w-full items-center">
         <div

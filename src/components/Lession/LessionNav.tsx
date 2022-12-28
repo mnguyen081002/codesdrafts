@@ -5,17 +5,26 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 
 import type { CategoryResponse } from '../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
+import { useAppDispatch } from '../../app/hooks';
+import { getLessionsNavHeight } from '../../utils/AppConfig';
+import LessionNavItem from './LessionNavItem';
 
 interface CategoryNavProps {
   category: CategoryResponse;
+  index: number;
   onClickLession: (lessionId: number) => void;
   onCategoryChange: (category: string, categoryId: number) => void;
+  onAddLessons: (categoryId: number) => void;
+  onAddCategory: () => void;
 }
 
 export const CategoryNav: FC<CategoryNavProps> = (props) => {
-  const [isExpand, setIsExpand] = useState(false);
+  const [isExpand, setIsExpand] = useState(props.index === 0);
   const [isHover, setIsHover] = useState(false);
   const [isInputCategory, setIsInputCategory] = useState(false);
+  const [draggable, setDraggable] = useState(false);
+
+  const dispatch = useAppDispatch();
   const handleDoubleClick = () => {
     setIsInputCategory(true);
   };
@@ -34,22 +43,35 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
       CodeSmoothApi.updateCategory(props.category.title, props.category.id);
     }
   };
+
   return (
-    <div key={props.category.id} className="flex flex-col">
+    <div
+      key={props.category.id}
+      className={`flex flex-col`}
+      draggable={draggable}
+      onMouseDown={() => setDraggable(false)}
+      onMouseUp={() => setDraggable(true)}
+    >
       <div
-        className="z-10 mb-5 flex cursor-pointer justify-between bg-slate-100"
+        className={`${isExpand && 'mb-1'} z-10 flex w-full justify-between bg-slate-100`}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className="flex flex-1 items-center justify-start gap-4">
-          <img
-            src="/icon-move.png"
-            alt="icon-move"
-            className="h-6 w-6 rounded-full border border-slate-400 p-1"
-          />
+        <div className="flex h-8 flex-1 items-center justify-start gap-2">
+          {isHover ? (
+            <img
+              src="/icon-move.png"
+              alt="icon-move"
+              className="h-6 w-6 cursor-pointer rounded-full border border-slate-400 p-1"
+              onMouseDown={() => setDraggable(true)}
+              onMouseUp={() => setDraggable(false)}
+            />
+          ) : (
+            <div className="h-6 w-6" />
+          )}
           {!isInputCategory ? (
             <span
-              className="flex-1 cursor-text overflow-clip text-lg font-semibold"
+              className="flex-1 cursor-text overflow-clip whitespace-nowrap text-lg font-medium"
               onDoubleClick={handleDoubleClick}
             >
               {props.category.title}
@@ -74,37 +96,42 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
           )}
         </div>
 
-        <div className="flex justify-start gap-1">
+        <div className="flex justify-start">
           <div
             className={`${
               isExpand && 'rotate-180'
-            } h-10 w-10 cursor-pointer rounded-full p-1 transition duration-200 ease-in-out hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
+            } flex h-8 w-8 cursor-pointer items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
             onClick={handleExpand}
           >
-            <ExpandMore style={{ fontSize: '30px' }} />
+            <ExpandMore />
           </div>
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full transition  duration-200 hover:bg-slate-200 hover:text-light-primary`}
-          >
-            <Add />
-          </div>
+          {isHover ? (
+            <div
+              onClick={props.onAddCategory}
+              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition duration-200 hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
+            >
+              <Add style={{ fontSize: '20px' }} />
+            </div>
+          ) : (
+            <div className="h-8 w-8"></div>
+          )}
         </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div
+        className={`flex flex-col gap-1 px-6 transition-all duration-500 ${
+          !isExpand ? 'h-0' : getLessionsNavHeight(props.category.lessions.length)
+        }`}
+      >
         {isExpand &&
           props.category.lessions.map((l) => {
             return (
-              <div key={l.id} className="ml-2 flex justify-start">
-                <div className="relative flex h-6 w-48 items-end">
-                  <div className="absolute bottom-3 z-0 h-11 w-7 rounded-b-full border-l-2 border-b-2 border-gray-400"></div>
-                  <div
-                    className="z-20 ml-4 h-6 w-40 cursor-pointer bg-slate-100 pl-3"
-                    onClick={() => props.onClickLession(l.id)}
-                  >
-                    {l.title}
-                  </div>
-                </div>
-              </div>
+              <LessionNavItem
+                course_category_id={props.category.id}
+                l={l}
+                onAddLessons={props.onAddLessons}
+                onClickLession={props.onClickLession}
+                key={l.id}
+              />
             );
           })}
       </div>
@@ -112,21 +139,26 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
   );
 };
 export interface ILessionNav {
-  category: CategoryResponse[];
+  categories: CategoryResponse[];
   onClickLession: (lessionId: number) => void;
   onCategoryChange: (category: string, categoryId: number) => void;
+  onAddLessons: (categoryId: number) => void;
+  onAddCategory: () => void;
 }
 export const LessionNav: FC<ILessionNav> = (props) => {
   return (
-    <div className="flex h-full flex-col gap-4 p-4">
-      <div className="mx-2 mt-10 flex h-full flex-col gap-6">
-        {props.category.map((category) => {
+    <div className="flex h-full flex-col gap-2 p-2">
+      <div className="mt-10 flex h-full flex-col gap-2">
+        {props.categories.map((category, index) => {
           return (
             <CategoryNav
               onCategoryChange={props.onCategoryChange}
               onClickLession={props.onClickLession}
               key={category.id}
               category={category}
+              index={index}
+              onAddLessons={props.onAddLessons}
+              onAddCategory={props.onAddCategory}
             />
           );
         })}

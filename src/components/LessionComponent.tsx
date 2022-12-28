@@ -1,12 +1,13 @@
 import type { FC } from 'react';
 
+import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponent, IComponentProps, ITextComponent } from '../shared/interface';
 import { CodeComponent } from './CodeComponent';
 import { InputTextComponent } from './InputComponent';
 
 export const LessionComponent: FC<IComponentProps> = (params) => {
   switch (params.component.type) {
-    case 'Text':
+    case ComponentType.Text:
       return (
         <InputTextComponent
           onDragStart={params.onDragStart}
@@ -18,7 +19,7 @@ export const LessionComponent: FC<IComponentProps> = (params) => {
           isFocus={params.isFocus}
         />
       );
-    case 'Code':
+    case ComponentType.Code:
       return (
         <CodeComponent
           isLast={params.isLast}
