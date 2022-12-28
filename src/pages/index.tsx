@@ -1,6 +1,7 @@
-import { Meta } from "@/layouts/Meta";
-import { Main } from "@/templates/Main";
-import Teach from "../components/Teach";
+import { Meta } from '@/layouts/Meta';
+import { Main } from '@/templates/Main';
+
+import Teach from '../components/Teach';
 
 const Index = () => {
   return (

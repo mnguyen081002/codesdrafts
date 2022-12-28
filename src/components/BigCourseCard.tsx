@@ -1,14 +1,12 @@
 const BigCourseCard = () => {
   return (
-    <div className="flex h-[400px] flex-col w-full rounded transition transform hover:-translate-y-4 shadow-md hover:shadow-2xl duration-500 mb-3 justify-center border border-gray-200 bg-white">
-      <div className="flex flex-row justify-between h-[45%] border-b-2">
-        <div className="flex flex-col justify-start py-4 px-5 gap-2 border-gray-300">
-          <p className="text-xs font-bold tracking-widest uppercase text-gray-600 dark:text-dark-contrastText">
-            Course
-          </p>
+    <div className="mb-3 flex h-[400px] w-full flex-col justify-center rounded border border-gray-200 bg-white shadow-md transition duration-500 hover:-translate-y-4 hover:shadow-2xl">
+      <div className="flex h-[45%] flex-row justify-between border-b-2">
+        <div className="flex flex-col justify-start gap-2 border-gray-300 py-4 px-5">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-600">Course</p>
           <span className="text-2xl font-medium">The Way to Go</span>
         </div>
-        <div className="flex flex-1 w-full justify-end p-4">
+        <div className="flex w-full flex-1 justify-end p-4">
           <img
             src="https://www.educative.io/cdn-cgi/image/format=auto,width=350,quality=75/v2api/collection/10370001/6289391964127232/image/5627886733099008"
             alt=""
@@ -16,8 +14,8 @@ const BigCourseCard = () => {
           />
         </div>
       </div>
-      <div className="py-4 px-5 flex flex-col h-[55%] gap-2">
-        <span className="text-xs font-bold tracking-widest uppercase mb-2 text-gray-600">
+      <div className="flex h-[55%] flex-col gap-2 py-4 px-5">
+        <span className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-600">
           5.Array and slice
         </span>
         <span className="text-base font-medium text-black">
@@ -27,7 +25,7 @@ const BigCourseCard = () => {
           This lesson describes the important concepts of array, i.e., how to use, declare and
           initialize them.
         </span>
-        <button className="w-44 py-3 mt-2 mb-3 rounded-[3px] bg-light-primary text-white text-sm font-semibold">
+        <button className="mt-2 mb-3 w-44 rounded-[3px] bg-light-primary py-3 text-sm font-semibold text-white">
           Continue Lesson
         </button>
       </div>

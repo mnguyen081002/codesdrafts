@@ -1,4 +1,4 @@
 export enum ComponentType {
-  Code = "Code",
-  Text = "Text",
+  Code = 'Code',
+  Text = 'Text',
 }

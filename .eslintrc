@@ -19,7 +19,7 @@
     {
       "files": ["**/*.ts", "**/*.tsx"],
       "plugins": [
-        "@typescript-eslint",
+        // "@typescript-eslint",
         "unused-imports",
         "tailwindcss",
         "simple-import-sort"
@@ -53,10 +53,23 @@
         "simple-import-sort/exports": "error", // Export configuration for `eslint-plugin-simple-import-sort`
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
+        "import/no-mutable-exports": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-shadow": "off",
+        "unused-imports/no-unused-vars": "off",
+        "no-console": "off",
+        "no-param-reassign": "off",
+        "no-shadow": "off",
+        "no-alert": "off",
+        "tailwindcss/migration-from-tailwind-2": "off",
+        "no-plusplus": [
           "error",
-          { "argsIgnorePattern": "^_" }
-        ]
+          {
+            "allowForLoopAfterthoughts": true
+          }
+        ],
+        "no-nested-ternary": "off",
+        "no-useless-escape": "off"
       }
     },
     // Configuration for testing

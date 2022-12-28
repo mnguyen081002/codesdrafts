@@ -1,12 +1,19 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from "../../app/store";
-import { LessionComponentProps, ITextComponent, CodeComponentProps, ICodeComponent, ILesson } from "../../shared/interface";
+import type { RootState } from '../../app/store';
+import type {
+  ICodeComponent,
+  ILesson,
+  ITextComponent,
+  LessionComponentProps,
+} from '../../shared/interface';
 
 const initialState: ILesson = {
-  name: "",
-  title: "",
-  summary: "",
+  id: 0,
+  course_category_id: 0,
+  title: '',
+  summary: '',
   components: [
     // {
     //   content: {
@@ -19,10 +26,19 @@ const initialState: ILesson = {
 };
 
 const LessonSlice = createSlice({
-  name: "lesson",
-  initialState: initialState,
+  name: 'lesson',
+  initialState,
   reducers: {
+    resetLession(state) {
+      state.id = 0;
+      state.course_category_id = 0;
+      state.title = '';
+      state.summary = '';
+      state.components = [];
+    },
     setLession(state, action: PayloadAction<ILesson>) {
+      state.id = action.payload.id;
+      state.course_category_id = action.payload.course_category_id;
       state.title = action.payload.title;
       state.summary = action.payload.summary;
       state.components = action.payload.components;
@@ -53,27 +69,27 @@ const LessonSlice = createSlice({
     setComponentType(state, action: PayloadAction<{ type: string; index: number }>) {
       const copy: any = state.components;
       let component: LessionComponentProps;
-      if (action.payload.type === "Code") {
+      if (action.payload.type === 'Code') {
         component = {
           content: {
-            code: "",
+            code: '',
             judgeContent: {
-              testCode: "",
-              executeCode: "",
+              testCode: '',
+              executeCode: '',
             },
-            language: "typescript",
+            language: 'typescript',
             runable: false,
             timeLimit: 1000,
             allowDownload: false,
           },
-          type: "Code",
+          type: 'Code',
         };
       } else {
         component = {
           content: {
-            html: "",
+            html: '',
           },
-          type: "Text",
+          type: 'Text',
         };
       }
       copy[action.payload.index] = component;
@@ -95,11 +111,11 @@ const LessonSlice = createSlice({
       copy.splice(action.payload, 1);
       state.components = copy;
     },
-    setFocus(state, action: PayloadAction<number>) {
+    setFocus(state, action: PayloadAction<{ index: number; focus: boolean }>) {
       const copy: any = state.components;
       for (let i = 0; i < state.components.length; i++) {
         let isFocus = false;
-        if (i === action.payload) {
+        if (i === action.payload.index) {
           isFocus = true;
         }
         const c = { ...state.components[i], isFocus };
@@ -168,6 +184,7 @@ const LessonSlice = createSlice({
 });
 
 export const {
+  resetLession,
   setLanguage,
   setIsTest,
   setCode,

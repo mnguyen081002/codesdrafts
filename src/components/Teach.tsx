@@ -1,13 +1,18 @@
-import AddIcon from "@mui/icons-material/Add";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { CodeSmoothApi, CodeSmoothApiResponse, CourseResponse } from "../api/codesmooth-api";
-import SmallCourseCard from "./SmallCourseCard";
+import AddIcon from '@mui/icons-material/Add';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import type { CodeSmoothApiResponseList, CourseResponse } from '../api/codesmooth-api';
+import { CodeSmoothApi } from '../api/codesmooth-api';
+import { useAppDispatch } from '../app/hooks';
+import { resetLession } from '../features/auth/LessonSlice';
+import { generateId } from '../utils/genId';
+import SmallCourseCard from './SmallCourseCard';
 
 const Teach = () => {
-  const [listCourses, setListCourses] = useState<CodeSmoothApiResponse<CourseResponse>>({
+  const [listCourses, setListCourses] = useState<CodeSmoothApiResponseList<CourseResponse>>({
     data: [],
-    message: "",
+    message: '',
     meta: {
       hasNextPage: false,
       hasPreviousPage: false,
@@ -17,44 +22,54 @@ const Teach = () => {
       take: 0,
     },
   });
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
-    CodeSmoothApi.getCourses().then((data) => {
-      console.log(data);
-      setListCourses(data);
-    });
+    setIsLoading(true);
+    CodeSmoothApi.getListCourses()
+      .then((data) => {
+        setListCourses(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    dispatch(resetLession());
   }, []);
 
   return (
     <>
-      <Link href="/editlesson" className="flex flex-col justify-center my-10 w-[90%] px-[10%]">
-        <div className="flex h-[330px] flex-col w-72 rounded hover:shadow-lg duration-500 justify-center items-center cursor-pointer border border-gray-200 bg-gray-200">
+      <div className="mt-16 grid grid-cols-5 flex-wrap items-center justify-center gap-5">
+        <Link
+          href={`/editcourse/${generateId(18)}`}
+          className="flex h-[370px] w-72 cursor-pointer flex-col items-center justify-center rounded border border-gray-200 bg-gray-200 duration-500 hover:shadow-lg"
+        >
           <div className="flex flex-col items-center">
-            <AddIcon style={{ fontSize: "100px" }} />
+            <AddIcon style={{ fontSize: '100px' }} />
             <p>Create New Course</p>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      {listCourses.data.map((course: CourseResponse) => {
-        return (
-          // <Link href={`/editlesson/${course.id}`} className="flex flex-col justify-center my-10 w-[90%] px-[10%]">
-          //   <div className="flex h-[330px] flex-col w-72 rounded hover:shadow-lg duration-500 justify-center items-center cursor-pointer border border-gray-200 bg-gray-200">
-          //     <div className="flex flex-col items-center">
-          //       <p>{course.title}</p>
-          //     </div>
-          //   </div>
-          // </Link>
-          <SmallCourseCard
-            author="Code Smooth"
-            author_avatar="./logo-96.png"
-            completed_percent={30}
-            id={course.id}
-            image_url="https://www.educative.io/cdn-cgi/image/format=auto,width=350,quality=75/v2api/collection/10370001/6289391964127232/image/5627886733099008"
-            name={course.name}
-            key={course.id}
-          />
-        );
-      })}
+        {isLoading
+          ? [...Array(9)].map((item) => {
+              return <SmallCourseCard isLoading={true} key={item} />;
+            })
+          : listCourses.data.map((course: CourseResponse) => {
+              return (
+                <SmallCourseCard
+                  isLoading={isLoading}
+                  author="Code Smooth"
+                  author_avatar="./logo-96.png"
+                  completed_percent={30}
+                  summary={course.summary}
+                  id={course.id!}
+                  thumbnail={course.thumbnail}
+                  name={course.name}
+                  key={course.id}
+                />
+              );
+            })}
+      </div>
     </>
   );
 };

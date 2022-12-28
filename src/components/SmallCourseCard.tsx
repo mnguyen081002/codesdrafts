@@ -1,45 +1,51 @@
-import Button from "../common/Button";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Link from 'next/link';
+import type { FC } from 'react';
 
-import { WidthProgressBar } from "../utils/AppConfig";
-import Link from "next/link";
-import { FC } from "react";
+import Button from '../common/Button';
+import { WidthProgressBar } from '../utils/AppConfig';
 
 interface SmallCourseCardProps {
-  id: number;
-  name: string;
-  image_url: string;
-  completed_percent: number;
-  author: string;
-  author_avatar: string;
+  isLoading?: boolean;
+  id?: number;
+  name?: string;
+  thumbnail?: string;
+  summary?: string;
+  completed_percent?: number;
+  author?: string;
+  author_avatar?: string;
 }
 
 const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
-  return (
+  return !props.isLoading ? (
     <Link
-      href={`/course/${props.id}`}
-      className="flex h-[380px] flex-col w-72 rounded transition transform hover:-translate-y-2 shadow-md hover:shadow-lg duration-500 mb-3 justify-center border border-gray-200 bg-white"
+      href={`/editcourse/${props.id}?draft=true`}
+      className="mb-3 flex h-[370px] w-72 flex-col justify-center rounded border border-gray-200 bg-white shadow-md transition duration-500 hover:-translate-y-2 hover:shadow-lg"
     >
       <img
-        src="https://www.educative.io/cdn-cgi/image/format=auto,width=350,quality=75/v2api/collection/10370001/6289391964127232/image/5627886733099008"
-        className="flex flex-row justify-between h-[40%] border-b-2"
+        src={props.thumbnail}
+        className="flex h-[40%] flex-row justify-between border-b-2"
+        alt="thumbnail"
+        onError={(e) => {
+          e.currentTarget.src = '/logo-96.png';
+        }}
       />
-      <div className="flex flex-col h-[30%] px-3 py-4 gap-2">
-        <div className="flex justify-start items-center gap-2">
-          <img src="./logo-96.png" alt="avatar" className="h-6 w-6 rounded-full" />
+      <div className="flex h-[30%] flex-col gap-2 overflow-hidden px-3 py-4">
+        <div className="flex items-center justify-start gap-2">
+          <img src="/logo-96.png" alt="avatar" className="h-8 w-8 rounded-full" />
           <p className="text-sm">Code Smooth</p>
         </div>
-        <p className="font-medium text-">{props.name}</p>
+        <p className="flex-1 text-xl font-medium ">{props.name}</p>
       </div>
-      <div className="flex w-full h-[30%] px-3 items-end">
-        <div className="justify-between w-full flex flex-row items-end py-4">
-          <div className="flex flex-col justify-start items-center gap-2">
+      <div className="flex h-[30%] w-full items-end px-3">
+        <div className="flex w-full flex-row items-end justify-between py-4">
+          <div className="flex flex-col items-center justify-start gap-2">
             <span className="text-xs">{props.completed_percent}% completed</span>
-            <div className="w-[100px] h-1 bg-gray-300 rounded-full">
+            <div className="h-1 w-[100px] rounded-full bg-gray-300">
               <div
                 className={`${
-                  WidthProgressBar[props.completed_percent]
-                } h-full bg-light-primary rounded-full`}
+                  WidthProgressBar[props.completed_percent!]
+                } h-full rounded-full bg-light-primary`}
               ></div>
             </div>
           </div>
@@ -47,6 +53,23 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
         </div>
       </div>
     </Link>
+  ) : (
+    <div className="mb-3 flex h-[370px] w-72 animate-pulse flex-col justify-center rounded border border-gray-200 bg-white shadow-md transition duration-500 hover:-translate-y-2 hover:shadow-lg">
+      <div className="h-[40%] border-b-2 bg-slate-200" />
+      <div className="flex h-[70%] flex-col justify-between gap-2 px-3 py-4">
+        <div className="flex items-center justify-start gap-2">
+          <div className="h-8 w-8 rounded-full bg-slate-200" />
+          <div className="h-8 w-[80%] bg-slate-200" />
+        </div>
+        <div className="h-24 w-full bg-slate-200" />
+      </div>
+      <div className="flex h-[30%] w-full items-end px-3">
+        <div className="flex w-full flex-row items-end justify-between gap-3 py-4">
+          <div className="flex h-10 w-[50%] flex-col items-center justify-start gap-2 bg-slate-200"></div>
+          <div className="flex h-10 w-[50%] flex-col items-center justify-start gap-2 bg-slate-200"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 
