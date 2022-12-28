@@ -21,7 +21,7 @@ import {
 } from '../../../features/auth/LessonSlice';
 import { CourseCategoryType } from '../../../shared/enum/category';
 import { ComponentType } from '../../../shared/enum/component';
-import type { ILesson, ITextContent, LessionComponentProps } from '../../../shared/interface';
+import type { ILesson, LessionComponentProps } from '../../../shared/interface';
 import { generateLession } from '../../../utils/gen';
 import { generateId } from '../../../utils/genId';
 import { defaultCourse } from '../../editcourse/[id]';
@@ -219,12 +219,6 @@ const EditLession = () => {
             />
 
             <div className="mt-8 flex flex-col gap-2">
-              <span>
-                {(function b() {
-                  const a = lession.components[0]?.content as ITextContent;
-                  return a?.html;
-                })()}
-              </span>
               {lession.components.map((component: LessionComponentProps, index: number) => {
                 return (
                   <LessionComponent
