@@ -57,7 +57,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className="flex h-8 flex-1 items-center justify-start gap-2">
+        <div className="flex h-10 flex-1 items-center justify-start gap-2">
           {isHover ? (
             <img
               src="/icon-move.png"
