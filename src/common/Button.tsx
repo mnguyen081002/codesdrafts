@@ -10,7 +10,7 @@ interface IProps {
 const Button: FC<IProps> = (params) => {
   return (
     <button
-      className={`flex items-center justify-center gap-2 rounded-[4px] border border-gray-300 py-2 px-3 ${params.className}`}
+      className={` ${params.className} flex h-12 items-center justify-center gap-2 rounded-normal border border-gray-300 px-3 transition duration-300 ease-in-out hover:shadow-xl`}
       onClick={params.onClick}
     >
       <span>{params.text}</span>

@@ -49,7 +49,6 @@ const Teach = () => {
             <p>Create New Course</p>
           </div>
         </Link>
-
         {isLoading
           ? [...Array(9)].map((item) => {
               return <SmallCourseCard isLoading={true} key={item} />;

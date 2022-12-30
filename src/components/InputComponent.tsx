@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Descendant } from 'slate';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, Slate, withReact } from 'slate-react';
+import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 
 import { useAppDispatch } from '../app/hooks';
 import { Toolbar } from '../common/SlateCommonComponents';
@@ -127,6 +127,7 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
   const [editor] = useState(withHistory(withReact(createEditor())));
+  const [reload, setReload] = useState<boolean>(false);
 
   const handleEnter = () => {
     if (params.isLast) {
@@ -157,19 +158,29 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
     return true;
   };
 
-  useEffect(() => {
-    if (params.index !== 0) {
-      // Transforms.select(editor, { offset: 0, path: [0, 0] });
-      // ReactEditor.focus(editor);
-    }
-    // Transforms.select(editor, Editor.end(editor, []));
-    // ReactEditor.focus(editor);
-  }, []);
+  // const [initialValue, setInitialValue] = useState<Descendant[]>([]);
+  // useEffect(() => {
+  //   setInitialValue(CustomEditor.deserializeFromHtml(params.component.content.html));
+  //   console.log({ initialValue });
+  //   if (params.index !== 0) {
+  //     // Transforms.select(editor, { offset: 0, path: [0, 0] });
+  //     // ReactEditor.focus(editor);
+  //   }
+  //   // Transforms.select(editor, Editor.end(editor, []));
+  //   // ReactEditor.focus(editor);
+  // }, []);
 
   const initialValue: Descendant[] = CustomEditor.deserializeFromHtml(
     params.component.content.html,
   );
-  console.log({ initialValue });
+  useEffect(() => {
+    if (params.isFocus) {
+      ReactEditor.focus(editor);
+    }
+    editor.children = CustomEditor.deserializeFromHtml(params.component.content.html);
+    setReload(!reload);
+  }, [params.component.content.html]);
+
   return (
     <BaseComponent {...params}>
       <Slate

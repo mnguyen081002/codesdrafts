@@ -118,7 +118,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
         </div>
       </div>
       <div
-        className={`flex flex-col gap-1 px-6 transition-all duration-500 ${
+        className={`flex flex-col gap-1 overflow-hidden px-6 transition-all duration-500 ${
           !isExpand ? 'h-0' : getLessionsNavHeight(props.category.lessions.length)
         }`}
       >
