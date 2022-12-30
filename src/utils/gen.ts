@@ -1,7 +1,7 @@
 import { ComponentType } from '../shared/enum/component';
 import { generateId } from './genId';
 
-export const generateLession = (cate_id: number) => {
+export const generateLesson = (cate_id: number) => {
   return {
     id: generateId(18),
     components: [
@@ -13,7 +13,7 @@ export const generateLession = (cate_id: number) => {
       },
     ],
     summary: '',
-    title: 'New Lession',
+    title: 'New Lesson',
     course_category_id: cate_id,
   };
 };

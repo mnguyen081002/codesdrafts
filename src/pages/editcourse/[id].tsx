@@ -47,7 +47,7 @@ const Course = (_) => {
   const router = useRouter();
   const [course, setCourse] = useState<CourseResponse>(defaultCourse);
 
-  const [queryLessionPage, setQueryLessionPage] = useState('');
+  const [queryLessonPage, setQueryLessonPage] = useState('');
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   const [isHoverUploadImage, setIsHoverUploadImage] = useState(false);
   const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
@@ -63,14 +63,14 @@ const Course = (_) => {
           const data = await CodeSmoothApi.getCourseById(Number(id));
           setCourse(data.data);
           let query = '';
-          if (data.data.category.length > 0 && data.data.category[0]?.lessions?.length! > 0) {
-            query = `${data.data.category[0]?.lessions[0]?.id!}?draft=true`;
+          if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
+            query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
           } else {
             query = generateId(18).toString();
           }
-          setQueryLessionPage(query);
+          setQueryLessonPage(query);
         } else {
-          setQueryLessionPage(generateId(18).toString());
+          setQueryLessonPage(generateId(18).toString());
         }
         setIsLoading(false);
       }
@@ -242,14 +242,14 @@ const Course = (_) => {
               />
               <div className="flex w-full flex-col">
                 <span className="text-lg font-semibold uppercase tracking-widest text-slate-500">
-                  Lessions
+                  Lessons
                 </span>
                 <div className="flex w-full items-center justify-center">
                   <Link
-                    href={`/editlession/${course.id}/${queryLessionPage}`}
+                    href={`/editlesson/${course.id}/${queryLessonPage}`}
                     className="flex w-60 items-center justify-center rounded-normal border border-slate-400 py-2 transition duration-300 hover:scale-110 hover:bg-slate-100"
                   >
-                    <span className="text-xs uppercase">Edit Lessions</span>
+                    <span className="text-xs uppercase">Edit Lessons</span>
                     <EditIcon style={{ fontSize: '18px', marginLeft: '10px' }} />
                   </Link>
                 </div>

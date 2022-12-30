@@ -6,7 +6,7 @@ import type {
   ICodeComponent,
   ILesson,
   ITextComponent,
-  LessionComponentProps,
+  LessonComponentProps,
 } from '../../shared/interface';
 
 const initialState: ILesson = {
@@ -29,14 +29,14 @@ const LessonSlice = createSlice({
   name: 'lesson',
   initialState,
   reducers: {
-    resetLession(state) {
+    resetLesson(state) {
       state.id = 0;
       state.course_category_id = 0;
       state.title = '';
       state.summary = '';
       state.components = [];
     },
-    setLession(state, action: PayloadAction<ILesson>) {
+    setLesson(state, action: PayloadAction<ILesson>) {
       state.id = action.payload.id;
       state.course_category_id = action.payload.course_category_id;
       state.title = action.payload.title;
@@ -50,7 +50,7 @@ const LessonSlice = createSlice({
     setSummary(state, action: PayloadAction<string>) {
       state.summary = action.payload;
     },
-    setComponents(state, action: PayloadAction<LessionComponentProps[]>) {
+    setComponents(state, action: PayloadAction<LessonComponentProps[]>) {
       state.components = action.payload;
     },
     setTextContent(state, action: PayloadAction<{ content: ITextComponent; index: number }>) {
@@ -60,7 +60,7 @@ const LessonSlice = createSlice({
     },
     setComponent(
       state,
-      action: PayloadAction<{ component: LessionComponentProps; index?: number }>,
+      action: PayloadAction<{ component: LessonComponentProps; index?: number }>,
     ) {
       const copy: any = state.components;
       copy[action.payload.index!] = action.payload.component;
@@ -68,7 +68,7 @@ const LessonSlice = createSlice({
     },
     setComponentType(state, action: PayloadAction<{ type: string; index: number }>) {
       const copy: any = state.components;
-      let component: LessionComponentProps;
+      let component: LessonComponentProps;
       if (action.payload.type === 'Code') {
         component = {
           content: {
@@ -95,7 +95,7 @@ const LessonSlice = createSlice({
       copy[action.payload.index] = component;
       state.components = copy;
     },
-    addComponent(state, action: PayloadAction<LessionComponentProps>) {
+    addComponent(state, action: PayloadAction<LessonComponentProps>) {
       const copy: any = state.components;
       for (let i = 0; i < state.components.length; i++) {
         copy[i] = { ...state.components[i], isFocus: false };
@@ -184,11 +184,11 @@ const LessonSlice = createSlice({
 });
 
 export const {
-  resetLession,
+  resetLesson,
   setLanguage,
   setIsTest,
   setCode,
-  setLession,
+  setLesson,
   setTitle,
   setSummary,
   deleteComponentByIndex,

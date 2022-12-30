@@ -3,20 +3,20 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useState } from 'react';
 
-interface LessionNavItemProps {
+interface LessonNavItemProps {
   l: {
     id: number;
     title: string;
   };
   course_category_id: number;
-  onClickLession: (lessionId: number) => void;
+  onClickLesson: (lessonId: number) => void;
   onAddLessons: (categoryId: number) => void;
 }
 
-const LessionNavItem: FC<LessionNavItemProps> = (props) => {
+const LessonNavItem: FC<LessonNavItemProps> = (props) => {
   const [isHover, setIsHover] = useState(false);
   const router = useRouter();
-  const isSelecting = router.query.lessionid === props.l.id.toString();
+  const isSelecting = router.query.lessonid === props.l.id.toString();
   return (
     <div
       key={props.l.id}
@@ -30,7 +30,7 @@ const LessionNavItem: FC<LessionNavItemProps> = (props) => {
           className={`z-20 ml-4 h-6 w-40 cursor-pointer rounded-normal pl-2 ${
             isSelecting ? 'bg-slate-200' : 'bg-slate-100'
           }`}
-          onClick={() => props.onClickLession(props.l.id)}
+          onClick={() => props.onClickLesson(props.l.id)}
         >
           {props.l.title}
         </div>
@@ -47,4 +47,4 @@ const LessionNavItem: FC<LessionNavItemProps> = (props) => {
   );
 };
 
-export default LessionNavItem;
+export default LessonNavItem;

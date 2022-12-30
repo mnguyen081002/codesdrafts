@@ -5,7 +5,7 @@ import type { ICodeComponent, IComponentProps, ITextComponent } from '../shared/
 import { CodeComponent } from './CodeComponent';
 import { InputTextComponent } from './InputComponent';
 
-export const LessionComponent: FC<IComponentProps> = (params) => {
+export const LessonComponent: FC<IComponentProps> = (params) => {
   switch (params.component.type) {
     case ComponentType.Text:
       return (
