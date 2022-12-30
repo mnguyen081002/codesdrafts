@@ -1,5 +1,5 @@
 import type { CourseCategoryType } from '../shared/enum/category';
-import type { ICodeComponent, LessionComponentProps } from '../shared/interface';
+import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import axiosClient from './axiosClient';
 
@@ -19,12 +19,12 @@ interface ExecuteRequest {
   executeCode: string | undefined;
 }
 
-interface SaveLessionRequest {
+interface SaveLessonRequest {
   id: number;
   course_category_id: number;
   title: string;
   summary: string;
-  components: LessionComponentProps[];
+  components: LessonComponentProps[];
 }
 
 interface SaveCourseRequest {
@@ -73,7 +73,7 @@ export const CodeSmoothApi = {
     });
   },
 
-  saveLession: (params: SaveLessionRequest) => {
+  saveLesson: (params: SaveLessonRequest) => {
     const copy = params.components.map((component) => {
       return {
         ...component,
@@ -87,7 +87,7 @@ export const CodeSmoothApi = {
       delete component.isFocus;
     });
 
-    return axiosClient.post('/api/admin/lession', {
+    return axiosClient.post('/api/admin/lesson', {
       id: Number(params.id),
       title: params.title,
       summary: params.summary,
@@ -96,8 +96,8 @@ export const CodeSmoothApi = {
     });
   },
 
-  getLession: (id: number) => {
-    return axiosClient.get(`/api/admin/lession/${id}`);
+  getLesson: (id: number) => {
+    return axiosClient.get(`/api/admin/lesson/${id}`);
   },
 
   getSampleForLanguage: (language: string) => {
@@ -169,7 +169,7 @@ export interface CourseResponse {
 export interface CategoryResponse {
   id: number;
   title: string;
-  lessions: {
+  lessons: {
     id: number;
     title: string;
   }[];

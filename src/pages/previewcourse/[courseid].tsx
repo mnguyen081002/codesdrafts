@@ -68,7 +68,7 @@ const CourseContentList: FC<CourseContentListProps> = (props) => {
           <p className="border-b border-slate-300 p-4">{`${index + 1}. ${category.title}`}</p>
 
           <div key={index} className="my-4 flex flex-col">
-            {category.lessions.map((lesson, index) => (
+            {category.lessons.map((lesson, index) => (
               <CourseListLessonItem key={index} lesson={lesson} />
             ))}
           </div>

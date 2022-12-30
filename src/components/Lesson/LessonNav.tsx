@@ -6,13 +6,13 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import type { CategoryResponse } from '../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
 import { useAppDispatch } from '../../app/hooks';
-import { getLessionsNavHeight } from '../../utils/AppConfig';
-import LessionNavItem from './LessionNavItem';
+import { getLessonsNavHeight } from '../../utils/AppConfig';
+import LessonNavItem from './LessonNavItem';
 
 interface CategoryNavProps {
   category: CategoryResponse;
   index: number;
-  onClickLession: (lessionId: number) => void;
+  onClickLesson: (lessonId: number) => void;
   onCategoryChange: (category: string, categoryId: number) => void;
   onAddLessons: (categoryId: number) => void;
   onAddCategory: () => void;
@@ -119,17 +119,17 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
       </div>
       <div
         className={`flex flex-col gap-1 overflow-hidden px-6 transition-all duration-500 ${
-          !isExpand ? 'h-0' : getLessionsNavHeight(props.category.lessions.length)
+          !isExpand ? 'h-0' : getLessonsNavHeight(props.category.lessons.length)
         }`}
       >
         {isExpand &&
-          props.category.lessions.map((l) => {
+          props.category.lessons.map((l) => {
             return (
-              <LessionNavItem
+              <LessonNavItem
                 course_category_id={props.category.id}
                 l={l}
                 onAddLessons={props.onAddLessons}
-                onClickLession={props.onClickLession}
+                onClickLesson={props.onClickLesson}
                 key={l.id}
               />
             );
@@ -138,14 +138,14 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
     </div>
   );
 };
-export interface ILessionNav {
+export interface ILessonNav {
   categories: CategoryResponse[];
-  onClickLession: (lessionId: number) => void;
+  onClickLesson: (lessonId: number) => void;
   onCategoryChange: (category: string, categoryId: number) => void;
   onAddLessons: (categoryId: number) => void;
   onAddCategory: () => void;
 }
-export const LessionNav: FC<ILessionNav> = (props) => {
+export const LessonNav: FC<ILessonNav> = (props) => {
   return (
     <div className="flex h-full flex-col gap-2 p-2">
       <div className="mt-10 flex h-full flex-col gap-2">
@@ -153,7 +153,7 @@ export const LessionNav: FC<ILessionNav> = (props) => {
           return (
             <CategoryNav
               onCategoryChange={props.onCategoryChange}
-              onClickLession={props.onClickLession}
+              onClickLesson={props.onClickLesson}
               key={category.id}
               category={category}
               index={index}

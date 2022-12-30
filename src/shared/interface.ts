@@ -33,7 +33,7 @@ export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;
 }
 
-export interface LessionComponentProps {
+export interface LessonComponentProps {
   type?: string;
   content: ICodeContent | ITextContent;
   isFocus?: boolean;
@@ -48,7 +48,7 @@ export interface ICodeComponentProps extends IBaseComponentProps {
 }
 
 export interface IComponentProps extends IBaseComponentProps {
-  component: LessionComponentProps;
+  component: LessonComponentProps;
 }
 
 export interface ITextComponent extends IBaseComponentProps {
@@ -68,5 +68,5 @@ export interface ILesson {
   course_category_id: number;
   title: string;
   summary: string;
-  components: LessionComponentProps[];
+  components: LessonComponentProps[];
 }

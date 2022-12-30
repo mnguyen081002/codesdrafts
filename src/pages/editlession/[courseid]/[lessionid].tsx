@@ -10,35 +10,35 @@ import type { CategoryResponse, CourseResponse } from '../../../api/codesmooth-a
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import Button from '../../../common/Button';
-import { LessionNav } from '../../../components/Lession/LessionNav';
-import { LessionComponent } from '../../../components/LessionComponent';
+import { LessonNav } from '../../../components/Lesson/LessonNav';
+import { LessonComponent } from '../../../components/LessonComponent';
 import {
   onDrag,
-  resetLession,
+  resetLesson,
   selectLesson,
-  setLession,
+  setLesson,
   setSummary,
   setTitle,
 } from '../../../features/auth/LessonSlice';
 import { CourseCategoryType } from '../../../shared/enum/category';
 import { ComponentType } from '../../../shared/enum/component';
-import type { ILesson, LessionComponentProps } from '../../../shared/interface';
-import { generateLession } from '../../../utils/gen';
+import type { ILesson, LessonComponentProps } from '../../../shared/interface';
+import { generateLesson } from '../../../utils/gen';
 import { generateId } from '../../../utils/genId';
 import { defaultCourse } from '../../editcourse/[id]';
 
-const EditLession = () => {
+const EditLesson = () => {
   // const { courseId } = useParams();
   // const { data, error } = useSWR(`/api/courses/${courseId}`, fetcher);
 
   // if (error) return <div>failed to load</div>;
   // const components = useAppSelector(selectComponents);
-  const lession = useAppSelector<ILesson>(selectLesson);
+  const lesson = useAppSelector<ILesson>(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
   const [course, setCourse] = useState<CourseResponse>(defaultCourse);
   const [isLoading, setIsLoading] = useState(false);
-  console.log('Lession', lession);
+  console.log('Lesson', lesson);
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -46,17 +46,17 @@ const EditLession = () => {
   useEffect(() => {
     const handleLoad = async () => {
       if (router.isReady) {
-        const { courseid, lessionid, draft } = router.query;
+        const { courseid, lessonid, draft } = router.query;
         const categories: CategoryResponse[] = [];
-        let newLession: ILesson;
+        let newLesson: ILesson;
 
         try {
-          const res = await CodeSmoothApi.getLession(Number(lessionid));
-          newLession = res.data;
+          const res = await CodeSmoothApi.getLesson(Number(lessonid));
+          newLesson = res.data;
         } catch (error) {
           const cateId = generateId(18);
-          newLession = {
-            id: Number(lessionid),
+          newLesson = {
+            id: Number(lessonid),
             course_category_id: cateId,
             components: [
               {
@@ -67,16 +67,16 @@ const EditLession = () => {
               },
             ],
             summary: '',
-            title: 'New Lession',
+            title: 'New Lesson',
           };
 
           categories.push({
             id: cateId,
             title: 'New Category',
-            lessions: [newLession],
+            lessons: [newLesson],
           });
         }
-        dispatch(setLession(newLession));
+        dispatch(setLesson(newLesson));
         const res = await CodeSmoothApi.getCourseById(Number(courseid));
         if (categories.length > 0) {
           res.data.category = categories;
@@ -87,29 +87,29 @@ const EditLession = () => {
     handleLoad();
   }, [router.isReady]);
 
-  const onClickLession = async (lessionId: number) => {
+  const onClickLesson = async (lessonId: number) => {
     setIsLoading(true);
-    router.push(`/editlession/${course.id}/${lessionId}`);
-    const res = await CodeSmoothApi.getLession(Number(lessionId));
-    const newLession = res.data;
+    router.push(`/editlesson/${course.id}/${lessonId}`);
+    const res = await CodeSmoothApi.getLesson(Number(lessonId));
+    const newLesson = res.data;
 
-    dispatch(resetLession());
+    dispatch(resetLesson());
 
-    dispatch(setLession(newLession));
+    dispatch(setLesson(newLesson));
     setIsLoading(false);
   };
 
   const handleSave = async () => {
     setIsLoading(true);
-    if (lession.course_category_id) {
+    if (lesson.course_category_id) {
       await CodeSmoothApi.createCategory(
         'New Category',
-        lession.course_category_id,
+        lesson.course_category_id,
         course.id,
         CourseCategoryType.ASSESMENT,
       );
       // TODO: loading save
-      await CodeSmoothApi.saveLession(lession);
+      await CodeSmoothApi.saveLesson(lesson);
     }
     alert('Save success');
 
@@ -126,13 +126,13 @@ const EditLession = () => {
     setCourse({ ...course });
   };
 
-  const onAddLession = async (categoryId: number) => {
-    const newLession = generateLession(categoryId);
-    const res = await CodeSmoothApi.saveLession(newLession);
+  const onAddLesson = async (categoryId: number) => {
+    const newLesson = generateLesson(categoryId);
+    const res = await CodeSmoothApi.saveLesson(newLesson);
 
     course.category.forEach((cate) => {
       if (cate?.id === categoryId) {
-        cate?.lessions.push({ id: res.data.id, title: 'New Lession' });
+        cate?.lessons.push({ id: res.data.id, title: 'New Lesson' });
       }
     });
 
@@ -140,9 +140,9 @@ const EditLession = () => {
   };
 
   course.category.forEach((cate) => {
-    cate?.lessions.forEach((l) => {
-      if (l.id === lession.id) {
-        l.title = lession.title;
+    cate?.lessons.forEach((l) => {
+      if (l.id === lesson.id) {
+        l.title = lesson.title;
       }
     });
   });
@@ -156,16 +156,16 @@ const EditLession = () => {
       CourseCategoryType.ASSESMENT,
     );
 
-    const newLession = generateLession(cateId);
-    const resLession = await CodeSmoothApi.saveLession(newLession);
+    const newLesson = generateLesson(cateId);
+    const resLesson = await CodeSmoothApi.saveLesson(newLesson);
 
     course.category.push({
       id: cateId,
       title: 'New Category',
-      lessions: [
+      lessons: [
         {
-          id: newLession.id,
-          title: newLession.title,
+          id: newLesson.id,
+          title: newLesson.title,
         },
       ],
     });
@@ -193,11 +193,11 @@ const EditLession = () => {
     >
       <div className="flex h-full w-full justify-start">
         <div className="fixed h-full w-[15%] bg-slate-100">
-          <LessionNav
+          <LessonNav
             onCategoryChange={onCategoryChange}
-            onClickLession={onClickLession}
+            onClickLesson={onClickLesson}
             categories={course.category}
-            onAddLessons={onAddLession}
+            onAddLessons={onAddLesson}
             onAddCategory={onAddCategory}
           />
         </div>
@@ -206,9 +206,9 @@ const EditLession = () => {
             <div className="my-20 flex w-[70%] flex-col">
               <input
                 type="text"
-                placeholder="What is the title of your lession?"
+                placeholder="What is the title of your lesson?"
                 className="mb-12 w-full rounded-normal border border-gray-400 p-2 py-3 text-lg outline-none"
-                value={lession.title}
+                value={lesson.title}
                 onChange={(e) => {
                   dispatch(setTitle(e.target.value));
                 }}
@@ -218,19 +218,19 @@ const EditLession = () => {
                 placeholder="Summary"
                 minRows={6}
                 className="h-36 w-full resize-none rounded-normal border border-gray-400 p-2 outline-none"
-                value={lession.summary}
-                defaultValue={lession.summary}
+                value={lesson.summary}
+                defaultValue={lesson.summary}
                 onChange={(e) => {
                   dispatch(setSummary(e.target.value));
                 }}
               />
 
               <div className="mt-8 flex flex-col gap-2">
-                {lession.components.map((component: LessionComponentProps, index: number) => {
+                {lesson.components.map((component: LessonComponentProps, index: number) => {
                   return (
-                    <LessionComponent
+                    <LessonComponent
                       key={index}
-                      isLast={index === lession.components.length - 1}
+                      isLast={index === lesson.components.length - 1}
                       component={component}
                       index={index}
                       onDragStart={() => {
@@ -262,4 +262,4 @@ const EditLession = () => {
   );
 };
 
-export default EditLession;
+export default EditLesson;

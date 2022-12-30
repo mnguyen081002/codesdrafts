@@ -12,7 +12,7 @@ import {
   setFocus,
 } from '../features/auth/LessonSlice';
 import { ComponentType } from '../shared/enum/component';
-import type { IBaseComponentProps, LessionComponentProps } from '../shared/interface';
+import type { IBaseComponentProps, LessonComponentProps } from '../shared/interface';
 
 export const BaseComponent: FC<IBaseComponentProps> = (params) => {
   const [isHover, setIsHover] = useState(false);
@@ -30,7 +30,7 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
     setIsHover(false);
   };
   const handleClickOptions = (type: string) => {
-    let component: LessionComponentProps;
+    let component: LessonComponentProps;
     switch (type) {
       case ComponentType.Code:
         component = {

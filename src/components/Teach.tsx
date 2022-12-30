@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { CodeSmoothApiResponseList, CourseResponse } from '../api/codesmooth-api';
 import { CodeSmoothApi } from '../api/codesmooth-api';
 import { useAppDispatch } from '../app/hooks';
-import { resetLession } from '../features/auth/LessonSlice';
+import { resetLesson } from '../features/auth/LessonSlice';
 import { generateId } from '../utils/genId';
 import SmallCourseCard from './SmallCourseCard';
 
@@ -34,7 +34,7 @@ const Teach = () => {
       .finally(() => {
         setIsLoading(false);
       });
-    dispatch(resetLession());
+    dispatch(resetLesson());
   }, []);
 
   return (
