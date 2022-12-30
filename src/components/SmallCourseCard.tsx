@@ -19,7 +19,7 @@ interface SmallCourseCardProps {
 const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
   return !props.isLoading ? (
     <Link
-      href={`/editcourse/${props.id}?draft=true`}
+      href={`/previewcourse/${props.id}?draft=true`}
       className="mb-3 flex h-[370px] w-72 flex-col justify-center rounded border border-gray-200 bg-white shadow-md transition duration-500 hover:-translate-y-2 hover:shadow-lg"
     >
       <img

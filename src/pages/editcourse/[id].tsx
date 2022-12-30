@@ -148,10 +148,11 @@ const Course = (_) => {
                       src={
                         thumbnailUpload ? URL.createObjectURL(thumbnailUpload) : course.thumbnail
                       }
-                      className="h-full w-full rounded-normal border border-slate-300 object-fill"
+                      className={`${
+                        isHoverUploadImage && 'opacity-50'
+                      } h-full w-full rounded-normal border border-slate-300 object-fill transition ease-out`}
                       alt="thumbnail"
                     />
-
                     {(isHoverUploadImage || isChoosingThumbnail) && (
                       <div className="absolute top-0 flex h-full w-full  items-center justify-center">
                         <div className="relative">

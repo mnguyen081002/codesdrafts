@@ -16,7 +16,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        light: { primary: '#63b3ed', secondary: '#007eff' },
+        light: { primary: '#3740ff', secondary: '#007eff', tertiary: '#0468cf', gray: '#f5f5f5' },
+
         dark: { 90: '#1e1e27' },
         gray: {
           100: '#f7fafc',
@@ -40,7 +41,6 @@ module.exports = {
           800: '#2c5282',
           900: '#2a4365',
         },
-        button: { hover: '#f5f5f5' },
       },
       width: {
         sidebar: '120px',
@@ -49,7 +49,7 @@ module.exports = {
         sidebar: '120px',
       },
       borderRadius: {
-        normal: '4px',
+        normal: '6px',
       },
       boxShadow: {
         forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',

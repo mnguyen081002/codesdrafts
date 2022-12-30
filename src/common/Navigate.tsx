@@ -23,8 +23,8 @@ export const ItemPopover = styled(Paper)(() => ({
 
 const Navigate = () => {
   const navigate: INavigate[] = [
-    { title: 'Solutions', main: ['Educative Enterprise', 'Developers'] },
-    { title: 'Products', main: ['Courses for Enterprise', 'Courses for Individuals'] },
+    // { title: 'Solutions', main: ['Educative Enterprise', 'Developers'] },
+    // { title: 'Products', main: ['Courses for Enterprise', 'Courses for Individuals'] },
   ];
 
   return (

@@ -14,6 +14,7 @@ import { LessionNav } from '../../../components/Lession/LessionNav';
 import { LessionComponent } from '../../../components/LessionComponent';
 import {
   onDrag,
+  resetLession,
   selectLesson,
   setLession,
   setSummary,
@@ -87,11 +88,15 @@ const EditLession = () => {
   }, [router.isReady]);
 
   const onClickLession = async (lessionId: number) => {
+    setIsLoading(true);
     router.push(`/editlession/${course.id}/${lessionId}`);
     const res = await CodeSmoothApi.getLession(Number(lessionId));
     const newLession = res.data;
 
+    dispatch(resetLession());
+
     dispatch(setLession(newLession));
+    setIsLoading(false);
   };
 
   const handleSave = async () => {
@@ -175,6 +180,7 @@ const EditLession = () => {
           description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
         />
       }
+      isLoading={isLoading}
       headerChildren={
         <div className="mr-20 flex flex-1 justify-end">
           <Button
@@ -195,57 +201,61 @@ const EditLession = () => {
             onAddCategory={onAddCategory}
           />
         </div>
-        <div className="ml-[15%] flex w-[85%] justify-center">
-          <div className="my-20 flex w-[70%] flex-col">
-            <input
-              type="text"
-              placeholder="What is the title of your lession?"
-              className="mb-12 w-full rounded-normal border border-gray-400 p-2 py-3 text-lg outline-none"
-              value={lession.title}
-              onChange={(e) => {
-                dispatch(setTitle(e.target.value));
-              }}
-            />
-            {/** FIXME: textarea size issue */}
-            <ReactTextareaAutosize
-              placeholder="Summary"
-              minRows={6}
-              className="h-36 w-full resize-none rounded-normal border border-gray-400 p-2 outline-none"
-              value={lession.summary}
-              defaultValue={lession.summary}
-              onChange={(e) => {
-                dispatch(setSummary(e.target.value));
-              }}
-            />
+        <div className="ml-[15%] flex w-[85%] justify-center transition-all">
+          {!isLoading ? (
+            <div className="my-20 flex w-[70%] flex-col">
+              <input
+                type="text"
+                placeholder="What is the title of your lession?"
+                className="mb-12 w-full rounded-normal border border-gray-400 p-2 py-3 text-lg outline-none"
+                value={lession.title}
+                onChange={(e) => {
+                  dispatch(setTitle(e.target.value));
+                }}
+              />
+              {/** FIXME: textarea size issue */}
+              <ReactTextareaAutosize
+                placeholder="Summary"
+                minRows={6}
+                className="h-36 w-full resize-none rounded-normal border border-gray-400 p-2 outline-none"
+                value={lession.summary}
+                defaultValue={lession.summary}
+                onChange={(e) => {
+                  dispatch(setSummary(e.target.value));
+                }}
+              />
 
-            <div className="mt-8 flex flex-col gap-2">
-              {lession.components.map((component: LessionComponentProps, index: number) => {
-                return (
-                  <LessionComponent
-                    key={index}
-                    isLast={index === lession.components.length - 1}
-                    component={component}
-                    index={index}
-                    onDragStart={() => {
-                      dragItemRef.current = index;
-                    }}
-                    onDragEnter={() => {
-                      dragItemOverRef.current = index;
-                    }}
-                    onDragEnd={() => {
-                      dispatch(
-                        onDrag({
-                          dragIndex: dragItemRef.current,
-                          hoverIndex: dragItemOverRef.current,
-                        }),
-                      );
-                    }}
-                    isFocus={component.isFocus}
-                  />
-                );
-              })}
+              <div className="mt-8 flex flex-col gap-2">
+                {lession.components.map((component: LessionComponentProps, index: number) => {
+                  return (
+                    <LessionComponent
+                      key={index}
+                      isLast={index === lession.components.length - 1}
+                      component={component}
+                      index={index}
+                      onDragStart={() => {
+                        dragItemRef.current = index;
+                      }}
+                      onDragEnter={() => {
+                        dragItemOverRef.current = index;
+                      }}
+                      onDragEnd={() => {
+                        dispatch(
+                          onDrag({
+                            dragIndex: dragItemRef.current,
+                            hoverIndex: dragItemOverRef.current,
+                          }),
+                        );
+                      }}
+                      isFocus={component.isFocus}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     </Main>
