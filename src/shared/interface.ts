@@ -28,6 +28,7 @@ export interface IBaseComponentProps {
   isLast?: boolean;
   className?: string;
   isFocus?: boolean;
+  isReadOnly?: boolean;
 }
 export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;

@@ -4,6 +4,7 @@
 @tailwind utilities;
 html {
   font-family: "Public Sans", sans-serif;
+  scroll-padding-top: 60px;
 }
 
 ol {
@@ -111,5 +112,10 @@ input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; 
+}
 
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; 
 }

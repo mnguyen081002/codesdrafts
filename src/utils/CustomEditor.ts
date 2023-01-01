@@ -82,7 +82,14 @@ const CustomEditor = {
   //   );
   //   return disabled;
   // },
-  Head_TYPES: ['title', 'heading-two', 'heading-three', 'block-quote'],
+  Head_TYPES: [
+    'title',
+    'heading-two',
+    'heading-three',
+    'heading-four',
+    'heading-five',
+    'block-quote',
+  ],
   List_TYPES: ['numbered-list', 'bulleted-list'],
   Text_Align_Types: ['left', 'center', 'right', 'justify'],
 
@@ -233,8 +240,6 @@ const CustomEditor = {
 
   serialize(node: any): string {
     if (Text.isText(node)) {
-      console.log('node', node);
-
       let string = escapeHtml(node.text);
       const n: CustomText = node;
       if (n.code) {
@@ -279,6 +284,12 @@ const CustomEditor = {
         return `<h1>${children}</h1>`;
       case 'heading-two':
         return `<h2>${children}</h2>`;
+      case 'heading-three':
+        return `<h3>${children}</h3>`;
+      case 'heading-four':
+        return `<h4>${children}</h4>`;
+      case 'heading-five':
+        return `<h5>${children}</h5>`;
       case 'list-item':
         return `<li>${children}</li>`;
       case 'numbered-list':
@@ -351,6 +362,12 @@ const CustomEditor = {
         return jsx('element', { type: 'heading-one' }, children);
       case 'H2':
         return jsx('element', { type: 'heading-two' }, children);
+      case 'H3':
+        return jsx('element', { type: 'heading-three' }, children);
+      case 'H4':
+        return jsx('element', { type: 'heading-four' }, children);
+      case 'H5':
+        return jsx('element', { type: 'heading-five' }, children);
       default:
         return children;
     }

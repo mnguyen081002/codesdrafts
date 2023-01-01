@@ -6,7 +6,6 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import type { CategoryResponse } from '../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
 import { useAppDispatch } from '../../app/hooks';
-import { getLessonsNavHeight } from '../../utils/AppConfig';
 import LessonNavItem from './LessonNavItem';
 
 interface CategoryNavProps {
@@ -53,7 +52,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
       onMouseUp={() => setDraggable(true)}
     >
       <div
-        className={`${isExpand && 'mb-1'} z-10 flex w-full justify-between bg-slate-100`}
+        className={`${isExpand && 'mb-1'} z-10 flex w-full justify-between bg-light-gray`}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
@@ -117,11 +116,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
           )}
         </div>
       </div>
-      <div
-        className={`flex flex-col gap-1 overflow-hidden px-6 transition-all duration-500 ${
-          !isExpand ? 'h-0' : getLessonsNavHeight(props.category.lessons.length)
-        }`}
-      >
+      <div className={`flex flex-col gap-1 px-6`}>
         {isExpand &&
           props.category.lessons.map((l) => {
             return (
@@ -139,7 +134,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
   );
 };
 export interface ILessonNav {
-  categories: CategoryResponse[];
+  categories?: CategoryResponse[];
   onClickLesson: (lessonId: number) => void;
   onCategoryChange: (category: string, categoryId: number) => void;
   onAddLessons: (categoryId: number) => void;
@@ -149,7 +144,7 @@ export const LessonNav: FC<ILessonNav> = (props) => {
   return (
     <div className="flex h-full flex-col gap-2 p-2">
       <div className="mt-10 flex h-full flex-col gap-2">
-        {props.categories.map((category, index) => {
+        {props.categories?.map((category, index) => {
           return (
             <CategoryNav
               onCategoryChange={props.onCategoryChange}

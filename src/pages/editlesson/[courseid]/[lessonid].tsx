@@ -1,4 +1,5 @@
 // const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
@@ -10,8 +11,8 @@ import type { CategoryResponse, CourseResponse } from '../../../api/codesmooth-a
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import Button from '../../../common/Button';
+import { LessonComponent } from '../../../components/LessionComponent';
 import { LessonNav } from '../../../components/Lesson/LessonNav';
-import { LessonComponent } from '../../../components/LessonComponent';
 import {
   onDrag,
   resetLesson,
@@ -51,7 +52,7 @@ const EditLesson = () => {
         let newLesson: ILesson;
 
         try {
-          const res = await CodeSmoothApi.getLesson(Number(lessonid));
+          const res = await CodeSmoothApi.getLessonById(Number(lessonid));
           newLesson = res.data;
         } catch (error) {
           const cateId = generateId(18);
@@ -90,7 +91,7 @@ const EditLesson = () => {
   const onClickLesson = async (lessonId: number) => {
     setIsLoading(true);
     router.push(`/editlesson/${course.id}/${lessonId}`);
-    const res = await CodeSmoothApi.getLesson(Number(lessonId));
+    const res = await CodeSmoothApi.getLessonById(Number(lessonId));
     const newLesson = res.data;
 
     dispatch(resetLesson());
@@ -185,14 +186,20 @@ const EditLesson = () => {
         <div className="mr-20 flex flex-1 justify-end">
           <Button
             onClick={handleSave}
-            text="Save"
-            className="w-24 bg-light-secondary font-semibold uppercase text-white"
+            text="Lưu"
+            className="h-10 w-20 bg-light-primary font-semibold uppercase text-white"
           />
+          <Link href={`/lesson/${course.id}/${lesson.id}`}>
+            <Button
+              text="Xem trước"
+              className="h-10 w-20 bg-light-primary font-semibold uppercase text-white"
+            />
+          </Link>
         </div>
       }
     >
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[15%] bg-slate-100">
+        <div className="fixed h-full w-[15%] bg-light-gray">
           <LessonNav
             onCategoryChange={onCategoryChange}
             onClickLesson={onClickLesson}

@@ -17,6 +17,7 @@ export const LessonComponent: FC<IComponentProps> = (params) => {
           index={params.index}
           isLast={params.isLast}
           isFocus={params.isFocus}
+          isReadOnly={params.isReadOnly}
         />
       );
     case ComponentType.Code:

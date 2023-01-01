@@ -49,7 +49,7 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
               ></div>
             </div>
           </div>
-          <Button text="Continue" icon={<ArrowForwardIcon />} />
+          <Button text="Continue" fontIcon={<ArrowForwardIcon />} />
         </div>
       </div>
     </Link>

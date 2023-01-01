@@ -96,7 +96,7 @@ export const CodeSmoothApi = {
     });
   },
 
-  getLesson: (id: number) => {
+  getLessonById: (id: number) => {
     return axiosClient.get(`/api/admin/lesson/${id}`);
   },
 
