@@ -11,10 +11,11 @@ import LessonNavItem from './LessonNavItem';
 interface CategoryNavProps {
   category: CategoryResponse;
   index: number;
-  onClickLesson: (lessonId: number) => void;
-  onCategoryChange: (category: string, categoryId: number) => void;
-  onAddLessons: (categoryId: number) => void;
-  onAddCategory: () => void;
+  onClickLesson?: (lessonId: number) => void;
+  onCategoryChange?: (category: string, categoryId: number) => void;
+  onAddLessons?: (categoryId: number) => void;
+  onAddCategory?: () => void;
+  editMode?: boolean;
 }
 
 export const CategoryNav: FC<CategoryNavProps> = (props) => {
@@ -25,6 +26,9 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
 
   const dispatch = useAppDispatch();
   const handleDoubleClick = () => {
+    if (!props.editMode) {
+      return;
+    }
     setIsInputCategory(true);
   };
   const handleExpand = () => {
@@ -47,17 +51,17 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
     <div
       key={props.category.id}
       className={`flex flex-col`}
-      draggable={draggable}
+      draggable={props.editMode && draggable}
       onMouseDown={() => setDraggable(false)}
       onMouseUp={() => setDraggable(true)}
     >
       <div
-        className={`${isExpand && 'mb-1'} z-10 flex w-full justify-between bg-light-gray`}
+        className={`z-10 flex w-full justify-between bg-light-gray py-2`}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className="flex h-10 flex-1 items-center justify-start gap-2">
-          {isHover ? (
+        <div className="flex h-10 flex-1 items-center justify-start">
+          {isHover && props.editMode ? (
             <img
               src="/icon-move.png"
               alt="icon-move"
@@ -66,21 +70,31 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
               onMouseUp={() => setDraggable(false)}
             />
           ) : (
-            <div className="h-6 w-6" />
+            <div className={`${props.editMode ? 'h-2 w-2' : 'h-5 w-5'}`} />
           )}
           {!isInputCategory ? (
             <span
-              className="flex-1 cursor-text overflow-clip whitespace-nowrap text-lg font-medium"
+              className={`flex-1 ${
+                props.editMode ? 'cursor-text' : 'cursor-pointer'
+              } overflow-clip whitespace-nowrap text-xl font-medium`}
               onDoubleClick={handleDoubleClick}
+              onClick={() => {
+                if (props.editMode) {
+                  return;
+                }
+                handleExpand();
+              }}
             >
               {props.category.title}
             </span>
           ) : (
             <ReactTextareaAutosize
-              className="flex-1 resize-none rounded-md border border-black bg-white py-1 px-2 text-lg font-semibold outline-none"
+              className="flex-1 resize-none rounded-md border border-black bg-white py-1 px-2 text-xl font-semibold outline-none"
               value={props.category.title}
               onChange={(e) => {
-                props.onCategoryChange(e.target.value, props.category.id);
+                if (props.onCategoryChange) {
+                  props?.onCategoryChange(e.target.value, props.category.id);
+                }
               }}
               onFocus={(e) =>
                 e.currentTarget.setSelectionRange(
@@ -95,7 +109,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
           )}
         </div>
 
-        <div className="flex justify-start">
+        <div className="flex items-center justify-start">
           <div
             className={`${
               isExpand && 'rotate-180'
@@ -104,7 +118,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
           >
             <ExpandMore />
           </div>
-          {isHover ? (
+          {isHover && props.editMode ? (
             <div
               onClick={props.onAddCategory}
               className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition duration-200 hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
@@ -116,7 +130,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
           )}
         </div>
       </div>
-      <div className={`flex flex-col gap-1 px-6`}>
+      <div className={`flex flex-col gap-1`}>
         {isExpand &&
           props.category.lessons.map((l) => {
             return (
@@ -135,14 +149,15 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
 };
 export interface ILessonNav {
   categories?: CategoryResponse[];
-  onClickLesson: (lessonId: number) => void;
-  onCategoryChange: (category: string, categoryId: number) => void;
-  onAddLessons: (categoryId: number) => void;
-  onAddCategory: () => void;
+  onClickLesson?: (lessonId: number) => void;
+  onCategoryChange?: (category: string, categoryId: number) => void;
+  onAddLessons?: (categoryId: number) => void;
+  onAddCategory?: () => void;
+  editMode?: boolean;
 }
 export const LessonNav: FC<ILessonNav> = (props) => {
   return (
-    <div className="flex h-full flex-col gap-2 p-2">
+    <div className="flex h-full flex-col gap-2">
       <div className="mt-10 flex h-full flex-col gap-2">
         {props.categories?.map((category, index) => {
           return (

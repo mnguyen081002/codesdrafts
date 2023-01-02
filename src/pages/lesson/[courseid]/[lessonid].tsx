@@ -8,6 +8,7 @@ import { CodeSmoothApi } from '../../../api/codesmooth-api';
 import { useAppDispatch } from '../../../app/hooks';
 import Button from '../../../common/Button';
 import { LessonComponent } from '../../../components/LessionComponent';
+import { LessonNav } from '../../../components/Lesson/LessonNav';
 import { resetLesson, setLesson } from '../../../features/auth/LessonSlice';
 import { Meta } from '../../../layouts/Meta';
 import { ComponentType } from '../../../shared/enum/component';
@@ -47,7 +48,7 @@ const Lesson = () => {
     return prevLesson.id;
   };
 
-  const onClickLesson = async () => {
+  const onClickPreviosLesson = async () => {
     setIsLoading(true);
     const prevLessonId = getPrevLessonId();
     router.push(`/lesson/${course?.id}/${prevLessonId}`);
@@ -57,6 +58,17 @@ const Lesson = () => {
     dispatch(resetLesson());
 
     dispatch(setLesson(newLesson));
+    setIsLoading(false);
+  };
+
+  const onClickLesson = async (lessonId: number) => {
+    setIsLoading(true);
+    router.push(`/lesson/${course?.id}/${lessonId}`);
+    const res = await CodeSmoothApi.getLessonById(Number(lessonId));
+    const newLesson = res.data;
+
+    setCurrentLesson(newLesson);
+
     setIsLoading(false);
   };
 
@@ -150,7 +162,11 @@ const Lesson = () => {
   return (
     <Main meta={<Meta title={course?.id.toString() || ''} description="Lorem ipsum" />}>
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[15%] bg-light-gray"></div>
+        <div className="fixed h-full w-[15%] bg-light-gray">
+          <div className="fixed h-full w-[15%] bg-light-gray">
+            <LessonNav onClickLesson={onClickLesson} categories={course?.category} />
+          </div>
+        </div>
         <div className="ml-[15%] flex w-[85%] justify-center transition-all">
           {!isLoading ? (
             <div className="my-10 flex w-[70%] flex-col">
@@ -193,7 +209,12 @@ const Lesson = () => {
               </div>
               <div className="mt-10 mb-60 flex flex-col ">
                 <div className="flex">
-                  <Button fontIcon={<ArrowBack />} className="rounded-none" text="Trở về" />
+                  <Button
+                    fontIcon={<ArrowBack />}
+                    className="rounded-none"
+                    text="Trở về"
+                    onClick={onClickPreviosLesson}
+                  />
                 </div>
               </div>
             </div>
