@@ -68,35 +68,29 @@ const Element = ({ attributes, children, element }: any) => {
           {children}
         </ul>
       );
-    case 'heading-one':
-      return (
-        <h1 className="text-4xl" {...attributes}>
-          {children}
-        </h1>
-      );
     case 'heading-two':
       return (
-        <h6 className="text-3xl" {...attributes}>
+        <h2 className="text-4xl font-semibold" {...attributes}>
           {children}
-        </h6>
+        </h2>
       );
     case 'heading-three':
       return (
-        <h6 className="text-2xl" {...attributes}>
+        <h3 className="text-3xl font-semibold" {...attributes}>
           {children}
-        </h6>
+        </h3>
       );
     case 'heading-four':
       return (
-        <h6 className="text-xl" {...attributes}>
+        <h4 className="text-2xl font-semibold" {...attributes}>
           {children}
-        </h6>
+        </h4>
       );
     case 'heading-five':
       return (
-        <h6 className="text-lg" {...attributes}>
+        <h5 className="text-xl font-semibold" {...attributes}>
           {children}
-        </h6>
+        </h5>
       );
     case 'list-item':
       return (
@@ -112,7 +106,7 @@ const Element = ({ attributes, children, element }: any) => {
       );
     default:
       return (
-        <p style={style} {...attributes}>
+        <p className="text-lg" style={style} {...attributes}>
           {children}
         </p>
       );
@@ -178,6 +172,7 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
       ReactEditor.focus(editor);
     }
     editor.children = CustomEditor.deserializeFromHtml(params.component.content.html);
+
     setReload(!reload);
   }, [params.component.content.html]);
 
@@ -198,7 +193,7 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
           );
         }}
       >
-        {isHidden ? (
+        {isHidden && !params.isReadOnly ? (
           <Toolbar>
             <div
               onClick={() => {
@@ -245,8 +240,9 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
           className="mt-4"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
-          autoFocus={params.isFocus}
+          autoFocus={!params.isReadOnly ? params.isFocus : false}
           spellCheck
+          readOnly={params.isReadOnly}
           onFocus={() => {
             setPlaceholder('Type for widget');
             setHidden(true);

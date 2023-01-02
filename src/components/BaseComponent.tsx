@@ -77,7 +77,7 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
   return (
     <div
       className={`flex cursor-text flex-col ${params.className}`}
-      draggable={draggable}
+      draggable={!params.isReadOnly && draggable}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onDragStart={params.onDragStart}
@@ -93,13 +93,13 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
           className="w-full"
         >
           {params.children}
-          {params.isLast && isHover && (
+          {params.isLast && !params.isReadOnly && isHover && (
             <div className="absolute -right-14 top-0 flex h-full gap-3 pl-10">
               <CodeIcon style={{ cursor: 'pointer' }} onClick={() => handleClickOptions('Code')} />
             </div>
           )}
         </div>
-        {isHover && (
+        {isHover && !params.isReadOnly && (
           <div
             onMouseDown={() => setDraggable(true)}
             onMouseUp={() => setDraggable(false)}

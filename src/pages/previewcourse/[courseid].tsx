@@ -48,6 +48,7 @@ const CourseListLessonItem: FC<CourseListLessonItemProps> = (props) => {
   return (
     <div className="flex items-center gap-2 border-b border-slate-300">
       <Checkbox
+        disabled
         icon={<RadioButtonUncheckedOutlined />}
         checkedIcon={<CheckCircleOutlineOutlined className="text-light-primary" />}
       />
@@ -99,7 +100,7 @@ const PreviewCourse = () => {
       headerChildren={
         <div className="flex flex-1 justify-end px-10">
           <Link href={`/editcourse/${course?.id}/?draft=true`}>
-            <Button text="Chỉnh sửa" className="bg-light-primary px-8 font-semibold text-white" />
+            <Button text="Chỉnh sửa" className="bg-light-primary px-4 font-semibold text-white" />
           </Link>
         </div>
       }
@@ -129,17 +130,17 @@ const PreviewCourse = () => {
                     icon={<LocalFireDepartmentOutlined className="text-light-primary" />}
                   />
                 </div>
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex items-end gap-3">
                   <Rating className="text-yellow-300" precision={0.5} readOnly value={4.5} />
-                  <p className="text-lg font-semibold">4.5</p>
-                  <div>203.321 ratings</div>
+                  <span className="text-lg font-semibold leading-5">4.5</span>
+                  <span className="text-sm text-light-text-primary">203.321 ratings</span>
                 </div>
                 <div>
                   <p className="pt-8 text-2xl font-bold">Tổng Quan Khóa Học</p>
                   <div
                     className={`line-clamp h-20 w-full overflow-hidden text-ellipsis py-2 transition`}
                   >
-                    {course?.detail}
+                    {course?.summary}
                   </div>
                 </div>
               </div>
@@ -172,7 +173,7 @@ const PreviewCourse = () => {
                   <div className="p-2 text-lg font-semibold">Miễn phí</div>
                   <Button
                     text="Đăng ký học ngay"
-                    className="bg-light-primary px-16 text-lg font-semibold text-white"
+                    className="h-12 bg-light-primary px-16 text-lg font-semibold text-white"
                   ></Button>
                   <div className="mt-8 flex w-72 flex-col items-start gap-2">
                     <div className="flex items-center">
