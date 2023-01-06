@@ -1,163 +1,29 @@
-import { Add, ExpandMore } from '@mui/icons-material';
 import type { FC } from 'react';
-import { useState } from 'react';
-import ReactTextareaAutosize from 'react-textarea-autosize';
+import React from 'react';
 
 import type { CategoryResponse } from '../../api/codesmooth-api';
-import { CodeSmoothApi } from '../../api/codesmooth-api';
-import { useAppDispatch } from '../../app/hooks';
-import LessonNavItem from './LessonNavItem';
+import { CategoryNav } from './CategoryNav';
 
-interface CategoryNavProps {
-  category: CategoryResponse;
-  index: number;
-  onClickLesson: (lessonId: number) => void;
-  onCategoryChange: (category: string, categoryId: number) => void;
-  onAddLessons: (categoryId: number) => void;
-  onAddCategory: () => void;
-}
-
-export const CategoryNav: FC<CategoryNavProps> = (props) => {
-  const [isExpand, setIsExpand] = useState(props.index === 0);
-  const [isHover, setIsHover] = useState(false);
-  const [isInputCategory, setIsInputCategory] = useState(false);
-  const [draggable, setDraggable] = useState(false);
-
-  const dispatch = useAppDispatch();
-  const handleDoubleClick = () => {
-    setIsInputCategory(true);
-  };
-  const handleExpand = () => {
-    setIsExpand(!isExpand);
-  };
-
-  const onBlur = () => {
-    setIsInputCategory(false);
-    CodeSmoothApi.updateCategory(props.category.title, props.category.id);
-  };
-
-  const onKeyPress = (e: any) => {
-    if (e.key === 'Enter') {
-      setIsInputCategory(false);
-      CodeSmoothApi.updateCategory(props.category.title, props.category.id);
-    }
-  };
-
-  return (
-    <div
-      key={props.category.id}
-      className={`flex flex-col`}
-      draggable={draggable}
-      onMouseDown={() => setDraggable(false)}
-      onMouseUp={() => setDraggable(true)}
-    >
-      <div
-        className={`${isExpand && 'mb-1'} z-10 flex w-full justify-between bg-light-gray`}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-      >
-        <div className="flex h-10 flex-1 items-center justify-start gap-2">
-          {isHover ? (
-            <img
-              src="/icon-move.png"
-              alt="icon-move"
-              className="h-6 w-6 cursor-pointer rounded-full border border-slate-400 p-1"
-              onMouseDown={() => setDraggable(true)}
-              onMouseUp={() => setDraggable(false)}
-            />
-          ) : (
-            <div className="h-6 w-6" />
-          )}
-          {!isInputCategory ? (
-            <span
-              className="flex-1 cursor-text overflow-clip whitespace-nowrap text-lg font-medium"
-              onDoubleClick={handleDoubleClick}
-            >
-              {props.category.title}
-            </span>
-          ) : (
-            <ReactTextareaAutosize
-              className="flex-1 resize-none rounded-md border border-black bg-white py-1 px-2 text-lg font-semibold outline-none"
-              value={props.category.title}
-              onChange={(e) => {
-                props.onCategoryChange(e.target.value, props.category.id);
-              }}
-              onFocus={(e) =>
-                e.currentTarget.setSelectionRange(
-                  e.currentTarget.value.length,
-                  e.currentTarget.value.length,
-                )
-              }
-              autoFocus={true}
-              onBlur={onBlur}
-              onKeyDown={onKeyPress}
-            />
-          )}
-        </div>
-
-        <div className="flex justify-start">
-          <div
-            className={`${
-              isExpand && 'rotate-180'
-            } flex h-8 w-8 cursor-pointer items-center justify-center rounded-full p-1 transition duration-200 ease-in-out hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
-            onClick={handleExpand}
-          >
-            <ExpandMore />
-          </div>
-          {isHover ? (
-            <div
-              onClick={props.onAddCategory}
-              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition duration-200 hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}
-            >
-              <Add style={{ fontSize: '20px' }} />
-            </div>
-          ) : (
-            <div className="h-8 w-8"></div>
-          )}
-        </div>
-      </div>
-      <div className={`flex flex-col gap-1 px-6`}>
-        {isExpand &&
-          props.category.lessons.map((l) => {
-            return (
-              <LessonNavItem
-                course_category_id={props.category.id}
-                l={l}
-                onAddLessons={props.onAddLessons}
-                onClickLesson={props.onClickLesson}
-                key={l.id}
-              />
-            );
-          })}
-      </div>
-    </div>
-  );
-};
 export interface ILessonNav {
   categories?: CategoryResponse[];
-  onClickLesson: (lessonId: number) => void;
-  onCategoryChange: (category: string, categoryId: number) => void;
-  onAddLessons: (categoryId: number) => void;
-  onAddCategory: () => void;
+  onClickLesson?: (lessonId: number) => void;
+  editMode?: boolean;
+  className?: string;
 }
 export const LessonNav: FC<ILessonNav> = (props) => {
   return (
-    <div className="flex h-full flex-col gap-2 p-2">
-      <div className="mt-10 flex h-full flex-col gap-2">
-        {props.categories?.map((category, index) => {
-          return (
-            <CategoryNav
-              onCategoryChange={props.onCategoryChange}
-              onClickLesson={props.onClickLesson}
-              key={category.id}
-              category={category}
-              index={index}
-              onAddLessons={props.onAddLessons}
-              onAddCategory={props.onAddCategory}
-            />
-          );
-        })}
-      </div>
+    <div className={`${props.className} flex flex-col overflow-y-scroll pb-10`}>
+      {props.categories?.map((category, index) => {
+        return (
+          <CategoryNav
+            editMode={props.editMode}
+            onClickLesson={props.onClickLesson}
+            key={category.id}
+            category={category}
+            index={index}
+          />
+        );
+      })}
     </div>
   );
 };

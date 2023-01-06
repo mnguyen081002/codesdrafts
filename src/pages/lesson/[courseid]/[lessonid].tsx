@@ -1,14 +1,15 @@
-import { ArrowBack, Lens } from '@mui/icons-material';
+import { ArrowBack, ArrowForward, Check, Lens } from '@mui/icons-material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { CourseResponse } from '../../../api/codesmooth-api';
+import type { CategoryResponse, CourseResponse } from '../../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import Button from '../../../common/Button';
 import { LessonComponent } from '../../../components/LessionComponent';
-import { resetLesson, setLesson } from '../../../features/auth/LessonSlice';
+import { LessonNav } from '../../../components/Lesson/LessonNav';
+import { selectCategories, selectCourse, setCourse } from '../../../features/auth/LessonNavSlice';
 import { Meta } from '../../../layouts/Meta';
 import { ComponentType } from '../../../shared/enum/component';
 import type { ILesson, ITextContent, LessonComponentProps } from '../../../shared/interface';
@@ -24,39 +25,76 @@ function TableOfContentItem(props) {
         }}
         className="text-light-primary"
       />
-      <p className="font-serif text-lg hover:text-light-primary">{props.content.title}</p>
+      <p className="font-serif text-lg transition-colors hover:text-light-primary">
+        {props.content.title}
+      </p>
     </Link>
   );
 }
 
 const Lesson = () => {
   const router = useRouter();
-  const [course, setCourse] = useState<CourseResponse>();
+  const course = useAppSelector<CourseResponse>(selectCourse);
+  const categories = useAppSelector<CategoryResponse[]>(selectCategories);
   const [currentLesson, setCurrentLesson] = useState<ILesson>();
   const [isLoading, setIsLoading] = useState(false);
   const [tableOfContent, setTableOfContent] = useState<any>([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
-  const getPrevLessonId = () => {
-    const listLesson: any = [];
+  const getPrevLesson = () => {
+    const listLesson: any[] = [];
     course?.category.forEach((category) => {
       category.lessons.forEach((lesson) => {
         listLesson.push(lesson);
       });
     });
-    const prevLesson = listLesson.find((lesson) => lesson.id === Number(router.query.lessonid));
-    return prevLesson.id;
+    const currLessonIndex = listLesson.findIndex(
+      (lesson) => lesson.id === Number(router.query.lessonid),
+    );
+    return listLesson[currLessonIndex - 1];
   };
 
-  const onClickLesson = async () => {
+  const getNextLesson = () => {
+    const listLesson: any = [];
+    categories.forEach((category) => {
+      category.lessons.forEach((lesson) => {
+        listLesson.push(lesson);
+      });
+    });
+
+    const currLessonIndex = listLesson.findIndex((lesson) => lesson.id === router.query.lessonid);
+
+    return listLesson[currLessonIndex + 1];
+  };
+
+  const openLesson = async (lessonId: number) => {
+    try {
+      setIsLoading(true);
+
+      await CodeSmoothApi.markLessonComplete(
+        Number(router.query.lessonid),
+        currentLesson?.isCompleted,
+      );
+
+      const res = await CodeSmoothApi.getLessonById(Number(lessonId));
+      const newLesson = res.data;
+
+      setCurrentLesson(newLesson);
+      router.push(`/lesson/${course?.id}/${lessonId}`);
+      setIsLoading(false);
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+  };
+
+  const onClickLesson = async (lessonId: number) => {
     setIsLoading(true);
-    const prevLessonId = getPrevLessonId();
-    router.push(`/lesson/${course?.id}/${prevLessonId}`);
-    const res = await CodeSmoothApi.getLessonById(Number(prevLessonId));
+    const res = await CodeSmoothApi.getLessonById(Number(lessonId));
     const newLesson = res.data;
 
-    dispatch(resetLesson());
+    setCurrentLesson(newLesson);
 
-    dispatch(setLesson(newLesson));
+    router.push(`/lesson/${course?.id}/${lessonId}`);
     setIsLoading(false);
   };
 
@@ -127,7 +165,7 @@ const Lesson = () => {
       if (!router.isReady) return;
       const fetchCourse = async () => {
         const res = await CodeSmoothApi.getCourseById(Number(courseid));
-        setCourse(res.data);
+        dispatch(setCourse(res.data));
       };
 
       const fetchLesson = async () => {
@@ -150,7 +188,16 @@ const Lesson = () => {
   return (
     <Main meta={<Meta title={course?.id.toString() || ''} description="Lorem ipsum" />}>
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[15%] bg-light-gray"></div>
+        <div className="fixed h-full w-[15%] bg-light-gray">
+          <div className="h-[18%]">
+            <img src={`${course?.thumbnail}`} alt="" />
+          </div>
+          <LessonNav
+            className="h-[75%]"
+            onClickLesson={onClickLesson}
+            categories={course?.category}
+          />
+        </div>
         <div className="ml-[15%] flex w-[85%] justify-center transition-all">
           {!isLoading ? (
             <div className="my-10 flex w-[70%] flex-col">
@@ -192,8 +239,54 @@ const Lesson = () => {
                 })}
               </div>
               <div className="mt-10 mb-60 flex flex-col ">
-                <div className="flex">
-                  <Button fontIcon={<ArrowBack />} className="rounded-none" text="Trở về" />
+                <div className="mb-5 flex items-center justify-end">
+                  <div
+                    className="relative cursor-pointer"
+                    onClick={() =>
+                      setCurrentLesson({
+                        ...currentLesson!,
+                        isCompleted: !currentLesson?.isCompleted,
+                      })
+                    }
+                  >
+                    <div className="h-5 w-5 rounded-sm border border-gray-600"></div>
+                    {currentLesson?.isCompleted && (
+                      <Check className="absolute bottom-0 text-green-500" />
+                    )}
+                  </div>
+                  <p className="ml-1">Đánh dấu là đã hoàn thành</p>
+                </div>
+                <div className="flex justify-between">
+                  {getPrevLesson() ? (
+                    <Button
+                      fontIcon={<ArrowBack />}
+                      className={`${
+                        !getPrevLesson() && 'cursor-not-allowed opacity-50'
+                      } rounded-sm font-semibold`}
+                      text="Trở về"
+                      onClick={() => {
+                        if (!getPrevLesson()) {
+                          return;
+                        }
+                        openLesson(getPrevLesson().id);
+                      }}
+                    />
+                  ) : (
+                    <div></div>
+                  )}
+                  {getNextLesson() && (
+                    <Button
+                      backIcon={<ArrowForward />}
+                      className={`rounded-sm border-none bg-light-primary font-semibold text-white`}
+                      text="Tiếp theo"
+                      onClick={() => {
+                        if (!getNextLesson()) {
+                          return;
+                        }
+                        openLesson(getNextLesson().id);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>

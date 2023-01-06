@@ -2,12 +2,16 @@ import type { Action, Store, ThunkAction } from '@reduxjs/toolkit';
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
+import appReducer from '../features/auth/appSlice';
+import lessonnavReducer from '../features/auth/LessonNavSlice';
 import lessonReducer from '../features/auth/LessonSlice';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store: Store = configureStore({
   reducer: {
     lesson: lessonReducer,
+    lessonnav: lessonnavReducer,
+    app: appReducer,
   },
   middleware: (getDefaultMiddleware: any) => getDefaultMiddleware().concat(sagaMiddleware),
 });

@@ -70,4 +70,5 @@ export interface ILesson {
   title: string;
   summary: string;
   components: LessonComponentProps[];
+  isCompleted?: boolean;
 }
