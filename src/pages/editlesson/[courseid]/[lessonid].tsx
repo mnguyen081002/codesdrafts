@@ -14,6 +14,12 @@ import Button from '../../../common/Button';
 import { LessonComponent } from '../../../components/LessionComponent';
 import { LessonNav } from '../../../components/Lesson/LessonNav';
 import {
+  selectCategories,
+  selectCourse,
+  setCategories,
+  setCourse,
+} from '../../../features/auth/LessonNavSlice';
+import {
   onDrag,
   resetLesson,
   selectLesson,
@@ -26,7 +32,6 @@ import { ComponentType } from '../../../shared/enum/component';
 import type { ILesson, LessonComponentProps } from '../../../shared/interface';
 import { generateLesson } from '../../../utils/gen';
 import { generateId } from '../../../utils/genId';
-import { defaultCourse } from '../../editcourse/[id]';
 
 const EditLesson = () => {
   // const { courseId } = useParams();
@@ -37,8 +42,10 @@ const EditLesson = () => {
   const lesson = useAppSelector<ILesson>(selectLesson);
   const dragItemRef = useRef<any>(null);
   const dragItemOverRef = useRef<any>(null);
-  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
+  const course = useAppSelector<CourseResponse>(selectCourse);
+  const categories = useAppSelector<CategoryResponse[]>(selectCategories);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   console.log('Lesson', lesson);
   const dispatch = useAppDispatch();
 
@@ -48,7 +55,7 @@ const EditLesson = () => {
     const handleLoad = async () => {
       if (router.isReady) {
         const { courseid, lessonid, draft } = router.query;
-        const categories: CategoryResponse[] = [];
+        const cat: CategoryResponse[] = [];
         let newLesson: ILesson;
 
         try {
@@ -59,6 +66,7 @@ const EditLesson = () => {
           newLesson = {
             id: Number(lessonid),
             course_category_id: cateId,
+            isCompleted: false,
             components: [
               {
                 content: {
@@ -71,7 +79,7 @@ const EditLesson = () => {
             title: 'New Lesson',
           };
 
-          categories.push({
+          cat.push({
             id: cateId,
             title: 'New Category',
             lessons: [newLesson],
@@ -79,10 +87,11 @@ const EditLesson = () => {
         }
         dispatch(setLesson(newLesson));
         const res = await CodeSmoothApi.getCourseById(Number(courseid));
-        if (categories.length > 0) {
-          res.data.category = categories;
+        if (cat.length > 0) {
+          res.data.category = cat;
         }
-        setCourse(res.data);
+
+        dispatch(setCourse(res.data));
       }
     };
     handleLoad();
@@ -103,12 +112,12 @@ const EditLesson = () => {
   const handleSave = async () => {
     setIsLoading(true);
     if (lesson.course_category_id) {
-      await CodeSmoothApi.createCategory(
-        'New Category',
-        lesson.course_category_id,
-        course.id,
-        CourseCategoryType.ASSESMENT,
-      );
+      // await CodeSmoothApi.createCategory(
+      //   'New Category',
+      //   lesson.course_category_id,
+      //   course.id,
+      //   CourseCategoryType.ASSESMENT,
+      // );
       // TODO: loading save
       await CodeSmoothApi.saveLesson(lesson);
     }
@@ -118,59 +127,89 @@ const EditLesson = () => {
   };
 
   const onCategoryChange = (cate: string, cate_id: number) => {
-    for (let i = 0; i < course.category.length; i++) {
-      if (course.category[i]!.id === cate_id) {
-        course.category[i]!.title = cate;
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i]!.id === cate_id) {
+        categories[i]!.title = cate;
         break;
       }
     }
-    setCourse({ ...course });
   };
 
   const onAddLesson = async (categoryId: number) => {
     const newLesson = generateLesson(categoryId);
     const res = await CodeSmoothApi.saveLesson(newLesson);
 
-    course.category.forEach((cate) => {
+    categories.forEach((cate) => {
       if (cate?.id === categoryId) {
-        cate?.lessons.push({ id: res.data.id, title: 'New Lesson' });
+        cate?.lessons.push({ id: res.data.id, title: 'New Lesson', isCompleted: false });
       }
     });
 
-    setCourse({ ...course });
+    dispatch(setCategories(categories));
   };
 
-  course.category.forEach((cate) => {
-    cate?.lessons.forEach((l) => {
-      if (l.id === lesson.id) {
-        l.title = lesson.title;
-      }
-    });
-  });
+  // TODO: update lesson title
+
+  // categories.forEach((cate) => {
+  //   cate?.lessons.forEach((l) => {
+  //     if (l.id === lesson.id) {
+  //       l.title = lesson.title;
+  //     }
+  //   });
+  // });
 
   const onAddCategory = async () => {
-    const cateId = generateId(18);
-    const resCat = await CodeSmoothApi.createCategory(
-      'New Category',
-      cateId,
-      course.id,
-      CourseCategoryType.ASSESMENT,
-    );
+    try {
+      const cateId = generateId(18);
+      const resCat = await CodeSmoothApi.createCategory(
+        'New Category',
+        cateId,
+        course.id,
+        CourseCategoryType.ASSESMENT,
+      );
 
-    const newLesson = generateLesson(cateId);
-    const resLesson = await CodeSmoothApi.saveLesson(newLesson);
+      const newLesson = generateLesson(cateId);
+      const resLesson = await CodeSmoothApi.saveLesson(newLesson);
 
-    course.category.push({
-      id: cateId,
-      title: 'New Category',
-      lessons: [
-        {
-          id: newLesson.id,
-          title: newLesson.title,
-        },
-      ],
-    });
-    setCourse({ ...course });
+      categories.push({
+        id: cateId,
+        title: 'New Category',
+        lessons: [
+          {
+            id: newLesson.id,
+            title: newLesson.title,
+            isCompleted: false,
+          },
+        ],
+      });
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+
+    dispatch(setCategories(categories));
+  };
+
+  const onDeleteCategory = async (categoryId: number) => {
+    try {
+      await CodeSmoothApi.deleteCategoryById(categoryId);
+      const newCategory = categories.filter((cate) => cate?.id !== categoryId);
+      dispatch(setCategories(newCategory));
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+  };
+
+  const onDeleteLesson = async (lessonId: number) => {
+    try {
+      await CodeSmoothApi.deleteLessonById(lessonId);
+      categories.forEach((cate) => {
+        const newLessons = cate?.lessons.filter((l) => l.id !== lessonId);
+        cate!.lessons = newLessons!;
+      });
+      dispatch(setCategories(categories));
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -183,7 +222,7 @@ const EditLesson = () => {
       }
       isLoading={isLoading}
       headerChildren={
-        <div className="mr-20 flex flex-1 justify-end">
+        <div className="mr-10 flex flex-1 justify-end gap-5">
           <Button
             onClick={handleSave}
             text="Lưu"
@@ -192,23 +231,22 @@ const EditLesson = () => {
           <Link href={`/lesson/${course.id}/${lesson.id}`}>
             <Button
               text="Xem trước"
-              className="h-10 w-20 bg-light-primary font-semibold uppercase text-white"
+              className="h-10 bg-light-primary font-semibold uppercase text-white"
             />
           </Link>
         </div>
       }
     >
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[15%] bg-light-gray">
+        <div className="fixed h-full w-[18%] bg-light-gray">
           <LessonNav
-            onCategoryChange={onCategoryChange}
+            className="h-[calc(100vh-3.5rem)]"
+            editMode={true}
             onClickLesson={onClickLesson}
-            categories={course.category}
-            onAddLessons={onAddLesson}
-            onAddCategory={onAddCategory}
+            categories={categories}
           />
         </div>
-        <div className="ml-[15%] flex w-[85%] justify-center transition-all">
+        <div className="ml-[18%] flex w-[72%] justify-center transition-all">
           {!isLoading ? (
             <div className="my-20 flex w-[70%] flex-col">
               <input

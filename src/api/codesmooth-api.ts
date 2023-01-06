@@ -19,7 +19,7 @@ interface ExecuteRequest {
   executeCode: string | undefined;
 }
 
-interface SaveLessonRequest {
+export interface SaveLessonRequest {
   id: number;
   course_category_id: number;
   title: string;
@@ -57,6 +57,9 @@ export const CodeSmoothApi = {
       language,
     });
   },
+  deleteLessonById(id: number) {
+    return axiosClient.delete(`/api/admin/lesson/${id}`);
+  },
 
   createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
     return axiosClient.post('/api/admin/category', {
@@ -71,6 +74,10 @@ export const CodeSmoothApi = {
     return axiosClient.patch(`/api/admin/category/${id}`, {
       title,
     });
+  },
+
+  deleteCategoryById: (id: number) => {
+    return axiosClient.delete(`/api/admin/category/${id}`);
   },
 
   saveLesson: (params: SaveLessonRequest) => {
@@ -96,8 +103,8 @@ export const CodeSmoothApi = {
     });
   },
 
-  getLessonById: (id: number) => {
-    return axiosClient.get(`/api/admin/lesson/${id}`);
+  getLessonById: async (id: number) => {
+    return (await axiosClient.get(`/api/admin/lesson/${id}`)).data;
   },
 
   getSampleForLanguage: (language: string) => {
@@ -136,6 +143,17 @@ export const CodeSmoothApi = {
     const response = await axiosClient.delete(`/api/admin/course/${id}`);
     return response.data;
   },
+
+  markLessonComplete: async (
+    lessonId: number,
+    markIsComplete?: boolean,
+  ): Promise<CodeSmoothApiResponse<CourseResponse>> => {
+    const response = await axiosClient.post(`/api/admin/lesson/mark-as-completed`, {
+      lesson_id: lessonId,
+      isCompleted: markIsComplete ?? false,
+    });
+    return response.data;
+  },
 };
 
 export interface CodeSmoothApiResponseList<T> {
@@ -172,6 +190,7 @@ export interface CategoryResponse {
   lessons: {
     id: number;
     title: string;
+    isCompleted?: boolean;
   }[];
 }
 

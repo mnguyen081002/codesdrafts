@@ -1,8 +1,14 @@
+import { CheckCircle } from '@mui/icons-material';
+import { Alert, Snackbar } from '@mui/material';
 import Link from 'next/link';
-import type { FC, PropsWithChildren, ReactNode } from 'react';
+import type { FC, PropsWithChildren, ReactNode, SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 import Navigate from '@/common/Navigate';
+
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import type { CustomSnackbar } from '../features/auth/appSlice';
+import { closeSnackBar, selectSnackBar } from '../features/auth/appSlice';
 
 type IMainProps = {
   meta: ReactNode;
@@ -13,7 +19,7 @@ type IMainProps = {
 
 export const Header: FC<PropsWithChildren> = (props) => {
   return (
-    <nav className="fixed top-0 z-10 flex h-16 w-full items-center border-0 border-b border-solid border-gray-300 bg-white shadow-md transition duration-300 ease-in-out">
+    <nav className="fixed top-0 z-10 flex h-14 w-full items-center border-0 border-b border-solid border-gray-300 bg-white shadow-md transition duration-300 ease-in-out">
       <Link href="/" className="flex items-center justify-start gap-2 px-2">
         <img src="/logo-96.png" alt="Logo" className="ml-4 h-8 w-8" />
         <span className="text-lg font-bold text-light-text-primary">Code Smooth</span>
@@ -40,6 +46,39 @@ export const Header: FC<PropsWithChildren> = (props) => {
         </div> */}
     </nav>
   );
+};
+
+const CustomSnackBar = () => {
+  const snackbar = useAppSelector<CustomSnackbar>(selectSnackBar);
+  const dispatch = useAppDispatch();
+  const handleClose = (event?: Event | SyntheticEvent<any, Event>, reason?: string) => {
+    dispatch(closeSnackBar());
+  };
+
+  switch (snackbar.type) {
+    case 'success':
+      return (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={snackbar.openSnackbar}
+          autoHideDuration={2000}
+          onClose={handleClose}
+        >
+          <div className="flex h-14 w-72 items-center justify-start gap-4 rounded-lg border border-gray-300 bg-white py-3 px-4 shadow-forfun">
+            <CheckCircle className="text-green-500" />
+            <span>Success</span>
+          </div>
+        </Snackbar>
+      );
+    default:
+      return (
+        <Snackbar open={snackbar.openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            This is a success message!
+          </Alert>
+        </Snackbar>
+      );
+  }
 };
 
 const Main = (props: IMainProps) => {
@@ -78,7 +117,7 @@ const Main = (props: IMainProps) => {
   return (
     <div>
       <Header>{props.headerChildren}</Header>
-      <div className="flex flex-col items-center bg-white pt-16">{props.children}</div>
+      <div className="flex flex-col items-center bg-white pt-14">{props.children}</div>
       {props.isLoading && (
         <div className="fixed top-0 left-0 z-50 h-1 w-full animate-pulse bg-gradient-to-r from-blue-200 to-blue-400">
           <div
@@ -87,6 +126,7 @@ const Main = (props: IMainProps) => {
           ></div>
         </div>
       )}
+      <CustomSnackBar />
     </div>
   );
 };
