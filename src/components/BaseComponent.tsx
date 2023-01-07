@@ -99,6 +99,7 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
             </div>
           )}
         </div>
+
         {isHover && !params.isReadOnly && (
           <div
             onMouseDown={() => setDraggable(true)}

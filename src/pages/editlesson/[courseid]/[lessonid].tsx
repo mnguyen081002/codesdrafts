@@ -246,7 +246,7 @@ const EditLesson = () => {
             categories={categories}
           />
         </div>
-        <div className="ml-[18%] flex w-[72%] justify-center transition-all">
+        <div className="ml-[18%] flex w-[82%] justify-center transition-all">
           {!isLoading ? (
             <div className="my-20 flex w-[70%] flex-col">
               <input
