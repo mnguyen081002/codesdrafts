@@ -47,14 +47,7 @@ const LessonMoreOptions: FC<LessonMoreOptionsProps> = (props) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem
-          sx={{
-            width: '80px',
-          }}
-          onClick={handleDelete}
-        >
-          Xóa
-        </MenuItem>
+        <MenuItem onClick={handleDelete}>Delete Lesson</MenuItem>
       </Menu>
       {/* <Dialog open={openDialogInputTitle} onClose={handleCloseDialogInputTitle}>
         <DialogTitle

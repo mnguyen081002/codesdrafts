@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import Button from '../../../common/Button';
 import { LessonComponent } from '../../../components/LessionComponent';
 import { LessonNav } from '../../../components/Lesson/LessonNav';
+import { setSnackBar } from '../../../features/auth/appSlice';
 import { selectCategories, selectCourse, setCourse } from '../../../features/auth/LessonNavSlice';
 import { Meta } from '../../../layouts/Meta';
 import { ComponentType } from '../../../shared/enum/component';
@@ -18,7 +19,7 @@ import CustomEditor from '../../../utils/CustomEditor';
 
 function TableOfContentItem(props) {
   return (
-    <Link href={`#${props.content.index}`} className="flex flex-row items-center gap-2">
+    <Link href={`#${props.content.title}`} className="flex flex-row items-center gap-2">
       <Lens
         style={{
           fontSize: '5px',
@@ -39,7 +40,6 @@ const Lesson = () => {
   const [currentLesson, setCurrentLesson] = useState<ILesson>();
   const [isLoading, setIsLoading] = useState(false);
   const [tableOfContent, setTableOfContent] = useState<any>([]);
-  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
   const getPrevLesson = () => {
     const listLesson: any[] = [];
@@ -68,9 +68,8 @@ const Lesson = () => {
   };
 
   const openLesson = async (lessonId: number) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-
       await CodeSmoothApi.markLessonComplete(
         Number(router.query.lessonid),
         currentLesson?.isCompleted,
@@ -81,10 +80,10 @@ const Lesson = () => {
 
       setCurrentLesson(newLesson);
       router.push(`/lesson/${course?.id}/${lessonId}`);
-      setIsLoading(false);
     } catch (error: any) {
-      setErrorMessage(error.message);
+      dispatch(setSnackBar({ message: error.message, type: 'error' }));
     }
+    setIsLoading(false);
   };
 
   const onClickLesson = async (lessonId: number) => {

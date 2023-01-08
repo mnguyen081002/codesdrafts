@@ -18,11 +18,13 @@ import Button from '../../common/Button';
 import { setSnackBar } from '../../features/auth/appSlice';
 import {
   addCategory,
+  addLesson,
   deleteCategoryById,
   selectCourse,
   setCategoryTitle,
 } from '../../features/auth/LessonNavSlice';
 import { CourseCategoryType } from '../../shared/enum/category';
+import { generateLesson } from '../../utils/gen';
 import { generateId } from '../../utils/genId';
 
 interface CategoryMoreOptionsProps {
@@ -33,8 +35,11 @@ interface CategoryMoreOptionsProps {
 
 const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
   const [openDialogInputTitle, setOpenDialogInputTitle] = useState(false);
+  const [openDialogInputNewCategory, setOpenDialogInputNewCategory] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  React.useState<null | HTMLElement>(null);
   const [inputTitle, setInputTitle] = useState(props.category.title);
+  const [inputNewCate, setInputNewCate] = useState('');
   const course = useAppSelector<CourseResponse>(selectCourse);
   const openMore = Boolean(anchorEl);
 
@@ -52,8 +57,17 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
     setAnchorEl(null);
   };
 
+  const handleClickOpenDialogInputNewCategory = () => {
+    setOpenDialogInputNewCategory(true);
+    setAnchorEl(null);
+  };
+
   const handleCloseDialogInputTitle = () => {
     setOpenDialogInputTitle(false);
+  };
+
+  const handleCloseDialogNewCategory = () => {
+    setOpenDialogInputNewCategory(false);
   };
 
   const handleSaveTitle = async () => {
@@ -64,12 +78,14 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
       console.log(error);
     }
     setOpenDialogInputTitle(false);
+    setAnchorEl(null);
   };
 
   const handleDelete = async () => {
     try {
       await CodeSmoothApi.deleteCategoryById(props.category.id);
       dispatch(deleteCategoryById(props.category.id));
+      dispatch(setSnackBar({ message: 'Delete category success', type: 'success' }));
     } catch (error) {
       console.log(error);
     }
@@ -78,18 +94,42 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
 
   const handleAddCategory = async () => {
     try {
+      const catid = generateId(18);
+
       await CodeSmoothApi.createCategory(
-        inputTitle,
-        generateId(18),
+        inputNewCate,
+        catid,
         course.id,
         CourseCategoryType.SECTION,
       );
-      dispatch(addCategory({ title: inputTitle, id: generateId(18) }));
-      dispatch(setSnackBar({ message: 'Thêm danh mục thành công', type: 'success' }));
+      dispatch(
+        addCategory({ title: inputNewCate, id: catid, currentCategoryId: props.category.id }),
+      );
+      dispatch(setSnackBar({ message: 'Create category success', type: 'success' }));
       setAnchorEl(null);
     } catch (error: any) {
       console.log(error);
     }
+    setAnchorEl(null);
+    setOpenDialogInputNewCategory(false);
+  };
+
+  const handleAddLesson = async () => {
+    try {
+      const newLesson = generateLesson(props.category.id);
+      await CodeSmoothApi.saveLesson(newLesson);
+      dispatch(
+        addLesson({
+          category_id: props.category.id,
+          id: newLesson.id,
+          title: newLesson.title,
+        }),
+      );
+      dispatch(setSnackBar({ message: 'Create lesson success', type: 'success' }));
+    } catch (error: any) {
+      dispatch(setSnackBar({ message: error.message, type: 'error' }));
+    }
+    setAnchorEl(null);
   };
 
   return (props.editMode && props.isHoverParent) || openMore || openDialogInputTitle ? (
@@ -113,9 +153,10 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClickOpenDialogInputTitle}>Đổi tên</MenuItem>
-        <MenuItem onClick={handleDelete}>Xóa</MenuItem>
-        <MenuItem onClick={handleAddCategory}>Thêm danh mục</MenuItem>
+        <MenuItem onClick={handleClickOpenDialogInputNewCategory}>Add Category</MenuItem>
+        <MenuItem onClick={handleAddLesson}>Add Lesson</MenuItem>
+        <MenuItem onClick={handleClickOpenDialogInputTitle}>Rename</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
       <Dialog open={openDialogInputTitle} onClose={handleCloseDialogInputTitle}>
         <DialogTitle
@@ -143,8 +184,40 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
           <Button text="Cancel" onClick={handleCloseDialogInputTitle}></Button>
           <Button
             text="Save"
-            className="bg-light-secondary text-white"
+            className=" bg-light-primary text-white"
             onClick={handleSaveTitle}
+          ></Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialogInputNewCategory} onClose={handleCloseDialogNewCategory}>
+        <DialogTitle
+          sx={{
+            width: '500px',
+          }}
+        >
+          Input title for category
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Category title"
+            fullWidth
+            variant="standard"
+            autoComplete="off"
+            value={inputNewCate}
+            onChange={(e) => {
+              setInputNewCate(e.target.value);
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button text="Cancel" onClick={handleCloseDialogNewCategory}></Button>
+          <Button
+            text="Create"
+            className=" bg-light-primary text-white"
+            onClick={handleAddCategory}
           ></Button>
         </DialogActions>
       </Dialog>

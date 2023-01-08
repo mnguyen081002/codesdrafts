@@ -14,6 +14,50 @@ import type { ICodeComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import { BaseComponent } from './BaseComponent';
 
+function ResultExecuteTable(props) {
+  return (
+    <tr>
+      <td className=" border-b border-l border-slate-300">
+        <div className="flex justify-center">
+          {props.result.succeeded ? (
+            <Done
+              style={{
+                color: '#78cc0b',
+              }}
+            />
+          ) : (
+            <Clear />
+          )}
+        </div>
+      </td>
+      <td className=" border-b border-l border-slate-300">
+        <div className="flex justify-center">{JSON.stringify(props.result.input)}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.expected_output}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.actual_output}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.reason}</div>
+      </td>
+    </tr>
+  );
+}
+
 export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const [results, setResults] = useState<TestResult[]>([]);
   const [monacoInstance, setMonacoInstance] = useState<editor.IStandaloneCodeEditor | null>(null);
@@ -25,7 +69,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const [isSample, setIsSample] = useState(false);
   const dispatch = useAppDispatch();
 
-  const { isTest } = params.component.content;
+  const { isTest: isExercise } = params.component.content;
   const { executeCode } = params.component.content.judgeContent;
   const { testCode } = params.component.content.judgeContent;
   const { code } = params.component.content;
@@ -172,7 +216,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
     dispatch(
       setIsTest({
         index: params.index!,
-        isTest: !isTest,
+        isTest: !isExercise,
       }),
     );
   };
@@ -210,7 +254,11 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               </div>
               <div>
                 <span>Exercise</span>
-                <Checkbox checked={isTest} onChange={toggleIsTest} style={{ cursor: 'pointer' }} />
+                <Checkbox
+                  checked={isExercise}
+                  onChange={toggleIsTest}
+                  style={{ cursor: 'pointer' }}
+                />
                 <span>Sample</span>
                 <Checkbox
                   checked={isSample}
@@ -234,16 +282,16 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               options={options}
               language={lang === 'c++' ? 'c' : lang}
             />
-            {!params.component.isFocus && isTest && (
+            {!params.component.isFocus && isExercise && (
               <Button
                 text="Test"
-                className="mt-4 ml-3 rounded-normal bg-light-secondary px-8 py-2 font-bold text-white"
+                className="mt-5 rounded-sm border-none bg-light-primary font-semibold text-white"
                 onClick={handleRun}
               />
             )}
           </>
 
-          {params.component.isFocus && isTest && (
+          {params.component.isFocus && isExercise && (
             <>
               <span>Write test code here</span>
               <Editor
@@ -286,7 +334,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               </div>
             </>
           )}
-          {params.component.isFocus && isTest && isSample && (
+          {params.component.isFocus && isExercise && isSample && (
             <>
               <Editor
                 defaultLanguage={lang === 'c++' ? 'c' : lang}
@@ -323,43 +371,11 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
                     </tr>
                     {results.map((result, index) => {
                       return (
-                        <tr key={index}>
-                          <td
-                            className={` flex justify-center border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.succeeded ? <Done style={{ color: '#78cc0b' }} /> : <Clear />}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {JSON.stringify(result.input)}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.expected_output}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.actual_output}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.reason}
-                          </td>
-                        </tr>
+                        <ResultExecuteTable
+                          key={index}
+                          result={result}
+                          index={index}
+                        ></ResultExecuteTable>
                       );
                     })}
                   </tbody>

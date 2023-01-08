@@ -68,7 +68,6 @@ table {
 
 td {
   padding: 10px;
-  border: 2px solid #ddd;
 }
 
 input {
@@ -76,7 +75,7 @@ input {
   font-size: 0.85em;
   width: 100%;
   padding: 0.5em;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   background: #fafafa;
 }
 

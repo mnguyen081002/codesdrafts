@@ -7,7 +7,6 @@ import type { RootState } from '../../app/store';
 export interface ILessonPageNav {
   course: CourseResponse;
   categories: CategoryResponse[];
-  error: string;
 }
 
 const initialState: ILessonPageNav = {
@@ -18,8 +17,9 @@ const initialState: ILessonPageNav = {
     category: [],
     created_at: new Date(),
     deleted_at: null,
-    detail: '',
     is_published: false,
+    requirements: [],
+    will_learns: [],
     price: 0,
     skills: [],
     tags: [],
@@ -28,7 +28,6 @@ const initialState: ILessonPageNav = {
     updated_at: new Date(),
   },
   categories: [],
-  error: '',
 };
 
 const LessonNavSlice = createSlice({
@@ -96,22 +95,24 @@ const LessonNavSlice = createSlice({
       });
       state.categories = newCategories;
     },
-    addLesson(state, action: PayloadAction<{ id: number; title: string }>) {
+    addLesson(state, action: PayloadAction<{ id: number; title: string; category_id: number }>) {
       const { id, title } = action.payload;
       const copy = [...state.categories];
 
       const newCategories = copy.map((category) => {
-        if (category.id === id) {
-          category.lessons.push({ id: 0, title, isCompleted: false });
+        if (category.id === action.payload.category_id) {
+          category.lessons.push({ id, title, isCompleted: false });
         }
         return category;
       });
+
       state.categories = newCategories;
     },
     addCategory(
       state,
       action: PayloadAction<{
         id: number;
+        currentCategoryId: number;
         title: string;
         lesson?: {
           id: number;
@@ -127,12 +128,12 @@ const LessonNavSlice = createSlice({
         title,
         lessons: [],
       };
-
       if (lesson) {
         newCat.lessons.push(lesson);
       }
-
-      copy.push(newCat);
+      // add new category behind this one
+      const index = copy.findIndex((category) => category.id === action.payload.currentCategoryId);
+      copy.splice(index + 1, 0, newCat);
 
       state.categories = copy;
     },
