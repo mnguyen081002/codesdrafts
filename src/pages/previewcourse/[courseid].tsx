@@ -100,7 +100,7 @@ const PreviewCourse = () => {
       headerChildren={
         <div className="flex flex-1 justify-end px-10">
           <Link href={`/editcourse/${course?.id}/?draft=true`}>
-            <Button text="Chỉnh sửa" className="bg-light-primary px-4 font-semibold text-white" />
+            <Button text="Edit" className="bg-light-primary px-4 font-semibold text-white" />
           </Link>
         </div>
       }
@@ -147,10 +147,9 @@ const PreviewCourse = () => {
               <div className="mt-8 rounded-normal border border-slate-300 py-4 px-6">
                 <p className=" text-2xl font-bold">Những gì bạn sẽ được học</p>
                 <div className="mt-4 grid grid-cols-2 justify-between gap-2">
-                  <CourseWillLearnItem isDone={true} title="JavaScript Introduction" />
-                  <CourseWillLearnItem isDone={true} title="JavaScript Introduction" />
-                  <CourseWillLearnItem isDone={true} title="JavaScript Introductionnn" />
-                  <CourseWillLearnItem isDone={true} title="JavaScript Introduction" />
+                  {course?.will_learns.map((w, index) => (
+                    <CourseWillLearnItem key={index} isDone={true} title={w} />
+                  ))}
                 </div>
               </div>
               <div>

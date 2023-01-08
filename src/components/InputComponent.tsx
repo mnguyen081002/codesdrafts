@@ -174,7 +174,7 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
     editor.children = CustomEditor.deserializeFromHtml(params.component.content.html);
 
     setReload(!reload);
-  }, [params.component.content.html]);
+  }, []);
 
   return (
     <BaseComponent {...params}>
