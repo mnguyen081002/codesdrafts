@@ -285,7 +285,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   };
   return (
     <>
-      <BaseComponent className="mt-10" {...params}>
+      <BaseComponent {...params}>
         <div
           className={`rounded-md ${
             params.component.isFocus && 'border-[3px] border-light-primary'
