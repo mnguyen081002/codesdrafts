@@ -16,17 +16,21 @@ import { ComponentType } from '../../../shared/enum/component';
 import type { ILesson, ITextContent, LessonComponentProps } from '../../../shared/interface';
 import { Main } from '../../../templates/Main';
 import CustomEditor from '../../../utils/CustomEditor';
+import { vietnameseToSlug } from '../../../utils/global';
 
 function TableOfContentItem(props) {
   return (
-    <Link href={`#${props.content.title}`} className="flex flex-row items-center gap-2">
+    <Link
+      href={`#${vietnameseToSlug(props.content.title)}`}
+      className="flex flex-row items-center gap-2"
+    >
       <Lens
         style={{
           fontSize: '5px',
         }}
         className="text-light-primary"
       />
-      <p className="font-serif text-lg transition-colors hover:text-light-primary">
+      <p className="font-table text-lg transition-colors hover:text-light-primary">
         {props.content.title}
       </p>
     </Link>
@@ -156,6 +160,26 @@ const Lesson = () => {
     return tableOfContent;
   };
 
+  const getAnchor = (index: number) => {
+    // get value of anchor if component type is heading-two or heading-three or heading-four
+    const component = currentLesson?.components[index]!;
+
+    if (component.type !== ComponentType.Text) return '';
+
+    const content = component.content as ITextContent;
+    const arrayChild: any = CustomEditor.deserializeFromHtml(content.html);
+    if (
+      arrayChild[0].type !== 'heading-two' &&
+      arrayChild[0].type !== 'heading-three' &&
+      arrayChild[0].type !== 'heading-four'
+    ) {
+      return '';
+    }
+
+    const { text } = arrayChild[0].children[0];
+    return vietnameseToSlug(text);
+  };
+
   useEffect(() => {
     const { courseid, lessonid } = router.query;
 
@@ -231,7 +255,7 @@ const Lesson = () => {
               <div className="mt-8 flex flex-col gap-2">
                 {currentLesson?.components.map((component: LessonComponentProps, index: number) => {
                   return (
-                    <section key={index} id={index.toString()}>
+                    <section key={index} id={getAnchor(index) ?? index}>
                       <LessonComponent isReadOnly component={component} index={index} />
                     </section>
                   );

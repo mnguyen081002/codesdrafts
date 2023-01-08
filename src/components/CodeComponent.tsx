@@ -5,13 +5,15 @@ import type { editor } from 'monaco-editor';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
+import type { ExecuteResponse } from '../api/codesmooth-api';
 import { CodeSmoothApi } from '../api/codesmooth-api';
 import { useAppDispatch } from '../app/hooks';
 import Button from '../common/Button';
+import { CircleLoading } from '../common/Loading';
+import { setSnackBar } from '../features/auth/appSlice';
 import { setCode, setIsTest, setLanguage } from '../features/auth/LessonSlice';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentProps } from '../shared/interface';
-import type { TestResult } from '../utils/example';
 import { BaseComponent } from './BaseComponent';
 
 function ResultExecuteTable(props) {
@@ -26,7 +28,7 @@ function ResultExecuteTable(props) {
               }}
             />
           ) : (
-            <Clear />
+            <Clear className="text-light-error-content" />
           )}
         </div>
       </td>
@@ -58,14 +60,54 @@ function ResultExecuteTable(props) {
   );
 }
 
+const ExecuteResult: FC<{
+  executeRes: ExecuteResponse;
+}> = (props) => {
+  return props.executeRes.is_success ? (
+    <div className="mb-6 flex justify-center">
+      <table>
+        <caption className="py-8">
+          {
+            <span className="text-lg font-bold tracking-widest text-light-primary">{`${
+              props.executeRes.results.filter((i) => i.succeeded).length
+            }\t of \t ${props.executeRes.results.length}\t Tests Passed`}</span>
+          }
+        </caption>
+        <tbody>
+          <tr>
+            <td className="border border-slate-300 px-14 font-bold">Result</td>
+            <td className="border border-slate-300 px-14 font-bold">Input</td>
+            <td className="border border-slate-300 px-14 font-bold">Expected Output</td>
+            <td className="border border-slate-300 px-14 font-bold">Actual Output</td>
+            <td className="border border-slate-300 px-14 font-bold">Reason</td>
+          </tr>
+          {props.executeRes.results.map((result, index) => {
+            return (
+              <ResultExecuteTable key={index} result={result} index={index}></ResultExecuteTable>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div className="m-4 flex w-full flex-col">
+      <span className=" text-gray-600">Output</span>
+      <div className=" rounded-lg border border-light-error-content bg-light-grayDarker p-4">
+        <span className="whitespace-pre-line">{props.executeRes.error}</span>
+      </div>
+    </div>
+  );
+};
+
 export const CodeComponent: FC<ICodeComponentProps> = (params) => {
-  const [results, setResults] = useState<TestResult[]>([]);
+  const [executeRes, setExecuteRes] = useState<ExecuteResponse>();
   const [monacoInstance, setMonacoInstance] = useState<editor.IStandaloneCodeEditor | null>(null);
   const [monacoExecuteInstance, setMonacoExecuteInstance] =
     useState<editor.IStandaloneCodeEditor | null>(null);
   const [monacoTestInstance, setMonacoTestInstance] = useState<editor.IStandaloneCodeEditor | null>(
     null,
   );
+  const [isWaitingExecute, setIsWaitingExecute] = useState(false);
   const [isSample, setIsSample] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -79,8 +121,8 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const options: editor.IStandaloneEditorConstructionOptions = {
     selectionHighlight: false,
     lineNumbers: 'off',
-    readOnly: true,
-    domReadOnly: true,
+    readOnly: !params.component.content.isTest,
+    domReadOnly: !params.component.content.isTest,
     renderLineHighlight: 'none',
     cursorStyle: 'line',
     minimap: {
@@ -179,16 +221,22 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
     );
   };
 
-  const handleRun = () => {
-    CodeSmoothApi.execute({
-      language: lang,
-      code: monacoInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }),
-      executeCode:
-        monacoExecuteInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? executeCode,
-      testCode: monacoTestInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? testCode,
-    }).then((res) => {
-      setResults(res.data.data);
-    });
+  const handleRun = async () => {
+    setIsWaitingExecute(true);
+    try {
+      const res = await CodeSmoothApi.execute({
+        language: lang,
+        code: monacoInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }),
+        executeCode:
+          monacoExecuteInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? executeCode,
+        testCode: monacoTestInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? testCode,
+      });
+      setExecuteRes(res.data.data);
+    } catch (error: any) {
+      dispatch(setSnackBar({ message: error.message, type: 'error' }));
+    }
+
+    setIsWaitingExecute(false);
   };
 
   const handleCreateSample = () => {
@@ -284,8 +332,8 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
             />
             {!params.component.isFocus && isExercise && (
               <Button
-                text="Test"
-                className="mt-5 rounded-sm border-none bg-light-primary font-semibold text-white"
+                text="Run"
+                className="mt-5 rounded-sm border-none bg-light-primary font-semibold text-white hover:bg-light-tertiary hover:shadow-none"
                 onClick={handleRun}
               />
             )}
@@ -348,39 +396,16 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               />
             </>
           )}
-          {results?.length > 0 && (
-            <div className="mx-10 my-4 border-[2px] border-slate-300 pb-6">
-              <div className="flex justify-center">
-                <table>
-                  <caption className="py-8">
-                    {
-                      <span className="text-lg font-bold tracking-widest text-light-primary">{`${
-                        results.filter((i) => i.succeeded).length
-                      }\t of \t ${results.length}\t Tests Passed`}</span>
-                    }
-                  </caption>
-                  <tbody>
-                    <tr>
-                      <td className="border border-slate-300 px-14 font-semibold">Result</td>
-                      <td className="border border-slate-300 px-14 font-semibold">Input</td>
-                      <td className="border border-slate-300 px-14 font-semibold">
-                        Expected Output
-                      </td>
-                      <td className="border border-slate-300 px-14 font-semibold">Actual Output</td>
-                      <td className="border border-slate-300 px-14 font-semibold">Reason</td>
-                    </tr>
-                    {results.map((result, index) => {
-                      return (
-                        <ResultExecuteTable
-                          key={index}
-                          result={result}
-                          index={index}
-                        ></ResultExecuteTable>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+          {(isWaitingExecute || executeRes) && (
+            <div className="my-4 flex items-center justify-center border border-slate-300">
+              {isWaitingExecute ? (
+                <div className="flex h-16 items-center justify-center gap-2">
+                  <CircleLoading />
+                  <span className="font-semibold">Waiting for result...</span>
+                </div>
+              ) : (
+                <ExecuteResult executeRes={executeRes!}></ExecuteResult>
+              )}
             </div>
           )}
         </div>

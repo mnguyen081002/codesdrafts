@@ -3,13 +3,25 @@ import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import axiosClient from './axiosClient';
 
+export interface CodeSmoothApiResponseList<T> {
+  data: T[];
+  meta: Meta;
+  message: string;
+}
+
+export interface CodeSmoothApiResponse<T> {
+  data: T;
+  message: string;
+}
 interface ExecuteRequest {
   code: string | undefined;
   testCode: string | undefined;
 }
 
-interface ExecuteResponse {
-  data: TestResult[];
+export interface ExecuteResponse {
+  results: TestResult[];
+  is_success: boolean;
+  error?: string;
 }
 
 interface ExecuteRequest {
@@ -52,7 +64,7 @@ export const CodeSmoothApi = {
   },
 
   execute: ({ code, testCode, language, executeCode }: ExecuteRequest) => {
-    return axiosClient.post<ExecuteResponse>(`/api/execute/`, {
+    return axiosClient.post<CodeSmoothApiResponse<ExecuteResponse>>(`/api/execute/`, {
       code,
       testCode,
       executeCode,
@@ -153,17 +165,6 @@ export const CodeSmoothApi = {
     return response.data;
   },
 };
-
-export interface CodeSmoothApiResponseList<T> {
-  data: T[];
-  meta: Meta;
-  message: string;
-}
-
-export interface CodeSmoothApiResponse<T> {
-  data: T;
-  message: string;
-}
 
 export interface CourseResponse {
   id: number;

@@ -71,7 +71,7 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
           {props.editMode ? (
             <div className="absolute bottom-3 z-0 h-[70px] w-7 rounded-b-full border-l-2 border-b-2 border-black"></div>
           ) : (
-            <div className="absolute left-2 h-16 w-2 border-l border-black"></div>
+            <div className="absolute left-4 h-16 w-2 border-l border-black"></div>
           )}
           {!props.editMode && (
             <div className={`z-30 py-1 ${isSelecting ? 'bg-light-grayDarker' : 'bg-light-gray'}`}>

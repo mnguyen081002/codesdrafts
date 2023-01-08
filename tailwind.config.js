@@ -17,9 +17,9 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          primary: '#2b76ff',
+          primary: '#175cf9',
           secondary: '#007eff',
-          tertiary: '#0468cf',
+          tertiary: '#0037ff',
           gray: '#fafafa',
           grayDarker: '#e5e5e5',
           text: {
@@ -74,6 +74,9 @@ module.exports = {
       },
       borderColor: {
         light: { primary: '#63b3ed' },
+      },
+      fontFamily: {
+        table: ['Gelasio', 'sans-serif'],
       },
     },
   },
