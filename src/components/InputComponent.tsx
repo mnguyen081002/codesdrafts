@@ -251,7 +251,9 @@ export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
             setPlaceholder('');
             setHidden(false);
           }}
-          onMouseEnter={() => !params.isFocus && setPlaceholder('Start typing')}
+          onMouseEnter={() =>
+            !params.isFocus && !params.isReadOnly && setPlaceholder('Start typing')
+          }
           onMouseLeave={() => !params.isFocus && setPlaceholder('')}
           placeholder={placeholder}
           onKeyDown={onKeyDown}

@@ -11,7 +11,7 @@ interface IProps {
 const Button: FC<IProps> = (params) => {
   return (
     <button
-      className={`${params.className} flex items-center justify-center gap-2 rounded-normal border border-gray-400 px-3 py-2 transition duration-300 ease-in-out hover:shadow-xl`}
+      className={`flex items-center justify-center gap-2 rounded-sm px-3 py-2 transition duration-300 ease-in-out hover:shadow-xl ${params.className}`}
       onClick={params.onClick}
     >
       {params.fontIcon}

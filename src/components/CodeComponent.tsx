@@ -3,7 +3,7 @@ import { Clear, Done } from '@mui/icons-material';
 import Checkbox from '@mui/material/Checkbox';
 import type { editor } from 'monaco-editor';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CodeSmoothApi } from '../api/codesmooth-api';
 import { useAppDispatch } from '../app/hooks';
@@ -13,6 +13,50 @@ import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import { BaseComponent } from './BaseComponent';
+
+function ResultExecuteTable(props) {
+  return (
+    <tr>
+      <td className=" border-b border-l border-slate-300">
+        <div className="flex justify-center">
+          {props.result.succeeded ? (
+            <Done
+              style={{
+                color: '#78cc0b',
+              }}
+            />
+          ) : (
+            <Clear />
+          )}
+        </div>
+      </td>
+      <td className=" border-b border-l border-slate-300">
+        <div className="flex justify-center">{JSON.stringify(props.result.input)}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.expected_output}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.actual_output}</div>
+      </td>
+      <td
+        className={`border border-slate-300 px-14${
+          props.index === props.result.length - 1 && 'border-b'
+        }`}
+      >
+        <div className="flex justify-center">{props.result.reason}</div>
+      </td>
+    </tr>
+  );
+}
 
 export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const [results, setResults] = useState<TestResult[]>([]);
@@ -25,19 +69,61 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const [isSample, setIsSample] = useState(false);
   const dispatch = useAppDispatch();
 
-  const { isTest } = params.component.content;
+  const { isTest: isExercise } = params.component.content;
   const { executeCode } = params.component.content.judgeContent;
   const { testCode } = params.component.content.judgeContent;
   const { code } = params.component.content;
+
   let lang = params.component.content.language;
 
   const options: editor.IStandaloneEditorConstructionOptions = {
-    selectOnLineNumbers: true,
-    roundedSelection: false,
-    // readOnly: false,
+    selectionHighlight: false,
+    lineNumbers: 'off',
+    readOnly: true,
+    domReadOnly: true,
+    renderLineHighlight: 'none',
     cursorStyle: 'line',
-    // automaticLayout: false,
+    minimap: {
+      enabled: false,
+    },
+    scrollBeyondLastLine: false,
+    wordWrap: 'on',
+    wrappingStrategy: 'advanced',
+    fontWeight: 'bold',
+    overviewRulerLanes: 0,
+    padding: {
+      top: 10,
+      bottom: 10,
+    },
   };
+
+  const updateHeight = (instance: editor.IStandaloneCodeEditor | null) => {
+    if (!instance) {
+      return;
+    }
+    console.log('contentHeight monacoInstance', instance?.getContentHeight(), instance?.getValue());
+    const contentHeight = Math.min(800, instance.getContentHeight());
+
+    instance.layout({ height: contentHeight, width: 1090 });
+  };
+
+  useEffect(() => {
+    updateHeight(monacoInstance);
+    updateHeight(monacoTestInstance);
+    updateHeight(monacoExecuteInstance);
+  }, [monacoInstance, monacoTestInstance, monacoExecuteInstance]);
+
+  monacoInstance?.onDidContentSizeChange(() => {
+    updateHeight(monacoInstance);
+  });
+
+  monacoTestInstance?.onDidContentSizeChange(() => {
+    updateHeight(monacoTestInstance);
+  });
+
+  monacoExecuteInstance?.onDidContentSizeChange(() => {
+    updateHeight(monacoExecuteInstance);
+  });
 
   const onCodeMount = (editor: editor.IStandaloneCodeEditor) => {
     setMonacoInstance(editor);
@@ -96,9 +182,10 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const handleRun = () => {
     CodeSmoothApi.execute({
       language: lang,
-      code: monacoInstance?.getValue(),
-      executeCode: monacoExecuteInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }),
-      testCode: monacoTestInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }),
+      code: monacoInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }),
+      executeCode:
+        monacoExecuteInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? executeCode,
+      testCode: monacoTestInstance?.getValue({ preserveBOM: true, lineEnding: '\n' }) ?? testCode,
     }).then((res) => {
       setResults(res.data.data);
     });
@@ -129,7 +216,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
     dispatch(
       setIsTest({
         index: params.index!,
-        isTest: !isTest,
+        isTest: !isExercise,
       }),
     );
   };
@@ -156,7 +243,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
             params.component.isFocus && 'border-[3px] border-light-primary'
           }`}
         >
-          {params.component.isFocus && (
+          {params.component.isFocus && !params.isReadOnly && (
             <div className="py-3 px-4">
               <div className="flex justify-evenly">
                 <div>
@@ -167,7 +254,11 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               </div>
               <div>
                 <span>Exercise</span>
-                <Checkbox checked={isTest} onChange={toggleIsTest} style={{ cursor: 'pointer' }} />
+                <Checkbox
+                  checked={isExercise}
+                  onChange={toggleIsTest}
+                  style={{ cursor: 'pointer' }}
+                />
                 <span>Sample</span>
                 <Checkbox
                   checked={isSample}
@@ -180,9 +271,8 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               </div>
             </div>
           )}
-          <div>
+          <>
             <Editor
-              height="30vh"
               defaultLanguage={lang === 'c++' ? 'c' : lang}
               defaultValue={code}
               theme="vs-dark"
@@ -190,21 +280,22 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               value={code}
               onChange={onCodeChange}
               options={options}
-              language={lang}
+              language={lang === 'c++' ? 'c' : lang}
             />
-            {!params.component.isFocus && isTest && (
+            {!params.component.isFocus && isExercise && (
               <Button
                 text="Test"
-                className="mt-4 ml-3 rounded-normal bg-light-secondary px-8 py-2 font-bold text-white"
+                className="mt-5 rounded-sm border-none bg-light-primary font-semibold text-white"
+                onClick={handleRun}
               />
             )}
-          </div>
+          </>
 
-          {params.component.isFocus && isTest && (
+          {params.component.isFocus && isExercise && (
             <>
               <span>Write test code here</span>
               <Editor
-                height="30vh"
+                className="w-full"
                 defaultLanguage={lang === 'c++' ? 'c' : lang}
                 defaultValue={testCode}
                 theme="vs-dark"
@@ -243,20 +334,21 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
               </div>
             </>
           )}
-          {params.component.isFocus && isTest && isSample && (
-            <Editor
-              height="40vh"
-              defaultLanguage={lang === 'c++' ? 'c' : lang}
-              defaultValue={executeCode}
-              theme="vs-dark"
-              onMount={onExecuteCodeMount}
-              value={executeCode}
-              onChange={onExecuteCodeChange}
-              options={options}
-              language={lang === 'c++' ? 'c' : lang}
-            />
+          {params.component.isFocus && isExercise && isSample && (
+            <>
+              <Editor
+                defaultLanguage={lang === 'c++' ? 'c' : lang}
+                defaultValue={executeCode}
+                theme="vs-dark"
+                onMount={onExecuteCodeMount}
+                value={executeCode}
+                onChange={onExecuteCodeChange}
+                options={options}
+                language={lang === 'c++' ? 'c' : lang}
+              />
+            </>
           )}
-          {params.component.isFocus && results?.length > 0 && (
+          {results?.length > 0 && (
             <div className="mx-10 my-4 border-[2px] border-slate-300 pb-6">
               <div className="flex justify-center">
                 <table>
@@ -279,43 +371,11 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
                     </tr>
                     {results.map((result, index) => {
                       return (
-                        <tr key={index}>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.succeeded ? <Done style={{ color: '#91ff00' }} /> : <Clear />}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {JSON.stringify(result.input)}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.expected_output}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.actual_output}
-                          </td>
-                          <td
-                            className={`border-x border-slate-300 px-14${
-                              index === results.length - 1 && 'border-b'
-                            }`}
-                          >
-                            {result.reason}
-                          </td>
-                        </tr>
+                        <ResultExecuteTable
+                          key={index}
+                          result={result}
+                          index={index}
+                        ></ResultExecuteTable>
                       );
                     })}
                   </tbody>

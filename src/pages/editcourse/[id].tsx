@@ -8,11 +8,13 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Meta } from '@/layouts/Meta';
 import { Main } from '@/templates/Main';
 
-import type { CourseResponse } from '../../api/codesmooth-api';
+import type { CourseResponse, SaveCourseRequest } from '../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
+import { useAppDispatch } from '../../app/hooks';
 import Button from '../../common/Button';
 import { Tags } from '../../common/Tags';
 import CourseSkeleton from '../../components/Skeleton/CourseSkeleton';
+import { setSnackBar } from '../../features/auth/appSlice';
 import { generateId } from '../../utils/genId';
 
 const tagOptions = [
@@ -28,14 +30,15 @@ const tagOptions = [
   'JavaScript',
   'HTML',
 ];
-export const defaultCourse = {
+export const defaultCourse: CourseResponse = {
   id: generateId(18),
   name: '',
   thumbnail: '',
   summary: '',
   created_at: new Date(),
   updated_at: new Date(),
-  detail: '',
+  will_learns: [],
+  requirements: [],
   is_published: false,
   price: 0,
   skills: [],
@@ -53,6 +56,8 @@ const Course = (_) => {
   const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
+
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const loadCourse = async () => {
       setIsLoading(true);
@@ -82,6 +87,14 @@ const Course = (_) => {
     setCourse({ ...course, tags });
   };
 
+  const handleSetWillLearnTags = (tags: string[]) => {
+    setCourse({ ...course, will_learns: tags });
+  };
+
+  const handleSetRequirementTags = (tags: string[]) => {
+    setCourse({ ...course, requirements: tags });
+  };
+
   const handleDeleteCourse = async () => {
     try {
       await CodeSmoothApi.deleteCourseById(course.id!);
@@ -89,19 +102,19 @@ const Course = (_) => {
     } catch (error) {
       alert('Error');
     }
+    dispatch(setSnackBar({ message: 'Delete success', type: 'success' }));
   };
 
   const handleSaveCourse = async () => {
     setIsDraft(true);
 
-    let newCourse = { ...course };
+    let newCourse: SaveCourseRequest = { ...course };
     if (thumbnailUpload) {
       const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
       newCourse = { ...newCourse, thumbnail: uploadRes.data.urls[0] };
     }
-    // TODO: loading save
     CodeSmoothApi.saveCourse(newCourse).then(() => {
-      alert('Saved');
+      dispatch(setSnackBar({ message: 'Save success', type: 'success' }));
     });
   };
 
@@ -109,11 +122,11 @@ const Course = (_) => {
     <Main
       meta={<Meta title={course.id!.toString()} description="Lorem ipsum" />}
       headerChildren={
-        <div className="mr-28 flex flex-1 justify-end">
+        <div className="mr-24 flex flex-1 justify-end">
           <Button
             onClick={handleSaveCourse}
             text="Save"
-            className="bg-light-primary text-white transition duration-300 ease-in-out hover:scale-110 hover:bg-sky-500"
+            className="rounded-sm border-none bg-light-primary text-white"
           />
         </div>
       }
@@ -223,13 +236,19 @@ const Course = (_) => {
                 placeholder="Who is this course for?"
                 className="rounded-normal border border-slate-300 bg-white pl-8 text-base outline-none placeholder:text-slate-400"
               />
-              <ReactTextareaAutosize
-                value={course.detail}
-                onChange={(e) => {
-                  setCourse({ ...course, detail: e.target.value });
-                }}
+              <Tags
+                value={course.will_learns}
                 placeholder="What will students learn in this course?"
-                className="resize-none rounded-normal border border-slate-300 bg-white py-2 pl-8 text-base outline-none placeholder:text-slate-400"
+                setValue={(value) => {
+                  handleSetWillLearnTags(value);
+                }}
+              />
+              <Tags
+                value={course.requirements}
+                placeholder="What requirements do students need to take this course?"
+                setValue={(value) => {
+                  handleSetRequirementTags(value);
+                }}
               />
               <Tags
                 options={tagOptions}
@@ -238,26 +257,25 @@ const Course = (_) => {
                 setValue={(value) => {
                   handleSetTags(value);
                 }}
-                // className="pl-8 rounded-normal outline-none text-base bg-white placeholder-slate-400 border border-slate-300"
               />
               <div className="flex w-full flex-col">
                 <span className="text-lg font-semibold uppercase tracking-widest text-slate-500">
                   Lessons
                 </span>
                 <div className="flex w-full items-center justify-center">
-                  <Link
-                    href={`/editlesson/${course.id}/${queryLessonPage}`}
-                    className="flex w-60 items-center justify-center rounded-normal border border-slate-400 py-2 transition duration-300 hover:scale-110 hover:bg-slate-100"
-                  >
-                    <span className="text-xs uppercase">Edit Lessons</span>
-                    <EditIcon style={{ fontSize: '18px', marginLeft: '10px' }} />
+                  <Link href={`/editlesson/${course.id}/${queryLessonPage}`}>
+                    <Button
+                      fontIcon={<EditIcon style={{ fontSize: '18px', marginLeft: '10px' }} />}
+                      text="Edit Lesson"
+                      className="border border-slate-400 text-xs uppercase hover:bg-slate-100 hover:shadow-none"
+                    />
                   </Link>
                 </div>
               </div>
               {isDraft && (
                 <div className="flex w-full items-center justify-center">
                   <Button
-                    className="rounded-normal border border-slate-400 bg-red-500 py-2 text-xs uppercase text-white transition duration-300 ease-in-out hover:bg-red-700"
+                    className="rounded-normal bg-red-500 text-xs uppercase text-white transition duration-300 ease-in-out hover:bg-red-700"
                     text="Delete Course"
                     onClick={handleDeleteCourse}
                   />

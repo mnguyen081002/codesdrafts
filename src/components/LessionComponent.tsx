@@ -30,6 +30,7 @@ export const LessonComponent: FC<IComponentProps> = (params) => {
           component={params.component as ICodeComponent}
           index={params.index}
           isFocus={params.isFocus}
+          isReadOnly={params.isReadOnly}
         />
       );
     default:

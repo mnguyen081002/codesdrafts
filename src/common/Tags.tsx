@@ -6,7 +6,7 @@ interface TagsProps {
   className?: string;
   setValue?: (value: string[]) => void;
   value: string[];
-  options: string[];
+  options?: string[];
   placeholder?: string;
 }
 
@@ -18,7 +18,7 @@ interface AutocompleteProps<T, Multiple extends boolean | undefined> {
   multiple: Multiple;
   id?: string;
   filterSelectedOptions: boolean;
-  options: string[];
+  options?: string[];
   getOptionLabel: (option: string) => string;
   placeholder?: string;
   value: any;
@@ -38,9 +38,34 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
   const handleFocus = (focus: boolean) => {
     setIsFocused(focus);
   };
+
+  const handleAdd = (tag: string) => {
+    if (props.setValue) {
+      props.value.push(tag);
+      props.setValue(props.value);
+    }
+    handleFocus(false);
+  };
+
+  const handleEnter = (e) => {
+    if (props.options) {
+      return;
+    }
+
+    if (props.value.includes(inputValue)) {
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      handleAdd(inputValue);
+      setInputValue('');
+      e.currentTarget.value = '';
+    }
+  };
+
   return (
     <div
-      className="relative flex items-center rounded-md border border-slate-300 py-1 "
+      className="relative flex items-center  rounded-md border border-slate-300 py-1 px-5"
       onFocus={() => handleFocus(true)}
       tabIndex={100}
       onBlur={(e) => {
@@ -57,22 +82,22 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
     >
       <div className="flex h-full w-full flex-row flex-wrap items-center">
         {props.value instanceof Array ? (
-          props.value.map((tag) => {
+          props.value.map((tag, index) => {
             return (
               <div
-                key={tag}
+                key={index}
                 className="ml-2 flex h-7 items-center justify-center rounded-full bg-gray-200 px-3"
               >
                 <span className="whitespace-nowrap text-sm font-medium text-gray-700">{tag}</span>
-                <div className="ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-slate-300">
-                  <ClearIcon
-                    style={{ color: '#fff', fontSize: '14px' }}
-                    onClick={() => {
-                      if (props.setValue) {
-                        props.setValue(props.value.filter((t) => t !== tag));
-                      }
-                    }}
-                  />
+                <div
+                  className="ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-slate-300"
+                  onClick={() => {
+                    if (props.setValue) {
+                      props.setValue(props.value.filter((t) => t !== tag));
+                    }
+                  }}
+                >
+                  <ClearIcon style={{ color: '#fff', fontSize: '14px' }} />
                 </div>
               </div>
             );
@@ -83,10 +108,11 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
         <input
           type="text"
           placeholder={props.placeholder}
-          className="flex-1 border-none bg-white pl-3"
+          className="flex-1 border-none bg-white pl-3 placeholder:text-base placeholder:text-slate-400"
           onChange={handleInputChange}
+          onKeyDown={handleEnter}
         />
-        {isFocused && (
+        {isFocused && props.options && (
           <div className="absolute top-10 h-40 w-full overflow-y-scroll border border-slate-300 bg-white">
             {props.options
               .filter((tag) => {
@@ -100,13 +126,7 @@ export function Autocomplete2<T, Multiple extends boolean | undefined>(
                   <div
                     key={tag}
                     className="cursor-pointer px-3 py-2 text-sm font-normal hover:bg-gray-200"
-                    onClick={(_) => {
-                      if (props.setValue) {
-                        props.value.push(tag);
-                        props.setValue(props.value);
-                      }
-                      handleFocus(false);
-                    }}
+                    onClick={() => handleAdd(tag)}
                   >
                     {tag}
                   </div>

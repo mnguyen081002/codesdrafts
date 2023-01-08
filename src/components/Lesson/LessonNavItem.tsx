@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { CodeSmoothApi } from '../../api/codesmooth-api';
 import { useAppDispatch } from '../../app/hooks';
+import { setSnackBar } from '../../features/auth/appSlice';
 import { addLesson, deleteLessonById } from '../../features/auth/LessonNavSlice';
 import { generateLesson } from '../../utils/gen';
 import LessonMoreOptions from './LessonMoreOptions';
@@ -46,7 +47,7 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
       await CodeSmoothApi.deleteLessonById(props.lesson.id);
       dispatch(deleteLessonById(props.lesson.id));
     } catch (error: any) {
-      console.log(error);
+      setSnackBar({ message: error.message, type: 'error' });
     }
   };
 
@@ -65,7 +66,7 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div className="relative flex min-h-[2rem] flex-row items-center">
+      <div className="flex min-h-[2rem] flex-row items-center">
         <div className="flex items-center">
           {props.editMode ? (
             <div className="absolute bottom-3 z-0 h-[70px] w-7 rounded-b-full border-l-2 border-b-2 border-black"></div>

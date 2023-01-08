@@ -25,6 +25,14 @@ module.exports = {
           text: {
             primary: '#585b63',
           },
+          error: {
+            main: '#FF4D49',
+            background: '#ffe9e9',
+            content: '#e64542',
+          },
+          warning: {
+            main: '#FDB528',
+          },
         },
 
         dark: { 90: '#1e1e27' },

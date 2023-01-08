@@ -1,4 +1,4 @@
-import { CheckCircle } from '@mui/icons-material';
+import { CheckCircle, ErrorOutlineOutlined } from '@mui/icons-material';
 import { Alert, Snackbar } from '@mui/material';
 import Link from 'next/link';
 import type { FC, PropsWithChildren, ReactNode, SyntheticEvent } from 'react';
@@ -22,7 +22,7 @@ export const Header: FC<PropsWithChildren> = (props) => {
     <nav className="fixed top-0 z-10 flex h-14 w-full items-center border-0 border-b border-solid border-gray-300 bg-white shadow-md transition duration-300 ease-in-out">
       <Link href="/" className="flex items-center justify-start gap-2 px-2">
         <img src="/logo-96.png" alt="Logo" className="ml-4 h-8 w-8" />
-        <span className="text-lg font-bold text-light-text-primary">Code Smooth</span>
+        <span className="text-lg font-bold">Code Smooth</span>
       </Link>
       <div className="h-full flex-row pl-8">
         <Navigate />
@@ -61,15 +61,31 @@ const CustomSnackBar = () => {
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={snackbar.openSnackbar}
-          autoHideDuration={2000}
+          autoHideDuration={3000}
           onClose={handleClose}
         >
           <div className="flex h-14 w-72 items-center justify-start gap-4 rounded-lg border border-gray-300 bg-white py-3 px-4 shadow-forfun">
             <CheckCircle className="text-green-500" />
-            <span>Success</span>
+            <span>{snackbar.message}</span>
           </div>
         </Snackbar>
       );
+
+    case 'error':
+      return (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={snackbar.openSnackbar}
+          autoHideDuration={3000}
+          onClose={handleClose}
+        >
+          <div className="flex h-14 w-72 items-center justify-start gap-4 rounded-lg border border-gray-300 bg-light-error-background py-3 px-4 shadow-forfun">
+            <ErrorOutlineOutlined className="text-light-error-main" />
+            <span className="text-light-error-content">{snackbar.message}</span>
+          </div>
+        </Snackbar>
+      );
+
     default:
       return (
         <Snackbar open={snackbar.openSnackbar} autoHideDuration={6000} onClose={handleClose}>
@@ -85,11 +101,7 @@ const Main = (props: IMainProps) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log('!!!!!!!!!!!!!!!!');
-
     if (progress === 100) {
-      console.log('clear1');
-
       setProgress(0);
     }
     const timer = setInterval(() => {
@@ -119,9 +131,9 @@ const Main = (props: IMainProps) => {
       <Header>{props.headerChildren}</Header>
       <div className="flex flex-col items-center bg-white pt-14">{props.children}</div>
       {props.isLoading && (
-        <div className="fixed top-0 left-0 z-50 h-1 w-full animate-pulse bg-gradient-to-r from-blue-200 to-blue-400">
+        <div className="fixed top-0 left-0 z-50 h-1 w-full">
           <div
-            className="h-full w-[0%] bg-blue-600 transition-all"
+            className="h-full w-[0%] bg-blue-700 transition-all"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
