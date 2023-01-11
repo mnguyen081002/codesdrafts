@@ -29,6 +29,7 @@ export interface IBaseComponentProps {
   className?: string;
   isFocus?: boolean;
   isReadOnly?: boolean;
+  baseRef?: any;
 }
 export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;

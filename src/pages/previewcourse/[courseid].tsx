@@ -108,7 +108,7 @@ const PreviewCourse = () => {
     >
       {isLoaded ? (
         <div className="mt-10 flex w-full justify-center">
-          <div className="flex w-[65%] flex-row">
+          <div className="flex w-[80%] flex-row">
             <div className="w-[70%]">
               <div>
                 <div className="flex items-center justify-between">

@@ -76,6 +76,7 @@ export const BaseComponent: FC<IBaseComponentProps> = (params) => {
   };
   return (
     <div
+      ref={params.baseRef}
       className={`flex cursor-text flex-col ${params.className}`}
       draggable={!params.isReadOnly && draggable}
       onMouseEnter={onMouseEnter}

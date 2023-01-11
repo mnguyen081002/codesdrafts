@@ -211,17 +211,13 @@ const Lesson = () => {
   return (
     <Main meta={<Meta title={course?.id.toString() || ''} description="Lorem ipsum" />}>
       <div className="flex h-full w-full justify-start">
-        <div className="fixed h-full w-[15%] bg-light-gray">
-          <div className="h-[18%]">
+        <div className="fixed h-full w-[20%] bg-light-gray">
+          <div>
             <img src={`${course?.thumbnail}`} alt="" />
           </div>
-          <LessonNav
-            className="h-[75%]"
-            onClickLesson={onClickLesson}
-            categories={course?.category}
-          />
+          <LessonNav onClickLesson={onClickLesson} categories={course?.category} />
         </div>
-        <div className="ml-[15%] flex w-[85%] justify-center transition-all">
+        <div className="ml-[20%] flex justify-center transition-all">
           {!isLoading ? (
             <div className="my-10 flex w-[70%] flex-col">
               <p className="text-4xl font-semibold">{currentLesson?.title}</p>

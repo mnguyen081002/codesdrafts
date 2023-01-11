@@ -12,7 +12,7 @@ export interface ILessonNav {
 }
 export const LessonNav: FC<ILessonNav> = (props) => {
   return (
-    <div className={`${props.className} flex flex-col overflow-y-scroll pb-10`}>
+    <div className={`${props.className} flex flex-1 flex-col overflow-y-auto pb-10`}>
       {props.categories?.map((category, index) => {
         return (
           <CategoryNav
