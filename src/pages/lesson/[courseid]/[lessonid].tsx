@@ -217,7 +217,7 @@ const Lesson = () => {
           </div>
           <LessonNav onClickLesson={onClickLesson} categories={course?.category} />
         </div>
-        <div className="ml-[20%] flex justify-center transition-all">
+        <div className="ml-[20%] flex flex-1 justify-center transition-all">
           {!isLoading ? (
             <div className="my-10 flex w-[70%] flex-col">
               <p className="text-4xl font-semibold">{currentLesson?.title}</p>
@@ -293,7 +293,7 @@ const Lesson = () => {
                   ) : (
                     <div></div>
                   )}
-                  {getNextLesson() && (
+                  {getNextLesson() ? (
                     <Button
                       backIcon={<ArrowForward />}
                       className={`rounded-sm border-none bg-light-primary font-semibold text-white`}
@@ -304,6 +304,11 @@ const Lesson = () => {
                         }
                         openLesson(getNextLesson().id);
                       }}
+                    />
+                  ) : (
+                    <Button
+                      className={`rounded-sm border-none bg-light-primary font-semibold text-white`}
+                      text="Hoàn thành"
                     />
                   )}
                 </div>

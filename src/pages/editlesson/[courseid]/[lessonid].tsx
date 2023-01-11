@@ -14,7 +14,12 @@ import Button from '../../../common/Button';
 import { LessonComponent } from '../../../components/LessionComponent';
 import { LessonNav } from '../../../components/Lesson/LessonNav';
 import { setSnackBar } from '../../../features/auth/appSlice';
-import { selectCategories, selectCourse, setCourse } from '../../../features/auth/LessonNavSlice';
+import {
+  selectActionCount,
+  selectCategories,
+  selectCourse,
+  setCourse,
+} from '../../../features/auth/LessonNavSlice';
 import {
   onDrag,
   resetLesson,
@@ -38,58 +43,60 @@ const EditLesson = () => {
   const dragItemOverRef = useRef<any>(null);
   const course = useAppSelector<CourseResponse>(selectCourse);
   const categories = useAppSelector<CategoryResponse[]>(selectCategories);
+  const actionCount = useAppSelector<number>(selectActionCount);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  console.log('Lesson', lesson);
   const dispatch = useAppDispatch();
 
   const router = useRouter();
   // TODO: loading state
-  useEffect(() => {
-    const handleLoad = async () => {
-      if (router.isReady) {
-        const { courseid, lessonid, draft } = router.query;
-        const cat: CategoryResponse[] = [];
-        let newLesson: ILesson;
+  const handleLoad = async () => {
+    if (router.isReady) {
+      const { courseid, lessonid, draft } = router.query;
+      const cat: CategoryResponse[] = [];
+      let newLesson: ILesson;
 
-        try {
-          const res = await CodeSmoothApi.getLessonById(Number(lessonid));
-          newLesson = res.data;
-        } catch (error) {
-          const cateId = generateId(18);
-          newLesson = {
-            id: Number(lessonid),
-            course_category_id: cateId,
-            isCompleted: false,
-            components: [
-              {
-                content: {
-                  html: '',
-                },
-                type: ComponentType.Text,
+      try {
+        const res = await CodeSmoothApi.getLessonById(Number(lessonid));
+        newLesson = res.data;
+      } catch (error) {
+        const cateId = generateId(18);
+        newLesson = {
+          id: Number(lessonid),
+          course_category_id: cateId,
+          isCompleted: false,
+          order: 0,
+          components: [
+            {
+              content: {
+                html: '',
               },
-            ],
-            summary: '',
-            title: 'New Lesson',
-          };
+              type: ComponentType.Text,
+            },
+          ],
+          summary: '',
+          title: 'New Lesson',
+        };
 
-          cat.push({
-            id: cateId,
-            title: 'New Category',
-            lessons: [newLesson],
-          });
-        }
-        dispatch(setLesson(newLesson));
-        const res = await CodeSmoothApi.getCourseById(Number(courseid));
-        if (cat.length > 0) {
-          res.data.category = cat;
-        }
-
-        dispatch(setCourse(res.data));
+        cat.push({
+          id: cateId,
+          order: 0,
+          title: 'New Category',
+          lessons: [newLesson],
+        });
       }
-    };
+      dispatch(setLesson(newLesson));
+      const res = await CodeSmoothApi.getCourseById(Number(courseid));
+      if (cat.length > 0) {
+        res.data.category = cat;
+      }
+
+      dispatch(setCourse(res.data));
+    }
+  };
+  useEffect(() => {
     handleLoad();
-  }, [router.isReady]);
+  }, [router.isReady, router.query, actionCount]);
 
   const onClickLesson = async (lessonId: number) => {
     setIsLoading(true);
@@ -116,61 +123,6 @@ const EditLesson = () => {
 
     setIsLoading(false);
   };
-
-  // const onCategoryChange = (cate: string, cate_id: number) => {
-  //   for (let i = 0; i < categories.length; i++) {
-  //     if (categories[i]!.id === cate_id) {
-  //       categories[i]!.title = cate;
-  //       break;
-  //     }
-  //   }
-  // };
-
-  // const onAddLesson = async (categoryId: number) => {
-  //   const newLesson = generateLesson(categoryId);
-  //   const res = await CodeSmoothApi.saveLesson(newLesson);
-
-  //   categories.forEach((cate) => {
-  //     if (cate?.id === categoryId) {
-  //       cate?.lessons.push({ id: res.data.id, title: 'New Lesson', isCompleted: false });
-  //     }
-  //   });
-
-  //   dispatch(setCategories(categories));
-  // };
-
-  // TODO: update lesson title
-
-  // categories.forEach((cate) => {
-  //   cate?.lessons.forEach((l) => {
-  //     if (l.id === lesson.id) {
-  //       l.title = lesson.title;
-  //     }
-  //   });
-  // });
-
-  // const onDeleteCategory = async (categoryId: number) => {
-  //   try {
-  //     await CodeSmoothApi.deleteCategoryById(categoryId);
-  //     const newCategory = categories.filter((cate) => cate?.id !== categoryId);
-  //     dispatch(setCategories(newCategory));
-  //   } catch (error: any) {
-  //     setErrorMessage(error.message);
-  //   }
-  // };
-
-  // const onDeleteLesson = async (lessonId: number) => {
-  //   try {
-  //     await CodeSmoothApi.deleteLessonById(lessonId);
-  //     categories.forEach((cate) => {
-  //       const newLessons = cate?.lessons.filter((l) => l.id !== lessonId);
-  //       cate!.lessons = newLessons!;
-  //     });
-  //     dispatch(setCategories(categories));
-  //   } catch (error: any) {
-  //     setErrorMessage(error.message);
-  //   }
-  // };
 
   return (
     <Main

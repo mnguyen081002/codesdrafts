@@ -133,9 +133,9 @@ const Course = (_) => {
     >
       <div className="mt-10 flex w-full justify-center">
         {!isLoading ? (
-          <div className="w-[50%]">
+          <div className=" w-[50%]">
             <div className="flex h-60 justify-start py-2">
-              <div className="w-[50%] px-5">
+              <div className="h-full w-[50%] px-5">
                 {!thumbnailUpload && !course.thumbnail ? (
                   <div className="relative flex h-full items-center justify-center rounded-normal bg-gradient-to-bl from-sky-100 to-blue-400">
                     <input
@@ -153,7 +153,7 @@ const Course = (_) => {
                   </div>
                 ) : (
                   <div
-                    className="relative"
+                    className="relative h-full"
                     onMouseEnter={() => setIsHoverUploadImage(true)}
                     onMouseLeave={() => setIsHoverUploadImage(false)}
                   >

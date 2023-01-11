@@ -51,6 +51,7 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
             <ExpandMore />
           </div>
           <CategoryMoreOptions
+            index={props.index}
             category={props.category}
             editMode={props.editMode}
             isHoverParent={isHover}
@@ -59,12 +60,13 @@ export const CategoryNav: FC<CategoryNavProps> = (props) => {
       </div>
       <div className={`flex flex-col`}>
         {isExpand &&
-          props.category.lessons.map((l) => {
+          props.category.lessons.map((l, index) => {
             return (
               <LessonNavItem
                 editMode={props.editMode}
                 course_category_id={props.category.id}
                 lesson={l}
+                index={index}
                 onClickLesson={props.onClickLesson}
                 key={l.id}
               />

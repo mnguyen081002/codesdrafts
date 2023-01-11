@@ -27,7 +27,5 @@ export function vietnameseToSlug(input: string): string {
   // Thay thế khoảng trắng bằng gạch ngang
   input = input.replace(/\s+/g, '-');
 
-  console.log(input);
-
   return input;
 }
