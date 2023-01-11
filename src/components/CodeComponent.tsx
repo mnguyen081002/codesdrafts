@@ -3,7 +3,7 @@ import { Clear, Done } from '@mui/icons-material';
 import Checkbox from '@mui/material/Checkbox';
 import type { editor } from 'monaco-editor';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { ExecuteResponse } from '../api/codesmooth-api';
 import { CodeSmoothApi } from '../api/codesmooth-api';
@@ -65,7 +65,7 @@ const ExecuteResult: FC<{
 }> = (props) => {
   return props.executeRes.is_success ? (
     <div className="mb-6 flex justify-center">
-      <table>
+      <table className="w-[70%]">
         <caption className="py-8">
           {
             <span className="text-lg font-bold tracking-widest text-light-primary">{`${
@@ -75,11 +75,11 @@ const ExecuteResult: FC<{
         </caption>
         <tbody>
           <tr>
-            <td className="border border-slate-300 px-14 font-bold">Result</td>
-            <td className="border border-slate-300 px-14 font-bold">Input</td>
-            <td className="border border-slate-300 px-14 font-bold">Expected Output</td>
-            <td className="border border-slate-300 px-14 font-bold">Actual Output</td>
-            <td className="border border-slate-300 px-14 font-bold">Reason</td>
+            <td className="border border-slate-300 px-8 font-bold">Result</td>
+            <td className="border border-slate-300 px-8 font-bold">Input</td>
+            <td className="border border-slate-300 px-8 font-bold">Expected Output</td>
+            <td className="border border-slate-300 px-8 font-bold">Actual Output</td>
+            <td className="border border-slate-300 px-8 font-bold">Reason</td>
           </tr>
           {props.executeRes.results.map((result, index) => {
             return (
@@ -115,7 +115,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   const { executeCode } = params.component.content.judgeContent;
   const { testCode } = params.component.content.judgeContent;
   const { code } = params.component.content;
-
+  const ref = useRef<HTMLDivElement>(null);
   let lang = params.component.content.language;
 
   const options: editor.IStandaloneEditorConstructionOptions = {
@@ -145,8 +145,7 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
     }
     console.log('contentHeight monacoInstance', instance?.getContentHeight(), instance?.getValue());
     const contentHeight = Math.min(800, instance.getContentHeight());
-
-    instance.layout({ height: contentHeight, width: 1090 });
+    instance.layout({ height: contentHeight, width: ref.current?.offsetWidth! });
   };
 
   useEffect(() => {
@@ -285,9 +284,9 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
   };
   return (
     <>
-      <BaseComponent {...params}>
+      <BaseComponent baseRef={ref} {...params}>
         <div
-          className={`rounded-md ${
+          className={`overflow-hidden ${
             params.component.isFocus && 'border-[3px] border-light-primary'
           }`}
         >

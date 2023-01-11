@@ -39,7 +39,7 @@ const Teach = () => {
 
   return (
     <>
-      <div className="mt-16 grid grid-cols-5 flex-wrap items-center justify-center gap-5">
+      <div className="mt-16 grid grid-cols-5 flex-wrap items-center justify-center gap-5 px-7">
         <Link
           href={`/editcourse/${generateId(18)}`}
           className="flex h-[370px] w-72 cursor-pointer flex-col items-center justify-center rounded border border-gray-200 bg-gray-200 duration-500 hover:shadow-lg"
