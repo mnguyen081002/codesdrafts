@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import React from 'react';
 
 import type { CategoryResponse } from '../../api/codesmooth-api';
 import { CategoryNav } from './CategoryNav';

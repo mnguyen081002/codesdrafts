@@ -8,6 +8,7 @@ interface LessonMoreOptionsProps {
   isHoverParent?: boolean;
   lesson: { title: string; id: number };
   onDeleteLesson?: (lesson: number) => void;
+  setIsHoverParent: any;
 }
 
 const LessonMoreOptions: FC<LessonMoreOptionsProps> = (props) => {
@@ -16,17 +17,21 @@ const LessonMoreOptions: FC<LessonMoreOptionsProps> = (props) => {
   const openMore = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    event.stopPropagation();
   };
-  const handleClose = () => {
+  const handleClose = (event: any) => {
     setAnchorEl(null);
+    event.stopPropagation();
+    props.setIsHoverParent(false);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (event: any) => {
     props.onDeleteLesson?.(props.lesson.id);
     setAnchorEl(null);
+    event.stopPropagation();
   };
 
-  return (props.editMode && props.isHoverParent) || openMore || openDialogInputTitle ? (
+  return props.editMode || openMore || openDialogInputTitle ? (
     <>
       <button
         className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition duration-200 hover:bg-slate-400 hover:bg-opacity-10 hover:text-light-primary`}

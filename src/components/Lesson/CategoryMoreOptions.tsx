@@ -17,9 +17,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Button from '../../common/Button';
 import { setSnackBar } from '../../features/auth/appSlice';
 import {
-  addCategory,
-  addLesson,
   deleteCategoryById,
+  incrementActionCount,
   selectCourse,
   setCategoryTitle,
 } from '../../features/auth/LessonNavSlice';
@@ -31,6 +30,7 @@ interface CategoryMoreOptionsProps {
   editMode?: boolean;
   isHoverParent?: boolean;
   category: CategoryResponse;
+  index: number;
 }
 
 const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
@@ -83,13 +83,18 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
 
   const handleDelete = async () => {
     try {
+      if (course.category.length === 1) {
+        dispatch(setSnackBar({ message: 'Can not delete last category', type: 'error' }));
+        return;
+      }
       await CodeSmoothApi.deleteCategoryById(props.category.id);
       dispatch(deleteCategoryById(props.category.id));
       dispatch(setSnackBar({ message: 'Delete category success', type: 'success' }));
     } catch (error) {
       console.log(error);
+    } finally {
+      setAnchorEl(null);
     }
-    setAnchorEl(null);
   };
 
   const handleAddCategory = async () => {
@@ -101,14 +106,16 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
         catid,
         course.id,
         CourseCategoryType.SECTION,
+        props.index + 1,
       );
-      dispatch(
-        addCategory({ title: inputNewCate, id: catid, currentCategoryId: props.category.id }),
-      );
+      // dispatch(
+      //   addCategory({ title: inputNewCate, id: catid, currentCategoryId: props.category.id }),
+      // );
+      dispatch(incrementActionCount());
       dispatch(setSnackBar({ message: 'Create category success', type: 'success' }));
       setAnchorEl(null);
     } catch (error: any) {
-      console.log(error);
+      dispatch(setSnackBar({ message: 'Create category failed', type: 'error' }));
     }
     setAnchorEl(null);
     setOpenDialogInputNewCategory(false);
@@ -117,19 +124,23 @@ const CategoryMoreOptions: FC<CategoryMoreOptionsProps> = (props) => {
   const handleAddLesson = async () => {
     try {
       const newLesson = generateLesson(props.category.id);
-      await CodeSmoothApi.saveLesson(newLesson);
-      dispatch(
-        addLesson({
-          category_id: props.category.id,
-          id: newLesson.id,
-          title: newLesson.title,
-        }),
-      );
-      dispatch(setSnackBar({ message: 'Create lesson success', type: 'success' }));
+      await CodeSmoothApi.addLesson({ ...newLesson, order: 0 });
+      // dispatch(
+      //   addLesson({
+      //     category_id: props.category.id,
+      //     id: newLesson.id,
+      //     title: newLesson.title,
+      //     index: 1,
+      //   }),
+      // );
+
+      dispatch(setSnackBar({ message: 'Create category success', type: 'success' }));
+      setAnchorEl(null);
     } catch (error: any) {
-      dispatch(setSnackBar({ message: error.message, type: 'error' }));
+      console.log(error);
     }
     setAnchorEl(null);
+    setOpenDialogInputNewCategory(false);
   };
 
   return (props.editMode && props.isHoverParent) || openMore || openDialogInputTitle ? (

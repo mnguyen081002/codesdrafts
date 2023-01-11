@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
+import type { CategoryResponse } from '../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setSnackBar } from '../../features/auth/appSlice';
-import { addLesson, deleteLessonById } from '../../features/auth/LessonNavSlice';
+import { incrementActionCount, selectCategories } from '../../features/auth/LessonNavSlice';
 import { generateLesson } from '../../utils/gen';
 import LessonMoreOptions from './LessonMoreOptions';
 
@@ -16,6 +17,7 @@ interface LessonNavItemProps {
     title: string;
     isCompleted?: boolean;
   };
+  index: number;
   course_category_id: number;
   onClickLesson?: (lessonId: number) => void;
   editMode?: boolean;
@@ -24,6 +26,7 @@ interface LessonNavItemProps {
 const LessonNavItem: FC<LessonNavItemProps> = (props) => {
   const [isHover, setIsHover] = useState(false);
   const [isSelecting, setIsSelecting] = useState(false);
+  const categories = useAppSelector<CategoryResponse[]>(selectCategories);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -35,8 +38,16 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
   const handleAddLesson = async () => {
     try {
       const newLesson = generateLesson(props.course_category_id);
-      const res = await CodeSmoothApi.saveLesson(newLesson);
-      dispatch(addLesson(res.data));
+      const res = await CodeSmoothApi.addLesson({ ...newLesson, order: props.index + 1 });
+      // dispatch(
+      //   addLesson({
+      //     category_id: props.course_category_id,
+      //     index: props.index,
+      //     id: newLesson.id,
+      //     title: newLesson.title,
+      //   }),
+      // );
+      dispatch(incrementActionCount());
     } catch (error: any) {
       console.log(error);
     }
@@ -44,8 +55,26 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
 
   const handleDeleteLesson = async () => {
     try {
+      const catInclude = categories.find((category) => category.id === props.course_category_id);
+
+      if (catInclude?.lessons.length === 1 || !catInclude) {
+        setSnackBar({ message: 'Cannot delete last lesson', type: 'error' });
+        return;
+      }
+
       await CodeSmoothApi.deleteLessonById(props.lesson.id);
-      dispatch(deleteLessonById(props.lesson.id));
+      const lessonIndex = catInclude?.lessons.findIndex((lesson) => lesson.id === props.lesson.id);
+
+      let nextLessonId;
+      if (catInclude.lessons?.length > lessonIndex) {
+        nextLessonId = catInclude.lessons[lessonIndex + 1]?.id;
+      } else {
+        nextLessonId = catInclude.lessons[lessonIndex - 1]?.id;
+      }
+
+      // dispatch(deleteLessonById(props.lesson.id));
+      router.push(`/editlesson/${router.query.courseid}/${nextLessonId}`);
+      setSnackBar({ message: 'Lesson deleted', type: 'success' });
     } catch (error: any) {
       setSnackBar({ message: error.message, type: 'error' });
     }
@@ -99,12 +128,14 @@ const LessonNavItem: FC<LessonNavItemProps> = (props) => {
           <Add style={{ fontSize: '20px' }} />
         </div>
       )}
-      <LessonMoreOptions
-        onDeleteLesson={handleDeleteLesson}
-        editMode={props.editMode}
-        isHoverParent={isHover}
-        lesson={props.lesson}
-      />
+      {isHover && (
+        <LessonMoreOptions
+          onDeleteLesson={handleDeleteLesson}
+          editMode={props.editMode}
+          lesson={props.lesson}
+          setIsHoverParent={setIsHover}
+        />
+      )}
     </div>
   );
 };

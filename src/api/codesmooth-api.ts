@@ -39,6 +39,15 @@ export interface SaveLessonRequest {
   components: LessonComponentProps[];
 }
 
+export interface AddLessonRequest {
+  id: number;
+  course_category_id: number;
+  title: string;
+  summary: string;
+  order: number;
+  components: LessonComponentProps[];
+}
+
 export interface SaveCourseRequest {
   id: number;
   name: string;
@@ -71,14 +80,22 @@ export const CodeSmoothApi = {
       language,
     });
   },
+
   deleteLessonById(id: number) {
     return axiosClient.delete(`/api/admin/lesson/${id}`);
   },
 
-  createCategory: (title: string, id: number, course_id: number, type: CourseCategoryType) => {
+  createCategory: (
+    title: string,
+    id: number,
+    course_id: number,
+    type: CourseCategoryType,
+    order?: number,
+  ) => {
     return axiosClient.post('/api/admin/category', {
       title,
       id: Number(id),
+      order,
       type,
       courseId: Number(course_id),
     });
@@ -113,6 +130,30 @@ export const CodeSmoothApi = {
       title: params.title,
       summary: params.summary,
       components: copy,
+      course_category_id: Number(params.course_category_id),
+    });
+  },
+
+  addLesson: (params: AddLessonRequest) => {
+    const copy = params.components.map((component) => {
+      return {
+        ...component,
+        content: {
+          ...component.content,
+        },
+      };
+    });
+    // delete isFocus
+    copy.forEach((component) => {
+      delete component.isFocus;
+    });
+
+    return axiosClient.post('/api/admin/lesson/add', {
+      id: Number(params.id),
+      title: params.title,
+      summary: params.summary,
+      components: copy,
+      order: params.order,
       course_category_id: Number(params.course_category_id),
     });
   },
@@ -183,15 +224,17 @@ export interface CourseResponse {
   is_published: boolean;
   category: CategoryResponse[];
 }
+export interface LessonInCategoryResponse {
+  id: number;
+  title: string;
+  isCompleted?: boolean;
+}
 
 export interface CategoryResponse {
   id: number;
   title: string;
-  lessons: {
-    id: number;
-    title: string;
-    isCompleted?: boolean;
-  }[];
+  lessons: LessonInCategoryResponse[];
+  order: number;
 }
 
 export interface Meta {

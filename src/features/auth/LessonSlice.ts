@@ -14,6 +14,8 @@ const initialState: ILesson = {
   course_category_id: 0,
   title: '',
   summary: '',
+  order: 0,
+  isCompleted: false,
   components: [
     // {
     //   content: {
@@ -42,6 +44,7 @@ const LessonSlice = createSlice({
       state.title = action.payload.title;
       state.summary = action.payload.summary;
       state.components = action.payload.components;
+      state.order = action.payload.order;
     },
 
     setTitle(state, action: PayloadAction<string>) {

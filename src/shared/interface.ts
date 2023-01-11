@@ -70,6 +70,7 @@ export interface ILesson {
   course_category_id: number;
   title: string;
   summary: string;
+  order: number;
   components: LessonComponentProps[];
   isCompleted?: boolean;
 }

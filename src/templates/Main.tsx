@@ -115,7 +115,6 @@ const Main = (props: IMainProps) => {
         });
       }
       if (!props.isLoading) {
-        console.log('clear2');
         setProgress(0);
         clearInterval(timer);
       }

@@ -65,7 +65,7 @@ const ExecuteResult: FC<{
 }> = (props) => {
   return props.executeRes.is_success ? (
     <div className="mb-6 flex justify-center">
-      <table className="w-[70%]">
+      <table className="w-[90%]">
         <caption className="py-8">
           {
             <span className="text-lg font-bold tracking-widest text-light-primary">{`${
@@ -143,7 +143,6 @@ export const CodeComponent: FC<ICodeComponentProps> = (params) => {
     if (!instance) {
       return;
     }
-    console.log('contentHeight monacoInstance', instance?.getContentHeight(), instance?.getValue());
     const contentHeight = Math.min(800, instance.getContentHeight());
     instance.layout({ height: contentHeight, width: ref.current?.offsetWidth! });
   };

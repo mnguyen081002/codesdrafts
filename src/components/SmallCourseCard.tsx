@@ -24,7 +24,7 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
     >
       <img
         src={props.thumbnail}
-        className="flex h-[40%] flex-row justify-between border-b-2"
+        className="flex h-[40%] flex-row justify-between border-b-2 object-fill"
         alt="thumbnail"
         onError={(e) => {
           e.currentTarget.src = '/logo-96.png';
@@ -49,7 +49,11 @@ const SmallCourseCard: FC<SmallCourseCardProps> = (props) => {
               ></div>
             </div>
           </div>
-          <Button text="Continue" fontIcon={<ArrowForwardIcon />} />
+          <Button
+            text="Continue"
+            className="border border-slate-400"
+            fontIcon={<ArrowForwardIcon />}
+          />
         </div>
       </div>
     </Link>
