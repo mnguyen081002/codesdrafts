@@ -13,7 +13,7 @@ import { CircleLoading } from '../common/Loading';
 import { setSnackBar } from '../features/auth/appSlice';
 import { setCode, setIsTest, setLanguage } from '../features/auth/LessonSlice';
 import { ComponentType } from '../shared/enum/component';
-import type { ICodeComponentProps } from '../shared/interface';
+import type { ICodeComponentProps, ICodeComponentProps } from '../shared/interface';
 import { BaseComponent } from './BaseComponent';
 
 function ResultExecuteTable(props) {
