@@ -1,8 +1,11 @@
-import '../api/axiosClient';
-
+import { createGetInitialProps } from '@mantine/next';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
-// Need to create a custom _document because i18n support is not compatible with `next export`.
-class MyDocument extends Document {
+
+const getInitialProps = createGetInitialProps();
+
+export default class _Document extends Document {
+  static getInitialProps = getInitialProps;
+
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
@@ -16,5 +19,3 @@ class MyDocument extends Document {
     );
   }
 }
-
-export default MyDocument;
