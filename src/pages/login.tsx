@@ -80,8 +80,8 @@ const Login = (props: Props) => {
             }}
           >
             <Button
+              className="bg-light-primary text-white hover:bg-light-primary"
               sx={{
-                backgroundColor: '#0C77FF',
                 marginTop: rem(30),
                 boxShadow: '0px 12px 21px 4px #4461F226',
                 width: rem(326),
@@ -113,13 +113,31 @@ const Login = (props: Props) => {
           }}
         >
           <Grid.Col span={4}>
-            <Image src="/images/icons/Google.svg" width={80} height={46} alt="" />
+            <Image
+              className="cursor-pointer"
+              src="/images/icons/Google.svg"
+              width={80}
+              height={46}
+              alt=""
+            />
           </Grid.Col>
           <Grid.Col span={4}>
-            <Image src="/images/icons/Github.svg" width={80} height={46} alt="" />
+            <Image
+              className="cursor-pointer"
+              src="/images/icons/Github.svg"
+              width={80}
+              height={46}
+              alt=""
+            />
           </Grid.Col>
           <Grid.Col span={4}>
-            <Image src="/images/icons/Facebook.svg" width={80} height={46} alt="" />
+            <Image
+              className="cursor-pointer"
+              src="/images/icons/Facebook.svg"
+              width={80}
+              height={46}
+              alt=""
+            />
           </Grid.Col>
         </Grid>
       </Box>
