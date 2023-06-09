@@ -26,6 +26,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.10.5",
     "@floating-ui/react-dom-interactions": "^0.13.3",
+    "@mantine/carousel": "^6.0.13",
     "@mantine/core": "^6.0.11",
     "@mantine/dates": "^6.0.11",
     "@mantine/form": "^6.0.11",

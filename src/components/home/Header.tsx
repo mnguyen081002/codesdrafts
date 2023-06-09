@@ -1,21 +1,35 @@
-import { Center, Container, Group, Header, Input, Menu, rem } from '@mantine/core';
+import {
+  Center,
+  Container,
+  Divider,
+  Grid,
+  Group,
+  Header,
+  Input,
+  Menu,
+  rem,
+  Text,
+} from '@mantine/core';
 import Image from 'next/image';
+import Link from 'next/link';
 
-import { homeLink, useStyles } from './mockData';
+import { homeLink, ListCourse, useStyles } from './mockData';
 
 const HeaderHome = () => {
   const { classes } = useStyles();
   const items = homeLink.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ));
-
-    if (menuItems) {
+    if (link.label === 'Khóa học') {
       return (
-        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+        <Menu
+          key={link.label}
+          position="bottom-start"
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+          withinPortal
+        >
           <Menu.Target>
-            <a
-              href={link.link}
+            <Link
+              href="/course"
               className={classes.link}
               onClick={(event) => event.preventDefault()}
             >
@@ -24,13 +38,59 @@ const HeaderHome = () => {
                 <Image
                   src="/images/home/chevron-down.svg"
                   alt="arrow down"
-                  width={20}
-                  height={20}
+                  width={30}
+                  height={40}
                 />
               </Center>
-            </a>
+            </Link>
           </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          <Menu.Dropdown>
+            <Container w={645} h={380} p={0}>
+              <Text
+                fz="md"
+                sx={{
+                  padding: '10px 0 10px 30px',
+                }}
+              >
+                Khóa học
+              </Text>
+              <Divider
+                labelPosition="center"
+                sx={(theme) => ({
+                  color: theme.colors.gray[5],
+                })}
+              />
+              <Grid
+                sx={{
+                  padding: '10px 0 10px 30px',
+                }}
+              >
+                {ListCourse.map((item) => (
+                  <Grid.Col
+                    key={item.name}
+                    span={6}
+                    sx={{
+                      display: 'flex',
+                    }}
+                  >
+                    <Image src={item.link} alt="logo" width={60} height={60} className="mr-2" />
+                    <Group
+                      sx={{
+                        gap: 0,
+                      }}
+                    >
+                      <Text fz="14px" fw={700}>
+                        {item.name}
+                      </Text>
+                      <Text fz="14px" color="dimmed">
+                        {item.description}
+                      </Text>
+                    </Group>
+                  </Grid.Col>
+                ))}
+              </Grid>
+            </Container>
+          </Menu.Dropdown>
         </Menu>
       );
     }
@@ -52,7 +112,15 @@ const HeaderHome = () => {
         <Group>
           <Image src="/logo-96.png" alt="logo" width={50} height={50} />
         </Group>
-        <Group spacing={5} w={rem(332)}>
+        <Group
+          spacing={5}
+          w={rem(432)}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           {items}
         </Group>
         <Group position="center">
