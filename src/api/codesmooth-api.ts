@@ -1,3 +1,5 @@
+import type { ResLogin } from '@/shared/types/authType';
+
 import type { CourseCategoryType } from '../shared/enum/category';
 import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
@@ -204,6 +206,14 @@ export const CodeSmoothApi = {
       isCompleted: markIsComplete ?? false,
     });
     return response.data;
+  },
+
+  login: async (email: string, password: string) => {
+    return axiosClient.post<ResLogin>('/api/auth/login', {
+      email,
+      password,
+      requestFrom: 'CMS',
+    });
   },
 };
 

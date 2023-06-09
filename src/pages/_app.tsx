@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import type { AppPropsWithLayout } from '@/types/shared';
 
 import { store } from '../app/store';
+import SnackbarProvider from '../components/snackbar';
 
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout || ((page) => page);
