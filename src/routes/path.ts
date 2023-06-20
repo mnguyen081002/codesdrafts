@@ -3,6 +3,6 @@ export const PATH_DASHBOARD = {
 };
 
 export const PATH_AUTH = {
-  login: '/auth/login',
-  register: '/auth/register',
+  login: '/login',
+  register: '/register',
 };

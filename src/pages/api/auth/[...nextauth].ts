@@ -54,6 +54,7 @@ export default NextAuth({
       },
     }),
   ],
+
   callbacks: {
     // The jwt() callback is called when a new token is created.
     async jwt({ token, user }) {

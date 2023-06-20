@@ -11,9 +11,10 @@ type ProtectedPageProp = {
 const ProtectedPage = ({ children }: ProtectedPageProp) => {
   const { data: session, status: loading } = useSession();
   const router = useRouter();
+  console.log(session);
 
   useEffect(() => {
-    if (!session) {
+    if (!loading && !session) {
       router.push(PATH_AUTH.login); // Redirect to the login page if not authenticated
     }
   }, [session]);
