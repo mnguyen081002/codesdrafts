@@ -68,7 +68,7 @@ const Login = (props: Props) => {
           sx={(theme) => ({
             borderRadius: 15,
             width: rem(400),
-            height: rem(528),
+            height: rem(600),
             backgroundColor: theme.white,
             position: 'relative',
             zIndex: 10,
