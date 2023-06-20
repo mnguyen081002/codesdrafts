@@ -13,11 +13,14 @@ import EastIcon from '@mui/icons-material/East';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 import { ChildTopic, topics } from '@/components/landing';
 import LandingWrapper from '@/components/landing/landing-wrapper';
 
 const Index = () => {
+  const session = useSession();
+  console.log(session.data?.expires);
   return (
     <LandingWrapper>
       {/* <Main
@@ -27,9 +30,10 @@ const Index = () => {
             description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
           />
         }
-      >
+      > 
+      <ProtectedPage>
         <Teach />
-      </Main> */}
+      </Main>  */}
 
       <Container size="xxl" className="z-20" h={90}>
         <Flex justify="space-between" align="center" w="100%" h="100%">
