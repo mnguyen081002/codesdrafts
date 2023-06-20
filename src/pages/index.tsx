@@ -1,10 +1,20 @@
-import { Button, Container, Flex, Group, MantineProvider, Stack, Title } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Group,
+  MantineProvider,
+  Stack,
+  Title,
+} from '@mantine/core';
 import EastIcon from '@mui/icons-material/East';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { ChildTopic, topics } from '@/components/landing';
 import LandingWrapper from '@/components/landing/landing-wrapper';
 
 const Index = () => {
@@ -48,16 +58,22 @@ const Index = () => {
             <Button
               className="relative text-lg text-light-primary after:absolute after:left-1/2 after:block after:h-[2px] after:w-8 after:-translate-x-1/2 after:rounded-md after:bg-light-primary after:content-['']"
               variant="white"
+              color="dark"
             >
-              Đăng nhập
+              <Link href="/login" className="">
+                Đăng nhập
+              </Link>
             </Button>
-            <Button className="rounded-3xl bg-light-primary text-lg" variant="filled">
+            <Button
+              className="rounded-2xl bg-light-primary text-lg shadow-forfun transition-all hover:bg-light-tertiary"
+              variant="filled"
+            >
               Đăng ký
             </Button>
           </Group>
         </Flex>
       </Container>
-      <Container size="xxxl" p={0} h={839}>
+      <Container size="xxxl" p={0} h={840}>
         <Flex className="items-stretch" h="100%" justify="space-between">
           <Flex className="h-1/2 w-[40%] justify-end self-center">
             <Stack spacing="xs" className="leading-6">
@@ -73,8 +89,8 @@ const Index = () => {
                   Lập Trình
                 </Title>
               </MantineProvider>
-              <Button className="mt-10 h-12 w-48 bg-light-primary">
-                <span className="mr-2">Bắt đầu ngay</span>
+              <Button className="mt-10 h-12 w-48 bg-light-primary shadow-forfun transition-all hover:bg-light-tertiary">
+                <span className="mr-2 text-base">Bắt đầu ngay</span>
                 <EastIcon />
               </Button>
             </Stack>
@@ -90,6 +106,29 @@ const Index = () => {
           </Box>
         </Flex>
       </Container>
+      <MantineProvider
+        theme={{
+          fontFamily: 'Nunito Sans, sans-serif',
+        }}
+      >
+        <Container className="flex flex-col items-center justify-center gap-8" size="xl" h={960}>
+          <Stack>
+            <Title align="center" transform="uppercase" order={4} className="text-light-primary">
+              Danh mục khóa học
+            </Title>
+            <Title className="text-5xl" order={1}>
+              Các chủ đề phổ biến
+            </Title>
+          </Stack>
+          <Grid w="100%" gutter="lg">
+            {topics.map((topic) => (
+              <Grid.Col key={topic.title} span={3}>
+                <ChildTopic topic={topic} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Container>
+      </MantineProvider>
     </LandingWrapper>
   );
 };

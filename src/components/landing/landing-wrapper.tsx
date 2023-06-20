@@ -35,7 +35,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '16%',
+            top: '120px',
             left: '24%',
           })}
         >
@@ -52,7 +52,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '28%',
+            top: '280px',
             left: '6%',
             transform: 'rotate(45deg)',
           })}
@@ -65,7 +65,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '24%',
+            top: '200px',
             left: '36%',
             transform: 'rotate(80deg)',
           })}
@@ -78,7 +78,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '62%',
+            top: '600px',
             left: '32%',
             transform: 'rotate(320deg)',
           })}
@@ -91,8 +91,8 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '74%',
-            left: '8%',
+            top: '700px',
+            left: '10%',
           })}
         >
           <Image height={36} width={36} alt="" src="/assets/landing-page/Ellipse.svg" />
@@ -103,7 +103,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '50%',
+            top: '480px',
             left: '48%',
           })}
         >
@@ -115,7 +115,7 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 10,
-            top: '75%',
+            top: '720px',
             left: '45%',
           })}
         >
@@ -139,11 +139,47 @@ const LandingWrapper = ({ children }: Props) => {
             backgroundColor: theme.white,
             position: 'absolute',
             zIndex: 5,
-            bottom: '0',
+            bottom: '960px',
             left: '-20px',
           })}
         >
           <Image height={240} width={240} alt="" src="/assets/landing-page/Ellipse2.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: theme.white,
+            position: 'absolute',
+            zIndex: 5,
+            top: '1150px',
+            right: '12%',
+          })}
+        >
+          <Image height={75} width={75} alt="" src="/assets/landing-page/highlight.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: theme.white,
+            position: 'absolute',
+            zIndex: 5,
+            top: '1320px',
+            left: '5%',
+          })}
+        >
+          <Image height={100} width={100} alt="" src="/assets/landing-page/chemistry.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: theme.white,
+            position: 'absolute',
+            zIndex: 5,
+            top: '1640px',
+            right: '5%',
+          })}
+        >
+          <Image height={100} width={100} alt="" src="/assets/landing-page/rocket.svg" />
         </Box>
 
         <Box
