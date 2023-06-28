@@ -32,41 +32,23 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 10,
-            top: '120px',
-            left: '24%',
+            top: '180px',
+            left: '5%',
           })}
         >
-          <Image
-            height={62}
-            width={62}
-            alt=""
-            src="/assets/landing-page/attachment-tool-svgrepo-com1.svg"
-          />
+          <Image height={62} width={62} alt="" src="/assets/landing-page/image9.svg" />
         </Box>
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
-            position: 'absolute',
-            zIndex: 10,
-            top: '280px',
-            left: '6%',
-            transform: 'rotate(45deg)',
-          })}
-        >
-          <Image height={32} width={32} alt="" src="/assets/landing-page/star.svg" />
-        </Box>
-        <Box
-          sx={(theme) => ({
-            borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 10,
             top: '200px',
-            left: '36%',
+            left: '28%',
             transform: 'rotate(80deg)',
           })}
         >
@@ -75,20 +57,7 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
-            position: 'absolute',
-            zIndex: 10,
-            top: '600px',
-            left: '32%',
-            transform: 'rotate(320deg)',
-          })}
-        >
-          <Image height={36} width={36} alt="" src="/assets/landing-page/star.svg" />
-        </Box>
-        <Box
-          sx={(theme) => ({
-            borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 10,
             top: '700px',
@@ -100,11 +69,11 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 10,
             top: '480px',
-            left: '48%',
+            left: '40%',
           })}
         >
           <Image height={60} width={60} alt="" src="/assets/landing-page/calculator.svg" />
@@ -112,46 +81,58 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 10,
-            top: '720px',
-            left: '45%',
+            top: '660px',
+            left: '44%',
           })}
         >
-          <Image height={160} width={160} alt="" src="/assets/landing-page/Arrow.svg" />
+          <Image height={200} width={200} alt="" src="/assets/landing-page/Arrow.svg" />
         </Box>
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
-            position: 'absolute',
-            zIndex: 15,
-            top: '0',
-            right: '0',
-          })}
-        >
-          <Image height={147} width={90} alt="" src="/assets/landing-page/Polygon.svg" />
-        </Box>
-        <Box
-          sx={(theme) => ({
-            borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 5,
-            bottom: '960px',
-            left: '-20px',
+            top: '1060px',
+            left: '8%',
           })}
         >
-          <Image height={240} width={240} alt="" src="/assets/landing-page/Ellipse2.svg" />
+          <Image height={175} width={175} alt="" src="/assets/landing-page/image11.svg" />
         </Box>
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 5,
-            top: '1150px',
+            top: '1660px',
+            left: '18%',
+          })}
+        >
+          <Image height={50} width={50} alt="" src="/assets/landing-page/image12.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            zIndex: 5,
+            top: '1600px',
+            right: '12%',
+          })}
+        >
+          <Image height={75} width={75} alt="" src="/assets/landing-page/telegram.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            zIndex: 5,
+            top: '2110px',
             right: '12%',
           })}
         >
@@ -160,10 +141,22 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 5,
-            top: '1320px',
+            top: '2080px',
+            left: '8%',
+          })}
+        >
+          <Image height={100} width={100} alt="" src="/assets/landing-page/rectange.svg" />
+        </Box>
+        <Box
+          sx={(theme) => ({
+            borderRadius: 15,
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            zIndex: 5,
+            top: '2480px',
             left: '5%',
           })}
         >
@@ -172,10 +165,10 @@ const LandingWrapper = ({ children }: Props) => {
         <Box
           sx={(theme) => ({
             borderRadius: 15,
-            backgroundColor: theme.white,
+            backgroundColor: 'transparent',
             position: 'absolute',
             zIndex: 5,
-            top: '1640px',
+            top: '2600px',
             right: '5%',
           })}
         >
@@ -184,7 +177,7 @@ const LandingWrapper = ({ children }: Props) => {
 
         <Box
           sx={(theme) => ({
-            zIndex: 20,
+            zIndex: 1,
             position: 'relative',
           })}
         >

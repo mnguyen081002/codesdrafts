@@ -13,7 +13,7 @@ const ChildTopic = ({ topic }: { topic: ITopic }) => {
     <div
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={handlerHover}
-      className="group flex h-[262px] cursor-pointer flex-col items-center gap-4 rounded-md bg-[#f5f5f5] px-8 pt-8 text-[#6F6B80] transition-all hover:bg-light-primary hover:text-white"
+      className="group flex h-[262px] cursor-pointer flex-col items-center gap-4 rounded-md bg-white px-8 pt-8 text-[#6F6B80] shadow-md transition-all hover:bg-light-primary hover:text-white"
     >
       {!isHover ? (
         <Image src={topic.image} width={50} height={50} alt="" />

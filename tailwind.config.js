@@ -80,6 +80,7 @@ module.exports = {
       },
       fontFamily: {
         table: ['Gelasio', 'sans-serif'],
+        'lexend-deca': ['Lexend Deca', 'sans-serif'],
       },
     },
   },
