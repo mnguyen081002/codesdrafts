@@ -20,7 +20,6 @@ import LandingWrapper from '@/components/landing/landing-wrapper';
 
 const Index = () => {
   const session = useSession();
-  console.log(session.data?.expires);
   return (
     <LandingWrapper>
       {/* <Main
