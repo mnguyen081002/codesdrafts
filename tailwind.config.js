@@ -20,7 +20,7 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          primary: '#175cf9',
+          primary: '#0C77FF',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
@@ -72,14 +72,15 @@ module.exports = {
         normal: '6px',
       },
       boxShadow: {
-        forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-        normal: '4px',
+        forfun: '#7bc3f9 0px 3px 8px',
+        button: '8px 8px 23px #a9b0b7, -8px -8px 23px #ffffff;',
       },
       borderColor: {
         light: { primary: '#63b3ed' },
       },
       fontFamily: {
         table: ['Gelasio', 'sans-serif'],
+        'lexend-deca': ['Lexend Deca', 'sans-serif'],
       },
     },
   },
