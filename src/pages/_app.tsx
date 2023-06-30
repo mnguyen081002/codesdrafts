@@ -40,6 +40,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
             primaryShade: {
               light: 4,
             },
+            fontFamily: 'Inter, sans-serif',
           }}
         >
           <ToastContainer />

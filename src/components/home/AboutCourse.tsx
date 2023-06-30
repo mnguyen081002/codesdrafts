@@ -1,15 +1,4 @@
-import {
-  Button,
-  Card,
-  Container,
-  Divider,
-  Grid,
-  Group,
-  MantineProvider,
-  Rating,
-  rem,
-  Text,
-} from '@mantine/core';
+import { Button, Card, Container, Divider, Grid, Group, Rating, rem, Text } from '@mantine/core';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -135,44 +124,38 @@ export const ListCourse = () => {
 
 const AboutCourse = () => {
   return (
-    <MantineProvider
-      theme={{
-        fontFamily: 'Inter, sans-serif',
-      }}
-    >
-      <Container fluid mx={15}>
-        <Group position="left">
-          <h3 className="w-screen text-2xl">Các chủ đề phổ biến</h3>
-        </Group>
-        <Group position="left">
-          {popularCourse.map((item) => (
-            <Button
-              w={200}
-              h={60}
-              variant="default"
-              key={item.key}
-              sx={{
-                fontSize: '20px',
-              }}
-            >
-              {item.name}
-            </Button>
-          ))}
-        </Group>
+    <Container fluid mx={15}>
+      <Group position="left">
+        <h3 className="w-screen text-2xl">Các chủ đề phổ biến</h3>
+      </Group>
+      <Group position="left">
+        {popularCourse.map((item) => (
+          <Button
+            w={200}
+            h={60}
+            variant="default"
+            key={item.key}
+            sx={{
+              fontSize: '20px',
+            }}
+          >
+            {item.name}
+          </Button>
+        ))}
+      </Group>
 
-        <Group position="left">
-          <h3 className="w-screen text-2xl">Các khóa học phổ biến</h3>
-          <ListCourse />
-        </Group>
-        <Image
-          src="/images/home/add-course.svg"
-          className="absolute -bottom-72 left-6 cursor-pointer"
-          height={69}
-          width={69}
-          alt="Add course"
-        />
-      </Container>
-    </MantineProvider>
+      <Group position="left">
+        <h3 className="w-screen text-2xl">Các khóa học phổ biến</h3>
+        <ListCourse />
+      </Group>
+      <Image
+        src="/images/home/add-course.svg"
+        className="absolute -bottom-72 left-6 cursor-pointer"
+        height={69}
+        width={69}
+        alt="Add course"
+      />
+    </Container>
   );
 };
 export default AboutCourse;

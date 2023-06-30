@@ -1257,9 +1257,14 @@
   dependencies:
     "glob" "7.1.7"
 
-"@next/swc-win32-x64-msvc@13.0.7":
-  "integrity" "sha512-kvdnlLcrnEq72ZP0lqe2Z5NqvB9N5uSCvtXJ0PhKvNncWWd0fEG9Ec9erXgwCmVlM2ytw41k9/uuQ+SVw4Pihw=="
-  "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.0.7.tgz"
+"@next/swc-linux-x64-gnu@13.0.7":
+  "integrity" "sha512-/ygUIiMMTYnbKlFs5Ba9J5k/tNxFWy8eI1bBF8UuMTvV8QJHl/aLDiA5dwsei2kk99/cu3eay62JnJXkSk3RSQ=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-gnu/-/swc-linux-x64-gnu-13.0.7.tgz"
+  "version" "13.0.7"
+
+"@next/swc-linux-x64-musl@13.0.7":
+  "integrity" "sha512-dLzr6AL77USJN0ejgx5AS8O8SbFlbYTzs0XwAWag4oQpUG2p3ARvxwQgYQ0Z+6EP0zIRZ/XfLkN/mhsyi3m4PA=="
+  "resolved" "https://registry.npmjs.org/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-13.0.7.tgz"
   "version" "13.0.7"
 
 "@nodelib/fs.scandir@2.1.5":
@@ -2143,18 +2148,18 @@
   dependencies:
     "tslib" "^2.4.0"
 
-"@tabler/icons-react@^2.21.0":
-  "integrity" "sha512-iW/Eqqb7gILb8w/BgzCLZ/8DFZxojgiu12BYJFVuWIblLysXTZ2FjahY7m0VQ41vsyfDFWKofn1uvIPCfa8yGQ=="
-  "resolved" "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-2.21.0.tgz"
-  "version" "2.21.0"
+"@tabler/icons-react@^2.23.0":
+  "integrity" "sha512-+H4mC1EZVCzCRhnPwZEVTI0veVCJuAKlopeCnRlfsYcmzgJm6Ye234c4A2qrLPQoi1Y29uN9+kqCyuYW007jPg=="
+  "resolved" "https://registry.npmjs.org/@tabler/icons-react/-/icons-react-2.23.0.tgz"
+  "version" "2.23.0"
   dependencies:
-    "@tabler/icons" "2.21.0"
+    "@tabler/icons" "2.23.0"
     "prop-types" "^15.7.2"
 
-"@tabler/icons@2.21.0":
-  "integrity" "sha512-XKrTEHMX6XzCOwcOU8ZNA+Xqm51sI+0abn2jk1fyQUpWeFnGsOEiC+fpQ4EISc+v+U9jqgTSbh8bZ6JBuKU5sw=="
-  "resolved" "https://registry.npmjs.org/@tabler/icons/-/icons-2.21.0.tgz"
-  "version" "2.21.0"
+"@tabler/icons@2.23.0":
+  "integrity" "sha512-dU54aBwaxG0H+jQ4BdrqtYFN5L7PZevvlnzyL6XeOZgfDS3+sVNCtuG3JmpTEqQSwGLYC1IEwogPGA/Iit2bOA=="
+  "resolved" "https://registry.npmjs.org/@tabler/icons/-/icons-2.23.0.tgz"
+  "version" "2.23.0"
 
 "@tanstack/query-core@4.29.11":
   "integrity" "sha512-8C+hF6SFAb/TlFZyS9FItgNwrw4PMa7YeX+KQYe2ZAiEz6uzg6yIr+QBzPkUwZ/L0bXvGd1sufTm3wotoz+GwQ=="
@@ -9302,6 +9307,8 @@
   "version" "2.0.1"
 
 "proc-log@^3.0.0":
+  "integrity" "sha512-++Vn7NS4Xf9NacaU9Xq3URUuqZETPsf8L4j5/ckhaRYsfPeRyzGw+iDjFhV/Jr3uNmTvvddEJFWh5R1gRgUH8A=="
+  "resolved" "https://registry.npmjs.org/proc-log/-/proc-log-3.0.0.tgz"
   "version" "3.0.0"
 
 "process-nextick-args@~2.0.0":
