@@ -21,12 +21,14 @@ module.exports = {
       colors: {
         light: {
           primary: '#1363DF',
+          dark: '#0847AA',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
           grayDarker: '#e5e5e5',
           text: {
-            primary: '#585b63',
+            primary: '#4C4E64',
+            sencondary: 'rgba(76, 78, 100, 0.68)',
             'course-detail-content': '#39557E',
           },
           error: {
@@ -76,6 +78,7 @@ module.exports = {
       boxShadow: {
         forfun: '#7bc3f9 0px 3px 8px',
         button: '8px 8px 23px #a9b0b7, -8px -8px 23px #ffffff;',
+        md: '0 1px 4px 0px rgba(0, 0, 0, 0.25)',
       },
       borderColor: {
         light: { primary: '#63b3ed' },
