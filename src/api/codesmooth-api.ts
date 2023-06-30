@@ -1,4 +1,4 @@
-import type { ResLogin } from '@/shared/types/authType';
+import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
 import type { CourseCategoryType } from '../shared/enum/category';
 import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
@@ -213,6 +213,13 @@ export const CodeSmoothApi = {
       email,
       password,
       requestFrom: 'CMS',
+    });
+  },
+  register: async (email: string, username: string, password: string) => {
+    return axiosClient.post<ResRegister>('/api/auth/register', {
+      email,
+      username,
+      password,
     });
   },
 };

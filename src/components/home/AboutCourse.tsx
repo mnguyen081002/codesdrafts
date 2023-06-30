@@ -35,9 +35,10 @@ const AboutCourse = () => {
         className="group relative cursor-pointer"
         onMouseEnter={() => handleCardHover(index)}
         onMouseLeave={handleCardLeave}
+        w={350}
       >
         <Card.Section component="a" w="100%" p={15}>
-          <Image src="/images/home/Thumnail.png" height={200} width={360} alt="Norway" />
+          <Image src="/images/home/Thumnail.png" height={212} width={318} alt="Norway" />
         </Card.Section>
 
         <Group position="right" mt="md" mb="xs" className="flex flex-row justify-start">
@@ -121,7 +122,24 @@ const AboutCourse = () => {
     >
       <Container fluid mx={15}>
         <Group position="left">
-          <h3 className="w-screen text-2xl">Các chủ đề phổ biến</h3>
+          <h3 className="relative flex w-screen text-2xl">
+            <Image
+              className="absolute left-11 -bottom-5"
+              src="/images/home/title_shape.svg"
+              height={40}
+              width={80}
+              alt="Title_image"
+            />
+            Các
+            <Text
+              sx={{
+                color: '#1363DF',
+              }}
+            >
+              &nbsp;chủ đề&nbsp;
+            </Text>
+            phổ biến
+          </h3>
         </Group>
         <Group position="left">
           {popularCourse.map((item) => (
