@@ -20,7 +20,7 @@ function PrimaryButton({
         className || ''
       } flex cursor-pointer items-center justify-center rounded-md transition-colors  ${
         isHover ? 'bg-light-dark' : 'bg-light-primary'
-      } px-10 py-3`}
+      } px-10 py-5`}
     >
       <p className="font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white">
         {text}
