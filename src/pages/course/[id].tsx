@@ -1,5 +1,3 @@
-import type { GetStaticPaths, GetStaticProps } from 'next';
-
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
 import HeaderPrimary from '../../components/home/HeaderPrimary';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
@@ -18,22 +16,22 @@ type ICourseUrl = {
   id: string;
 };
 
-export const getStaticPaths: GetStaticPaths<ICourseUrl> = async () => {
-  return {
-    paths: [...Array(20)].map((_, index) => ({
-      params: { id: index.toString() },
-    })),
-    fallback: false,
-  };
-};
+// export const getStaticPaths: GetStaticPaths<ICourseUrl> = async () => {
+//   return {
+//     paths: [...Array(20)].map((_, index) => ({
+//       params: { id: index.toString() },
+//     })),
+//     fallback: false,
+//   };
+// };
 
-export const getStaticProps: GetStaticProps<ICourseUrl, ICourseUrl> = async ({ params }) => {
-  return {
-    props: {
-      id: params!.id,
-    },
-  };
-};
+// export const getStaticProps: GetStaticProps<ICourseUrl, ICourseUrl> = async ({ params }) => {
+//   return {
+//     props: {
+//       id: params!.id,
+//     },
+//   };
+// };
 
 const CourseDetail = () => {
   return (
