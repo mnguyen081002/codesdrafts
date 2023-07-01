@@ -22,6 +22,7 @@ module.exports = {
         light: {
           primary: '#1363DF',
           dark: '#0847AA',
+          hoverPrimary: '#1363df1f',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
@@ -30,6 +31,8 @@ module.exports = {
             primary: '#4C4E64',
             sencondary: 'rgba(76, 78, 100, 0.68)',
             'course-detail-content': '#39557E',
+            main: '#4D92FF',
+            placeholder: '#adb5bd',
           },
           error: {
             main: '#FF4D49',
@@ -39,7 +42,7 @@ module.exports = {
           warning: {
             main: '#FDB528',
           },
-          border: '#E7E7E7',
+          border: '#ced4da',
         },
 
         dark: { 90: '#1e1e27' },
