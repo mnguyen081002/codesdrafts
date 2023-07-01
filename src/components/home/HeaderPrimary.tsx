@@ -85,7 +85,7 @@ const ListPopularCourse = () => {
 
 const HeaderPrimary = () => {
   return (
-    <div className="flex h-[74px] w-full items-center justify-between border-b pl-[50px] pr-[82px]">
+    <div className="flex h-[74px] w-full items-center justify-between border-b border-[#A7A7A7] pl-[50px] pr-[82px]">
       <Image src="/logo-96.png" alt="logo" width={40} height={40} />
       <ListPopularCourse />
       <div className=" flex h-[45px] w-[1100px] rounded-lg  border border-light-border px-[12px]">
