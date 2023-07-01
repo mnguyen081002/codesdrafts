@@ -4,10 +4,12 @@ function PrimaryButton({
   text,
   onClick,
   className,
+  textClassName,
 }: {
   text: string;
   onClick?: () => void;
   className?: string;
+  textClassName?: string;
 }) {
   const [isHover, setIsHover] = useState(false);
 
@@ -17,12 +19,17 @@ function PrimaryButton({
       onMouseLeave={() => setIsHover(false)}
       onClick={onClick}
       className={`${
-        className || ''
+        className || 'px-10 py-5'
       } flex cursor-pointer items-center justify-center rounded-md transition-colors  ${
         isHover ? 'bg-light-dark' : 'bg-light-primary'
-      } px-10 py-5`}
+      }`}
     >
-      <p className="font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white">
+      <p
+        className={`${
+          textClassName ||
+          'font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white'
+        } `}
+      >
         {text}
       </p>
     </div>

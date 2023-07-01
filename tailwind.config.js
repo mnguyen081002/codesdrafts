@@ -87,6 +87,7 @@ module.exports = {
         table: ['Gelasio', 'sans-serif'],
         'lexend-deca': ['Lexend Deca', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
+        instructorSidebar: ['Plus Jakarta Sans', 'sans-serif'],
       },
     },
   },
