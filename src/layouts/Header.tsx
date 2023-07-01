@@ -2,10 +2,17 @@ import { Button, Container, Flex, Group } from '@mantine/core';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Header = () => {
+  // get path from router
+  const router = useRouter();
+  const path = router.pathname;
+
+  // check if path is /course/1
+  const isCourseDetail = path.includes('/course/');
   return (
-    <Container size="xxl" className="z-20" h={90}>
+    <Container size="xxl" className="w-full border" h={74} px={50} py={24}>
       <Flex justify="space-between" align="center" w="100%" h="100%">
         <Group>
           <Flex justify="center">
@@ -13,14 +20,14 @@ const Header = () => {
               <Image src="/logo-96.png" width={40} height={40} alt="" />
             </Link>
           </Flex>
-          <Group className="text-dark-90">
-            <Button className="text-lg font-bold" color="dark" variant="white">
+          <Group className="text-black">
+            <Button className="text-lg font-normal" color="dark" variant="white">
               Trang chủ
             </Button>
-            <Button className="text-lg font-bold" color="dark" variant="white">
+            <Button className="text-lg font-normal" color="dark" variant="white">
               Blog
             </Button>
-            <Button className="text-lg font-bold" color="dark" variant="white">
+            <Button className="text-lg font-normal" color="dark" variant="white">
               Liên hệ
             </Button>
           </Group>

@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Divider, em, Flex, Grid, MantineProvider, rem } from '@mantine/core';
+import { Box, Button, Divider, em, Flex, Grid, rem } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
@@ -120,29 +120,24 @@ const Login = (props: Props) => {
                 },
               }}
             />
-            <MantineProvider
-              theme={{
-                fontFamily: 'Inter, sans-serif',
+
+            <Button
+              loading={loading}
+              type="submit"
+              className="bg-light-primary text-white hover:bg-light-primary"
+              sx={{
+                marginTop: rem(30),
+                boxShadow: '0px 12px 21px 4px #4461F226',
+                width: rem(326),
+                height: rem(42),
+                fontSize: rem(16),
+                fontWeight: 600,
+                lineHeight: rem(30),
+                letterSpacing: em(0.1),
               }}
             >
-              <Button
-                loading={loading}
-                type="submit"
-                className="bg-light-primary text-white hover:bg-light-primary"
-                sx={{
-                  marginTop: rem(30),
-                  boxShadow: '0px 12px 21px 4px #4461F226',
-                  width: rem(326),
-                  height: rem(42),
-                  fontSize: rem(16),
-                  fontWeight: 600,
-                  lineHeight: rem(30),
-                  letterSpacing: em(0.1),
-                }}
-              >
-                Đăng nhập
-              </Button>
-            </MantineProvider>
+              Đăng nhập
+            </Button>
           </Flex>
           <Divider
             label="Hoặc tiếp tục với"
