@@ -1,6 +1,21 @@
 import Button from '../common/Button';
 
 const HomeLayout = () => {
+  // const continueLearningCoures = [
+  //   <BigCourseCard />,
+  //   <BigCourseCard />,
+  //   <BigCourseCard />,
+  //   <BigCourseCard />,
+  //   <BigCourseCard />,
+  //   <BigCourseCard />,
+  // ];
+
+  // const recommendedCourses = [
+  //   <SmallCourseCard />,
+  //   <SmallCourseCard />,
+  //   <SmallCourseCard />,
+  //   <SmallCourseCard />,
+  // ];
   return (
     <>
       <div>
