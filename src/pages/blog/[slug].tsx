@@ -12,7 +12,7 @@ export const getStaticPaths: GetStaticPaths<IBlogUrl> = async () => {
     paths: [...Array(20)].map((_, index) => ({
       params: { slug: `blog-${index}` },
     })),
-    fallback: false,
+    fallback: true,
   };
 };
 
