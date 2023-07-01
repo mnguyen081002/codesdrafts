@@ -1,5 +1,5 @@
 import { CheckCircle, ErrorOutlineOutlined } from '@mui/icons-material';
-import { Alert, Snackbar } from '@mui/material';
+import { Snackbar } from '@mui/material';
 import Link from 'next/link';
 import type { FC, PropsWithChildren, ReactNode, SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
@@ -88,11 +88,12 @@ const CustomSnackBar = () => {
 
     default:
       return (
-        <Snackbar open={snackbar.openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            This is a success message!
-          </Alert>
-        </Snackbar>
+        // <Snackbar open={snackbar.openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+        //   <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        //     This is a success message!
+        //   </Alert>
+        // </Snackbar>
+        <></>
       );
   }
 };

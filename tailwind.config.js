@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  corePlugins: {
+    preflight: true,
+  },
   theme: {
     fontSize: {
       xs: '0.75rem',
@@ -17,13 +20,16 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          primary: '#175cf9',
+          primary: '#1363DF',
+          dark: '#0847AA',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
           grayDarker: '#e5e5e5',
           text: {
-            primary: '#585b63',
+            primary: '#4C4E64',
+            sencondary: 'rgba(76, 78, 100, 0.68)',
+            'course-detail-content': '#39557E',
           },
           error: {
             main: '#FF4D49',
@@ -33,6 +39,7 @@ module.exports = {
           warning: {
             main: '#FDB528',
           },
+          border: '#E7E7E7',
         },
 
         dark: { 90: '#1e1e27' },
@@ -69,14 +76,17 @@ module.exports = {
         normal: '6px',
       },
       boxShadow: {
-        forfun: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-        normal: '4px',
+        forfun: '#7bc3f9 0px 3px 8px',
+        button: '8px 8px 23px #a9b0b7, -8px -8px 23px #ffffff;',
+        md: '0 1px 4px 0px rgba(0, 0, 0, 0.25)',
       },
       borderColor: {
         light: { primary: '#63b3ed' },
       },
       fontFamily: {
         table: ['Gelasio', 'sans-serif'],
+        'lexend-deca': ['Lexend Deca', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
