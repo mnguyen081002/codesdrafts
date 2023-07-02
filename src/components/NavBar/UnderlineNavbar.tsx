@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { generateId } from '../../utils/genId';
 import { PrimaryButton } from '../Button';
 
 const BottomOutlineNavbarButton = ({
@@ -66,8 +68,8 @@ function UnderlineNavbar({
   const router = useRouter();
 
   return (
-    <div className="relative flex w-full items-start">
-      <div className="flex w-full">
+    <div className="relative flex w-full items-start justify-between">
+      <div className="flex">
         {navs.map((e, i) => {
           return (
             <BottomOutlineNavbarButton
@@ -86,14 +88,13 @@ function UnderlineNavbar({
       {isInstructor && (
         <div className="flex items-center gap-4 pr-2">
           <img src="/images/icons/search.svg" className="cursor-pointer" alt="" />
-          <PrimaryButton
-            text="+ Tạo Mới"
-            className="h-9 w-32 py-2 px-1"
-            textClassName="text-sm font-normal text-white font-lexend-deca"
-            onClick={() => {
-              router.push('/course/4', undefined, { shallow: true });
-            }}
-          />
+          <Link href={`/manage-course/course-editor/${generateId(10)}`}>
+            <PrimaryButton
+              text="+ Tạo Mới"
+              className="h-9 py-2 px-4"
+              textClassName="text-sm font-normal text-white font-lexend-deca"
+            />
+          </Link>
         </div>
       )}
       <div className="absolute top-[53px] z-10 h-[1px] w-full bg-light-border" />
