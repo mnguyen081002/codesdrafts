@@ -1,11 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Divider, em, Flex, Grid, MantineProvider, rem } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  em,
+  Flex,
+  Grid,
+  MantineProvider,
+  rem,
+} from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { BiError } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -13,7 +24,7 @@ import { AuthWrapper } from '@/components/auth';
 import { RHFTextField } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 import RHFPasswordField from '@/components/hook-form/RHFPasswordField';
-import { PATH_DASHBOARD } from '@/routes/path';
+import { PATH_AUTH, PATH_DASHBOARD } from '@/routes/path';
 
 type Props = {};
 type FormValuesProps = {
@@ -23,6 +34,8 @@ type FormValuesProps = {
 };
 const Login = (props: Props) => {
   const [loading, setLoading] = useState(false);
+  const [errorLogin, setErrorLogin] = useState<string | null>(null);
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
     password: Yup.string().required('Mật khẩu là bắt buộc'),
@@ -37,11 +50,7 @@ const Login = (props: Props) => {
     resolver: yupResolver(LoginSchema),
     defaultValues,
   });
-  const {
-    reset,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = methods;
+  const { reset, handleSubmit } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
     const { email, password } = data;
@@ -53,7 +62,7 @@ const Login = (props: Props) => {
       callbackUrl: PATH_DASHBOARD.main,
     });
     if (result?.error) {
-      toast.error(result.error);
+      setErrorLogin(result.error);
       setLoading(false);
     } else {
       reset(defaultValues);
@@ -125,6 +134,26 @@ const Login = (props: Props) => {
                 fontFamily: 'Inter, sans-serif',
               }}
             >
+              {errorLogin && (
+                <Container
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    bottom: rem(285),
+                    gap: rem(8),
+                    color: '#FF3D71',
+                    width: rem(326),
+                    padding: rem(8),
+                    borderRadius: rem(4),
+                    fontSize: rem(12),
+                  }}
+                >
+                  <BiError size={20} />
+                  <span>{errorLogin}</span>
+                </Container>
+              )}
               <Button
                 loading={loading}
                 type="submit"
@@ -138,10 +167,35 @@ const Login = (props: Props) => {
                   fontWeight: 600,
                   lineHeight: rem(30),
                   letterSpacing: em(0.1),
+                  borderRadius: rem(8),
                 }}
               >
                 Đăng nhập
               </Button>
+              <Container
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  gap: rem(8),
+                  height: rem(32),
+                  width: rem(326),
+                  padding: rem(8),
+                  borderRadius: rem(4),
+                  fontSize: rem(14),
+                }}
+              >
+                <span
+                  style={{
+                    color: '#696767',
+                  }}
+                >
+                  Chưa có tài khoản?
+                </span>
+                <Link href={PATH_AUTH.register} className="no-underline">
+                  Đăng ký
+                </Link>
+              </Container>
             </MantineProvider>
           </Flex>
           <Divider

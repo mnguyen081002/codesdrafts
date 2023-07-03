@@ -36,6 +36,7 @@ const CourseCard = () => {
         className="group relative cursor-pointer"
         onMouseEnter={handleCardHover}
         onMouseLeave={handleCardLeave}
+        w={350}
       >
         <Card.Section component="a" className="flex justify-center px-4 pt-4">
           <Image
@@ -142,7 +143,24 @@ const AboutCourse = () => {
     >
       <Container fluid mx={15}>
         <Group position="left">
-          <h3 className="w-screen text-2xl">Các chủ đề phổ biến</h3>
+          <h3 className="relative flex w-screen text-2xl">
+            <Image
+              className="absolute left-11 -bottom-5"
+              src="/images/home/title_shape.svg"
+              height={40}
+              width={80}
+              alt="Title_image"
+            />
+            Các
+            <Text
+              sx={{
+                color: '#1363DF',
+              }}
+            >
+              &nbsp;chủ đề&nbsp;
+            </Text>
+            phổ biến
+          </h3>
         </Group>
         <Group position="left">
           {popularCourse.map((item) => (
@@ -164,13 +182,6 @@ const AboutCourse = () => {
           <h3 className="w-screen text-2xl">Các khóa học phổ biến</h3>
           <ListCourse />
         </Group>
-        <Image
-          src="/images/home/add-course.svg"
-          className="absolute -bottom-72 left-6 cursor-pointer"
-          height={69}
-          width={69}
-          alt="Add course"
-        />
       </Container>
     </MantineProvider>
   );
