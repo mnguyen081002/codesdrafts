@@ -163,13 +163,6 @@ const AboutCourse = () => {
             {cards}
           </Grid>
         </Group>
-        <Image
-          src="/images/home/add-course.svg"
-          className="absolute -bottom-72 left-6 cursor-pointer"
-          height={69}
-          width={69}
-          alt="Add course"
-        />
       </Container>
     </MantineProvider>
   );

@@ -8,7 +8,6 @@ import { Main } from '../templates/Main';
 
 const Index = () => {
   const session = useSession();
-  console.log(session.data?.expires);
   return (
     <div>
       <Main
