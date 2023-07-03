@@ -6,11 +6,12 @@ const ManageAdmin = () => {
   // get query params
   const router = useRouter();
 
-  const { page } = router.query;
+  const { slug } = router.query;
 
   // if query params change, update the page
+  console.log({ slug });
 
-  return <div className="flex h-[860px] flex-1">{mapAdminPage[page as string]}</div>;
+  return <div className="flex h-[860px] flex-1">{mapAdminPage[slug as string]}</div>;
 };
 
 const Manage = () => {

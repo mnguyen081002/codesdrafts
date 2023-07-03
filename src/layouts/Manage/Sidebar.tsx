@@ -24,7 +24,7 @@ function SidebarManage({
           {items.map((item) => (
             <SidebarManageMenuItem
               key={item.redirectPath}
-              redirectPath={`${redirectPath}/${item.redirectPath}`}
+              redirectPath={`/${redirectPath}/${item.redirectPath}`}
               Icon={item.Icon}
               text={item.text}
               badge={item.badge}

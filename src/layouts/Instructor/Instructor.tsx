@@ -29,7 +29,7 @@ const InstructorLayout = ({ children }) => {
     <>
       <HeaderManage />
       <div className="flex w-full">
-        <SidebarManage bottom items={listItem} redirectPath="/instructor" />
+        <SidebarManage bottom items={listItem} redirectPath="instructor" />
         {children}
       </div>
       <Footer />

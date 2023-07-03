@@ -30,12 +30,18 @@ function SidebarManageMenuItem({
     const slug = router.query.slug as string;
     const path = router.asPath;
 
-    if (path.includes(slug)) {
+    if (!router.isReady) return;
+
+    // last path
+    const lastPath = redirectPath.split('/').pop() as string;
+    console.log(lastPath);
+
+    if (path.includes(lastPath)) {
       setSelected(true);
     } else {
       setSelected(false);
     }
-  }, [router.query.page]);
+  }, [router.query.slug]);
 
   return (
     <Link
