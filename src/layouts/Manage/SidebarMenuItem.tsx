@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import type { BaseIconProps } from '../../common/Icons/Interface';
 
-function SideBarInstructorMenuItem({
+function SidebarManageMenuItem({
   Icon,
   text,
   badge,
@@ -27,7 +27,10 @@ function SideBarInstructorMenuItem({
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.page?.includes(redirectPath)) {
+    const slug = router.query.slug as string;
+    const path = router.asPath;
+
+    if (path.includes(slug)) {
       setSelected(true);
     } else {
       setSelected(false);
@@ -36,7 +39,7 @@ function SideBarInstructorMenuItem({
 
   return (
     <Link
-      href={`/instructor/${redirectPath}`}
+      href={`${redirectPath}`}
       className={`${bg} flex cursor-pointer items-center justify-between rounded-[5px] p-[10px] ${
         !selected && 'hover:bg-light-grayDarker'
       }`}
@@ -56,4 +59,4 @@ function SideBarInstructorMenuItem({
   );
 }
 
-export default SideBarInstructorMenuItem;
+export default SidebarManageMenuItem;
