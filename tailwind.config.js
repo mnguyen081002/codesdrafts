@@ -82,6 +82,16 @@ module.exports = {
         table: ['Gelasio', 'sans-serif'],
         'lexend-deca': ['Lexend Deca', 'sans-serif'],
       },
+      // animation: 'name duration timing-function delay iteration-count direction fill-mode play-state;
+      animation: {
+        'co-fast': 'fast 0.8s ease-in-out',
+        'co-slow': 'slow 1.2s ease-in-out',
+      },
+
+      keyframes: {
+        fast: { '0%': { width: '0' }, '100%': { width: '100%' } },
+        slow: { '20%': { width: '0' }, '100%': { width: '100%' } },
+      },
     },
   },
   plugins: [],
