@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -25,10 +26,6 @@ function SideBarInstructorMenuItem({
   const bgBadgeClass = selected ? 'bg-white' : 'bg-light-primary';
   const router = useRouter();
 
-  const onClick = () => {
-    router.push(redirectPath);
-  };
-
   useEffect(() => {
     if (router.query.page?.includes(redirectPath)) {
       setSelected(true);
@@ -38,9 +35,11 @@ function SideBarInstructorMenuItem({
   }, [router.query.page]);
 
   return (
-    <div
-      onClick={onClick}
-      className={`${bg} flex cursor-pointer items-center justify-between rounded-[5px] p-[10px] transition-all hover:bg-light-grayDarker`}
+    <Link
+      href={`/instructor/${redirectPath}`}
+      className={`${bg} flex cursor-pointer items-center justify-between rounded-[5px] p-[10px] ${
+        !selected && 'hover:bg-light-grayDarker'
+      }`}
     >
       <div className={`${bg} flex  items-center gap-4 `}>
         <Icon pathFill={`${selected ? 'white' : '#000000CC'}`} />
@@ -53,7 +52,7 @@ function SideBarInstructorMenuItem({
           <p className={`text-xs font-bold leading-3 ${textBadgeClass}`}>{badgeText}</p>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 

@@ -88,7 +88,7 @@ function UnderlineNavbar({
       {isInstructor && (
         <div className="flex items-center gap-4 pr-2">
           <img src="/images/icons/search.svg" className="cursor-pointer" alt="" />
-          <Link href={`/manage-course/course-editor/${generateId(10)}`}>
+          <Link href={`/instructor/course-editor/${generateId(10)}`}>
             <PrimaryButton
               text="+ Tạo Mới"
               className="h-9 py-2 px-4"

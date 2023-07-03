@@ -1,14 +1,64 @@
-import { useState } from 'react';
+import { CloseRounded } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-import { InputAutoComplete, InputRectangle, InputRounded } from '../../common/Input';
-import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
-import Footer from '../../layouts/Footer';
-import { HeaderInstructor } from '../../layouts/Instructor/Instructor';
-import SideBarInstructor from '../../layouts/Instructor/Sidebar';
+import type { CourseResponse, SaveCourseRequest } from '../../../api/codesmooth-api';
+import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import { useAppDispatch } from '../../../app/hooks';
+import { InputAutoComplete, InputRectangle, InputRounded } from '../../../common/Input';
+import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
+import { setSnackBar } from '../../../features/auth/appSlice';
+import Footer from '../../../layouts/Footer';
+import { HeaderInstructor } from '../../../layouts/Instructor/Instructor';
+import SideBarInstructor from '../../../layouts/Instructor/Sidebar';
+import { defaultCourse } from '../../editcourse/[id]';
 
 const CreateCouse: React.FC = () => {
   const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
+  const dispatch = useAppDispatch();
+  const [isDraft, setIsDraft] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
+  const router = useRouter();
+  useEffect(() => {
+    const loadCourse = async () => {
+      setIsLoading(true);
+      if (router.isReady) {
+        const { id, draft } = router.query;
+        if (draft) {
+          setIsDraft(true);
+          const data = await CodeSmoothApi.getCourseById(Number(id));
+          setCourse(data.data);
+          // const query = '';
+          // if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
+          //   query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
+          // } else {
+          //   query = generateId(18).toString();
+          // }
+          // setQueryLessonPage(query);
+        } else {
+          // setQueryLessonPage(generateId(18).toString());
+        }
+        setIsLoading(false);
+      }
+    };
+    loadCourse();
+  }, [router.isReady]);
+
+  const handleSaveCourse = async () => {
+    setIsDraft(true);
+
+    let newCourse: SaveCourseRequest = { ...course };
+    if (thumbnailUpload) {
+      const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
+      newCourse = { ...newCourse, thumbnail: uploadRes.data.urls[0] };
+    }
+    CodeSmoothApi.saveCourse(newCourse).then(() => {
+      dispatch(setSnackBar({ message: 'Save success', type: 'success' }));
+    });
+  };
 
   return (
     <>
@@ -47,11 +97,17 @@ const CreateCouse: React.FC = () => {
               />
             </div>
           ) : (
-            <img
-              className="h-[200px] w-[300px]"
-              src={URL.createObjectURL(thumbnailUpload)}
-              alt=""
-            />
+            <div className="relative w-fit">
+              <img
+                className=" h-[200px] w-[300px]"
+                src={URL.createObjectURL(thumbnailUpload)}
+                alt=""
+              />
+              <CloseRounded
+                onClick={() => setThumbnailUpload(undefined)}
+                className="absolute top-1 right-1 cursor-pointer rounded-full bg-white"
+              />
+            </div>
           )}
 
           <InputRounded
@@ -60,6 +116,13 @@ const CreateCouse: React.FC = () => {
             placeholder="Nhập tiêu đề khóa học"
             type="text"
             rightLabel="Tối đa 40 ký tự"
+          />
+          <InputRectangle
+            label="Giá khóa học *"
+            maxLength={15}
+            placeholder="Nhập giá khóa học"
+            type="number"
+            noResize
           />
           <InputRectangle
             label="Mô tả *"

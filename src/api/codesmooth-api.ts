@@ -4,6 +4,7 @@ import type { CourseCategoryType } from '../shared/enum/category';
 import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import axiosClient from './axiosClient';
+import CodeSmoothCourseApi from './instructor/course';
 
 export interface CodeSmoothApiResponseList<T> {
   data: T[];
@@ -62,6 +63,7 @@ export interface SaveCourseRequest {
 }
 
 export const CodeSmoothApi = {
+  Course: CodeSmoothCourseApi,
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => {
