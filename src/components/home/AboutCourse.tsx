@@ -15,30 +15,37 @@ import { useState } from 'react';
 
 import { popularCourse } from './mockData';
 
-const AboutCourse = () => {
-  const [hoveredCard, setHoveredCard] = useState(null);
+const CourseCard = () => {
+  const [isHover, setIsHover] = useState<boolean>(false);
 
-  const handleCardHover = (cardIndex) => {
-    setHoveredCard(cardIndex);
+  const handleCardHover = () => {
+    setIsHover(true);
   };
 
   const handleCardLeave = () => {
-    setHoveredCard(null);
+    setIsHover(false);
   };
-  const cards = [1, 2, 3, 4].map((index) => (
-    <Grid.Col key={index} span={3}>
+
+  return (
+    <Grid.Col span={3}>
       <Card
         shadow="sm"
         padding="lg"
         radius="md"
         withBorder
         className="group relative cursor-pointer"
-        onMouseEnter={() => handleCardHover(index)}
+        onMouseEnter={handleCardHover}
         onMouseLeave={handleCardLeave}
         w={350}
       >
-        <Card.Section component="a" w="100%" p={15}>
-          <Image src="/images/home/Thumnail.png" height={212} width={318} alt="Norway" />
+        <Card.Section component="a" className="flex justify-center px-4 pt-4">
+          <Image
+            src="/images/home/Thumnail.png"
+            className="h-full w-full object-contain"
+            height={200}
+            width={360}
+            alt="Norway"
+          />
         </Card.Section>
 
         <Group position="right" mt="md" mb="xs" className="flex flex-row justify-start">
@@ -96,7 +103,7 @@ const AboutCourse = () => {
         </Group>
         <Button
           className={`hidden transition-all duration-1000 group-hover:flex ${
-            hoveredCard !== index ? 'opacity-0' : 'opacity-100'
+            !isHover ? 'opacity-0' : 'opacity-100'
           }`}
           variant="outline"
           color="blue"
@@ -112,8 +119,22 @@ const AboutCourse = () => {
         </Button>
       </Card>
     </Grid.Col>
-  ));
+  );
+};
 
+export const ListCourse = () => {
+  return (
+    <Grid gutter="lg">
+      {Array(4)
+        .fill(null)
+        .map((index: number) => (
+          <CourseCard key={index} />
+        ))}
+    </Grid>
+  );
+};
+
+const AboutCourse = () => {
   return (
     <MantineProvider
       theme={{
@@ -159,9 +180,7 @@ const AboutCourse = () => {
 
         <Group position="left">
           <h3 className="w-screen text-2xl">Các khóa học phổ biến</h3>
-          <Grid gutter="lg" mb={40}>
-            {cards}
-          </Grid>
+          <ListCourse />
         </Group>
       </Container>
     </MantineProvider>
