@@ -16,7 +16,7 @@ const CourseCard = () => {
   };
 
   return (
-    <Grid.Col span={3}>
+    <Grid.Col span={3} h={470}>
       <Card
         shadow="sm"
         padding="lg"

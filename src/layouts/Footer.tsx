@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Footer = () => {
   return (
     <Container size="xxxl" bg="#051E43">
-      <Container size="md" h={464} className="flex flex-col justify-center text-white">
+      <Container size="md" h={392} className="flex flex-col justify-center text-white">
         <Flex className="flex h-full items-center justify-between">
           <Box className="flex w-full justify-between">
             <Box className="flex flex-col gap-5">
@@ -63,7 +63,7 @@ const Footer = () => {
         className="flex justify-center text-white"
         style={{ borderTop: '1px solid #363A93' }}
       >
-        <Box className="flex h-[72px] w-[960px] items-center justify-between text-[14px] font-[400]">
+        <Box className="flex h-[72px] w-[960px] items-center justify-between text-[14px] font-extralight">
           <Text>Copyright © 2023 CodeSmooth. All Rights Reserved.</Text>
           <Flex gap={32}>
             <Text>Privacy Policy</Text>
