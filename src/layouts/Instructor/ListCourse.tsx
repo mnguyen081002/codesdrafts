@@ -1,4 +1,4 @@
-import { UnderlineNavbar } from '../NavBar/UnderlineNavbar';
+import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
 
 function CourseLong({ isPublished = false }: { isPublished?: boolean }) {
   return (

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import ListCoursePage from '../../components/Instructor/ListCourse';
 import { InstructorLayout } from '../../layouts/Instructor/Instructor';
+import ListCoursePage from '../../layouts/Instructor/ListCourse';
 
 const ManageCourseMain = () => {
   const mapPage = {

@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { APP_NAME } from '../../shared/constants/app';
 
-const HeaderInstructor = ({ rightContent }: { rightContent?: React.ReactNode }) => {
+const HeaderManage = ({ rightContent }: { rightContent?: React.ReactNode }) => {
   return (
     <div className="flex h-[74px] w-full items-center justify-between pl-[25px] pr-[40px] shadow">
       <div className="flex items-center gap-2">
@@ -14,4 +14,4 @@ const HeaderInstructor = ({ rightContent }: { rightContent?: React.ReactNode }) 
   );
 };
 
-export default HeaderInstructor;
+export default HeaderManage;

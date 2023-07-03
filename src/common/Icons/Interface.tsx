@@ -16,12 +16,18 @@ export interface BaseIconProps {
   pathId?: string;
 
   pathFill?: string;
+
+  onClick?: () => void;
+
+  className?: string;
 }
 
 export interface IconProps {
   width?: string;
   height?: string;
   pathFill?: string;
+  onClick?: () => void;
+  className?: string;
 }
 
 export const BaseSVGIcon = ({
@@ -34,6 +40,8 @@ export const BaseSVGIcon = ({
   gId,
   pathId,
   pathFill = '#000',
+  onClick,
+  className,
 }: BaseIconProps) => (
   <svg
     width={width}
@@ -41,6 +49,8 @@ export const BaseSVGIcon = ({
     viewBox={viewBox}
     fill={fill}
     xmlns="http://www.w3.org/2000/svg"
+    onClick={onClick}
+    className={className}
   >
     <g id={gId}>
       <path id={pathId} d={d} fill={pathFill} />
