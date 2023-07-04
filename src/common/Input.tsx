@@ -9,9 +9,13 @@ interface InputProps {
   rightLabel?: string;
   className?: string;
   height?: string;
+  noResize?: boolean;
 }
 
 const Input = (props: InputProps) => {
+  const className = `${props.className || ''} ${
+    props.height || 'h-[45px]'
+  } flex resize-none border border-light-border bg-white py-[10px] pl-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`;
   return (
     <div className="flex flex-col gap-[6px]">
       <div className="flex justify-between">
@@ -20,13 +24,20 @@ const Input = (props: InputProps) => {
           <p className="text-xs font-light text-[#727272]">{props.rightLabel}</p>
         )}
       </div>
-      <ReactTextareaAutosize
-        className={`${props.className || ''} ${
-          props.height || 'h-[45px]'
-        } flex resize-none border border-light-border bg-white py-[10px] pl-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`}
-        placeholder={props.placeholder}
-        maxLength={props.maxLength || 999}
-      />
+      {!props.noResize ? (
+        <ReactTextareaAutosize
+          className={className}
+          placeholder={props.placeholder}
+          maxLength={props.maxLength || 999}
+        />
+      ) : (
+        <input
+          type={props.type}
+          className={className}
+          placeholder={props.placeholder}
+          maxLength={props.maxLength}
+        />
+      )}
     </div>
   );
 };

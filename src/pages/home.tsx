@@ -1,14 +1,18 @@
-import { Container } from '@mantine/core';
+import { Container, Divider } from '@mantine/core';
 
-import { AboutCourse, CarouselHome, HeaderHome } from '@/components/home';
+import { AboutCourse, CarouselHome } from '@/components/home';
+import HeaderPrimary from '@/components/home/HeaderPrimary';
 
 const Home = () => {
   return (
-    <Container fluid mx={60}>
-      <HeaderHome />
-      <CarouselHome />
-      <AboutCourse />
-    </Container>
+    <div>
+      <HeaderPrimary />
+      <Divider className="mb-3" />
+      <Container fluid mx={202}>
+        <CarouselHome />
+        <AboutCourse />
+      </Container>
+    </div>
   );
 };
 export default Home;

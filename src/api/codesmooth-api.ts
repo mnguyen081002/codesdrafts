@@ -1,9 +1,10 @@
-import type { ResLogin } from '@/shared/types/authType';
+import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
 import type { CourseCategoryType } from '../shared/enum/category';
 import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import axiosClient from './axiosClient';
+import CodeSmoothCourseApi from './instructor/course';
 
 export interface CodeSmoothApiResponseList<T> {
   data: T[];
@@ -62,6 +63,7 @@ export interface SaveCourseRequest {
 }
 
 export const CodeSmoothApi = {
+  Course: CodeSmoothCourseApi,
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => {
@@ -213,6 +215,13 @@ export const CodeSmoothApi = {
       email,
       password,
       requestFrom: 'CMS',
+    });
+  },
+  register: async (email: string, username: string, password: string) => {
+    return axiosClient.post<ResRegister>('/api/auth/register', {
+      email,
+      username,
+      password,
     });
   },
 };
