@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { PATH_AUTH } from '@/routes/path';
+
 const Header = () => {
   // get path from router
   const router = useRouter();
@@ -40,7 +42,7 @@ const Header = () => {
             className="relative bg-transparent text-lg text-light-primary after:absolute after:left-1/2 after:block after:h-[2px] after:w-8 after:-translate-x-1/2 after:rounded-md after:bg-light-primary after:content-['']"
             variant="white"
           >
-            <Link href="/login" className="text-light-tertiary no-underline ">
+            <Link href={PATH_AUTH.login} className="text-light-tertiary no-underline">
               Đăng nhập
             </Link>
           </Button>
@@ -48,7 +50,9 @@ const Header = () => {
             className="rounded-2xl bg-light-primary text-lg shadow-forfun transition-all hover:bg-light-tertiary"
             variant="filled"
           >
-            Đăng ký
+            <Link href={PATH_AUTH.register} className="text-white no-underline">
+              Đăng ký
+            </Link>
           </Button>
         </Group>
       </Flex>

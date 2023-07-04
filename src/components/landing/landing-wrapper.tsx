@@ -95,7 +95,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '1060px',
             left: '8%',
           })}
@@ -107,7 +107,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '1600px',
             left: '18%',
           })}
@@ -119,7 +119,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '1600px',
             right: '12%',
           })}
@@ -131,7 +131,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '1900px',
             right: '12%',
           })}
@@ -143,7 +143,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '1880px',
             left: '8%',
           })}
@@ -155,7 +155,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '2260px',
             left: '5%',
           })}
@@ -167,7 +167,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '2432px',
             right: '5%',
           })}
@@ -179,7 +179,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '2680px',
             left: '10%',
           })}
@@ -191,7 +191,7 @@ const LandingWrapper = ({ children }: Props) => {
             borderRadius: 15,
             backgroundColor: 'transparent',
             position: 'absolute',
-            zIndex: 10,
+            zIndex: 20,
             top: '5080px',
             left: '10%',
           })}

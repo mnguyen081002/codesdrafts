@@ -1,15 +1,4 @@
-import {
-  Center,
-  Container,
-  Divider,
-  Grid,
-  Group,
-  Header,
-  Input,
-  Menu,
-  rem,
-  Text,
-} from '@mantine/core';
+import { Center, Container, Divider, Grid, Group, Input, Menu, rem, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -107,42 +96,40 @@ const HeaderHome = () => {
     );
   });
   return (
-    <Header height={100} sx={{ borderBottom: 0 }} mt={22}>
-      <Container fluid className={classes.inner}>
-        <Group>
-          <Image src="/logo-96.png" alt="logo" width={50} height={50} />
-        </Group>
-        <Group
-          spacing={5}
-          w={rem(432)}
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {items}
-        </Group>
-        <Group position="center">
-          <Input
-            placeholder="Tìm kiếm"
-            className={classes.search}
-            rightSection={
-              <Image src="/images/home/Adornment-End.svg" alt="search" width={20} height={20} />
-            }
-          />
-        </Group>
-        <Group position="left" w={50}>
-          <Image
-            className="cursor-pointer"
-            src="/images/home/Avatar.png"
-            alt="search"
-            width={40}
-            height={40}
-          />
-        </Group>
-      </Container>
-    </Header>
+    <Container fluid className={classes.inner} mx={50} mb={15}>
+      <Group>
+        <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+      </Group>
+      <Group
+        spacing={5}
+        w={rem(432)}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        {items}
+      </Group>
+      <Group position="center">
+        <Input
+          placeholder="Tìm kiếm"
+          className={classes.search}
+          rightSection={
+            <Image src="/images/home/Adornment-End.svg" alt="search" width={20} height={20} />
+          }
+        />
+      </Group>
+      <Group position="left" w={50}>
+        <Image
+          className="cursor-pointer"
+          src="/images/home/Avatar.png"
+          alt="search"
+          width={40}
+          height={40}
+        />
+      </Group>
+    </Container>
   );
 };
 export default HeaderHome;

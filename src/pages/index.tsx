@@ -224,50 +224,53 @@ const Index = () => {
           </Container>
         </MantineProvider>
       </Container>
-      <Container size="xxxl" style={{ borderBottom: '1px solid #E9E9E9' }}>
-        <Container size="xl" h={738} className="flex flex-col items-center justify-center gap-8">
-          <Title
-            className="group w-fit font-lexend-deca text-[34px] font-bold tracking-[-.075em]"
-            weight={900}
-          >
-            Các
-            <span className="relative w-full px-3 text-light-primary">
-              Khóa Học
-              <Box
-                sx={(theme) => ({
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  position: 'absolute',
-                  zIndex: -2,
-                  top: '18px',
-                  left: '12px',
-                })}
-                className="overflow-hidden object-contain group-hover:animate-co-fast"
-              >
-                <img alt="" src="/assets/landing-page/co3.svg" />
-              </Box>
-              <Box
-                sx={(theme) => ({
-                  borderRadius: 15,
-                  backgroundColor: 'transparent',
-                  position: 'absolute',
-                  zIndex: -2,
-                  top: '21px',
-                  left: '36px',
-                })}
-                className="overflow-hidden object-contain group-hover:animate-co-slow"
-              >
-                <img alt="" src="/assets/landing-page/co4.svg" />
-              </Box>
-            </span>
-            Phổ Biến
-          </Title>
-          <ListCourse />
-          <Button className="h-14 w-[320px] bg-light-primary shadow-forfun transition-all hover:bg-light-tertiary">
-            <span className="mr-2 text-base">Khám Phá Tất Cả Khóa Học</span>
-            <EastIcon />
-          </Button>
-        </Container>
+      <Container
+        size="xxl"
+        h={738}
+        className="flex flex-col items-center justify-center gap-8"
+        style={{ borderBottom: '1px solid #E9E9E9' }}
+      >
+        <Title
+          className="group w-fit font-lexend-deca text-[34px] font-bold tracking-[-.075em]"
+          weight={900}
+        >
+          Các
+          <span className="relative w-full px-3 text-light-primary">
+            Khóa Học
+            <Box
+              sx={(theme) => ({
+                borderRadius: 15,
+                backgroundColor: 'transparent',
+                position: 'absolute',
+                zIndex: -2,
+                top: '18px',
+                left: '12px',
+              })}
+              className="overflow-hidden object-contain group-hover:animate-co-fast"
+            >
+              <img alt="" src="/assets/landing-page/co3.svg" />
+            </Box>
+            <Box
+              sx={(theme) => ({
+                borderRadius: 15,
+                backgroundColor: 'transparent',
+                position: 'absolute',
+                zIndex: -2,
+                top: '21px',
+                left: '36px',
+              })}
+              className="overflow-hidden object-contain group-hover:animate-co-slow"
+            >
+              <img alt="" src="/assets/landing-page/co4.svg" />
+            </Box>
+          </span>
+          Phổ Biến
+        </Title>
+        <ListCourse />
+        <Button className="h-14 w-[320px] bg-light-tertiary transition-all hover:bg-light-tertiary">
+          <span className="mr-2 text-base">Khám Phá Tất Cả Khóa Học</span>
+          <EastIcon />
+        </Button>
       </Container>
       <Container size="xl" h={895} className="relative flex items-center justify-center">
         <Box>
