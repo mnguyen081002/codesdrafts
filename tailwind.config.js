@@ -2,7 +2,7 @@
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   corePlugins: {
-    preflight: false,
+    preflight: true,
   },
   theme: {
     fontSize: {
@@ -20,13 +20,19 @@ module.exports = {
     extend: {
       colors: {
         light: {
-          primary: '#0C77FF',
+          primary: '#1363DF',
+          dark: '#0847AA',
+          hoverPrimary: '#1363df1f',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
           grayDarker: '#e5e5e5',
           text: {
-            primary: '#585b63',
+            primary: '#4C4E64',
+            sencondary: 'rgba(76, 78, 100, 0.68)',
+            'course-detail-content': '#39557E',
+            main: '#4D92FF',
+            placeholder: '#adb5bd',
           },
           error: {
             main: '#FF4D49',
@@ -36,6 +42,7 @@ module.exports = {
           warning: {
             main: '#FDB528',
           },
+          border: '#ced4da',
         },
 
         dark: { 90: '#1e1e27' },
@@ -74,6 +81,7 @@ module.exports = {
       boxShadow: {
         forfun: '#7bc3f9 0px 3px 8px',
         button: '8px 8px 23px #a9b0b7, -8px -8px 23px #ffffff;',
+        md: '0 1px 4px 0px rgba(0, 0, 0, 0.25)',
       },
       borderColor: {
         light: { primary: '#63b3ed' },
@@ -81,6 +89,8 @@ module.exports = {
       fontFamily: {
         table: ['Gelasio', 'sans-serif'],
         'lexend-deca': ['Lexend Deca', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        instructorSidebar: ['Plus Jakarta Sans', 'sans-serif'],
       },
       // animation: 'name duration timing-function delay iteration-count direction fill-mode play-state;
       animation: {

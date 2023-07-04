@@ -2,10 +2,17 @@ import { Button, Container, Flex, Group } from '@mantine/core';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { PATH_AUTH } from '@/routes/path';
 
 const Header = () => {
+  // get path from router
+  const router = useRouter();
+  const path = router.pathname;
+
+  // check if path is /course/1
+  const isCourseDetail = path.includes('/course/');
   return (
     <Container size="xxl" h={90}>
       <Flex justify="space-between" align="center" w="100%" h="100%">
