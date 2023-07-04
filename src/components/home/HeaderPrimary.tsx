@@ -1,4 +1,4 @@
-import { Divider, Grid, Menu } from '@mantine/core';
+import { Divider, Grid, Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -83,12 +83,120 @@ const ListPopularCourse = () => {
   );
 };
 
+const MenuUser = () => {
+  return (
+    <Menu shadow="md" width={250} position="top-end">
+      <Menu.Target>
+        <div>
+          <Avatar dot />
+        </div>
+      </Menu.Target>
+      <Menu.Dropdown px={2}>
+        <Menu.Item>
+          <div className="flex w-[180px] items-center gap-[8px]">
+            <Avatar h={60} w={60} />
+            <div>
+              <Text size="sm" weight={500}>
+                Minh Nguyên
+              </Text>
+              <Text
+                size="xs"
+                color="dimmed"
+                fw={500}
+                fz={12}
+                sx={{
+                  color: '#6D6D6D',
+                }}
+              >
+                minhnguyen@gmail.com
+              </Text>
+            </div>
+          </div>
+        </Menu.Item>
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Khóa học của tôi
+          </Text>
+        </Menu.Item>
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Giỏ hàng
+          </Text>
+        </Menu.Item>
+        <Menu.Item>
+          <div className="flex items-center justify-between">
+            <Text size="sm" color="dark">
+              Quản lý dạy học
+            </Text>
+          </div>
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Item>
+          <div className="flex items-center justify-between">
+            <Text size="sm" color="dark">
+              Thông báo
+            </Text>
+            <Text
+              size="sm"
+              color="dark"
+              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF]"
+            >
+              1
+            </Text>
+          </div>
+        </Menu.Item>
+        <Menu.Item>
+          <div className="flex items-center justify-between">
+            <Text size="sm" color="dark">
+              Tin nhắn
+            </Text>
+            <Text
+              size="sm"
+              color="dark"
+              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF]"
+            >
+              1
+            </Text>
+          </div>
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Cài đặt tài khoản
+          </Text>
+        </Menu.Item>
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Tin nhắn
+          </Text>
+        </Menu.Item>
+        <Menu.Divider />
+
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Hổ trợ
+          </Text>
+        </Menu.Item>
+        <Menu.Item>
+          <Text size="sm" color="dark">
+            Đăng xuất
+          </Text>
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
 const HeaderPrimary = () => {
   return (
-    <div className="flex h-[74px] w-full items-center justify-between border-b border-[#A7A7A7] pl-[50px] pr-[82px]">
+    <div className="flex h-[74px] w-full items-center justify-between pl-[50px] pr-[82px] shadow">
       <Image src="/logo-96.png" alt="logo" width={40} height={40} />
       <ListPopularCourse />
-      <div className=" flex h-[45px] w-[1100px] rounded-lg  border border-light-border px-[12px]">
+      <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">
         <input
           className="border-none bg-white"
           placeholder="Tìm kiếm"
@@ -98,7 +206,8 @@ const HeaderPrimary = () => {
         />
         <Image src="/images/home/Adornment-End.svg" alt="search" width={25} height={25} />
       </div>
-      <Avatar dot />
+
+      <MenuUser />
     </div>
   );
 };
