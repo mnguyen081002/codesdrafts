@@ -1,6 +1,10 @@
-import { Button, Card, Container, Divider, Flex, Group, Rating, rem, Text } from '@mantine/core';
+/* eslint-disable tailwindcss/no-custom-classname */
+import 'swiper/css';
+
+import { Button, Card, Divider, Flex, Group, Rating, rem, Text } from '@mantine/core';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Swiper from 'swiper';
 
 import { popularCourse } from './mockData';
 
@@ -85,9 +89,7 @@ const CourseCard = () => {
           </Text>
         </Group>
         <Button
-          className={`mt-3 hidden transition-all duration-1000 group-hover:flex ${
-            !isHover ? 'opacity-0' : 'opacity-100'
-          }`}
+          className="mt-3 hidden transition-all duration-1000 group-hover:flex"
           variant="outline"
           color="blue"
           w={145}
@@ -104,52 +106,134 @@ const CourseCard = () => {
   );
 };
 
-export const ListCourse = () => {
+type SwiperListCardProps = {
+  classSwiper: string;
+};
+
+function delay(ms) {
+  return setTimeout(() => {}, ms);
+}
+
+export const SwiperListCard = ({ classSwiper }: SwiperListCardProps) => {
+  const [swiper, setSwiper] = useState<any>();
+
+  useEffect(() => {
+    const container = document.querySelector(`.${classSwiper}`);
+    if (container) {
+      const swiper = new Swiper(`.${classSwiper}`, {
+        slidesPerView: 4,
+        spaceBetween: 20,
+        width: 1432,
+        allowSlideNext: true,
+        allowSlidePrev: true,
+        autoplay: {
+          delay: 1000,
+        },
+      });
+      if (swiper) {
+        console.log(classSwiper, swiper);
+        setSwiper(swiper);
+      }
+    }
+  }, [classSwiper]);
+
+  const handlerPrev = () => {
+    if (swiper) {
+      swiper.slidePrev();
+    }
+  };
+
+  const handlerNext = () => {
+    if (swiper) {
+      swiper.slideNext();
+    }
+  };
   return (
-    <Flex className="flex h-[470px] w-[1483px] justify-evenly">
-      {Array(4)
-        .fill(null)
-        .map((index: number) => (
-          <CourseCard key={index} />
-        ))}
-    </Flex>
+    <div>
+      <Flex className="relative flex h-[470px] justify-evenly">
+        <span>
+          <Image
+            src="/images/home/previous.svg"
+            height={60}
+            width={60}
+            alt="Previous"
+            onClick={handlerPrev}
+            className="absolute bottom-64 -left-14 z-10 cursor-pointer"
+          />
+        </span>
+        <div className="swiper">
+          <div className="swiper-wrapper">
+            {Array(5)
+              .fill(null)
+              .map((index: number) => (
+                <div className="swiper-slide" key={index}>
+                  <CourseCard />
+                </div>
+              ))}
+          </div>
+        </div>
+        <span>
+          <Image
+            src="/images/home/next.svg"
+            height={60}
+            width={60}
+            alt="Next"
+            onClick={handlerNext}
+            className="absolute bottom-64 -right-12 z-10 cursor-pointer"
+          />
+        </span>
+      </Flex>
+    </div>
   );
 };
 
+const listLabel = [
+  'Các khóa học Backend phổ biến',
+  'Các lộ trình phổ biến',
+  'Các khóa học Frontend phổ biến',
+  'Các khóa học DevOps phổ biến',
+];
+
 const AboutCourse = () => {
   return (
-    <Container fluid mx={15}>
+    <div className="w-full">
       <Group position="left">
-        <h3 className="w-screen text-2xl">Các chủ đề phổ biến</h3>
+        <h3 className="mt-4 mb-[25px] w-screen text-3xl font-bold">Các chủ đề phổ biến</h3>
       </Group>
-      <Group position="left">
-        {popularCourse.map((item) => (
-          <Button
-            w={200}
-            h={60}
-            variant="default"
-            key={item.key}
-            sx={{
-              fontSize: '20px',
-            }}
-          >
-            {item.name}
-          </Button>
-        ))}
-      </Group>
+      {popularCourse.map((item) => (
+        <Button
+          w={188}
+          h={60}
+          variant="default"
+          key={item.key}
+          sx={{
+            fontSize: '20px',
+          }}
+          className="ml-[20px] mb-[40px]"
+        >
+          {item.name}
+        </Button>
+      ))}
 
-      <Group position="left">
-        <h3 className="w-screen text-2xl">Các khóa học phổ biến</h3>
-        <ListCourse />
-      </Group>
-      <Image
-        src="/images/home/add-course.svg"
-        className="absolute -bottom-72 left-6 cursor-pointer"
-        height={69}
-        width={69}
-        alt="Add course"
-      />
-    </Container>
+      {listLabel.map((item, index) => (
+        <div key={item}>
+          <span>
+            <Text
+              key={item}
+              className="mb-[25px] text-3xl font-bold"
+              sx={{
+                fontSize: '30px',
+              }}
+            >
+              {item}
+            </Text>
+          </span>
+          <div>
+            <SwiperListCard classSwiper={`swiper${index}`} />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 export default AboutCourse;

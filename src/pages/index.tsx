@@ -13,7 +13,7 @@ import EastIcon from '@mui/icons-material/East';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
-import { ListCourse } from '@/components/home/AboutCourse';
+import { SwiperListCard } from '@/components/home/AboutCourse';
 import { ChildTopic, topics } from '@/components/landing';
 import LandingWrapper from '@/components/landing/landing-wrapper';
 import Footer from '@/layouts/Footer';
@@ -266,7 +266,7 @@ const Index = () => {
           </span>
           Phổ Biến
         </Title>
-        <ListCourse />
+        <SwiperListCard classSwiper="swiper1" />
         <Button className="h-14 w-[320px] bg-light-tertiary transition-all hover:bg-light-tertiary">
           <span className="mr-2 text-base">Khám Phá Tất Cả Khóa Học</span>
           <EastIcon />
@@ -478,7 +478,7 @@ const Index = () => {
             </span>
             Phổ Biến
           </Title>
-          <ListCourse />
+          <SwiperListCard classSwiper="swiper2" />
         </Container>
       </Container>
       <Footer />

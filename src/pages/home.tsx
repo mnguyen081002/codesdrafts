@@ -1,5 +1,3 @@
-import { Container, Divider } from '@mantine/core';
-
 import { AboutCourse, CarouselHome } from '@/components/home';
 import HeaderPrimary from '@/components/home/HeaderPrimary';
 
@@ -7,11 +5,10 @@ const Home = () => {
   return (
     <div>
       <HeaderPrimary />
-      <Divider className="mb-3" />
-      <Container fluid mx={202}>
+      <div className=" mx-[200px] mt-[12px] flex flex-col items-center justify-center">
         <CarouselHome />
         <AboutCourse />
-      </Container>
+      </div>
     </div>
   );
 };
