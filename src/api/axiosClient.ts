@@ -1,13 +1,27 @@
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
-const API_URL = 'https://codesmooth-api-production.up.railway.app';
+const API_URL = 'http://192.168.1.104:8080';
 
-const ApiClient = () => {
-  const instance = axios.create({
-    baseURL: API_URL,
-  });
+const ApiClient = axios.create({
+  baseURL: API_URL,
+});
 
-  return instance;
-};
+ApiClient.interceptors.request.use(
+  async (request) => {
+    const session = await getSession();
+    console.log('session', session);
 
-export default ApiClient();
+    if (session) {
+      request.headers!.Authorization = `Bearer ${session?.user}`;
+    } else if (axios.defaults.headers.common.Authorization && request.headers) {
+      request.headers.Authorization = axios.defaults.headers.common.Authorization;
+    }
+    return request;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
+
+export default ApiClient;

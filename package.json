@@ -46,6 +46,7 @@
     "axios": "^1.2.1",
     "dayjs": "^1.11.7",
     "escape-html": "^1.0.3",
+    "formik": "^2.4.2",
     "image-extensions": "^1.1.0",
     "install": "^0.13.0",
     "is-hotkey": "^0.2.0",
