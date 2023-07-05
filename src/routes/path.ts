@@ -12,5 +12,3 @@ export enum ADMIN_PATH {
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
 }
-
-export const ERROR_TOKEN = 'RefreshAccessTokenError';
