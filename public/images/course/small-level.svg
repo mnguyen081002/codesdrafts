@@ -1,9 +1,1 @@
-<svg width="19" height="15" viewBox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Layer 2">
-<g id="Vector">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M0 9.7001H5.28158V14.4466H0V9.7001Z" fill="#082A5E" fill-opacity="0.68"/>
-<path d="M6.66409 4.95358H11.9457V14.4466H6.66409V4.95358Z" fill="#082A5E" fill-opacity="0.68"/>
-<path d="M13.5384 0.213623H18.82V14.4532H13.5384V0.213623Z" fill="#082A5E" fill-opacity="0.68"/>
-</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="19" height="15" fill="none" viewBox="0 0 19 15"><g id="Layer 2"><g id="Vector"><path fill="#082A5E" fill-opacity=".68" fill-rule="evenodd" d="M0 9.7001H5.28158V14.4466H0V9.7001Z" clip-rule="evenodd"/><path fill="#082A5E" fill-opacity=".68" d="M6.66409 4.95358H11.9457V14.4466H6.66409V4.95358Z"/><path fill="#082A5E" fill-opacity=".68" d="M13.5384 0.213623H18.82V14.4532H13.5384V0.213623Z"/></g></g></svg>
