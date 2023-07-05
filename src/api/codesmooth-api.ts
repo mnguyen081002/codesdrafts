@@ -3,6 +3,7 @@ import type { ResLogin, ResRegister } from '@/shared/types/authType';
 import type { CourseCategoryType } from '../shared/enum/category';
 import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
+import CodeSmoothAdminApi from './admin/setting';
 import axiosClient from './axiosClient';
 import CodeSmoothCourseApi from './instructor/course';
 
@@ -64,6 +65,9 @@ export interface SaveCourseRequest {
 
 export const CodeSmoothApi = {
   Course: CodeSmoothCourseApi,
+  Admin: {
+    setting: CodeSmoothAdminApi,
+  },
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
     files.forEach((file) => {

@@ -1,3 +1,4 @@
+import console from 'console';
 import type { JwtPayload } from 'jwt-decode';
 import jwt_decode from 'jwt-decode';
 import NextAuth from 'next-auth/next';
@@ -32,6 +33,7 @@ export default NextAuth({
           ).then((res) => {
             return res.data; // return the data from the server response (token, user) as a object (token, user) with the type ResLogin
           });
+
           if (data) {
             const { access_token: accessToken, refresh_token: refreshToken } = data.token; // We get the access token and the refresh token from the data object.
 
@@ -49,6 +51,7 @@ export default NextAuth({
           }
           return null; // if the data is null, return null
         } catch (e: any) {
+          console.log('error', e);
           throw new Error(e.response.data.message); // if the server response is an error, throw an error with the message from the server
         }
       },

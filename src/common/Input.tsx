@@ -2,7 +2,7 @@ import { Autocomplete, MultiSelect } from '@mantine/core';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
 interface InputProps {
-  label: string;
+  label?: string;
   placeholder: string;
   type: string;
   maxLength?: number;
@@ -12,18 +12,20 @@ interface InputProps {
   noResize?: boolean;
 }
 
-const Input = (props: InputProps) => {
+export const Input = (props: InputProps) => {
   const className = `${props.className || ''} ${
     props.height || 'h-[45px]'
   } flex resize-none border border-light-border bg-white py-[10px] pl-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`;
   return (
-    <div className="flex flex-col gap-[6px]">
-      <div className="flex justify-between">
-        <p className="text-base font-normal ">{props.label}</p>
-        {props.rightLabel && (
-          <p className="text-xs font-light text-[#727272]">{props.rightLabel}</p>
-        )}
-      </div>
+    <div className="flex flex-col">
+      {props.label ? (
+        <div className="flex justify-between gap-6">
+          <p className="text-base font-normal ">{props.label}</p>
+          {props.rightLabel && (
+            <p className="text-xs font-light text-[#727272]">{props.rightLabel}</p>
+          )}
+        </div>
+      ) : null}
       {!props.noResize ? (
         <ReactTextareaAutosize
           className={className}

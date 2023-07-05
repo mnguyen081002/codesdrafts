@@ -1,4 +1,14 @@
+import { Button, Group, Input, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Search } from '@mui/icons-material';
+import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import * as Yup from 'yup';
+
+import type { CreateCategoryRequest } from '@/api/admin/setting';
+import { CodeSmoothApi } from '@/api/codesmooth-api';
+import { PrimaryButton } from '@/components/Button';
 
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
@@ -9,10 +19,140 @@ const SettingContent = () => {
   const router = useRouter();
 
   const { page } = router.query;
+
+  const [file, setFile] = useState<File | undefined>();
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const initialValues = {
+    name: '',
+    description: '',
+    order: 0,
+    thumbnail: '',
+  };
+  const formik = useFormik({
+    initialValues,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      console.log(111111111111);
+
+      try {
+        console.log(values.thumbnail);
+        if (!file) {
+          throw new Error('File is required');
+        }
+
+        const res = await CodeSmoothApi.uploadFiles([file]);
+
+        const reqCreateItem: CreateCategoryRequest = {
+          name: values.name,
+          description: values.description,
+          order: values.order,
+          thumbnail: res.data.urls[0],
+        };
+
+        const _ = await CodeSmoothApi.Admin.setting.createCategory(reqCreateItem);
+        // setMessage({
+        //   isSuccess: true,
+        //   message: 'Success',
+        // });
+      } catch (error: any) {
+        // setMessage({ message: error.data.message, isSuccess: false });
+      }
+
+      resetForm({});
+    },
+
+    validationSchema: Yup.object().shape({
+      name: Yup.string().required('You must enter your name.'),
+      order: Yup.string().required('You must enter your order.'),
+      description: Yup.string().required('You must enter your description.'),
+    }),
+  });
+
   return (
     <AdminLayout>
       <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[300px] pt-[60px]">
         <DecorAdmin text="Danh mục" />
+        <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
+          <form onSubmit={formik.handleSubmit} className="w-full">
+            <label htmlFor="" className="text-sm">
+              Trạng Thái
+            </label>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Enter Name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+            />
+            {formik.touched.name && formik.errors.name ? (
+              <div className="text-light-error text-sm">{formik.errors.name}</div>
+            ) : null}
+            <label htmlFor="" className="text-sm">
+              Thứ Tự
+            </label>
+            <Input
+              id="order"
+              name="order"
+              type="number"
+              placeholder="Nhập ..."
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.order}
+            />
+            {formik.touched.order && formik.errors.order ? (
+              <div className="text-light-error text-sm">{formik.errors.order}</div>
+            ) : null}
+            <div className="mb-2">
+              <label htmlFor="" className="text-sm">
+                Mô tả
+              </label>
+              <textarea
+                name="description"
+                id="description"
+                className="h-20 w-full overflow-y-hidden rounded-lg border p-4 outline-none"
+                placeholder="Please write here ..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.description}
+              />
+            </div>
+            <label className="text-sm">Thumbnail</label>
+            <input
+              id="thumbnail"
+              name="thumbnail"
+              type="file"
+              placeholder="Enter thumbnail"
+              onChange={(e) => {
+                if (e.target) {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setFile(e.target.files[0]);
+                  }
+                }
+              }}
+            />
+            <Group position="center" mt="xl">
+              <Button variant="outline" type="submit">
+                Cập Nhật
+              </Button>
+            </Group>
+          </form>
+        </Modal>
+        <div className="flex h-[65px] w-full items-center justify-between rounded-[5px] border px-3 shadow-md">
+          <div className="flex h-[45px] w-[508px] items-center rounded-[5px] border border-light-border">
+            <input type="text" className="h-full rounded-[5px] border-none bg-white" />
+            <span className="flex h-full w-[45px] items-center justify-center">
+              <Search />
+            </span>
+          </div>
+          <PrimaryButton
+            text="Thêm"
+            className="h-[32px] w-[60px] px-2 text-white"
+            textClassName="text-[14px]"
+            onClick={open}
+          />
+        </div>
         <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
           <thead>
             <tr className="h-10 text-lg font-medium text-light-text-primary">
