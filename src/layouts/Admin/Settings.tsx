@@ -57,7 +57,7 @@ const AdminSetting = () => {
           initialValues={{
             title: '',
             key: '',
-            values: [''],
+            value: [''],
           }}
           onSubmit={onSubmit}
           className="flex w-full flex-col gap-3"
@@ -87,9 +87,9 @@ const AdminSetting = () => {
               <FieldArray validateOnChange={false} name="values">
                 {(arrayHelpers) => (
                   <div className="flex flex-col gap-3">
-                    {values.values.length > 0 && (
+                    {values.value.length > 0 && (
                       <div>
-                        {values.values.map((v, index) => (
+                        {values.value.map((v, index) => (
                           <div className="flex w-full items-end gap-4" key={index}>
                             <div className="w-full">
                               <label className="text-sm" htmlFor={`values.${index}`}>

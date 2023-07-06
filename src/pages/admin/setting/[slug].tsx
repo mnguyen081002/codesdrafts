@@ -29,7 +29,7 @@ const SettingItem = ({
     initialValues: {
       value,
     },
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
+    onSubmit: async (values) => {
       onSubmit(values.value);
       close();
     },
@@ -127,7 +127,7 @@ const SettingContent = () => {
       const newValues = [...settingValues, values.value];
       await saveSetting(newValues);
       close();
-      resetForm({});
+      resetForm();
     },
 
     validationSchema: Yup.object().shape({
