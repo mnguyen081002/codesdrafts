@@ -61,7 +61,7 @@ const Login = (props: Props) => {
       email,
       password,
       redirect: false,
-      callbackUrl: PATH_DASHBOARD.main,
+      callbackUrl: PATH_DASHBOARD.home,
     });
     if (result?.error) {
       setErrorLogin(result.error);
@@ -69,7 +69,7 @@ const Login = (props: Props) => {
     } else {
       reset(defaultValues);
       toast.success('Đăng nhập thành công');
-      router.push(PATH_DASHBOARD.main);
+      router.push(PATH_DASHBOARD.home);
     }
   };
   return (

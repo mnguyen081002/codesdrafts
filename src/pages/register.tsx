@@ -79,7 +79,7 @@ const Register = (props: Props) => {
   const onSubmit = async (data: FormValuesProps) => {
     const { email, password, username } = data;
     setLoading(true);
-    const result: any = await CodeSmoothApi.register(email, password, username)
+    const result: any = await CodeSmoothApi.register(email, username, password)
       .then((res) => {
         reset(defaultValues);
         toast.success('Đăng ký thành công');

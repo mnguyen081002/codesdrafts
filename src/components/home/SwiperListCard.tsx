@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import ArrowLeftIcon from '../../common/Icons/ArrowLeftIcon';
 import ArrowRightIcon from '../../common/Icons/ArrowRightIcon';
 import ShortCourseCard from '../Card/ShortCourseCard';
@@ -9,8 +7,6 @@ type SwiperListCardProps = {
 };
 
 const SwiperListCard = ({ classSwiper }: SwiperListCardProps) => {
-  useEffect(() => {}, []);
-
   const handlerPrev = () => {
     const swiperEl = document.querySelector(`#${classSwiper}`) as any;
     swiperEl.swiper.slidePrev();
@@ -21,7 +17,7 @@ const SwiperListCard = ({ classSwiper }: SwiperListCardProps) => {
     swiperEl.swiper.slideNext();
   };
   return (
-    <div className="relative">
+    <div className="relative w-[1500px]">
       <div className="absolute bottom-[14rem] left-[-50px] z-10 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-black">
         <ArrowLeftIcon height="30" width="30" pathFill="white" onClick={handlerPrev} />
       </div>

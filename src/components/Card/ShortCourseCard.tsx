@@ -20,7 +20,7 @@ const ShortCourseCard = () => {
       }}
     >
       <div
-        className="group relative flex w-[344px] cursor-pointer flex-col gap-2 rounded-[5px] py-[14px] px-[12px] shadow-md"
+        className="group relative  flex w-[345px] cursor-pointer flex-col gap-2 rounded-[5px] py-[14px] px-[12px] shadow-md"
         onMouseEnter={handleCardHover}
         onMouseLeave={handleCardLeave}
       >
