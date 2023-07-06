@@ -93,8 +93,8 @@ const MenuUser = () => {
       </Menu.Target>
       <Menu.Dropdown px={2}>
         <Menu.Item>
-          <div className="flex w-[180px] items-center gap-[8px] ">
-            <Avatar h={60} w={60} />
+          <div className="flex w-full items-center gap-[8px] ">
+            <Avatar h={50} w={50} />
             <div>
               <Text className="text-xl" weight={500}>
                 Minh Nguyên
