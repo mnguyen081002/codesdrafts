@@ -1,7 +1,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-import { ERROR_TOKEN } from '@/routes/path';
+import { ERROR_TOKEN } from '../../shared/constants/app';
 
 interface Props {
   children: React.ReactNode;
