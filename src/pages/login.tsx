@@ -19,7 +19,6 @@ import { getSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiError } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import { AuthWrapper } from '@/components/auth';
@@ -67,8 +66,6 @@ const Login = (props: Props) => {
       setErrorLogin(result.error);
       setLoading(false);
     } else {
-      reset(defaultValues);
-      toast.success('Đăng nhập thành công');
       router.push(PATH_DASHBOARD.home);
     }
   };

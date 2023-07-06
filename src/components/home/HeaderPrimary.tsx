@@ -1,6 +1,7 @@
 import { Divider, Grid, Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 import { Avatar } from '../sub/avatar';
 import { ListCourse } from './mockData';
@@ -181,7 +182,7 @@ const MenuUser = () => {
             Hổ trợ
           </Text>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item onClick={() => signOut()}>
           <Text size="sm" color="dark" className="text-lg">
             Đăng xuất
           </Text>

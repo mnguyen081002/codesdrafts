@@ -18,7 +18,6 @@ import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiError } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import { CodeSmoothApi } from '@/api/codesmooth-api';
@@ -79,15 +78,13 @@ const Register = (props: Props) => {
   const onSubmit = async (data: FormValuesProps) => {
     const { email, password, username } = data;
     setLoading(true);
-    const result: any = await CodeSmoothApi.register(email, username, password)
+    const _ = await CodeSmoothApi.register(email, username, password)
       .then((res) => {
         reset(defaultValues);
-        toast.success('Đăng ký thành công');
-        router.push(PATH_DASHBOARD.main);
+        router.push(PATH_AUTH.login);
       })
       .catch((err) => {
         setErrorRegister(err.response.data.message);
-        console.log(err.response.data.message);
         setLoading(false);
       });
   };
