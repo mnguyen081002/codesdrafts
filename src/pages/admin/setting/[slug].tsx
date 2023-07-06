@@ -1,72 +1,147 @@
 import { Button, Group, Input, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Search } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import type { CreateCategoryRequest } from '@/api/admin/setting';
 import { CodeSmoothApi } from '@/api/codesmooth-api';
-import { PrimaryButton } from '@/components/Button';
 
+import type { SettingResponse } from '../../../api/admin/setting';
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
+import AdminBar from '../../../components/Admin/bar';
 import DecorAdmin from '../../../components/Admin/decor';
 import { AdminLayout } from '../../../layouts/Admin/Admin';
+
+const SettingItem = ({
+  value,
+  onSubmit,
+  onDelete,
+}: {
+  value: string;
+  onSubmit: (value: string) => void;
+  onDelete: () => void;
+}) => {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const formik = useFormik({
+    initialValues: {
+      value,
+    },
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      onSubmit(values.value);
+      close();
+    },
+    validationSchema: Yup.object().shape({
+      value: Yup.string().required('Required'),
+    }),
+  });
+
+  useEffect(() => {
+    formik.setValues({ value });
+  }, [value]);
+
+  return (
+    <tr className="border-t border-light-border">
+      <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
+        <form onSubmit={formik.handleSubmit} className="w-full">
+          <label htmlFor="" className="text-sm">
+            Giá trị
+          </label>
+          <Input
+            id="value"
+            name="value"
+            type="text"
+            placeholder="Enter Name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.value}
+          />
+          <Group position="center" mt="xl">
+            <Button variant="outline" type="submit">
+              Cập Nhật
+            </Button>
+          </Group>
+        </form>
+      </Modal>
+      <td>
+        <div className="flex h-[45px] items-center px-[10px]">
+          <p className="">{value}</p>
+        </div>
+      </td>
+      <td>
+        <div className="flex h-[45px] items-center justify-end gap-2 px-[10px]">
+          <EditIcon
+            className="cursor-pointer rounded-full hover:bg-slate-200"
+            height="20"
+            width="20"
+            onClick={open}
+          />
+          <TrashIcon
+            className="cursor-pointer rounded-full hover:bg-slate-200"
+            height="20"
+            width="20"
+            onClick={onDelete}
+          />
+        </div>
+      </td>
+    </tr>
+  );
+};
 
 const SettingContent = () => {
   const router = useRouter();
 
-  const { page } = router.query;
-
-  const [file, setFile] = useState<File | undefined>();
   const [opened, { open, close }] = useDisclosure(false);
+  const [settingValues, setSettingValues] = useState<string[]>([]);
+  const [setting, setSetting] = useState<SettingResponse>();
 
-  const initialValues = {
-    name: '',
-    description: '',
-    order: 0,
-    thumbnail: '',
+  const getListSetting = async () => {
+    if (!router.isReady) return;
+    const { slug } = router.query as { slug: string };
+    const res = await CodeSmoothApi.Admin.setting.getSettingByKey(slug);
+    setSetting(res.data.data);
+    setSettingValues(res.data.data.value);
   };
+
+  const saveSetting = async (newValues: string[]) => {
+    try {
+      await CodeSmoothApi.Admin.setting.saveSetting({
+        key: setting!.key,
+        value: newValues,
+        title: setting!.title,
+      });
+
+      await getListSetting();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      value: '',
+    },
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      console.log(111111111111);
-
-      try {
-        console.log(values.thumbnail);
-        if (!file) {
-          throw new Error('File is required');
-        }
-
-        const res = await CodeSmoothApi.uploadFiles([file]);
-
-        const reqCreateItem: CreateCategoryRequest = {
-          name: values.name,
-          description: values.description,
-          order: values.order,
-          thumbnail: res.data.urls[0],
-        };
-
-        const _ = await CodeSmoothApi.Admin.setting.createCategory(reqCreateItem);
-        // setMessage({
-        //   isSuccess: true,
-        //   message: 'Success',
-        // });
-      } catch (error: any) {
-        // setMessage({ message: error.data.message, isSuccess: false });
-      }
-
+      const newValues = [...settingValues, values.value];
+      await saveSetting(newValues);
+      close();
       resetForm({});
     },
 
     validationSchema: Yup.object().shape({
-      name: Yup.string().required('You must enter your name.'),
-      order: Yup.string().required('You must enter your order.'),
-      description: Yup.string().required('You must enter your description.'),
+      value: Yup.string().required('Required'),
     }),
   });
+
+  useEffect(() => {
+    try {
+      getListSetting();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [router.isReady]);
 
   return (
     <AdminLayout>
@@ -75,62 +150,16 @@ const SettingContent = () => {
         <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
           <form onSubmit={formik.handleSubmit} className="w-full">
             <label htmlFor="" className="text-sm">
-              Trạng Thái
+              Giá trị
             </label>
             <Input
-              id="name"
-              name="name"
+              id="value"
+              name="value"
               type="text"
-              placeholder="Enter Name"
+              placeholder="Nhập giá trị"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.name}
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <div className="text-light-error text-sm">{formik.errors.name}</div>
-            ) : null}
-            <label htmlFor="" className="text-sm">
-              Thứ Tự
-            </label>
-            <Input
-              id="order"
-              name="order"
-              type="number"
-              placeholder="Nhập ..."
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.order}
-            />
-            {formik.touched.order && formik.errors.order ? (
-              <div className="text-light-error text-sm">{formik.errors.order}</div>
-            ) : null}
-            <div className="mb-2">
-              <label htmlFor="" className="text-sm">
-                Mô tả
-              </label>
-              <textarea
-                name="description"
-                id="description"
-                className="h-20 w-full overflow-y-hidden rounded-lg border p-4 outline-none"
-                placeholder="Please write here ..."
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.description}
-              />
-            </div>
-            <label className="text-sm">Thumbnail</label>
-            <input
-              id="thumbnail"
-              name="thumbnail"
-              type="file"
-              placeholder="Enter thumbnail"
-              onChange={(e) => {
-                if (e.target) {
-                  if (e.target.files && e.target.files.length > 0) {
-                    setFile(e.target.files[0]);
-                  }
-                }
-              }}
+              value={formik.values.value}
             />
             <Group position="center" mt="xl">
               <Button variant="outline" type="submit">
@@ -139,81 +168,39 @@ const SettingContent = () => {
             </Group>
           </form>
         </Modal>
-        <div className="flex h-[65px] w-full items-center justify-between rounded-[5px] border px-3 shadow-md">
-          <div className="flex h-[45px] w-[508px] items-center rounded-[5px] border border-light-border">
-            <input type="text" className="h-full rounded-[5px] border-none bg-white" />
-            <span className="flex h-full w-[45px] items-center justify-center">
-              <Search />
-            </span>
-          </div>
-          <PrimaryButton
-            text="Thêm"
-            className="h-[32px] w-[60px] px-2 text-white"
-            textClassName="text-[14px]"
-            onClick={open}
-          />
-        </div>
+        <AdminBar open={open} />
         <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
           <thead>
             <tr className="h-10 text-lg font-medium text-light-text-primary">
               <th>
                 <div className="flex h-[45px] items-center px-[15px]">
-                  <p className="">Tên</p>
+                  <p className="">Giá trị</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
-                  <p className="">Ảnh</p>
-                </div>
-              </th>
-              <th>
-                <div className="flex h-[45px] items-center px-[15px]">
-                  <p className="">Mô tả</p>
-                </div>
-              </th>
-              <th>
-                <div className="flex h-[45px] items-center">
-                  <p className="">Trạng thái</p>
-                </div>
-              </th>
-              <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center justify-end px-[15px]">
                   <p className="">Action</p>
                 </div>
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-light-border">
-              <td>
-                <div className="flex h-[45px] items-center px-[10px]">
-                  <p className="">NodeJs</p>
-                </div>
-              </td>
-              <td>
-                <a href="" className="text-light-primary underline">
-                  Thumbnail
-                </a>
-              </td>
-              <td>
-                <div className="flex h-[45px] items-center px-[10px]">
-                  <p className="">
-                    Node.js® là môi trường thời gian chạy JavaScript đa nền tảng, mã nguồn mở
-                  </p>
-                </div>
-              </td>
-              <td>
-                <div className="flex h-[45px] items-center px-[10px]">
-                  <p className="">Active</p>
-                </div>
-              </td>
-              <td>
-                <div className="flex h-[45px] items-center gap-2 px-[10px]">
-                  <EditIcon height="20" width="20" />
-                  <TrashIcon height="20" width="20" />
-                </div>
-              </td>
-            </tr>
+            {settingValues.map((item, index) => (
+              <SettingItem
+                value={item}
+                onSubmit={async (v) => {
+                  const newValues = [...settingValues];
+                  newValues[index] = v;
+                  await saveSetting(newValues);
+                }}
+                onDelete={async () => {
+                  const newValues = [...settingValues];
+                  newValues.splice(index, 1);
+                  await saveSetting(newValues);
+                }}
+                key={index}
+              />
+            ))}
           </tbody>
         </table>
       </div>
