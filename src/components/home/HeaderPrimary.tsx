@@ -9,7 +9,7 @@ function DropdownList({ label }) {
   return (
     <Menu
       position="bottom-start"
-      // trigger="click"
+      trigger="hover"
       transitionProps={{
         exitDuration: 0,
       }}
@@ -85,7 +85,7 @@ const ListPopularCourse = () => {
 
 const MenuUser = () => {
   return (
-    <Menu shadow="md" width={250} position="top-end">
+    <Menu shadow="md" width={285} position="top-end">
       <Menu.Target>
         <div>
           <Avatar dot />
@@ -93,10 +93,10 @@ const MenuUser = () => {
       </Menu.Target>
       <Menu.Dropdown px={2}>
         <Menu.Item>
-          <div className="flex w-[180px] items-center gap-[8px]">
+          <div className="flex w-[180px] items-center gap-[8px] ">
             <Avatar h={60} w={60} />
             <div>
-              <Text size="sm" weight={500}>
+              <Text className="text-xl" weight={500}>
                 Minh Nguyên
               </Text>
               <Text
@@ -114,18 +114,18 @@ const MenuUser = () => {
           </div>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Khóa học của tôi
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Giỏ hàng
           </Text>
         </Menu.Item>
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark">
+            <Text size="sm" color="dark" className="text-lg">
               Quản lý dạy học
             </Text>
           </div>
@@ -135,13 +135,13 @@ const MenuUser = () => {
 
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark">
+            <Text size="sm" color="dark" className="text-lg">
               Thông báo
             </Text>
             <Text
               size="sm"
               color="dark"
-              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF]"
+              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
               1
             </Text>
@@ -149,13 +149,13 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark">
+            <Text size="sm" color="dark" className="text-lg">
               Tin nhắn
             </Text>
             <Text
               size="sm"
               color="dark"
-              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF]"
+              className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
               1
             </Text>
@@ -165,24 +165,24 @@ const MenuUser = () => {
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Cài đặt tài khoản
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Tin nhắn
           </Text>
         </Menu.Item>
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Hổ trợ
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark">
+          <Text size="sm" color="dark" className="text-lg">
             Đăng xuất
           </Text>
         </Menu.Item>
