@@ -2,7 +2,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
 import { Meta } from '@/layouts/Meta';
@@ -58,30 +58,30 @@ const Course = (_) => {
   const [isDraft, setIsDraft] = useState(false);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const loadCourse = async () => {
-      setIsLoading(true);
-      if (router.isReady) {
-        const { id, draft } = router.query;
-        if (draft) {
-          setIsDraft(true);
-          const data = await CodeSmoothApi.getCourseById(Number(id));
-          setCourse(data.data);
-          let query = '';
-          if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
-            query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
-          } else {
-            query = generateId(18).toString();
-          }
-          setQueryLessonPage(query);
-        } else {
-          setQueryLessonPage(generateId(18).toString());
-        }
-        setIsLoading(false);
-      }
-    };
-    loadCourse();
-  }, [router.isReady]);
+  // useEffect(() => {
+  //   const loadCourse = async () => {
+  //     setIsLoading(true);
+  //     if (router.isReady) {
+  //       const { id, draft } = router.query;
+  //       if (draft) {
+  //         setIsDraft(true);
+  //         const data = await CodeSmoothApi.getCourseById(Number(id));
+  //         setCourse(data.data);
+  //         let query = '';
+  //         if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
+  //           query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
+  //         } else {
+  //           query = generateId(18).toString();
+  //         }
+  //         setQueryLessonPage(query);
+  //       } else {
+  //         setQueryLessonPage(generateId(18).toString());
+  //       }
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   loadCourse();
+  // }, [router.isReady]);
 
   const handleSetTags = (tags: string[]) => {
     setCourse({ ...course, tags });
