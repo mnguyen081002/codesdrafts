@@ -34,7 +34,7 @@ type FormValuesProps = {
   password: string;
   afterSubmit?: string;
 };
-const Login = (props: Props) => {
+const Login = () => {
   const [loading, setLoading] = useState(false);
   const [errorLogin, setErrorLogin] = useState<string | null>(null);
 
