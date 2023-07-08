@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import type { CourseSetting } from '@/api/admin/setting';
+import type { CourseCategory } from '@/api/admin/setting';
 import CodeSmoothAdminApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
@@ -39,7 +39,7 @@ const CreateCouse: React.FC = () => {
   const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   const dispatch = useAppDispatch();
-  const [optionSetting, setOptionSetting] = useState<CourseSetting[]>([]);
+  const [optionSetting, setOptionSetting] = useState<CourseCategory[]>([]);
   const [isDraft, setIsDraft] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [requiredOptions, setRequiredOptions] = useState<string[]>([]);

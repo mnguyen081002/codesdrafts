@@ -36,7 +36,7 @@ export interface SettingResponse {
   title: string;
 }
 
-export interface CourseSetting {
+export interface CourseCategory {
   id: number;
   created_at: string;
   updated_at: string;
@@ -66,7 +66,7 @@ const CodeSmoothAdminApi = {
     return axiosClient.get<BaseResponse<SettingResponse>>(`/api/admin/setting/${key}`);
   },
   getCateSetting: () => {
-    return axiosClient.get<BaseResponse<CourseSetting[]>>(`/api/category`);
+    return axiosClient.get<BaseResponse<CourseCategory[]>>(`/api/category`);
   },
 };
 

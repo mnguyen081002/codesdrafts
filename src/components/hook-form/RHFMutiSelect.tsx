@@ -40,7 +40,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                 paddingTop: '5px',
               },
             }}
-            error={error ? error?.message : props.helperText}
+            error={error ? error.message : props.helperText}
           >
             <div className="flex flex-col gap-[6px]">
               <div className="flex justify-between">

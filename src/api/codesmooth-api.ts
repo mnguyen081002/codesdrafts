@@ -54,7 +54,7 @@ export interface AddLessonRequest {
 
 export interface SaveCourseRequest {
   name: string;
-  description: string | undefined;
+  description: string;
   short_description: string;
   target_audience: string;
   category_ids: number[];
