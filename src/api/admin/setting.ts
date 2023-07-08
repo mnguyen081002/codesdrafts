@@ -62,7 +62,10 @@ const CodeSmoothAdminApi = {
   getAllSettings: () => {
     return axiosClient.get<BaseResponse<SettingResponse[]>>('/api/admin/setting');
   },
-  getSettingByKey: () => {
+  getSettingByKey: (key: string) => {
+    return axiosClient.get<BaseResponse<SettingResponse>>(`/api/admin/setting/${key}`);
+  },
+  getCateSetting: () => {
     return axiosClient.get<BaseResponse<CourseSetting[]>>(`/api/category`);
   },
 };

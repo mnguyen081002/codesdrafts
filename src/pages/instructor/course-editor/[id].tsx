@@ -70,7 +70,7 @@ const CreateCouse: React.FC = () => {
     };
     const handleGetSetting = async () => {
       try {
-        const res = await CodeSmoothAdminApi.getSettingByKey();
+        const res = await CodeSmoothAdminApi.getCateSetting();
         setOptionSetting(res.data.data);
       } catch (error) {
         console.log(error);
