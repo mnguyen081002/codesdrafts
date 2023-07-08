@@ -1,5 +1,4 @@
 import { Button, Container, Flex, Group } from '@mantine/core';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -36,7 +35,7 @@ const Header = () => {
         </Group>
         <Group spacing="xs">
           <Button className="bg-transparent text-lg" color="dark" variant="white">
-            Tiếng Việt <KeyboardArrowDownIcon className="text-gray-500 " />
+            Tiếng Việt <img src="/images/icons/inactive.svg" className="rotate-180" alt="" />
           </Button>
           <Button
             className="relative bg-transparent text-lg text-light-primary after:absolute after:left-1/2 after:block after:h-[2px] after:w-8 after:-translate-x-1/2 after:rounded-md after:bg-light-primary after:content-['']"

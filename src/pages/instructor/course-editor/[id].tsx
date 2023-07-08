@@ -1,4 +1,4 @@
-import { CloseRounded } from '@mui/icons-material';
+// import { CloseRounded } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -198,7 +198,9 @@ const CreateCouse: React.FC = () => {
                 src={URL.createObjectURL(thumbnailUpload)}
                 alt=""
               />
-              <CloseRounded
+              <img
+                alt="close"
+                src="/images/icons/close.svg"
                 onClick={() => setThumbnailUpload(undefined)}
                 className="absolute top-1 right-1 cursor-pointer rounded-full bg-white"
               />

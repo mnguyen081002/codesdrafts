@@ -28,12 +28,13 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
   };
 
   return (
-    <div
+    <tr
+      key={course.id}
       // href={`./course/${course.id}`}
       onClick={onClick}
-      className="flex h-[210px] cursor-pointer items-center justify-between border-b border-light-border py-[15px] pl-[25px] pr-[98px]"
+      className="flex cursor-pointer items-center gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px]"
     >
-      <div className="flex h-full gap-[30px]">
+      <td className="flex h-full gap-[30px]">
         <img
           className="h-[180px] w-[270px] rounded-[5px]"
           src="/images/course/Thumnail.png"
@@ -58,14 +59,16 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
             </div>
           }
         </div>
-      </div>
-      <div className="flex items-center gap-[100px] text-[#3f3f3f]">
-        <p className="font-lexend-deca text-lg font-normal leading-6">
+      </td>
+      <div className="flex items-center text-[#3f3f3f]">
+        <p className="w-[150px] font-lexend-deca text-lg font-normal leading-6">
           {course.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ
         </p>
-        <p className="font-lexend-deca text-base font-light leading-6">3d20h11m</p>
-        <p className="font-lexend-deca text-base font-light leading-6">{course.target_audience}</p>
+        <p className="w-[150px] font-lexend-deca text-base font-light leading-6">3d20h11m</p>
+        <p className="w-[150px] font-lexend-deca text-base font-light leading-6">
+          {course.target_audience}
+        </p>
       </div>
-    </div>
+    </tr>
   );
 }
