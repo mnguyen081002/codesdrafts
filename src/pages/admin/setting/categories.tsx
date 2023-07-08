@@ -45,7 +45,7 @@ const SettingContent = () => {
           thumbnail: res.data.urls[0],
         };
 
-        const _ = await CodeSmoothApi.Admin.setting.createCategory(reqCreateItem);
+        const _ = await CodeSmoothApi.Admin.Setting.createCategory(reqCreateItem);
         // setMessage({
         //   isSuccess: true,
         //   message: 'Success',

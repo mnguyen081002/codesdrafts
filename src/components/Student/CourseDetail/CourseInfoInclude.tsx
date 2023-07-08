@@ -4,12 +4,12 @@ function CourseInfoInclude({ icon, title, text }: { icon: string; title: string;
     <div className="flex w-full items-start justify-between">
       <div className="flex items-center gap-[5px]">
         <img className="h-[17.5px] w-[17.5px]" src={icon} alt="hours" />
-        <span className="font-lexend-deca text-base font-light leading-5 text-[#082A5E]">
+        <span className="font-lexend-deca text-base font-light leading-5 text-light-text-primary">
           {title}
         </span>
       </div>
       {text ? (
-        <span className="max-w-[125px] text-right font-lexend-deca text-base font-light leading-5 text-[#082A5E]">
+        <span className="max-w-[125px] text-right font-lexend-deca text-base font-light leading-5 text-light-text-primary">
           {text}
         </span>
       ) : (

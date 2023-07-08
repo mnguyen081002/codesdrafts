@@ -9,11 +9,10 @@ const ApiClient = axios.create({
 
 ApiClient.interceptors.request.use(
   async (request) => {
-    const session = await getSession();
-    console.log('session', session);
-
+    // TODO: set type for session
+    const session: any = await getSession();
     if (session) {
-      request.headers!.Authorization = `Bearer ${session?.user}`;
+      request.headers!.Authorization = `Bearer ${session.token.user.accessToken}`;
     } else if (axios.defaults.headers.common.Authorization && request.headers) {
       request.headers.Authorization = axios.defaults.headers.common.Authorization;
     }

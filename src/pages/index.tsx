@@ -492,7 +492,7 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-async function getServerSideProps(context: NextPageContext) {
+export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
 
   if (session) {

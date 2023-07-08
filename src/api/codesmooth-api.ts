@@ -5,7 +5,9 @@ import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import CodeSmoothAdminApi from './admin/setting';
 import axiosClient from './axiosClient';
-import CodeSmoothCourseApi from './instructor/course';
+import type { BaseResponse } from './baseHttp';
+import type { ListCourseItemResponse } from './instructor/course';
+import CodeSmoothInstructorCourseApi from './instructor/course';
 
 export interface CodeSmoothApiResponseList<T> {
   data: T[];
@@ -64,9 +66,14 @@ export interface SaveCourseRequest {
 }
 
 export const CodeSmoothApi = {
-  Course: CodeSmoothCourseApi,
   Admin: {
-    setting: CodeSmoothAdminApi,
+    Setting: CodeSmoothAdminApi,
+  },
+  Instructor: {
+    Course: CodeSmoothInstructorCourseApi,
+  },
+  getCourseById: (id: number) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse>>(`/api/course/${id}`);
   },
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
@@ -190,11 +197,6 @@ export const CodeSmoothApi = {
   // : Promise<CodeSmoothApiResponse<ListCourseResponse>>
   getListCourses: async (): Promise<CodeSmoothApiResponseList<CourseResponse>> => {
     const response = await axiosClient.get('/api/admin/course');
-    return response.data;
-  },
-
-  getCourseById: async (id: number): Promise<CodeSmoothApiResponse<CourseResponse>> => {
-    const response = await axiosClient.get(`/api/admin/course/${id}`);
     return response.data;
   },
 
