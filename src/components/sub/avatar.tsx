@@ -4,6 +4,7 @@ export interface AvatarProps {
   dot?: boolean;
   w?: number;
   h?: number;
+  url?: string;
 }
 
 export const Avatar = (props: AvatarProps) => {
@@ -11,7 +12,7 @@ export const Avatar = (props: AvatarProps) => {
     <div className="relative">
       <Image
         className="cursor-pointer"
-        src="/images/home/Avatar.png"
+        src={`${props.url || '/images/home/Avatar.png'}`}
         alt="search"
         width={props.w ?? 40}
         height={props.h ?? 40}

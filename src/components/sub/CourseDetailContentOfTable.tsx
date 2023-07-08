@@ -53,7 +53,7 @@ export const CourseDetailContentOfTable = ({
             key={index}
             className="flex h-[62px] w-full items-center justify-between border-x border-b border-light-border px-6"
           >
-            <p className="font-lexend-deca text-[17px] font-light leading-[22px] text-light-text-course-detail-content">
+            <p className="font-lexend-deca text-[17px] font-light leading-[22px] text-light-text-primary">
               {item}
             </p>
           </div>

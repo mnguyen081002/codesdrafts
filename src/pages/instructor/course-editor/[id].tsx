@@ -2,14 +2,12 @@ import { CloseRounded } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { CourseResponse, SaveCourseRequest } from '../../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import type { ListCourseItemResponse } from '../../../api/instructor/course';
 import { useAppDispatch } from '../../../app/hooks';
 import { InputAutoComplete, InputRectangle, InputRounded } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
-import { setSnackBar } from '../../../features/auth/appSlice';
 import { InstructorLayout } from '../../../layouts/Instructor/Instructor';
-import { defaultCourse } from '../../editcourse/[id]';
 
 const CreateCouse: React.FC = () => {
   const [isChoosingThumbnail, setIsChoosingThumbnail] = useState(false);
@@ -18,7 +16,7 @@ const CreateCouse: React.FC = () => {
   const [isDraft, setIsDraft] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
+  const [course, setCourse] = useState<ListCourseItemResponse>();
   const router = useRouter();
   useEffect(() => {
     const loadCourse = async () => {
@@ -27,8 +25,8 @@ const CreateCouse: React.FC = () => {
         const { id, draft } = router.query;
         if (draft) {
           setIsDraft(true);
-          const data = await CodeSmoothApi.getCourseById(Number(id));
-          setCourse(data.data);
+          const r = await CodeSmoothApi.getCourseById(Number(id));
+          setCourse(r.data.data);
           // const query = '';
           // if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
           //   query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
@@ -44,19 +42,6 @@ const CreateCouse: React.FC = () => {
     };
     loadCourse();
   }, [router.isReady]);
-
-  const handleSaveCourse = async () => {
-    setIsDraft(true);
-
-    let newCourse: SaveCourseRequest = { ...course };
-    if (thumbnailUpload) {
-      const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
-      newCourse = { ...newCourse, thumbnail: uploadRes.data.urls[0] };
-    }
-    CodeSmoothApi.saveCourse(newCourse).then(() => {
-      dispatch(setSnackBar({ message: 'Save success', type: 'success' }));
-    });
-  };
 
   return (
     <>

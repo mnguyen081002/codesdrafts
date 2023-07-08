@@ -15,7 +15,7 @@ function CourseDetailSectionTitle({
         <p className="mb-5 font-lexend-deca text-2xl font-medium leading-5 text-black">{title}</p>
         {noUnderline && <div className="h-[1px] w-full bg-light-border" />}
       </div>
-      <p className="font-lexend-deca text-base font-light leading-8 text-light-text-course-detail-content">
+      <p className="font-lexend-deca text-base font-light leading-8 text-light-text-primary">
         {text}
       </p>
     </div>
@@ -38,9 +38,7 @@ function CourseDetailSection({
         {contents.map((item, index) => (
           <div className="flex items-start gap-2" key={index}>
             <img className="mt-1" src="/images/course/bluecorrect.svg" alt="bluecorrect" />
-            <p className="font-lexend-deca text-lg font-light text-light-text-course-detail-content">
-              {item}
-            </p>
+            <p className="font-lexend-deca text-lg font-light text-light-text-primary">{item}</p>
           </div>
         ))}
       </div>

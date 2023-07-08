@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { generateId } from '../../utils/genId';
 import { PrimaryButton } from '../Button';
@@ -8,30 +8,46 @@ import { PrimaryButton } from '../Button';
 const BottomOutlineNavbarButton = ({
   isSelected,
   title,
+  slug,
   className,
-  onClick,
   textSelectedColor,
   dividerSelectedColor,
   badge,
 }: {
   isSelected?: boolean;
   title: string;
+  slug?: string;
   className?: string;
-  onClick?: () => void;
   textSelectedColor?: string;
   dividerSelectedColor?: string;
   badge?: boolean;
 }) => {
+  const router = useRouter();
+  const [selected, setSelected] = useState(false);
+
+  useEffect(() => {
+    const selection = router.query.selection as string;
+
+    if (!router.isReady) return;
+    setSelected(slug === decodeURIComponent(selection));
+  }, [decodeURIComponent(router.query.selection as string) !== slug]);
+
+  const onClickHandler = () => {
+    router.replace({ href: './', query: { ...router.query, selection: slug } }, undefined, {
+      shallow: true,
+    });
+  };
+
   const selectedColorClass = textSelectedColor || 'text-light-primary';
   const dividerColorClass = dividerSelectedColor || 'bg-light-primary';
   return (
-    <div className="z-20 cursor-pointer flex-col" onClick={onClick}>
+    <div className="z-20 cursor-pointer flex-col" onClick={onClickHandler}>
       <div className="my-[15px] flex items-center justify-center gap-[13px] px-[15px]">
         <p
           className={`${
             className || ''
           } font-lexend-deca text-[20px] font-normal capitalize  leading-[22px] ${
-            isSelected ? selectedColorClass : 'text-[#757575]'
+            selected ? selectedColorClass : 'text-[#757575]'
           }`}
         >
           {title}
@@ -43,7 +59,7 @@ const BottomOutlineNavbarButton = ({
         )}
       </div>
 
-      {isSelected && <div className={`h-[2px] ${dividerColorClass}`} />}
+      {selected && <div className={`h-[2px] ${dividerColorClass}`} />}
     </div>
   );
 };
@@ -57,6 +73,7 @@ function UnderlineNavbar({
 }: {
   navs: {
     title: string;
+    slug?: string;
     className?: string;
   }[];
   textSelectedColor?: string;
@@ -64,9 +81,6 @@ function UnderlineNavbar({
   badge?: boolean;
   isInstructor?: boolean;
 }) {
-  const [selected, setSelected] = useState(0);
-  const router = useRouter();
-
   return (
     <div className="relative flex w-full items-start justify-between">
       <div className="flex">
@@ -74,10 +88,9 @@ function UnderlineNavbar({
           return (
             <BottomOutlineNavbarButton
               key={i}
-              isSelected={selected === i}
               className={e.className}
               title={e.title}
-              onClick={() => setSelected(i)}
+              slug={e.slug}
               textSelectedColor={textSelectedColor}
               dividerSelectedColor={dividerSelectedColor}
               badge={badge}

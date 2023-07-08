@@ -28,14 +28,11 @@ function SidebarManageMenuItem({
 
   useEffect(() => {
     const slug = router.query.slug as string;
-    const path = router.asPath;
 
     if (!router.isReady) return;
 
-    // last path
+    const path = router.asPath;
     const lastPath = redirectPath.split('/').pop() as string;
-    console.log(lastPath);
-
     if (path.includes(lastPath)) {
       setSelected(true);
     } else {
