@@ -1,5 +1,5 @@
 import axiosClient from '../axiosClient';
-import type { BaseResponse } from '../baseResponse';
+import type { BaseResponse } from '../baseHttp';
 
 export interface CreateCategoryRequest {
   name: string;

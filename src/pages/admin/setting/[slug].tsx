@@ -100,14 +100,14 @@ const SettingContent = () => {
   const getListSetting = async () => {
     if (!router.isReady) return;
     const { slug } = router.query as { slug: string };
-    const res = await CodeSmoothApi.Admin.setting.getSettingByKey(slug);
+    const res = await CodeSmoothApi.Admin.Setting.getSettingByKey(slug);
     setSetting(res.data.data);
     setSettingValues(res.data.data.value);
   };
 
   const saveSetting = async (newValues: string[]) => {
     try {
-      await CodeSmoothApi.Admin.setting.saveSetting({
+      await CodeSmoothApi.Admin.Setting.saveSetting({
         key: setting!.key,
         value: newValues,
         title: setting!.title,

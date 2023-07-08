@@ -14,13 +14,12 @@ import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 import { PATH_AUTH } from '@/routes/path';
 
-import type { CourseResponse } from '../../../api/codesmooth-api';
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import type { ListCourseItemResponse } from '../../../api/instructor/course';
 import { useAppDispatch } from '../../../app/hooks';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
 import { InstructorLayout } from '../../../layouts/Instructor/Instructor';
-import { defaultCourse } from '../../editcourse/[id]';
 
 type FormValuesProps = {
   file: string;
@@ -44,7 +43,7 @@ const CreateCouse: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [requiredOptions, setRequiredOptions] = useState<string[]>([]);
 
-  const [course, setCourse] = useState<CourseResponse>(defaultCourse);
+  const [course, setCourse] = useState<ListCourseItemResponse>();
   const router = useRouter();
   useEffect(() => {
     const loadCourse = async () => {
@@ -53,8 +52,8 @@ const CreateCouse: React.FC = () => {
         const { id, draft } = router.query;
         if (draft) {
           setIsDraft(true);
-          const data = await CodeSmoothApi.getCourseById(Number(id));
-          setCourse(data.data);
+          const r = await CodeSmoothApi.getCourseById(Number(id));
+          setCourse(r.data.data);
           // const query = '';
           // if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
           //   query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;

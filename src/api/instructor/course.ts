@@ -1,12 +1,74 @@
 import axiosClient from '../axiosClient';
+import type { BaseQuery, BaseResponse } from '../baseHttp';
 import type { SaveCourseRequest } from '../codesmooth-api';
 
-const CodeSmoothCourseApi = {
+export interface ListCourseItemResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  name: string;
+  description: string;
+  short_description: string;
+  price: number;
+  target_audience: string;
+  requirements: string[];
+  thumbnail: string;
+  status: string;
+  owner_id: number;
+  feedback_email: string;
+  categories: Category[];
+  total_enrollment: number;
+  base_price: number;
+  owner: {
+    id: number;
+    username: string;
+    email: string;
+    avatar: string;
+  };
+}
+
+export interface InstructorListCourseRequest extends BaseQuery {
+  status?: string;
+}
+export interface Category {
+  id: number;
+  name: string;
+}
+
+const CodeSmoothInstructorCourseApi = {
   saveCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post('/api/admin/course', {
+    return axiosClient.post('/api/instructor/course', {
       ...params,
     });
   },
+  listCourse: (params: InstructorListCourseRequest, token?: string) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/instructor/course', {
+      params: {
+        page: params.page,
+        take: params.take,
+        sort: params.sort,
+        order: params.order,
+        q: params.q,
+        status: params.status,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+  getCourseById: (id: number, token?: string) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse>>(`/api/instructor/course/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+  submitForReview: (id: number) => {
+    return axiosClient.patch<BaseResponse<ListCourseItemResponse>>(
+      `/api/instructor/course/submit-for-review/${id}`,
+    );
+  },
 };
 
-export default CodeSmoothCourseApi;
+export default CodeSmoothInstructorCourseApi;

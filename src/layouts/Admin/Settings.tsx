@@ -28,7 +28,7 @@ const AdminSetting = () => {
   const [listSettings, setListSettings] = useState<SettingResponse[]>([]);
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const _ = await CodeSmoothApi.Admin.setting.saveSetting(values);
+      const _ = await CodeSmoothApi.Admin.Setting.saveSetting(values);
       // setMessage({
       //   isSuccess: true,
       //   message: 'Success',
@@ -42,7 +42,7 @@ const AdminSetting = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await CodeSmoothApi.Admin.setting.getAllSettings();
+      const res = await CodeSmoothApi.Admin.Setting.getAllSettings();
       setListSettings(res.data.data);
     };
 

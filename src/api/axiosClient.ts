@@ -11,8 +11,6 @@ ApiClient.interceptors.request.use(
   async (request) => {
     // TODO: set type for session
     const session: any = await getSession();
-    console.log('session', session);
-
     if (session) {
       request.headers!.Authorization = `Bearer ${session.token.user.accessToken}`;
     } else if (axios.defaults.headers.common.Authorization && request.headers) {

@@ -30,7 +30,6 @@ module.exports = {
           text: {
             primary: '#4C4E64',
             sencondary: 'rgba(76, 78, 100, 0.68)',
-            'course-detail-content': '#39557E',
             main: '#4D92FF',
             placeholder: '#adb5bd',
           },

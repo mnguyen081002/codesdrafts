@@ -9,7 +9,7 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { East as EastIcon } from '@mui/icons-material';
+// import { East as EastIcon } from '@mui/icons-material';
 import type { NextPageContext } from 'next';
 import Image from 'next/image';
 import { getSession, useSession } from 'next-auth/react';
@@ -95,7 +95,7 @@ const LandingPage = () => {
               </MantineProvider>
               <Button className="mt-6 h-12 w-48 bg-light-primary shadow-forfun transition-all hover:bg-light-tertiary">
                 <span className="mr-2 text-base">Bắt đầu ngay</span>
-                <EastIcon />
+                {/* <EastIcon /> */}
               </Button>
             </Stack>
           </Flex>
@@ -492,7 +492,7 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-async function getServerSideProps(context: NextPageContext) {
+export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
 
   if (session) {

@@ -1,5 +1,3 @@
-import { Search } from '@mui/icons-material';
-
 import { PrimaryButton } from '../Button';
 
 function AdminBar({ open }: { open: () => void }) {
@@ -8,7 +6,7 @@ function AdminBar({ open }: { open: () => void }) {
       <div className="flex h-[45px] w-[508px] items-center rounded-[5px] border border-light-border">
         <input type="text" className="h-full rounded-[5px] border-none bg-white" />
         <span className="flex h-full w-[45px] items-center justify-center">
-          <Search />
+          <img src="/images/icons/search.svg" alt="" />
         </span>
       </div>
       <PrimaryButton
