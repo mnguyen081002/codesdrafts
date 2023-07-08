@@ -53,14 +53,15 @@ export interface AddLessonRequest {
 }
 
 export interface SaveCourseRequest {
-  id: number;
   name: string;
-  summary: string;
+  description: string | undefined;
+  short_description: string;
+  target_audience: string;
+  category_ids: number[];
+  requirements: string[];
   thumbnail: string;
   price: number;
-  tags: string[];
-  will_learns: string[];
-  requirements: string[];
+  feedback_email: string;
 }
 
 export const CodeSmoothApi = {
@@ -182,9 +183,8 @@ export const CodeSmoothApi = {
   },
 
   saveCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post('/api/admin/course', {
+    return axiosClient.post('/api/instructor/course', {
       ...params,
-      id: Number(params.id),
     });
   },
   // : Promise<CodeSmoothApiResponse<ListCourseResponse>>

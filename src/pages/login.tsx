@@ -28,13 +28,12 @@ import FormProvider from '@/components/hook-form/FormProvider';
 import RHFPasswordField from '@/components/hook-form/RHFPasswordField';
 import { PATH_AUTH, PATH_DASHBOARD } from '@/routes/path';
 
-type Props = {};
 type FormValuesProps = {
   email: string;
   password: string;
   afterSubmit?: string;
 };
-const Login = (props: Props) => {
+const Login = () => {
   const [loading, setLoading] = useState(false);
   const [errorLogin, setErrorLogin] = useState<string | null>(null);
 
