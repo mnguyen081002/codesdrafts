@@ -5,7 +5,6 @@ const CodeSmoothCourseApi = {
   saveCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/admin/course', {
       ...params,
-      id: Number(params.id),
     });
   },
 };
