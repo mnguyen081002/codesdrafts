@@ -1,3 +1,4 @@
+import type { AxiosHeaders } from 'axios';
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
@@ -12,9 +13,15 @@ ApiClient.interceptors.request.use(
     // TODO: set type for session
     const session: any = await getSession();
     if (session) {
-      request.headers!.Authorization = `Bearer ${session.token.user.accessToken}`;
+      (request.headers as AxiosHeaders).set(
+        'Authorization',
+        `Bearer ${session.token.user.accessToken}`,
+      );
     } else if (axios.defaults.headers.common.Authorization && request.headers) {
-      request.headers.Authorization = axios.defaults.headers.common.Authorization;
+      (request.headers as AxiosHeaders).set(
+        'Authorization',
+        axios.defaults.headers.common.Authorization,
+      );
     }
     return request;
   },
