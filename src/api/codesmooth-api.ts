@@ -194,28 +194,6 @@ export const CodeSmoothApi = {
       id: Number(params.id),
     });
   },
-  // : Promise<CodeSmoothApiResponse<ListCourseResponse>>
-  getListCourses: async (): Promise<CodeSmoothApiResponseList<CourseResponse>> => {
-    const response = await axiosClient.get('/api/admin/course');
-    return response.data;
-  },
-
-  deleteCourseById: async (id: number): Promise<CodeSmoothApiResponse<CourseResponse>> => {
-    const response = await axiosClient.delete(`/api/admin/course/${id}`);
-    return response.data;
-  },
-
-  markLessonComplete: async (
-    lessonId: number,
-    markIsComplete?: boolean,
-  ): Promise<CodeSmoothApiResponse<CourseResponse>> => {
-    const response = await axiosClient.post(`/api/admin/lesson/mark-as-completed`, {
-      lesson_id: lessonId,
-      isCompleted: markIsComplete ?? false,
-    });
-    return response.data;
-  },
-
   login: async (email: string, password: string) => {
     return axiosClient.post<ResLogin>('/api/auth/login', {
       email,
@@ -231,24 +209,6 @@ export const CodeSmoothApi = {
     });
   },
 };
-
-export interface CourseResponse {
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at?: null;
-  will_learns: string[];
-  requirements: string[];
-  thumbnail: string;
-  target_audience: string;
-  skills: string[];
-  tags: string[];
-  summary: string;
-  name: string;
-  price: number;
-  is_published: boolean;
-  category: CategoryResponse[];
-}
 export interface LessonInCategoryResponse {
   id: number;
   title: string;
