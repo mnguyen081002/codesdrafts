@@ -40,7 +40,6 @@ const CodeSmoothInstructorCourseApi = {
   saveCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/instructor/course', {
       ...params,
-      id: Number(params.id),
     });
   },
   listCourse: (params: InstructorListCourseRequest, token?: string) => {

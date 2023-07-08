@@ -11,7 +11,7 @@ type Props = {
   sx?: any;
 };
 
-export default function RHFTextField({ name, helperText, ...other }: Props) {
+export default function RHFTextField({ name, helperText, placeholder, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -21,9 +21,9 @@ export default function RHFTextField({ name, helperText, ...other }: Props) {
       render={({ field, fieldState: { error } }) => (
         <Input.Wrapper error={error ? error?.message : helperText}>
           <Input
+            placeholder={placeholder}
             {...field}
             value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
-            {...other}
           />
         </Input.Wrapper>
       )}

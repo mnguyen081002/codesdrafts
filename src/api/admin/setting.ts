@@ -36,6 +36,18 @@ export interface SettingResponse {
   title: string;
 }
 
+export interface CourseCategory {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  name: string;
+  description: string;
+  thumbnail: string;
+  is_active: boolean;
+  order: number;
+}
+
 const CodeSmoothAdminApi = {
   createCategory: (params: CreateCategoryRequest) => {
     return axiosClient.post<CreateCategoryReponse>('/api/admin/category', {
@@ -52,6 +64,9 @@ const CodeSmoothAdminApi = {
   },
   getSettingByKey: (key: string) => {
     return axiosClient.get<BaseResponse<SettingResponse>>(`/api/admin/setting/${key}`);
+  },
+  getCateSetting: () => {
+    return axiosClient.get<BaseResponse<CourseCategory[]>>(`/api/category`);
   },
 };
 

@@ -1,7 +1,11 @@
-import { Autocomplete, MultiSelect } from '@mantine/core';
+import { Autocomplete, Input, MultiSelect } from '@mantine/core';
+import { CloseRounded } from '@mui/icons-material';
+import { Controller, useFormContext } from 'react-hook-form';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
 interface InputProps {
+  name: string;
+  helperText?: string;
   label?: string;
   placeholder: string;
   type: string;
@@ -12,7 +16,75 @@ interface InputProps {
   noResize?: boolean;
 }
 
-export const Input = (props: InputProps) => {
+interface ThumbnailProps {
+  name: string;
+  helperText?: string;
+  thumbnailUpload: any;
+  setThumbnailUpload: any;
+}
+
+const RFHInputThumbnail = (props: ThumbnailProps) => {
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name={props.name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <Input.Wrapper
+          {...field}
+          sx={{
+            '.mantine-InputWrapper-error': {
+              paddingTop: '5px',
+            },
+          }}
+          error={error ? error?.message : props.helperText}
+        >
+          {!props.thumbnailUpload ? (
+            <div className="flex h-[200px] w-[300px] flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]">
+              <img className="h-[55px] w-[55px]" src="/images/icons/wallpaper.svg" alt="" />
+              <p className="font-lexend-deca text-sm font-normal leading-6 text-light-text-main">
+                1122 x 748
+              </p>
+              <p className="font-lexend-deca text-lg leading-6 text-light-text-main">
+                Tải ảnh lên
+                <span className="text-black"> hoặc kéo thả</span>
+              </p>
+              <p className="font-lexend-deca text-sm font-light text-[#8A8A8A]">
+                PNG, JPG, GIF lên đến 2MB
+              </p>
+              <input
+                type="file"
+                className="absolute z-10 h-[200px] w-[300px] cursor-pointer opacity-0"
+                onChange={(event) => {
+                  if (event.target.files) {
+                    console.log(event.target.files[0]);
+                    props.setThumbnailUpload(event.target.files[0]);
+                  }
+                }}
+                accept="image/png, image/jpeg, image/gif"
+              />
+            </div>
+          ) : (
+            <div className="relative w-fit">
+              <img
+                className=" h-[200px] w-[300px]"
+                src={URL.createObjectURL(props.thumbnailUpload)}
+                alt=""
+              />
+              <CloseRounded
+                onClick={() => props.setThumbnailUpload(undefined)}
+                className="absolute top-1 right-1 cursor-pointer rounded-full bg-white"
+              />
+            </div>
+          )}
+        </Input.Wrapper>
+      )}
+    />
+  );
+};
+
+export const InputCustom = (props: InputProps) => {
   const className = `${props.className || ''} ${
     props.height || 'h-[45px]'
   } flex resize-none border border-light-border bg-white py-[10px] pl-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`;
@@ -45,11 +117,51 @@ export const Input = (props: InputProps) => {
 };
 
 function InputRounded(props: InputProps) {
-  return <Input className="rounded-full" {...props} />;
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name={props.name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <Input.Wrapper
+          {...field}
+          sx={{
+            '.mantine-InputWrapper-error': {
+              paddingTop: '5px',
+            },
+          }}
+          error={error ? error?.message : props.helperText}
+        >
+          <InputCustom className="rounded-full" {...props} />
+        </Input.Wrapper>
+      )}
+    />
+  );
 }
 
 const InputRectangle = (props: InputProps) => {
-  return <Input {...props} className={`rounded-[5px] ${props.className}`} />;
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name={props.name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <Input.Wrapper
+          {...field}
+          sx={{
+            '.mantine-InputWrapper-error': {
+              paddingTop: '5px',
+            },
+          }}
+          error={error ? error?.message : props.helperText}
+        >
+          <InputCustom {...props} className={`rounded-[5px] ${props.className}`} />
+        </Input.Wrapper>
+      )}
+    />
+  );
 };
 
 interface InputAutoCompleteProps extends InputProps {
@@ -87,4 +199,4 @@ const InputAutoComplete = (props: InputAutoCompleteProps) => {
   );
 };
 
-export { InputAutoComplete, InputRectangle, InputRounded };
+export { InputAutoComplete, InputRectangle, InputRounded, RFHInputThumbnail };
