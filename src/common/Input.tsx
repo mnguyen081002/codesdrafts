@@ -1,5 +1,4 @@
 import { Autocomplete, Input, MultiSelect } from '@mantine/core';
-import { CloseRounded } from '@mui/icons-material';
 import { Controller, useFormContext } from 'react-hook-form';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
@@ -72,7 +71,9 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 src={URL.createObjectURL(props.thumbnailUpload)}
                 alt=""
               />
-              <CloseRounded
+              <img
+                src="/images/icons/close.svg"
+                alt=""
                 onClick={() => props.setThumbnailUpload(undefined)}
                 className="absolute top-1 right-1 cursor-pointer rounded-full bg-white"
               />
