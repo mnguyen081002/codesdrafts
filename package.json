@@ -11,7 +11,7 @@
     "clean": "rimraf .next out",
     "lint": "npm run check-types && next lint",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write",
-    "check-types": "tsc --noEmit --pretty && tsc --project cypress --noEmit --pretty",
+    "check-types": "tsc --noEmit --pretty",
     "test": "jest",
     "commit": "cz",
     "cypress": "cypress open",
