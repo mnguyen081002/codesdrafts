@@ -25,12 +25,12 @@ type FormValuesProps = {
   file: string;
   nameCourse: string;
   valueCourse: string;
-  desCourse?: string;
+  desCourse: string;
   shortDesCourse: string;
-  skills: string[];
-  PurCourse: string;
-  ReqCourse: string[];
-  ObjCourse: string;
+  categories: string[];
+  objectives: string[];
+  requirements: string[];
+  target_audience: string;
   feedbackEmail: string;
 };
 
@@ -42,6 +42,7 @@ const CreateCouse: React.FC = () => {
   const [isDraft, setIsDraft] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [requiredOptions, setRequiredOptions] = useState<string[]>([]);
+  const [objectiveOptions, setObjectiveOptions] = useState<string[]>([]);
 
   const [course, setCourse] = useState<ListCourseItemResponse>();
   const router = useRouter();
@@ -80,16 +81,16 @@ const CreateCouse: React.FC = () => {
     loadCourse();
   }, [router.isReady]);
 
-  const defaultValues = {
+  const defaultValues: FormValuesProps = {
     file: '',
     nameCourse: '',
     valueCourse: '',
     desCourse: '',
     shortDesCourse: '',
-    skills: [],
-    PurCourse: '',
-    ReqCourse: [],
-    ObjCourse: '',
+    categories: [],
+    objectives: [],
+    requirements: [],
+    target_audience: '',
     feedbackEmail: '',
   };
 
@@ -99,10 +100,10 @@ const CreateCouse: React.FC = () => {
     valueCourse: Yup.string().required('Vui lòng nhập giá khóa học'),
     desCourse: Yup.string().required('Vui lòng nhập mô tả khóa học'),
     shortDesCourse: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
-    skills: Yup.array().min(1, 'Vui lòng chọn kỹ năng'),
-    PurCourse: Yup.string().min(1, 'Vui lòng nhập mục tiêu khóa học'),
-    ReqCourse: Yup.array().required('Vui lòng nhập yêu cầu khóa học'),
-    ObjCourse: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
+    categories: Yup.array().min(1, 'Vui lòng chọn kỹ năng'),
+    objectives: Yup.array().min(1, 'Vui lòng nhập mục tiêu khóa học'),
+    requirements: Yup.array().required('Vui lòng nhập yêu cầu khóa học'),
+    target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
     feedbackEmail: Yup.string()
       .required('Vui lòng nhập email')
       .email('Vui lòng nhập đúng định dạng email'),
@@ -117,10 +118,9 @@ const CreateCouse: React.FC = () => {
 
   const onSubmit = async (data: FormValuesProps) => {
     const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
-    console.log(uploadRes.data.urls[0]);
 
     const passSkill = map(optionSetting, (item) => {
-      if (data.skills.includes(item.name)) {
+      if (data.categories.includes(item.name)) {
         return Number(item.id);
       }
       return null;
@@ -133,9 +133,10 @@ const CreateCouse: React.FC = () => {
         description: data.desCourse as string,
         short_description: data.shortDesCourse,
         feedback_email: data.feedbackEmail,
-        requirements: data.ReqCourse,
-        target_audience: data.ObjCourse,
+        requirements: data.requirements,
+        target_audience: data.target_audience,
         thumbnail: uploadRes.data.urls[0],
+        objectives: data.objectives,
       });
     } catch (error) {
       console.log(error);
@@ -159,6 +160,7 @@ const CreateCouse: React.FC = () => {
             placeholder="Nhập tên khóa học"
             type="text"
             rightLabel="Tối đa 40 ký tự"
+            noResize
           />
           <InputRectangle
             name="valueCourse"
@@ -171,54 +173,57 @@ const CreateCouse: React.FC = () => {
           <InputRectangle
             name="desCourse"
             label="Mô tả *"
-            maxLength={500}
+            maxLength={800}
             placeholder="Nhập mô tả khóa học"
             type="text"
-            className="pb-32"
+            minRows={10}
           />
           <InputRectangle
             name="shortDesCourse"
             label="Mô tả ngắn *"
-            maxLength={200}
+            maxLength={300}
             placeholder="Nhập mô tả ngắn khóa học"
             type="text"
-            className="pb-32"
+            minRows={10}
           />
           <div className="flex justify-center">
             <PrimaryOutlineButton className="w-fit" text="CHỈNH SỬA BÀI HỌC" />
           </div>
           <RHFMutiSelect
-            name="skills"
+            name="categories"
             options={map(optionSetting, (item) => item.name) || []}
             label={'Các kĩ năng *'}
-            placeholder="Những kĩ năng nào sẽ được nói tới trong khóa học ? (Ấn Enter để thêm)"
+            placeholder="Những kĩ năng nào sẽ được nói tới trong khóa học ? (Ấn để thêm)"
             type="text"
             isMulti
           />
-
-          <InputRectangle
-            name="PurCourse"
+          <RHFMutiSelect
+            options={objectiveOptions}
+            setOptions={setObjectiveOptions}
+            name="objectives"
             label={'Mục tiêu khóa học *'}
+            creatable
             maxLength={200}
             placeholder="Người học sẽ học được gì khi hoàn thành khóa học ?"
             type="text"
+            isMulti
           />
           <RHFMutiSelect
             options={requiredOptions}
             setOptions={setRequiredOptions}
-            name="ReqCourse"
+            name="requirements"
             label={'Yêu cầu khóa học *'}
             maxLength={200}
             creatable
-            placeholder="Người học cần có những gì để có thể học khóa học này ? (Ấn Enter để thêm)"
+            placeholder="Người học cần có những gì để có thể học khóa học này ? (Ấn để thêm)"
             type="text"
             isMulti
           />
           <InputRectangle
-            name="ObjCourse"
+            name="target_audience"
             label={'Đối tượng khóa học *'}
             maxLength={200}
-            placeholder="Khóa học này dành cho những đối tượng nào ? (Ấn Enter để thêm)"
+            placeholder="Khóa học này dành cho những đối tượng nào ? (Ấn để thêm)"
             type="text"
           />
           <InputRectangle

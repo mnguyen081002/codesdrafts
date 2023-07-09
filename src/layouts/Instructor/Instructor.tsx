@@ -7,7 +7,7 @@ import SidebarManage from '../Manage/Sidebar';
 
 const listItem = [
   {
-    redirectPath: 'list-course',
+    redirectPath: 'course',
     Icon: DocumentIcon,
     text: 'Khóa Học',
   },

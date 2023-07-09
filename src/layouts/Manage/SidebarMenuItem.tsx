@@ -33,6 +33,7 @@ function SidebarManageMenuItem({
 
     const path = router.asPath;
     const lastPath = redirectPath.split('/').pop() as string;
+
     if (path.includes(lastPath)) {
       setSelected(true);
     } else {

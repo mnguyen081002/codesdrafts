@@ -11,8 +11,9 @@ interface InputProps {
   maxLength?: number;
   rightLabel?: string;
   className?: string;
-  height?: string;
+  height?: number;
   noResize?: boolean;
+  minRows?: number;
 }
 
 interface ThumbnailProps {
@@ -57,7 +58,6 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 className="absolute z-10 h-[200px] w-[300px] cursor-pointer opacity-0"
                 onChange={(event) => {
                   if (event.target.files) {
-                    console.log(event.target.files[0]);
                     props.setThumbnailUpload(event.target.files[0]);
                   }
                 }}
@@ -75,7 +75,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 src="/images/icons/close.svg"
                 alt=""
                 onClick={() => props.setThumbnailUpload(undefined)}
-                className="absolute top-1 right-1 cursor-pointer rounded-full bg-white"
+                className="absolute top-1 right-1 h-4 w-4 cursor-pointer rounded-full bg-white"
               />
             </div>
           )}
@@ -86,9 +86,9 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
 };
 
 export const InputCustom = (props: InputProps) => {
-  const className = `${props.className || ''} ${
-    props.height || 'h-[45px]'
-  } flex resize-none border border-light-border bg-white py-[10px] pl-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`;
+  const className = `${
+    props.className || ''
+  } flex resize-none border border-light-border bg-white py-[10px] px-[19px] text-gray-900 placeholder-light-text-placeholder focus:border-light-text-main focus:outline-none focus:ring-0`;
   return (
     <div className="flex flex-col">
       {props.label ? (
@@ -104,6 +104,7 @@ export const InputCustom = (props: InputProps) => {
           className={className}
           placeholder={props.placeholder}
           maxLength={props.maxLength || 999}
+          minRows={props.minRows || 1}
         />
       ) : (
         <input
@@ -111,6 +112,7 @@ export const InputCustom = (props: InputProps) => {
           className={className}
           placeholder={props.placeholder}
           maxLength={props.maxLength}
+          style={{ height: props.height }}
         />
       )}
     </div>

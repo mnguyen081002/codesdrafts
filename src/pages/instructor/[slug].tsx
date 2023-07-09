@@ -9,7 +9,7 @@ import { PATH_AUTH } from '../../routes/path';
 
 const ManageCourseMain = () => {
   const mapPage = {
-    'list-course': <ListCoursePage />,
+    course: <ListCoursePage />,
     students: <div>create-course</div>,
     notification: <div>notification</div>,
   };

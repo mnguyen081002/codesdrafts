@@ -40,7 +40,7 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
           src="/images/course/Thumnail.png"
           alt=""
         />
-        <div className="flex h-full w-[390px] flex-col items-start justify-between py-[11px]">
+        <div className="flex w-[390px] flex-col items-start justify-between py-[11px]">
           <div className="flex flex-col gap-[15px]">
             <p className="font-lexend-deca text-2xl font-semibold leading-6">{course.name}</p>
             <p className="flex gap-2 font-lexend-deca text-sm font-normal text-[#252525]">
@@ -50,17 +50,15 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
               </span>
             </p>
           </div>
-          {
-            <div className="flex w-fit items-center gap-[10px] rounded bg-[#f5f5f5] py-[4px] px-[8px]">
-              <img src={`/images/icons/${course.status}.svg`} alt="" className="object-contain" />
-              <p className="font-lexend-deca text-xs font-normal capitalize leading-5 text-[#747474]">
-                {statusMessage(course.status)}
-              </p>
-            </div>
-          }
+          <div className="flex w-fit items-center gap-[10px] rounded bg-[#f5f5f5] py-[4px] px-[8px]">
+            <img src={`/images/icons/${course.status}.svg`} alt="" className="object-contain" />
+            <p className="font-lexend-deca text-xs font-normal capitalize leading-5 text-[#747474]">
+              {statusMessage(course.status)}
+            </p>
+          </div>
         </div>
       </td>
-      <div className="flex items-center text-[#3f3f3f]">
+      <td className="flex items-center text-[#3f3f3f]">
         <p className="w-[150px] font-lexend-deca text-lg font-normal leading-6">
           {course.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ
         </p>
@@ -68,7 +66,7 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
         <p className="w-[150px] font-lexend-deca text-base font-light leading-6">
           {course.target_audience}
         </p>
-      </div>
+      </td>
     </tr>
   );
 }

@@ -9,8 +9,6 @@ const ManageAdmin = () => {
   const { slug } = router.query;
 
   // if query params change, update the page
-  console.log({ slug });
-
   return <div className="flex h-[860px] flex-1">{mapAdminPage[slug as string]}</div>;
 };
 

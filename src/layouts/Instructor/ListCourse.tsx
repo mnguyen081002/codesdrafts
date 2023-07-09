@@ -60,27 +60,24 @@ const ListCoursePage = () => {
         />
         <div className="flex flex-col rounded-[5px] border border-light-border">
           <table className="table-auto gap-[10px] rounded-[5px] p-[10px]">
-            <tr className="flex gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px] text-base uppercase leading-6 text-[#777]">
-              <th className="flex w-[692px] justify-start">
-                <p className="font-medium">KHÓA HỌC</p>
-              </th>
-              <th className="flex">
-                <p className="w-[150px] text-start font-medium">Giá</p>
-                <p className="w-[150px] text-start font-medium">Thời gian</p>
-                <p className="w-[150px] text-start font-medium">Cấp độ</p>
-              </th>
-            </tr>
-            <div className="max-h-[580px] overflow-y-scroll">
+            <thead>
+              <tr className="flex gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px] text-base uppercase leading-6 text-[#777]">
+                <th className="flex w-[692px] justify-start">
+                  <p className="font-medium">KHÓA HỌC</p>
+                </th>
+                <th className="flex">
+                  <p className="w-[150px] text-start font-medium">Giá</p>
+                  <p className="w-[150px] text-start font-medium">Thời gian</p>
+                  <p className="w-[150px] text-start font-medium">Cấp độ</p>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="flex max-h-[580px] flex-col overflow-y-auto">
               {listCourse.map((course) => (
                 <LongCourseCard key={course.id} course={course} />
               ))}
-            </div>
+            </tbody>
           </table>
-          {/* <div className="max-h-[580px] overflow-y-scroll">
-            {listCourse.map((course) => (
-              <LongCourseCard key={course.id} course={course} />
-            ))}
-          </div> */}
         </div>
       </div>
     </>

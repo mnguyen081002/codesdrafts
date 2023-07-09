@@ -87,7 +87,6 @@ const Register = (props: Props) => {
       })
       .catch((err) => {
         setErrorRegister(err.response.data.message);
-        console.log(err.response.data.message);
         setLoading(false);
       });
   };

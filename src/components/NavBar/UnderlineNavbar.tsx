@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { generateId } from '../../utils/genId';
 import { PrimaryButton } from '../Button';
 
 const BottomOutlineNavbarButton = ({
@@ -101,7 +100,7 @@ function UnderlineNavbar({
       {isInstructor && (
         <div className="flex items-center gap-4 pr-2">
           <img src="/images/icons/search.svg" className="cursor-pointer" alt="" />
-          <Link href={`/instructor/course-editor/${generateId(10)}`}>
+          <Link href={`/instructor/course/course-editor`}>
             <PrimaryButton
               text="+ Tạo Mới"
               className="h-9 py-2 px-4"

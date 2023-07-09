@@ -79,7 +79,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
 
     try {
       const r = await CodeSmoothApi.Instructor.Course.submitForReview(Number(id));
-      setCourse(r.data.data);
+      setCourse((pre) => ({ ...pre, status: CourseStatus.Reviewing }));
     } catch (error) {
       // TODO: handle error
       console.log(error);
@@ -90,7 +90,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
     <>
       <HeaderPrimary />
       <div className="h-fit w-full font-lexend-deca">
-        <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[100px] pl-[320px] pr-[220px]">
+        <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[100px] pl-[320px] pr-[560px]">
           <p className="w-fit rounded-3xl bg-[#1CCC19] py-1 px-3 font-lexend-deca font-semibold text-white">
             Graphic Design
           </p>
@@ -132,7 +132,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
                   ? 'Miễn phí'
                   : `${course?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
               </p>
-              {course?.price !== 0 && (
+              {course?.price !== 0 && course?.price !== course?.base_price && (
                 <p className="font-lexend-deca text-lg font-bold text-light-text-primary line-through">
                   {course?.base_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 </p>
@@ -149,7 +149,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
                 <p className="text-lg font-medium">
                   {course?.status === CourseStatus.Reviewing
                     ? 'Đang chờ kiểm duyệt'
-                    : 'Đã xuất bản'}
+                    : 'Đã phát hành'}
                 </p>
               </div>
             )}
@@ -165,7 +165,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
               <CourseInfoInclude
                 title="Danh mục"
                 icon="/images/course/FileBlue.svg"
-                text="Graphic Design, UI/UX"
+                text={`${course?.categories.map((c) => c.name).join(', ')}`}
               />
               <CourseInfoInclude
                 title="Học viên"
@@ -187,25 +187,14 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
             {course?.description}
           </p>
           <CourseDetailSection
-            contents={[
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Biết cách sử dụng Figma',
-              'Xây dựng hệ thống thiết kế',
-            ]}
+            contents={course?.objectives}
             title="Bạn sẽ học được gì?"
             text="This tutorial will help you learn quickly and thoroughly. Lorem ipsum, or lipsum as it is
         sometimes known, iaws dumm text used in laying out print, graphic or web designsm dolor sit
         amet."
           />
           <CourseDetailSection
-            contents={['Biết cách sử dụng Figma', 'Xây dựng hệ thống thiết kế']}
+            contents={course?.requirements}
             title="Yêu cầu"
             text="Cần một số yêu cầu cần thiết để bạn có thể hoàn thành khóa học này."
           />

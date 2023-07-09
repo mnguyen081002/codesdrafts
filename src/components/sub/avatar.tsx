@@ -11,7 +11,7 @@ export const Avatar = (props: AvatarProps) => {
   return (
     <div className="relative">
       <Image
-        className="cursor-pointer"
+        className="cursor-pointer rounded-full"
         src={`${props.url || '/images/home/Avatar.png'}`}
         alt="search"
         width={props.w ?? 40}

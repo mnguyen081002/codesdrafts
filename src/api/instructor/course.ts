@@ -18,6 +18,7 @@ export interface ListCourseItemResponse {
   owner_id: number;
   feedback_email: string;
   categories: Category[];
+  objectives: string[];
   total_enrollment: number;
   base_price: number;
   owner: {

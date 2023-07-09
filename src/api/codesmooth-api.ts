@@ -61,6 +61,7 @@ export interface SaveCourseRequest {
   target_audience: string;
   category_ids: number[];
   requirements: string[];
+  objectives: string[];
   thumbnail: string;
   price: number;
   feedback_email: string;

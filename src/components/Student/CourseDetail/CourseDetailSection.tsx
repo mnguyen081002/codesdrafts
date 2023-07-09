@@ -35,7 +35,7 @@ function CourseDetailSection({
     <div className="mb-7 flex w-full flex-col gap-7">
       <CourseDetailSectionTitle title={title} text={text}></CourseDetailSectionTitle>
       <div className=" grid grid-cols-2 gap-4">
-        {contents.map((item, index) => (
+        {contents?.map((item, index) => (
           <div className="flex items-start gap-2" key={index}>
             <img className="mt-1" src="/images/course/bluecorrect.svg" alt="bluecorrect" />
             <p className="font-lexend-deca text-lg font-light text-light-text-primary">{item}</p>

@@ -59,8 +59,12 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                   onCreate={(query) => {
                     const item = { value: query, label: query };
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    props.setOptions && props.setOptions((prev) => [...prev, item.value]);
+                    props.setOptions && props.setOptions([]);
                     return item;
+                  }}
+                  onKeyDown={(e: any) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    props.setOptions && props.setOptions([e.target.value]);
                   }}
                   rightSection={<></>}
                   placeholder={props.placeholder}
