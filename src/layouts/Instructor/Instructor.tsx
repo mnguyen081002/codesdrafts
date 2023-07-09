@@ -5,7 +5,7 @@ import Footer from '../Footer';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
 
-const listItem = [
+export const listInstructorSidebarItem = [
   {
     redirectPath: 'course',
     Icon: DocumentIcon,
@@ -29,7 +29,7 @@ const InstructorLayout = ({ children }) => {
     <>
       <HeaderManage />
       <div className="flex w-full">
-        <SidebarManage bottom items={listItem} redirectPath="instructor" />
+        <SidebarManage bottom items={listInstructorSidebarItem} redirectPath="instructor" />
         {children}
       </div>
       <Footer />

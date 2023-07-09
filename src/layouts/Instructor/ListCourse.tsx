@@ -77,8 +77,7 @@ const ListCoursePage = () => {
                 <LongCourseCard
                   onClick={() => {
                     router.push({
-                      pathname: `./course/course-editor`,
-                      query: { id: course.id },
+                      pathname: `./course/course-editor/${course.id}`,
                     });
                   }}
                   key={course.id}

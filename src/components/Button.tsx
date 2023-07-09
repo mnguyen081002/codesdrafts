@@ -57,7 +57,7 @@ function PrimaryOutlineButton({
       onMouseLeave={() => setIsHover(false)}
       className={`${
         className || ''
-      } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-300 ease-in ${bgHoverColor} px-10 py-3 `}
+      } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-200 ease-in ${bgHoverColor} px-10 py-3 `}
     >
       <p
         className={`${

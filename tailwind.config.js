@@ -22,7 +22,7 @@ module.exports = {
         light: {
           primary: '#1363DF',
           dark: '#0847AA',
-          hoverPrimary: '#1363df1f',
+          hoverPrimary: '#F5F9FF',
           secondary: '#007eff',
           tertiary: '#0037ff',
           gray: '#fafafa',
