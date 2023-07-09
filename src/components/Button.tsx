@@ -16,21 +16,20 @@ function PrimaryButton({
   bgColor?: string;
 }) {
   return (
-    <div
+    <button
       onClick={onClick}
       className={`${
         className || ''
-      } flex cursor-pointer items-center justify-center rounded-md px-10 py-3 transition-colors ${bgColor} ${hoverBgColor}`}
+      } flex cursor-pointer items-center justify-center rounded-md px-10 py-3 transition-colors duration-300 ease-in ${bgColor} ${hoverBgColor}`}
     >
       <p
         className={`${
-          textClassName ||
-          'font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white'
-        } `}
+          textClassName || ''
+        }font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white`}
       >
         {text}
       </p>
-    </div>
+    </button>
   );
 }
 
@@ -39,11 +38,15 @@ function PrimaryOutlineButton({
   onClick,
   className,
   textClassName,
+  textHoverClassName = 'text-light-primary',
+  bgHoverColor = 'hover:bg-light-hoverPrimary',
 }: {
   text: string;
   onClick?: () => void;
   className?: string;
   textClassName?: string;
+  textHoverClassName?: string;
+  bgHoverColor?: string;
 }) {
   const [isHover, setIsHover] = useState(false);
 
@@ -52,20 +55,15 @@ function PrimaryOutlineButton({
       onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      // className={`${
-      //   className || ''
-      // } flex cursor-pointer items-center justify-center rounded-md border border-light-primary px-10 py-3`}
       className={`${
         className || ''
-      } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-300 ease-in ${
-        !isHover ? 'bg-white' : 'bg-light-hoverPrimary'
-      } px-10 py-3 `}
+      } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-300 ease-in ${bgHoverColor} px-10 py-3 `}
     >
       <p
         className={`${
           textClassName || ''
-        } font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] ${
-          isHover ? 'text-light-primary' : 'text-light-primary'
+        } font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-light-primary ${
+          isHover && textHoverClassName
         }`}
       >
         {text}

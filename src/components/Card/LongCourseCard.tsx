@@ -1,11 +1,15 @@
 import moment from 'moment';
-import { useRouter } from 'next/router';
 
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import { CourseStatus } from '../../shared/enum/course';
 
-export default function LongCourseCard({ course }: { course: ListCourseItemResponse }) {
-  const router = useRouter();
+export default function LongCourseCard({
+  course,
+  onClick,
+}: {
+  course: ListCourseItemResponse;
+  onClick: () => void;
+}) {
   const statusMessage = (status: string) => {
     switch (status) {
       case CourseStatus.Published:
@@ -17,14 +21,6 @@ export default function LongCourseCard({ course }: { course: ListCourseItemRespo
       default:
         return 'Nháp';
     }
-  };
-
-  const onClick = () => {
-    console.log(router.query);
-
-    router.push({
-      pathname: `./course/${course.id}`,
-    });
   };
 
   return (

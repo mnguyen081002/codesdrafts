@@ -14,6 +14,7 @@ interface InputProps {
   height?: number;
   noResize?: boolean;
   minRows?: number;
+  value?: string;
 }
 
 interface ThumbnailProps {
@@ -68,7 +69,11 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
             <div className="relative w-fit">
               <img
                 className=" h-[200px] w-[300px]"
-                src={URL.createObjectURL(props.thumbnailUpload)}
+                src={
+                  props.thumbnailUpload instanceof File
+                    ? URL.createObjectURL(props.thumbnailUpload)
+                    : props.thumbnailUpload
+                }
                 alt=""
               />
               <img
@@ -105,6 +110,7 @@ export const InputCustom = (props: InputProps) => {
           placeholder={props.placeholder}
           maxLength={props.maxLength || 999}
           minRows={props.minRows || 1}
+          value={props.value}
         />
       ) : (
         <input
@@ -113,6 +119,7 @@ export const InputCustom = (props: InputProps) => {
           placeholder={props.placeholder}
           maxLength={props.maxLength}
           style={{ height: props.height }}
+          value={props.value}
         />
       )}
     </div>
@@ -136,7 +143,7 @@ function InputRounded(props: InputProps) {
           }}
           error={error ? error?.message : props.helperText}
         >
-          <InputCustom className="rounded-full" {...props} />
+          <InputCustom className="rounded-full" value={field.value} {...props} />
         </Input.Wrapper>
       )}
     />
@@ -160,7 +167,11 @@ const InputRectangle = (props: InputProps) => {
           }}
           error={error ? error?.message : props.helperText}
         >
-          <InputCustom {...props} className={`rounded-[5px] ${props.className}`} />
+          <InputCustom
+            value={field.value}
+            {...props}
+            className={`rounded-[5px] ${props.className}`}
+          />
         </Input.Wrapper>
       )}
     />

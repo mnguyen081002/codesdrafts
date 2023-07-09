@@ -74,7 +74,16 @@ const ListCoursePage = () => {
             </thead>
             <tbody className="flex max-h-[580px] flex-col overflow-y-auto">
               {listCourse.map((course) => (
-                <LongCourseCard key={course.id} course={course} />
+                <LongCourseCard
+                  onClick={() => {
+                    router.push({
+                      pathname: `./course/course-editor`,
+                      query: { id: course.id },
+                    });
+                  }}
+                  key={course.id}
+                  course={course}
+                />
               ))}
             </tbody>
           </table>

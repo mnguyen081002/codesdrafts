@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@mantine/core';
 import { map } from 'lodash';
 import type { NextPageContext } from 'next';
 import { useRouter } from 'next/router';
@@ -15,18 +14,17 @@ import FormProvider from '@/components/hook-form/FormProvider';
 import { PATH_AUTH } from '@/routes/path';
 
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
-import type { ListCourseItemResponse } from '../../../api/instructor/course';
 import { useAppDispatch } from '../../../app/hooks';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
 import { InstructorLayout } from '../../../layouts/Instructor/Instructor';
 
 type FormValuesProps = {
-  file: string;
-  nameCourse: string;
-  valueCourse: string;
-  desCourse: string;
-  shortDesCourse: string;
+  file: string | File;
+  name: string;
+  price: string;
+  description: string;
+  short_description: string;
   categories: string[];
   objectives: string[];
   requirements: string[];
@@ -41,29 +39,91 @@ const CreateCouse: React.FC = () => {
   const [optionSetting, setOptionSetting] = useState<CourseCategory[]>([]);
   const [isDraft, setIsDraft] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [requiredOptions, setRequiredOptions] = useState<string[]>([]);
-  const [objectiveOptions, setObjectiveOptions] = useState<string[]>([]);
+  const [course, setCourse] = useState<any>({});
 
-  const [course, setCourse] = useState<ListCourseItemResponse>();
   const router = useRouter();
+
+  const CourseSchema = Yup.object().shape({
+    file: Yup.string().required('Vui lòng chọn ảnh'),
+    name: Yup.string().required('Vui lòng nhập tên khóa học'),
+    price: Yup.string().required('Vui lòng nhập giá khóa học'),
+    description: Yup.string().required('Vui lòng nhập mô tả khóa học'),
+    short_description: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
+    categories: Yup.array().min(1, 'Vui lòng chọn kỹ năng'),
+    objectives: Yup.array().min(1, 'Vui lòng nhập mục tiêu khóa học'),
+    requirements: Yup.array().required('Vui lòng nhập yêu cầu khóa học'),
+    target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
+    feedbackEmail: Yup.string()
+      .required('Vui lòng nhập email')
+      .email('Vui lòng nhập đúng định dạng email'),
+  });
+
+  const methods = useForm<FormValuesProps>({
+    resolver: yupResolver(CourseSchema),
+  });
+
+  const { reset, handleSubmit } = methods;
+
+  const onSubmit = async (data: FormValuesProps) => {
+    let thumbnail: string;
+    if (thumbnailUpload instanceof File) {
+      const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload]);
+
+      // eslint-disable-next-line prefer-destructuring
+      thumbnail = uploadRes.data.urls[0];
+    } else {
+      thumbnail = thumbnailUpload;
+    }
+    const cats = optionSetting
+      .filter((c) => {
+        return data.categories.includes(c.name);
+      })
+      .map((item) => {
+        return item.id;
+      });
+
+    try {
+      await CodeSmoothApi.saveCourse({
+        name: data.name,
+        price: Number(data.price),
+        category_ids: cats,
+        description: data.description,
+        short_description: data.short_description,
+        feedback_email: data.feedbackEmail,
+        requirements: data.requirements,
+        target_audience: data.target_audience,
+        thumbnail,
+        objectives: data.objectives,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const loadCourse = async () => {
       setIsLoading(true);
       if (router.isReady) {
-        const { id, draft } = router.query;
-        if (draft) {
+        const { id } = router.query;
+        if (id) {
           setIsDraft(true);
-          const r = await CodeSmoothApi.getCourseById(Number(id));
-          setCourse(r.data.data);
-          // const query = '';
-          // if (data.data.category.length > 0 && data.data.category[0]?.lessons?.length! > 0) {
-          //   query = `${data.data.category[0]?.lessons[0]?.id!}?draft=true`;
-          // } else {
-          //   query = generateId(18).toString();
-          // }
-          // setQueryLessonPage(query);
-        } else {
-          // setQueryLessonPage(generateId(18).toString());
+          const r = await CodeSmoothApi.Instructor.Course.getCourseById(Number(id));
+
+          console.log(r.data.data.requirements);
+
+          reset({
+            description: r.data.data.description,
+            feedbackEmail: r.data.data.feedback_email,
+            name: r.data.data.name,
+            objectives: r.data.data.objectives,
+            requirements: r.data.data.requirements,
+            short_description: r.data.data.short_description,
+            target_audience: r.data.data.target_audience,
+            price: r.data.data.price.toString(),
+            categories: r.data.data.categories.map((c) => c.name),
+          });
+
+          setThumbnailUpload(r.data.data.thumbnail);
         }
         setIsLoading(false);
       }
@@ -81,68 +141,6 @@ const CreateCouse: React.FC = () => {
     loadCourse();
   }, [router.isReady]);
 
-  const defaultValues: FormValuesProps = {
-    file: '',
-    nameCourse: '',
-    valueCourse: '',
-    desCourse: '',
-    shortDesCourse: '',
-    categories: [],
-    objectives: [],
-    requirements: [],
-    target_audience: '',
-    feedbackEmail: '',
-  };
-
-  const CourseSchema = Yup.object().shape({
-    file: Yup.string().required('Vui lòng chọn ảnh'),
-    nameCourse: Yup.string().required('Vui lòng nhập tên khóa học'),
-    valueCourse: Yup.string().required('Vui lòng nhập giá khóa học'),
-    desCourse: Yup.string().required('Vui lòng nhập mô tả khóa học'),
-    shortDesCourse: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
-    categories: Yup.array().min(1, 'Vui lòng chọn kỹ năng'),
-    objectives: Yup.array().min(1, 'Vui lòng nhập mục tiêu khóa học'),
-    requirements: Yup.array().required('Vui lòng nhập yêu cầu khóa học'),
-    target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
-    feedbackEmail: Yup.string()
-      .required('Vui lòng nhập email')
-      .email('Vui lòng nhập đúng định dạng email'),
-  });
-
-  const methods = useForm<FormValuesProps>({
-    resolver: yupResolver(CourseSchema),
-    defaultValues,
-  });
-
-  const { reset, handleSubmit } = methods;
-
-  const onSubmit = async (data: FormValuesProps) => {
-    const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload!]);
-
-    const passSkill = map(optionSetting, (item) => {
-      if (data.categories.includes(item.name)) {
-        return Number(item.id);
-      }
-      return null;
-    });
-    try {
-      CodeSmoothApi.saveCourse({
-        name: data.nameCourse,
-        price: Number(data.valueCourse),
-        category_ids: passSkill as number[],
-        description: data.desCourse as string,
-        short_description: data.shortDesCourse,
-        feedback_email: data.feedbackEmail,
-        requirements: data.requirements,
-        target_audience: data.target_audience,
-        thumbnail: uploadRes.data.urls[0],
-        objectives: data.objectives,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <InstructorLayout>
@@ -154,7 +152,7 @@ const CreateCouse: React.FC = () => {
           />
 
           <InputRounded
-            name="nameCourse"
+            name="name"
             label="Tên khóa học *"
             maxLength={40}
             placeholder="Nhập tên khóa học"
@@ -163,7 +161,7 @@ const CreateCouse: React.FC = () => {
             noResize
           />
           <InputRectangle
-            name="valueCourse"
+            name="price"
             label="Giá khóa học *"
             maxLength={15}
             placeholder="Nhập giá khóa học"
@@ -171,7 +169,7 @@ const CreateCouse: React.FC = () => {
             noResize
           />
           <InputRectangle
-            name="desCourse"
+            name="description"
             label="Mô tả *"
             maxLength={800}
             placeholder="Nhập mô tả khóa học"
@@ -179,7 +177,7 @@ const CreateCouse: React.FC = () => {
             minRows={10}
           />
           <InputRectangle
-            name="shortDesCourse"
+            name="short_description"
             label="Mô tả ngắn *"
             maxLength={300}
             placeholder="Nhập mô tả ngắn khóa học"
@@ -198,19 +196,16 @@ const CreateCouse: React.FC = () => {
             isMulti
           />
           <RHFMutiSelect
-            options={objectiveOptions}
-            setOptions={setObjectiveOptions}
+            options={[]}
             name="objectives"
             label={'Mục tiêu khóa học *'}
-            creatable
             maxLength={200}
-            placeholder="Người học sẽ học được gì khi hoàn thành khóa học ?"
+            placeholder="Người học sẽ học được gì khi hoàn thành khóa học ? (Ấn để thêm)"
             type="text"
             isMulti
           />
           <RHFMutiSelect
-            options={requiredOptions}
-            setOptions={setRequiredOptions}
+            options={[]}
             name="requirements"
             label={'Yêu cầu khóa học *'}
             maxLength={200}
@@ -232,17 +227,22 @@ const CreateCouse: React.FC = () => {
             placeholder="Nhập email"
             type="text"
           />
-          <Button className="w-fit bg-yellow-200" type="submit">
-            Dô
-          </Button>
-
           <div className="mt-6 flex flex-col items-center gap-10">
             <div className="flex items-center gap-12">
-              <PrimaryOutlineButton className="w-fit" text="HỦY BỎ" />
-              <PrimaryButton
-                className="w-fit bg-red-600"
-                hoverBgColor="hover:bg-red-700"
+              {isDraft ? (
+                <PrimaryOutlineButton className="w-fit px-[30px] py-[9px]" text="HỦY BỎ" />
+              ) : (
+                <PrimaryButton
+                  className="w-fit px-[30px] py-[9px]"
+                  text="TẠO"
+                  textClassName="text-white"
+                />
+              )}
+              <PrimaryOutlineButton
+                className="w-fit border-red-500 px-[30px] py-[8.5px]"
                 text="XÓA"
+                textClassName="text-red-500"
+                bgHoverColor="hover:bg-red-500 hover:bg-opacity-10"
               />
             </div>
           </div>

@@ -48,13 +48,11 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
               </div>
               {props.isMulti ? (
                 <MultiSelect
+                  value={field.value}
                   searchable
                   creatable={props.creatable}
                   size="md"
-                  onChange={(value) => {
-                    setValue(props.name, value);
-                  }}
-                  data={props.options}
+                  data={props.options.length > 0 ? props.options : field.value || []}
                   getCreateLabel={(query) => `${query}`}
                   onCreate={(query) => {
                     const item = { value: query, label: query };
@@ -72,9 +70,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                 />
               ) : (
                 <Autocomplete
-                  onChange={(value) => {
-                    setValue(props.name, value);
-                  }}
+                  value={field.value}
                   size="md"
                   data={props.options}
                   className="placeholder-light-text-placeholder"
