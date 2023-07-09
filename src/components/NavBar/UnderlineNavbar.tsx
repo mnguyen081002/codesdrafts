@@ -12,6 +12,7 @@ const BottomOutlineNavbarButton = ({
   textSelectedColor,
   dividerSelectedColor,
   badge,
+  badgeNumber,
 }: {
   isSelected?: boolean;
   title: string;
@@ -20,6 +21,7 @@ const BottomOutlineNavbarButton = ({
   textSelectedColor?: string;
   dividerSelectedColor?: string;
   badge?: boolean;
+  badgeNumber?: number;
 }) => {
   const router = useRouter();
   const [selected, setSelected] = useState(false);
@@ -53,7 +55,9 @@ const BottomOutlineNavbarButton = ({
         </p>
         {badge && (
           <div className="flex w-[22px] items-center justify-center rounded-[3px] bg-[#f1f1f1] px-[6.5px]">
-            <p className="items-center text-[12px] font-bold leading-[20px] text-[#757575]">1</p>
+            <p className="items-center text-[12px] font-bold leading-[20px] text-[#757575]">
+              {badgeNumber}
+            </p>
           </div>
         )}
       </div>
@@ -73,6 +77,7 @@ function UnderlineNavbar({
   navs: {
     title: string;
     slug?: string;
+    badgeNumber?: number;
     className?: string;
   }[];
   textSelectedColor?: string;
@@ -93,6 +98,7 @@ function UnderlineNavbar({
               textSelectedColor={textSelectedColor}
               dividerSelectedColor={dividerSelectedColor}
               badge={badge}
+              badgeNumber={e.badgeNumber}
             />
           );
         })}

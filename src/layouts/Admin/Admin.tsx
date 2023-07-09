@@ -1,9 +1,11 @@
 import CategoryIcon from '../../common/Icons/CategoryIcon';
+import DocumentIcon from '../../common/Icons/DocumentIcon';
 import SettingIcon from '../../common/Icons/SettingIcon';
 import { ADMIN_PATH } from '../../routes/path';
 import Footer from '../Footer';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
+import AdminListCoursePage from './ListCourse';
 import AdminSetting from './Settings';
 
 enum AdminPathEnum {
@@ -12,7 +14,12 @@ enum AdminPathEnum {
 
 const listItem = [
   {
-    redirectPath: ADMIN_PATH.SETTINGS,
+    redirectPath: ADMIN_PATH.COURSES,
+    Icon: DocumentIcon,
+    text: 'Khóa học',
+  },
+  {
+    redirectPath: ADMIN_PATH.SETTING,
     Icon: SettingIcon,
     text: 'Cài Đặt',
   },
@@ -24,7 +31,8 @@ const listItem = [
 ];
 
 export const mapAdminPage = {
-  [ADMIN_PATH.SETTINGS]: <AdminSetting />,
+  [ADMIN_PATH.SETTING]: <AdminSetting />,
+  [ADMIN_PATH.COURSES]: <AdminListCoursePage />,
   [ADMIN_PATH.DASHBOARD]: <div>Dashboard</div>,
 };
 

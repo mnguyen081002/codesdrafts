@@ -10,5 +10,6 @@ export const PATH_AUTH = {
 
 export enum ADMIN_PATH {
   DASHBOARD = 'dashboard',
-  SETTINGS = 'settings',
+  SETTING = 'setting',
+  COURSES = 'courses',
 }

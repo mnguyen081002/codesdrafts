@@ -1,13 +1,12 @@
 import type { NextPageContext } from 'next';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
 import type { ListCourseItemResponse } from '../../../api/instructor/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
-import HeaderPrimary from '../../../components/home/HeaderPrimary';
-import { UnderlineNavbar } from '../../../components/NavBar/UnderlineNavbar';
+import CourseUnderlineNavBar from '../../../components/Instructor/UnderlineNavBar';
 import {
   CourseDetailSection,
   CourseDetailSectionTitle,
@@ -18,6 +17,7 @@ import { Avatar } from '../../../components/sub/avatar';
 import CourseDetailTableOfContent from '../../../components/sub/CourseDetailTableOfContent';
 import CustomRating from '../../../components/sub/CustomRating';
 import Footer from '../../../layouts/Footer';
+import { HeaderInstructor } from '../../../layouts/Instructor/Instructor';
 import { PATH_AUTH } from '../../../routes/path';
 import { CourseStatus } from '../../../shared/enum/course';
 
@@ -42,34 +42,6 @@ type ICourseUrl = {
 //   };
 // };
 
-function InstructorCourseUnderlineNavBar() {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    const { selection } = router.query;
-
-    if (!selection) {
-      router.replace(`${router.asPath}?selection=overview`, undefined, { shallow: true });
-    }
-  }, [router.query.selection]);
-  return (
-    <UnderlineNavbar
-      navs={[
-        {
-          title: 'Thông tin khóa học',
-          slug: 'overview',
-        },
-        {
-          title: 'Đánh giá',
-          className: 'px-[10px]',
-          slug: 'review',
-        },
-      ]}
-    />
-  );
-}
-
 const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse }) => {
   const router = useRouter();
   const [course, setCourse] = useState<ListCourseItemResponse>(propsCourse);
@@ -88,9 +60,9 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
 
   return (
     <>
-      <HeaderPrimary />
+      <HeaderInstructor />
       <div className="h-fit w-full font-lexend-deca">
-        <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[100px] pl-[320px] pr-[560px]">
+        <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[70px] pl-[320px] pr-[560px]">
           <p className="w-fit rounded-3xl bg-[#1CCC19] py-1 px-3 font-lexend-deca font-semibold text-white">
             Graphic Design
           </p>
@@ -182,7 +154,7 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
           </div>
         </div>
         <div className="ml-[320px] flex w-[1000px] flex-col items-start gap-7 py-[70px]">
-          <InstructorCourseUnderlineNavBar />
+          <CourseUnderlineNavBar />
           <p className="font-lexend-deca text-base font-light leading-8 text-light-text-primary">
             {course?.description}
           </p>

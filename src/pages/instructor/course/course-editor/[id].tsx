@@ -149,11 +149,6 @@ const CreateCouse: React.FC = () => {
                 className="border-none hover:bg-white"
                 textHoverClassName="text-[#013F9E]"
                 text="Xem trước"
-                onClick={() => {
-                  console.log('preview');
-
-                  router.push({});
-                }}
               />
             </Link>
           }

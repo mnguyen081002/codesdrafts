@@ -1,5 +1,6 @@
 import axiosClient from '../axiosClient';
-import type { BaseResponse } from '../baseHttp';
+import type { BaseQuery, BaseResponse } from '../baseHttp';
+import type { ListCourseItemResponse } from '../instructor/course';
 
 export interface CreateCategoryRequest {
   name: string;
@@ -48,6 +49,17 @@ export interface CourseCategory {
   order: number;
 }
 
+export interface AdminCountCourseResponse {
+  all: number;
+  published: number;
+  reviewing: number;
+  rejected: number;
+}
+
+export interface AdminGetCoursesQuery extends BaseQuery {
+  status?: string;
+}
+
 const CodeSmoothAdminApi = {
   createCategory: (params: CreateCategoryRequest) => {
     return axiosClient.post<CreateCategoryReponse>('/api/admin/category', {
@@ -67,6 +79,16 @@ const CodeSmoothAdminApi = {
   },
   getCateSetting: () => {
     return axiosClient.get<BaseResponse<CourseCategory[]>>(`/api/category`);
+  },
+  getCourses: (params: AdminGetCoursesQuery) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>(`/api/admin/course`, {
+      params,
+    });
+  },
+  countCourse: () => {
+    return axiosClient.get<BaseResponse<AdminCountCourseResponse>>(
+      `/api/admin/course/count-course`,
+    );
   },
 };
 
