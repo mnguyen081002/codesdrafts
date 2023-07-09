@@ -1,8 +1,37 @@
 import { useState } from 'react';
 
-const h = Array(30)
-  .fill(null)
-  .map((_, i) => `h-[${62 * (i + 1)}px]`);
+const h = [
+  'h-[62px]',
+  'h-[124px]',
+  'h-[186px]',
+  'h-[248px]',
+  'h-[310px]',
+  'h-[372px]',
+  'h-[434px]',
+  'h-[496px]',
+  'h-[558px]',
+  'h-[620px]',
+  'h-[682px]',
+  'h-[744px]',
+  'h-[806px]',
+  'h-[868px]',
+  'h-[930px]',
+  'h-[992px]',
+  'h-[1054px]',
+  'h-[1116px]',
+  'h-[1178px]',
+  'h-[1240px]',
+  'h-[1302px]',
+  'h-[1364px]',
+  'h-[1426px]',
+  'h-[1488px]',
+  'h-[1550px]',
+  'h-[1612px]',
+  'h-[1674px]',
+  'h-[1736px]',
+  'h-[1798px]',
+  'h-[1860px]',
+];
 
 interface CourseDetailContentOfTableProps {
   title: string;
