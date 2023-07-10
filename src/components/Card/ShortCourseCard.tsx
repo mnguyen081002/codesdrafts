@@ -46,7 +46,7 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
           </div>
         </div>
 
-        <Text fw={600} color="dark" className="text-lg leading-5">
+        <Text fw={600} color="dark" className="h-[40px] text-lg leading-5">
           {course.name}
         </Text>
 
