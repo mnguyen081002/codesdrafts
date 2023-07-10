@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { map } from 'lodash';
 import type { NextPageContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,22 +7,22 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import type { CourseCategory } from '@/api/admin/setting';
 import CodeSmoothAdminApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 import { PATH_AUTH } from '@/routes/path';
 
-import { CodeSmoothApi } from '../../../../api/codesmooth-api';
-import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../../common/Input';
-import { PrimaryButton, PrimaryOutlineButton } from '../../../../components/Button';
-import Footer from '../../../../layouts/Footer';
-import { listInstructorSidebarItem } from '../../../../layouts/Instructor/Instructor';
-import HeaderManage from '../../../../layouts/Manage/Header';
-import SidebarManage from '../../../../layouts/Manage/Sidebar';
+import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import CodeSmoothInstructorCourseApi from '../../../api/instructor/course';
+import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
+import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
+import Footer from '../../../layouts/Footer';
+import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructor';
+import HeaderManage from '../../../layouts/Manage/Header';
+import SidebarManage from '../../../layouts/Manage/Sidebar';
 
 type FormValuesProps = {
-  file: string | File;
+  file: string;
   name: string;
   price: string;
   description: string;
@@ -37,21 +36,20 @@ type FormValuesProps = {
 
 const CreateCouse: React.FC = () => {
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
-  const [optionSetting, setOptionSetting] = useState<CourseCategory[]>([]);
+  const [optionSetting, setOptionSetting] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [objectives, setObjectives] = useState<string[]>([]);
+  const [requirements, setRequirements] = useState<string[]>([]);
   const [id, setId] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const CourseSchema = Yup.object().shape({
-    file: Yup.string().required('Vui lòng chọn ảnh'),
     name: Yup.string().required('Vui lòng nhập tên khóa học'),
     price: Yup.string().required('Vui lòng nhập giá khóa học'),
     description: Yup.string().required('Vui lòng nhập mô tả khóa học'),
     short_description: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
-    categories: Yup.array().min(1, 'Vui lòng chọn kỹ năng'),
-    objectives: Yup.array().min(1, 'Vui lòng nhập mục tiêu khóa học'),
-    requirements: Yup.array().required('Vui lòng nhập yêu cầu khóa học'),
     target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
     feedbackEmail: Yup.string()
       .required('Vui lòng nhập email')
@@ -62,10 +60,17 @@ const CreateCouse: React.FC = () => {
     resolver: yupResolver(CourseSchema),
   });
 
-  const { reset, handleSubmit } = methods;
+  const { reset, handleSubmit, setError } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
     let thumbnail: string;
+    if (!thumbnailUpload) {
+      setError('file', {
+        type: 'manual',
+        message: 'Vui lòng chọn ảnh',
+      });
+      return;
+    }
     if (thumbnailUpload instanceof File) {
       const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload]);
 
@@ -74,27 +79,33 @@ const CreateCouse: React.FC = () => {
     } else {
       thumbnail = thumbnailUpload;
     }
-    const cats = optionSetting
+
+    const cats = categories
       .filter((c) => {
-        return data.categories.includes(c.name);
+        return optionSetting.includes(c.name);
       })
       .map((item) => {
         return item.id;
       });
 
     try {
-      await CodeSmoothApi.saveCourse({
+      const update = {
         name: data.name,
         price: Number(data.price),
         category_ids: cats,
         description: data.description,
         short_description: data.short_description,
         feedback_email: data.feedbackEmail,
-        requirements: data.requirements,
+        requirements,
         target_audience: data.target_audience,
         thumbnail,
-        objectives: data.objectives,
-      });
+        objectives,
+      };
+      if (!id) {
+        await CodeSmoothInstructorCourseApi.createCourse(update);
+      } else {
+        await CodeSmoothInstructorCourseApi.updateCourse(Number(id), update);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -108,17 +119,18 @@ const CreateCouse: React.FC = () => {
         if (id) {
           setId(id as string);
           const r = await CodeSmoothApi.Instructor.Course.getCourseById(Number(id));
-
+          setObjectives(r.data.data.objectives);
+          setRequirements(r.data.data.requirements);
           reset({
             description: r.data.data.description,
             feedbackEmail: r.data.data.feedback_email,
             name: r.data.data.name,
-            objectives: r.data.data.objectives,
-            requirements: r.data.data.requirements,
+            // objectives: r.data.data.objectives,
+            // requirements: r.data.data.requirements,
             short_description: r.data.data.short_description,
             target_audience: r.data.data.target_audience,
             price: r.data.data.price.toString(),
-            categories: r.data.data.categories.map((c) => c.name),
+            // categories: r.data.data.categories.map((c) => c.name),
           });
 
           setThumbnailUpload(r.data.data.thumbnail);
@@ -129,7 +141,8 @@ const CreateCouse: React.FC = () => {
     const handleGetSetting = async () => {
       try {
         const res = await CodeSmoothAdminApi.getCateSetting();
-        setOptionSetting(res.data.data);
+        setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
+        setOptionSetting(res.data.data.map((item) => item.name));
       } catch (error) {
         console.log(error);
       }
@@ -144,18 +157,43 @@ const CreateCouse: React.FC = () => {
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <HeaderManage
           rightContent={
-            <Link href={`/instructor/course/${id}`}>
-              <PrimaryOutlineButton
-                className="border-none hover:bg-white"
-                textHoverClassName="text-[#013F9E]"
-                text="Xem trước"
-              />
-            </Link>
+            <div className="flex">
+              <Link href={`/instructor/course/${id}`}>
+                <PrimaryOutlineButton
+                  className="border-none px-0 hover:bg-white"
+                  textHoverClassName="text-[#013F9E]"
+                  text="Xem trước"
+                />
+              </Link>
+              {id ? (
+                <>
+                  <PrimaryOutlineButton
+                    textHoverClassName="text-[#013F9E]"
+                    className="border-none hover:bg-white"
+                    text="Huỷ bỏ"
+                  />
+                  <PrimaryOutlineButton
+                    bgHoverColor="hover:bg-light-primary"
+                    className="w-fit px-[30px] py-[9px]"
+                    textHoverClassName="text-[#ffffff]"
+                    text="Cập nhật"
+                    type="submit"
+                  />
+                </>
+              ) : (
+                <PrimaryButton
+                  className="w-fit px-[30px] py-[9px]"
+                  text="TẠO"
+                  textClassName="text-white"
+                  type="submit"
+                />
+              )}
+            </div>
           }
         />
         <div className="flex w-full">
           <SidebarManage bottom items={listInstructorSidebarItem} redirectPath="instructor" />
-          <div className="flex flex-1 flex-col gap-[15px] px-[300px] py-[60px] font-lexend-deca leading-6 text-light-text-primary">
+          <div className="flex flex-1 flex-col gap-[15px] overflow-y-auto px-[300px] py-[60px] font-lexend-deca leading-6 text-light-text-primary">
             <RFHInputThumbnail
               name="file"
               thumbnailUpload={thumbnailUpload}
@@ -200,23 +238,27 @@ const CreateCouse: React.FC = () => {
             </div>
             <RHFMutiSelect
               name="categories"
-              options={map(optionSetting, (item) => item.name) || []}
+              options={optionSetting}
+              setOptions={setOptionSetting}
               label={'Các kĩ năng *'}
               placeholder="Những kĩ năng nào sẽ được nói tới trong khóa học ? (Ấn để thêm)"
               type="text"
               isMulti
             />
             <RHFMutiSelect
-              options={[]}
+              options={objectives}
+              setOptions={setObjectives}
               name="objectives"
               label={'Mục tiêu khóa học *'}
+              creatable
               maxLength={200}
               placeholder="Người học sẽ học được gì khi hoàn thành khóa học ? (Ấn để thêm)"
               type="text"
               isMulti
             />
             <RHFMutiSelect
-              options={[]}
+              options={requirements}
+              setOptions={setRequirements}
               name="requirements"
               label={'Yêu cầu khóa học *'}
               maxLength={200}
@@ -240,20 +282,11 @@ const CreateCouse: React.FC = () => {
             />
             <div className="mt-6 flex flex-col items-center gap-10">
               <div className="flex items-center gap-12">
-                {id ? (
-                  <PrimaryOutlineButton className="w-fit px-[30px] py-[9px]" text="HỦY BỎ" />
-                ) : (
-                  <PrimaryButton
-                    className="w-fit px-[30px] py-[9px]"
-                    text="TẠO"
-                    textClassName="text-white"
-                  />
-                )}
-                <PrimaryOutlineButton
-                  className="w-fit border-red-500 px-[30px] py-[8.5px]"
-                  text="XÓA"
-                  textClassName="text-red-500"
-                  bgHoverColor="hover:bg-red-500 hover:bg-opacity-10"
+                <PrimaryButton
+                  className="w-fit bg-red-600 px-[30px]"
+                  text="XÓA KHÓA HỌC"
+                  textClassName="text-white"
+                  hoverBgColor="hover:bg-red-800"
                 />
               </div>
             </div>

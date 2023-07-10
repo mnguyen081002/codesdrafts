@@ -21,6 +21,8 @@ export interface ListCourseItemResponse {
   objectives: string[];
   total_enrollment: number;
   base_price: number;
+  parent_id?: number;
+  published_at: string;
   owner: {
     id: number;
     username: string;
@@ -46,8 +48,13 @@ export interface InstructorCountCourseResponse {
 }
 
 const CodeSmoothInstructorCourseApi = {
-  saveCourse: (params: SaveCourseRequest) => {
+  createCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/instructor/course', {
+      ...params,
+    });
+  },
+  updateCourse: (id: number, params: SaveCourseRequest) => {
+    return axiosClient.put(`/api/instructor/course/${id}`, {
       ...params,
     });
   },

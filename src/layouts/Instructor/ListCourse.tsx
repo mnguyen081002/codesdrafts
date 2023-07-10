@@ -60,7 +60,7 @@ const ListCoursePage = () => {
               badgeNumber: count?.reviewing,
             },
             {
-              title: 'Đã được duyệt',
+              title: 'Đã phát hành',
               slug: CourseStatus.Published,
               badgeNumber: count?.published,
             },
@@ -90,7 +90,8 @@ const ListCoursePage = () => {
                 <LongCourseCard
                   onClick={() => {
                     router.push({
-                      pathname: `./course/course-editor/${course.id}`,
+                      pathname: `./course/course-editor`,
+                      query: { id: course.id },
                     });
                   }}
                   key={course.id}

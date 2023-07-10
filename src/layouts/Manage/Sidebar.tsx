@@ -18,7 +18,7 @@ function SidebarManage({
   bottom?: boolean;
 }) {
   return (
-    <div className="flex h-[860] w-[248px] flex-col gap-[5px] border-r border-light-border pt-5">
+    <div className="sticky left-0 top-[75px] flex h-[860px] w-[248px] flex-col gap-[5px] border-r border-light-border pt-5">
       <div className="flex h-full flex-col justify-between">
         <div className="flex w-full flex-col justify-center gap-[5px] px-5">
           {items.map((item) => (

@@ -204,7 +204,7 @@ export const CodeSmoothApi = {
     });
   },
 
-  saveCourse: (params: SaveCourseRequest) => {
+  createCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/instructor/course', {
       ...params,
     });

@@ -23,7 +23,7 @@ interface RHFInputAutoCompleteProps extends InputProps {
   isMulti?: boolean;
   creatable?: boolean;
 }
-
+// NOTE: RHF data.value not working with Mantine MultiSelect, use State instead
 export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
   const { control, setValue } = useFormContext();
 
@@ -48,22 +48,23 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
               </div>
               {props.isMulti ? (
                 <MultiSelect
-                  value={field.value}
+                  value={props.options}
+                  defaultValue={props.options}
                   searchable
                   creatable={props.creatable}
                   size="md"
-                  data={props.options.length > 0 ? props.options : field.value || []}
+                  data={props.options || []}
                   getCreateLabel={(query) => `${query}`}
                   onCreate={(query) => {
-                    const item = { value: query, label: query };
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    props.setOptions && props.setOptions([]);
-                    return item;
+                    props.setOptions && props.setOptions([...props.options, query]);
+                    return query;
                   }}
-                  onKeyDown={(e: any) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    props.setOptions && props.setOptions([e.target.value]);
-                  }}
+                  // onKeyDown={(e: any) => {
+                  //   console.log(field.value);
+                  //   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                  //   setValue(props.name, [...field.value, e.target.value]);
+                  // }}
                   rightSection={<></>}
                   placeholder={props.placeholder}
                   className="placeholder-light-text-placeholder"
@@ -72,7 +73,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                 <Autocomplete
                   value={field.value}
                   size="md"
-                  data={props.options}
+                  data={props.options || []}
                   className="placeholder-light-text-placeholder"
                   placeholder={props.placeholder}
                 />

@@ -39,17 +39,29 @@ export default function LongCourseCard({
         <div className="flex w-[390px] flex-col items-start justify-between py-[11px]">
           <div className="flex flex-col gap-[15px]">
             <p className="font-lexend-deca text-2xl font-semibold leading-6">{course.name}</p>
-            <p className="flex gap-2 font-lexend-deca text-sm font-normal text-[#252525]">
-              Thời Gian Cập Nhật:
-              <span className="font-light tracking-wider text-[#535353]">
-                {moment(course.updated_at).format('HH:mm DD [tháng] MM [năm] YYYY')}
-              </span>
-            </p>
+            <div className="flex flex-col">
+              {/* <p className="flex gap-2 font-lexend-deca text-sm font-normal text-[#252525]">
+                Thời Gian Phát Hành:
+                <span className="font-light tracking-wider text-[#535353]">
+                  {moment(course.published_at).format('HH:mm DD [tháng] MM [năm] YYYY')}
+                </span>
+              </p> */}
+              <p className="flex gap-2 font-lexend-deca text-sm font-normal text-[#252525]">
+                Thời Gian Cập Nhật:
+                <span className="font-light tracking-wider text-[#535353]">
+                  {moment(course.updated_at).format('HH:mm DD [tháng] MM [năm] YYYY')}
+                </span>
+              </p>
+            </div>
           </div>
           <div className="flex w-fit items-center gap-[10px] rounded bg-[#f5f5f5] py-[4px] px-[8px]">
-            <img src={`/images/icons/${course.status}.svg`} alt="" className="object-contain" />
+            <img
+              src={`/images/icons/${course.parent_id ? CourseStatus.Published : course.status}.svg`}
+              alt=""
+              className="object-contain"
+            />
             <p className="font-lexend-deca text-xs font-normal capitalize leading-5 text-[#747474]">
-              {statusMessage(course.status)}
+              {statusMessage(course.parent_id ? CourseStatus.Published : course.status)}
             </p>
           </div>
         </div>

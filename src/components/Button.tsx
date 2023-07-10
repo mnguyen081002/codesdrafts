@@ -7,6 +7,7 @@ function PrimaryButton({
   textClassName,
   hoverBgColor = 'hover:bg-light-dark',
   bgColor = 'bg-light-primary',
+  type = 'button',
 }: {
   text: string;
   onClick?: () => void;
@@ -14,9 +15,11 @@ function PrimaryButton({
   textClassName?: string;
   hoverBgColor?: string;
   bgColor?: string;
+  type?: 'button' | 'submit' | 'reset';
 }) {
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${
         className || ''
@@ -40,6 +43,7 @@ function PrimaryOutlineButton({
   textClassName,
   textHoverClassName = 'text-light-primary',
   bgHoverColor = 'hover:bg-light-hoverPrimary',
+  type = 'button',
 }: {
   text: string;
   onClick?: () => void;
@@ -47,11 +51,13 @@ function PrimaryOutlineButton({
   textClassName?: string;
   textHoverClassName?: string;
   bgHoverColor?: string;
+  type?: 'button' | 'submit' | 'reset';
 }) {
   const [isHover, setIsHover] = useState(false);
 
   return (
     <button
+      type={type}
       onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
