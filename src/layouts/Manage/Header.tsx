@@ -1,7 +1,7 @@
 import { Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 import { Avatar } from '../../components/sub/avatar';
 import { APP_NAME } from '../../shared/constants/app';
@@ -59,7 +59,11 @@ const MenuUser = () => {
             Hỗ trợ
           </Text>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item
+          onClick={() => {
+            signOut();
+          }}
+        >
           <Text size="sm" color="dark" className="text-lg">
             Đăng xuất
           </Text>
