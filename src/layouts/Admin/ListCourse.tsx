@@ -27,8 +27,8 @@ const AdminListCoursePage = () => {
         status: status === 'all' ? undefined : status,
       });
       const count = await CodeSmoothAdminApi.countCourse();
-      setListCourse(res.data.data);
       setCount(count.data.data);
+      setListCourse(res.data.data);
     };
     fetch();
   }, [router.query.selection]);

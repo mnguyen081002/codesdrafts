@@ -60,9 +60,11 @@ const MenuUser = () => {
           </div>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
-            Khóa học của tôi
-          </Text>
+          <Link href={'/course'}>
+            <Text size="sm" color="dark" className="text-lg">
+              Khóa học của tôi
+            </Text>
+          </Link>
         </Menu.Item>
         <Menu.Item>
           <Text size="sm" color="dark" className="text-lg">
@@ -70,7 +72,7 @@ const MenuUser = () => {
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Link href={'instructor/course'}>
+          <Link href={'/instructor/course'}>
             <div className="flex items-center justify-between">
               <Text size="sm" color="dark" className="text-lg">
                 Quản lý dạy học
@@ -151,7 +153,9 @@ const MenuUser = () => {
 const HeaderPrimary = () => {
   return (
     <div className="flex h-[74px] w-full items-center justify-between pl-[50px] pr-[82px] shadow">
-      <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+      <Link href={'/home'}>
+        <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+      </Link>
       <ListPopularCourse />
       <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">
         <input

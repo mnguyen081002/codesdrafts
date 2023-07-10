@@ -37,6 +37,14 @@ export interface Category {
   name: string;
 }
 
+export interface InstructorCountCourseResponse {
+  all: number;
+  published: number;
+  reviewing: number;
+  rejected: number;
+  draft: number;
+}
+
 const CodeSmoothInstructorCourseApi = {
   saveCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/instructor/course', {
@@ -68,6 +76,11 @@ const CodeSmoothInstructorCourseApi = {
   submitForReview: (id: number) => {
     return axiosClient.patch<BaseResponse<ListCourseItemResponse>>(
       `/api/instructor/course/submit-for-review/${id}`,
+    );
+  },
+  countCourse: () => {
+    return axiosClient.get<BaseResponse<InstructorCountCourseResponse>>(
+      '/api/instructor/course/count-course',
     );
   },
 };

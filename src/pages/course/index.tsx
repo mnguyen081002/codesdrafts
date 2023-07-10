@@ -23,6 +23,7 @@ const ListCoursePage = () => {
     }
     const fetch = async () => {
       const res = await CodeSmoothApi.getMyCourseList({});
+
       setListCourse(res.data.data);
     };
     fetch();
@@ -69,7 +70,7 @@ const ListCoursePage = () => {
                     <LongCourseCard
                       onClick={() => {
                         router.push({
-                          pathname: `./course/${course.id}`,
+                          pathname: `course/${course.id}`,
                         });
                       }}
                       key={course.id}

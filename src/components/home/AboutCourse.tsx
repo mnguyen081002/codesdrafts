@@ -12,7 +12,7 @@ register();
 
 const HomeMain = () => {
   return (
-    <div className="w-full">
+    <div className="w-[1460px] overflow-hidden">
       <Group position="left" className="my-4">
         <HightLightLabelCourse courseName="chủ đề" />
       </Group>

@@ -24,6 +24,7 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
     <swiper-slide
       style={{
         padding: '20px 10px',
+        width: 'fit-content',
       }}
     >
       <Link

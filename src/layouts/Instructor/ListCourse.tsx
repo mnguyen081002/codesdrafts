@@ -1,14 +1,18 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CodeSmoothApi } from '../../api/codesmooth-api';
-import type { ListCourseItemResponse } from '../../api/instructor/course';
+import type {
+  InstructorCountCourseResponse,
+  ListCourseItemResponse,
+} from '../../api/instructor/course';
+import CodeSmoothInstructorCourseApi from '../../api/instructor/course';
 import LongCourseCard from '../../components/Card/LongCourseCard';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
 import { CourseStatus } from '../../shared/enum/course';
 
 const ListCoursePage = () => {
   const [listCourse, setListCourse] = useState<ListCourseItemResponse[]>([]);
+  const [count, setCount] = useState<InstructorCountCourseResponse>();
   const router = useRouter();
   useEffect(() => {
     if (!router.isReady) return;
@@ -21,9 +25,13 @@ const ListCoursePage = () => {
     }
 
     const fetch = async () => {
-      const res = await CodeSmoothApi.Instructor.Course.listCourse({
-        status: status === 'all' ? undefined : status,
-      });
+      const [res, count] = await Promise.all([
+        CodeSmoothInstructorCourseApi.listCourse({
+          status: status === 'all' ? undefined : status,
+        }),
+        CodeSmoothInstructorCourseApi.countCourse(),
+      ]);
+      setCount(count.data.data);
       setListCourse(res.data.data);
     };
     fetch();
@@ -39,22 +47,27 @@ const ListCoursePage = () => {
             {
               title: 'Tất cả',
               slug: 'all',
+              badgeNumber: count?.all,
             },
             {
               title: 'Nháp',
               slug: CourseStatus.Draft,
+              badgeNumber: count?.draft,
             },
             {
               title: 'Đang chờ duyệt',
               slug: CourseStatus.Reviewing,
+              badgeNumber: count?.reviewing,
             },
             {
               title: 'Đã được duyệt',
               slug: CourseStatus.Published,
+              badgeNumber: count?.published,
             },
             {
               title: 'Bị từ chối',
               slug: CourseStatus.Rejected,
+              badgeNumber: count?.rejected,
             },
           ]}
         />
