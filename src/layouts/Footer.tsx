@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <Container size="xxxl" bg="#051E43">
-      <Container size="md" h={392} className="flex flex-col justify-center text-white">
+    <Container className="w-full" size="xxxl" bg="#051E43">
+      <Container size="md" h={392} className="flex w-full flex-col justify-center text-white">
         <Flex className="flex h-full items-center justify-between">
           <Box className="flex w-full justify-between">
             <Box className="flex flex-col gap-5">

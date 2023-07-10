@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { CodeSmoothApi } from '../../api/codesmooth-api';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
-import HeaderPrimary from '../../components/home/HeaderPrimary';
+import CourseUnderlineNavBar from '../../components/Instructor/UnderlineNavBar';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
 import {
   CourseDetailSection,
@@ -18,6 +18,7 @@ import { Avatar } from '../../components/sub/avatar';
 import CourseDetailTableOfContent from '../../components/sub/CourseDetailTableOfContent';
 import CustomRating from '../../components/sub/CustomRating';
 import Footer from '../../layouts/Footer';
+import HeaderPrimary from '../../layouts/HeaderPrimary';
 import { PATH_AUTH } from '../../routes/path';
 
 type ICourseUrl = {
@@ -108,13 +109,13 @@ const CourseDetail = ({ course }: { course: ListCourseItemResponse }) => {
             <div className="flex items-center justify-center gap-4">
               <p className="font-lexend-deca text-lg font-bold text-light-text-primary">Giá:</p>
               <p className="font-lexend-deca text-2xl font-bold leading-5 tracking-[0.15px]">
-                {course.price === 0
+                {course?.price === 0
                   ? 'Miễn phí'
-                  : `${course.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
+                  : `${course?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
               </p>
-              {course.price !== 0 && (
+              {course?.price !== 0 && course?.price !== course?.base_price && (
                 <p className="font-lexend-deca text-lg font-bold text-light-text-primary line-through">
-                  {course.base_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                  {course?.base_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
                 </p>
               )}
             </div>
@@ -131,7 +132,7 @@ const CourseDetail = ({ course }: { course: ListCourseItemResponse }) => {
               <CourseInfoInclude
                 title="Danh mục"
                 icon="/images/course/FileBlue.svg"
-                text="Graphic Design, UI/UX"
+                text={`${course?.categories.map((c) => c.name).join(', ')}`}
               />
               <CourseInfoInclude
                 title="Học viên"
@@ -148,30 +149,19 @@ const CourseDetail = ({ course }: { course: ListCourseItemResponse }) => {
           </div>
         </div>
         <div className="ml-[320px] flex w-[1000px] flex-col items-start gap-7 py-[70px]">
-          <InstructorCourseUnderlineNavBar />
+          <CourseUnderlineNavBar />
           <p className="font-lexend-deca text-base font-light leading-8 text-light-text-primary">
-            {course.description}
+            {course?.description}
           </p>
           <CourseDetailSection
-            contents={[
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Trở thành UX/UI Designer chuyên nghiệp',
-              'Biết cách sử dụng Figma',
-              'Xây dựng hệ thống thiết kế',
-            ]}
+            contents={course?.objectives}
             title="Bạn sẽ học được gì?"
             text="This tutorial will help you learn quickly and thoroughly. Lorem ipsum, or lipsum as it is
         sometimes known, iaws dumm text used in laying out print, graphic or web designsm dolor sit
         amet."
           />
           <CourseDetailSection
-            contents={['Biết cách sử dụng Figma', 'Xây dựng hệ thống thiết kế']}
+            contents={course?.requirements}
             title="Yêu cầu"
             text="Cần một số yêu cầu cần thiết để bạn có thể hoàn thành khóa học này."
           />
@@ -263,7 +253,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
 
-  const r = await CodeSmoothApi.Instructor.Course.getCourseById(Number(id));
+  const r = await CodeSmoothApi.getCourseById(Number(id));
 
   return {
     props: {

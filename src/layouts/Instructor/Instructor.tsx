@@ -27,7 +27,7 @@ export const listInstructorSidebarItem = [
 const InstructorLayout = ({ children }) => {
   return (
     <>
-      <HeaderManage />
+      <HeaderManage showAvatar />
       <div className="flex w-full">
         <SidebarManage bottom items={listInstructorSidebarItem} redirectPath="instructor" />
         {children}

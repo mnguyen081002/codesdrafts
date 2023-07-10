@@ -39,7 +39,7 @@ export const mapAdminPage = {
 const AdminLayout = ({ children }) => {
   return (
     <>
-      <HeaderManage />
+      <HeaderManage showAvatar />
       <div className="flex w-full">
         <SidebarManage items={listItem} redirectPath="admin" />
         {children}

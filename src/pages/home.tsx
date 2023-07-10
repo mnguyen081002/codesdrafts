@@ -1,15 +1,15 @@
 import type { GetServerSideProps } from 'next';
 
 import { CarouselHome, HomeMain } from '@/components/home';
-import HeaderPrimary from '@/components/home/HeaderPrimary';
 import { requireAuth } from '@/components/requireAuth';
 import Footer from '@/layouts/Footer';
+import HeaderPrimary from '@/layouts/HeaderPrimary';
 
 const Home = () => {
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <HeaderPrimary />
-      <div className=" mx-[180px] mt-[12px] flex flex-col items-center justify-center">
+      <div className="mt-[12px] flex flex-col items-center justify-center gap-7">
         <CarouselHome />
         <HomeMain />
       </div>

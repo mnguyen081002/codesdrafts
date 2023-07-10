@@ -1,7 +1,7 @@
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
-import HeaderPrimary from '../../components/home/HeaderPrimary';
 import { Avatar } from '../../components/sub/avatar';
 import Footer from '../../layouts/Footer';
+import HeaderPrimary from '../../layouts/HeaderPrimary';
 
 function PaymentMethod({
   title,

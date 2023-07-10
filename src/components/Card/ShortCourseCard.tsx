@@ -1,8 +1,15 @@
 import { Button, Divider, Group, Rating, rem, Text } from '@mantine/core';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
-const ShortCourseCard = () => {
+import type { ListCourseItemResponse } from '../../api/instructor/course';
+
+interface ShortCourseCardProps {
+  course: ListCourseItemResponse;
+}
+
+const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const handleCardHover = () => {
@@ -19,17 +26,18 @@ const ShortCourseCard = () => {
         padding: '20px 10px',
       }}
     >
-      <div
+      <Link
+        href={`/course/${course.id}`}
         className="group relative  flex w-[345px] cursor-pointer flex-col gap-2 rounded-[5px] py-[14px] px-[12px] shadow-md"
         onMouseEnter={handleCardHover}
         onMouseLeave={handleCardLeave}
       >
-        <img src="/images/home/Thumnail.png" className="h-[212px] w-[318px]" alt="Norway" />
+        <img src={course.thumbnail} className="h-[212px] w-[318px]" alt="Norway" />
         <div className="flex h-[50px] w-full items-center gap-[9px]">
-          <img src="/images/home/Avatar.png" className="h-[35px] w-[35px]" alt="Avatar" />
+          <img src={course.owner.avatar} className="h-[35px] w-[35px] rounded-full" alt="Avatar" />
           <div className="flex h-[30px] flex-col justify-between">
             <p className="text-sm font-semibold leading-none tracking-[0.15px] text-[#141414DE]">
-              Minh Nguyên
+              {course.owner.username}
             </p>
             <p className="text-[13px] font-normal leading-none tracking-[0.15px] text-[#4C4E64AD]">
               Google expert
@@ -38,7 +46,7 @@ const ShortCourseCard = () => {
         </div>
 
         <Text fw={600} color="dark" className="text-lg leading-5">
-          Best Golang Certification Courses For Beginners
+          {course.name}
         </Text>
 
         <Group className="relative flex justify-between">
@@ -63,7 +71,7 @@ const ShortCourseCard = () => {
             w={rem(310)}
           />
           <Text size="14px" color="dimmed">
-            1000+ học sinh
+            {course.total_enrollment} học sinh
           </Text>
         </Group>
         <Group className="flex justify-between pt-1">
@@ -74,8 +82,10 @@ const ShortCourseCard = () => {
               (350)
             </Text>
           </Group>
-          <Text size="15px" fw={700}>
-            Miễn phí
+          <Text size="18px" fw={700}>
+            {course.price === 0
+              ? 'Miễn phí'
+              : `${course?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
           </Text>
         </Group>
         <Button
@@ -91,7 +101,7 @@ const ShortCourseCard = () => {
         >
           HỌC NGAY
         </Button>
-      </div>
+      </Link>
     </swiper-slide>
   );
 };

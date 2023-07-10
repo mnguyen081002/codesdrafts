@@ -5,7 +5,7 @@ import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import CodeSmoothAdminApi from './admin/setting';
 import axiosClient from './axiosClient';
-import type { BaseResponse } from './baseHttp';
+import type { BaseQuery, BaseResponse } from './baseHttp';
 import type { ListCourseItemResponse } from './instructor/course';
 import CodeSmoothInstructorCourseApi from './instructor/course';
 
@@ -67,12 +67,26 @@ export interface SaveCourseRequest {
   feedback_email: string;
 }
 
+export interface GetCourseListQuery extends BaseQuery {
+  category_id?: number;
+}
+
 export const CodeSmoothApi = {
   Admin: {
     Setting: CodeSmoothAdminApi,
   },
   Instructor: {
     Course: CodeSmoothInstructorCourseApi,
+  },
+  getMyCourseList: (props: GetCourseListQuery) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/course/my-course', {
+      params: props,
+    });
+  },
+  getCourseList: (props: GetCourseListQuery) => {
+    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/course', {
+      params: props,
+    });
   },
   getCourseById: (id: number) => {
     return axiosClient.get<BaseResponse<ListCourseItemResponse>>(`/api/course/${id}`);

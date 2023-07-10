@@ -1,65 +1,10 @@
-import { Divider, Grid, Menu, Text } from '@mantine/core';
+import { Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-import { Avatar } from '../sub/avatar';
-import { ListCourse } from './mockData';
-
-function DropdownList({ label }) {
-  return (
-    <Menu
-      position="bottom-start"
-      trigger="hover"
-      transitionProps={{
-        exitDuration: 0,
-      }}
-      withinPortal
-    >
-      <Menu.Target>
-        <Link
-          key={label}
-          className="flex items-center gap-[4px] px-[18px] py-[6px]"
-          href="/course"
-          onClick={(event) => event.preventDefault()}
-        >
-          <div key={label} className="flex items-center gap-[4px]">
-            <span className="text-[16px] font-normal leading-[24px] tracking-[0.15px]">
-              {label}
-            </span>
-            <Image
-              className="pb-1"
-              src="/images/home/chevron-down.svg"
-              alt="arrow down"
-              width={18}
-              height={14}
-            />
-          </div>
-        </Link>
-      </Menu.Target>
-      <Menu.Dropdown className="rounded-lg shadow">
-        <div className="w-[645px] py-[12px]">
-          <p className="px-[25px] pb-[12px] text-[16px] font-medium leading-[24px] tracking-[0.15px] text-black">
-            {label}
-          </p>
-          <Divider className="w-full border-t-light-border" />
-          <Grid className="px-[25px] pt-[15px]">
-            {ListCourse.map((item) => (
-              <Grid.Col span={6} key={item.name} className="flex gap-[9px]">
-                <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-md border border-[#C2C2C2]">
-                  <img src={item.link} alt="logo" />
-                </div>
-                <div className="w-[234px]">
-                  <p className="text-sm font-semibold text-black">{item.name}</p>
-                  <p className="text-sm leading-[17px] text-[#6F6B80]">{item.description}</p>
-                </div>
-              </Grid.Col>
-            ))}
-          </Grid>
-        </div>
-      </Menu.Dropdown>
-    </Menu>
-  );
-}
+import DropdownList from '../components/DropdownList';
+import { Avatar } from '../components/sub/avatar';
 
 function HeaderNavButton({ label, href }) {
   return (
@@ -84,20 +29,21 @@ const ListPopularCourse = () => {
 };
 
 const MenuUser = () => {
+  const session: any = useSession();
   return (
     <Menu shadow="md" width={285} position="top-end">
       <Menu.Target>
         <div>
-          <Avatar dot />
+          <Avatar url={session.data?.token.user.avatar} dot />
         </div>
       </Menu.Target>
       <Menu.Dropdown px={2}>
         <Menu.Item>
           <div className="flex w-full items-center gap-[8px] ">
-            <Avatar h={50} w={50} />
+            <Avatar url={session.data?.token.user.avatar} h={50} w={50} />
             <div>
               <Text className="text-xl" weight={500}>
-                Minh Nguyên
+                {session.data?.token.user.username}
               </Text>
               <Text
                 size="xs"
@@ -108,7 +54,7 @@ const MenuUser = () => {
                   color: '#6D6D6D',
                 }}
               >
-                minhnguyen@gmail.com
+                {session.data?.token.user.email}
               </Text>
             </div>
           </div>
@@ -124,12 +70,23 @@ const MenuUser = () => {
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <div className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
-              Quản lý dạy học
-            </Text>
-          </div>
+          <Link href={'instructor/course'}>
+            <div className="flex items-center justify-between">
+              <Text size="sm" color="dark" className="text-lg">
+                Quản lý dạy học
+              </Text>
+            </div>
+          </Link>
         </Menu.Item>
+        {session.data?.token.user.role === 'ADMINSTRATOR' && (
+          <Menu.Item>
+            <Link href={'/admin/courses'} className="flex items-center justify-between">
+              <Text size="sm" color="dark" className="text-lg">
+                Quản lý giảng viên
+              </Text>
+            </Link>
+          </Menu.Item>
+        )}
 
         <Menu.Divider />
 

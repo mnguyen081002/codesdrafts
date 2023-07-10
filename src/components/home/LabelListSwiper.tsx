@@ -1,6 +1,8 @@
 import { Box, Title } from '@mantine/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { CodeSmoothApi } from '../../api/codesmooth-api';
+import type { ListCourseItemResponse } from '../../api/instructor/course';
 import SwiperListCard from './SwiperListCard';
 
 type PropsLabelCourse = {
@@ -49,24 +51,37 @@ export const HightLightLabelCourse = ({ courseName }: PropsLabelCourse) => {
 };
 
 const LabelListSwiper = () => {
+  const [courseList, setCourseList] = React.useState<ListCourseItemResponse[]>([]);
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const r = await CodeSmoothApi.getCourseList({});
+        setCourseList(r.data.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <div>
       <div>
         <HightLightLabelCourse courseName="Backend" />
 
-        <SwiperListCard classSwiper="swiper-container-Backend" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-Backend" />
       </div>
       <div>
         <HightLightLabelCourse courseName="Lộ trình" />
-        <SwiperListCard classSwiper="swiper-container-2" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-2" />
       </div>
       <div>
         <HightLightLabelCourse courseName="Frontend" />
-        <SwiperListCard classSwiper="swiper-container-Frontend" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-Frontend" />
       </div>
       <div>
         <HightLightLabelCourse courseName="DevOps" />
-        <SwiperListCard classSwiper="swiper-container-DevOps" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-DevOps" />
       </div>
     </div>
   );
