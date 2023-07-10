@@ -104,7 +104,11 @@ const CourseDetail = ({ course }: { course: ListCourseItemResponse }) => {
           </div>
         </div>
         <div className="absolute top-[142px] right-[128px] flex flex-col rounded-md bg-white px-4 pt-4 pb-10 shadow-md">
-          <img src={course.thumbnail} alt="thumbnail" className="mb-10" />
+          <img
+            src={course.thumbnail}
+            alt="thumbnail"
+            className="mb-10 h-[218px] w-[327px] rounded-[5px]"
+          />
           <div className="flex flex-col gap-10 px-5">
             <div className="flex items-center justify-center gap-4">
               <p className="font-lexend-deca text-lg font-bold text-light-text-primary">Giá:</p>
