@@ -48,6 +48,9 @@ export interface InstructorCountCourseResponse {
 }
 
 const CodeSmoothInstructorCourseApi = {
+  deleteCourse: (id: number) => {
+    return axiosClient.delete(`/api/instructor/course/${id}`);
+  },
   createCourse: (params: SaveCourseRequest) => {
     return axiosClient.post('/api/instructor/course', {
       ...params,

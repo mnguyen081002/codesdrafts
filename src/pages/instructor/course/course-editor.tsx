@@ -27,9 +27,6 @@ type FormValuesProps = {
   price: string;
   description: string;
   short_description: string;
-  categories: string[];
-  objectives: string[];
-  requirements: string[];
   target_audience: string;
   feedbackEmail: string;
 };
@@ -121,6 +118,8 @@ const CreateCouse: React.FC = () => {
           const r = await CodeSmoothApi.Instructor.Course.getCourseById(Number(id));
           setObjectives(r.data.data.objectives);
           setRequirements(r.data.data.requirements);
+          setOptionSetting(r.data.data.categories.map((item) => item.name));
+
           reset({
             description: r.data.data.description,
             feedbackEmail: r.data.data.feedback_email,
@@ -142,7 +141,6 @@ const CreateCouse: React.FC = () => {
       try {
         const res = await CodeSmoothAdminApi.getCateSetting();
         setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
-        setOptionSetting(res.data.data.map((item) => item.name));
       } catch (error) {
         console.log(error);
       }
@@ -157,7 +155,7 @@ const CreateCouse: React.FC = () => {
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <HeaderManage
           rightContent={
-            <div className="flex">
+            <div className="flex items-center">
               <Link href={`/instructor/course/${id}`}>
                 <PrimaryOutlineButton
                   className="border-none px-0 hover:bg-white"
@@ -168,7 +166,7 @@ const CreateCouse: React.FC = () => {
               {id ? (
                 <>
                   <PrimaryOutlineButton
-                    textHoverClassName="text-[#013F9E]"
+                    textHoverClassName="text-[#013F9E] px-0"
                     className="border-none hover:bg-white"
                     text="Huỷ bỏ"
                   />
@@ -182,7 +180,7 @@ const CreateCouse: React.FC = () => {
                 </>
               ) : (
                 <PrimaryButton
-                  className="w-fit px-[30px] py-[9px]"
+                  className="ml-4 h-[40px] w-fit px-5"
                   text="TẠO"
                   textClassName="text-white"
                   type="submit"
@@ -283,6 +281,9 @@ const CreateCouse: React.FC = () => {
             <div className="mt-6 flex flex-col items-center gap-10">
               <div className="flex items-center gap-12">
                 <PrimaryButton
+                  onClick={async () => {
+                    await CodeSmoothInstructorCourseApi.deleteCourse(Number(id));
+                  }}
                   className="w-fit bg-red-600 px-[30px]"
                   text="XÓA KHÓA HỌC"
                   textClassName="text-white"

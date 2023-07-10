@@ -31,11 +31,7 @@ export default function LongCourseCard({
       className="flex cursor-pointer items-center gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px]"
     >
       <td className="flex h-full gap-[30px]">
-        <img
-          className="h-[180px] w-[270px] rounded-[5px]"
-          src="/images/course/Thumnail.png"
-          alt=""
-        />
+        <img className="h-[180px] w-[270px] rounded-[5px]" src={course.thumbnail} alt="" />
         <div className="flex w-[390px] flex-col items-start justify-between py-[11px]">
           <div className="flex flex-col gap-[15px]">
             <p className="font-lexend-deca text-2xl font-semibold leading-6">{course.name}</p>
