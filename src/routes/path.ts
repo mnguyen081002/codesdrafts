@@ -1,6 +1,7 @@
 export const PATH_DASHBOARD = {
   main: '/',
   home: '/home',
+  PAYMENT: 'payment',
 };
 
 export const PATH_AUTH = {
