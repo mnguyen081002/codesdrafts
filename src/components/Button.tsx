@@ -8,6 +8,10 @@ function PrimaryButton({
   hoverBgColor = 'hover:bg-light-dark',
   bgColor = 'bg-light-primary',
   type = 'button',
+  startIcon,
+  endIcon,
+  isOrginalPadding = true,
+  customHeightWidthTailWind,
 }: {
   text: string;
   onClick?: () => void;
@@ -16,22 +20,32 @@ function PrimaryButton({
   hoverBgColor?: string;
   bgColor?: string;
   type?: 'button' | 'submit' | 'reset';
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+  isOrginalPadding?: boolean;
+  customHeightWidthTailWind?: string;
 }) {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`${
-        className || ''
-      } flex cursor-pointer items-center justify-center rounded-md px-10 py-3 transition-colors duration-300 ease-in ${bgColor} ${hoverBgColor}`}
+      // eslint-disable-next-line tailwindcss/no-custom-classname
+      className={`${className || ''} flex  cursor-pointer items-center justify-center rounded-md ${
+        isOrginalPadding ? 'px-10 py-3' : ''
+      }
+      ${customHeightWidthTailWind}
+      transition-colors duration-300 ease-in ${bgColor} ${hoverBgColor}`}
     >
+      {startIcon && <div className="mr-2">{startIcon}</div>}
+
       <p
         className={`${
           textClassName || ''
-        }font-lexend-deca text-base font-semibold leading-5 tracking-[0.15px] text-white`}
+        } font-lexend-deca font-semibold leading-5 tracking-[0.15px] text-white`}
       >
         {text}
       </p>
+      {endIcon && <div className="ml-2">{endIcon}</div>}
     </button>
   );
 }
