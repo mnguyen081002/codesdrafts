@@ -1,4 +1,5 @@
 // @mui
+import type { Sx } from '@mantine/core';
 import { Input } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -8,7 +9,7 @@ type Props = {
   name: string;
   helperText?: string;
   placeholder?: string;
-  sx?: any;
+  sx?: Sx | (Sx | undefined)[];
 };
 
 export default function RHFTextField({ name, helperText, placeholder, ...other }: Props) {
@@ -23,6 +24,7 @@ export default function RHFTextField({ name, helperText, placeholder, ...other }
           <Input
             placeholder={placeholder}
             {...field}
+            {...other}
             value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           />
         </Input.Wrapper>

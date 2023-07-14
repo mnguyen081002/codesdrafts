@@ -21,8 +21,6 @@ import Footer from '@/layouts/Footer';
 import Header from '@/layouts/Header';
 import { PATH_DASHBOARD } from '@/routes/path';
 
-import SwiperListCard from '../components/home/SwiperListCard';
-
 const LandingPage = () => {
   const session = useSession();
   return (
@@ -38,10 +36,8 @@ const LandingPage = () => {
       <ProtectedPage>
         <Teach />
       </Main>  */}
-      <Container size="xxxl" className="bg-[#F3F4F8]">
-        <Header />
-      </Container>
-      <Container size="xxxl" p={0} h={840} bg="#F3F4F8" className="z-10">
+      <Header />
+      <Container size="xxxl" p={0} h={840} className="z-10">
         <Flex className="items-stretch" h="100%" justify="space-between">
           <Flex className="h-1/2 w-[46%] justify-end self-center">
             <Stack spacing="xs" className="leading-6">
@@ -93,14 +89,14 @@ const LandingPage = () => {
                   Học máy
                 </Text>
               </MantineProvider>
-              <Button className="mt-6 h-12 w-48 bg-light-primary shadow-forfun transition-all hover:bg-light-tertiary">
+              <Button className="mt-6 h-12 w-48 bg-light-primary shadow transition-all hover:bg-light-tertiary">
                 <span className="mr-2 text-base">Bắt đầu ngay</span>
                 {/* <EastIcon /> */}
               </Button>
             </Stack>
           </Flex>
           <Box className="h-[full] items-center justify-center self-end">
-            <img src="/assets/landing-page/person.svg" alt="" />
+            {/* <img className="bg-transparent" src="/assets/landing-page/person.svg" alt="" /> */}
           </Box>
         </Flex>
       </Container>
@@ -167,7 +163,7 @@ const LandingPage = () => {
                 </Grid.Col>
               ))}
           </Grid>
-          <Button className="mt-6 h-12 w-48 bg-light-primary shadow-forfun transition-all hover:bg-light-tertiary">
+          <Button className="mt-6 h-12 w-48 bg-light-primary shadow transition-all hover:bg-light-tertiary">
             <span className="mr-2 text-base">Về chúng tôi</span>
             {/* <EastIcon /> */}
           </Button>
@@ -270,7 +266,7 @@ const LandingPage = () => {
           </span>
           Phổ Biến
         </Title>
-        <SwiperListCard classSwiper="swiper1" />
+        {/* <SwiperListCard classSwiper="swiper1" /> */}
         <Button className="h-14 w-[320px] bg-light-tertiary transition-all hover:bg-light-tertiary">
           <span className="mr-2 text-base">Khám Phá Tất Cả Khóa Học</span>
           {/* <EastIcon /> */}
@@ -482,7 +478,7 @@ const LandingPage = () => {
             </span>
             Phổ Biến
           </Title>
-          <SwiperListCard classSwiper="swiper2" />
+          {/* <SwiperListCard classSwiper="swiper2" /> */}
         </Container>
       </Container>
       <Footer />

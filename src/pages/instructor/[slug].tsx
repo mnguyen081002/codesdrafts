@@ -1,11 +1,9 @@
-import type { NextPageContext } from 'next';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
-import React from 'react';
 
+import { requireAuth } from '../../components/requireAuth';
 import { InstructorLayout } from '../../layouts/Instructor/Instructor';
 import ListCoursePage from '../../layouts/Instructor/ListCourse';
-import { PATH_AUTH } from '../../routes/path';
 
 const ManageCourseMain = () => {
   const mapPage = {
@@ -38,20 +36,8 @@ const ManageCourse = () => {
 
 export default ManageCourse;
 
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: PATH_AUTH.login,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
   return {
-    props: {
-      session: null,
-    },
+    props: {},
   };
-}
+});

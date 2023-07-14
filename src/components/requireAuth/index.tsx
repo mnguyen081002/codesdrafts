@@ -19,3 +19,9 @@ export function requireAuth(gssp: GetServerSideProps) {
     return gssp(ctx);
   };
 }
+
+export function optionalAuth(gssp: GetServerSideProps) {
+  return async (ctx: GetServerSidePropsContext) => {
+    return gssp(ctx);
+  };
+}

@@ -23,6 +23,8 @@ export interface ListCourseItemResponse {
   base_price: number;
   parent_id?: number;
   published_at: string;
+  published_course_id?: number;
+  draft_course_id?: number;
   owner: {
     id: number;
     username: string;

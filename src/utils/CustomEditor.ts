@@ -234,8 +234,12 @@ const CustomEditor = {
         },
       ];
     }
-    const document = new window.DOMParser().parseFromString(html, 'text/html');
-    return this.deserialize(document.body);
+    if (typeof window !== 'undefined') {
+      // Client-side-only code
+      const document = new window.DOMParser().parseFromString(html, 'text/html');
+      return this.deserialize(document.body);
+    }
+    return [];
   },
 
   serialize(node: any): string {

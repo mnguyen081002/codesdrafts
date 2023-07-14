@@ -1,8 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { NextPageContext } from 'next';
+import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
@@ -10,12 +9,12 @@ import * as Yup from 'yup';
 import CodeSmoothAdminApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
-import { PATH_AUTH } from '@/routes/path';
 
 import { CodeSmoothApi } from '../../../api/codesmooth-api';
 import CodeSmoothInstructorCourseApi from '../../../api/instructor/course';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
+import { requireAuth } from '../../../components/requireAuth';
 import Footer from '../../../layouts/Footer';
 import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructor';
 import HeaderManage from '../../../layouts/Manage/Header';
@@ -231,21 +230,24 @@ const CreateCouse: React.FC = () => {
               type="text"
               minRows={10}
             />
-            <div className="flex justify-center">
+            <Link href={`/instructor/course/${id}/lesson-editor`} className="flex justify-center">
               <PrimaryOutlineButton className="w-fit" text="CHỈNH SỬA BÀI HỌC" />
-            </div>
+            </Link>
             <RHFMutiSelect
               name="categories"
-              options={optionSetting}
-              setOptions={setOptionSetting}
+              options={categories.map((item) => item.name)}
+              value={optionSetting}
+              setValue={setOptionSetting}
               label={'Các kĩ năng *'}
               placeholder="Những kĩ năng nào sẽ được nói tới trong khóa học ? (Ấn để thêm)"
               type="text"
               isMulti
+              creatable
             />
             <RHFMutiSelect
               options={objectives}
-              setOptions={setObjectives}
+              value={objectives}
+              setValue={setObjectives}
               name="objectives"
               label={'Mục tiêu khóa học *'}
               creatable
@@ -256,7 +258,8 @@ const CreateCouse: React.FC = () => {
             />
             <RHFMutiSelect
               options={requirements}
-              setOptions={setRequirements}
+              value={requirements}
+              setValue={setRequirements}
               name="requirements"
               label={'Yêu cầu khóa học *'}
               maxLength={200}
@@ -301,20 +304,8 @@ const CreateCouse: React.FC = () => {
 
 export default CreateCouse;
 
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: PATH_AUTH.login,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
   return {
-    props: {
-      session: null,
-    },
+    props: {},
   };
-}
+});

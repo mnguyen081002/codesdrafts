@@ -76,6 +76,7 @@ export default NextAuth({
         return {
           ...session,
           token,
+          expires: token.accessTokenExpires as string,
         };
       }
       return session;

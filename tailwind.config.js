@@ -27,6 +27,7 @@ module.exports = {
           tertiary: '#0037ff',
           gray: '#fafafa',
           grayDarker: '#e5e5e5',
+          sectionSelected: '#E7EFFC',
           text: {
             primary: '#4C4E64',
             sencondary: 'rgba(76, 78, 100, 0.68)',
@@ -84,6 +85,7 @@ module.exports = {
       },
       borderColor: {
         light: { primary: '#63b3ed' },
+        selected: '#0076FF',
       },
       fontFamily: {
         table: ['Gelasio', 'sans-serif'],

@@ -18,10 +18,11 @@ interface InputProps {
 interface RHFInputAutoCompleteProps extends InputProps {
   name: string;
   options: string[];
-  setOptions?: Dispatch<SetStateAction<string[]>>;
+  setValue?: Dispatch<SetStateAction<string[]>>;
   helperText?: string;
   isMulti?: boolean;
   creatable?: boolean;
+  value?: string[];
 }
 // NOTE: RHF data.value not working with Mantine MultiSelect, use State instead
 export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
@@ -48,23 +49,16 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
               </div>
               {props.isMulti ? (
                 <MultiSelect
-                  value={props.options}
-                  defaultValue={props.options}
+                  value={props.value}
                   searchable
                   creatable={props.creatable}
                   size="md"
                   data={props.options || []}
                   getCreateLabel={(query) => `${query}`}
-                  onCreate={(query) => {
+                  onChange={(value) => {
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    props.setOptions && props.setOptions([...props.options, query]);
-                    return query;
+                    props.setValue && props.value && props.setValue(value);
                   }}
-                  // onKeyDown={(e: any) => {
-                  //   console.log(field.value);
-                  //   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  //   setValue(props.name, [...field.value, e.target.value]);
-                  // }}
                   rightSection={<></>}
                   placeholder={props.placeholder}
                   className="placeholder-light-text-placeholder"

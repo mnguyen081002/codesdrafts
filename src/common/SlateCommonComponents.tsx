@@ -74,7 +74,7 @@ export const Toolbar = React.forwardRef(
     <div
       {...props}
       ref={ref}
-      className="absolute -top-10 z-10 flex gap-4 rounded-lg bg-white p-2 shadow-forfun"
+      className="absolute -top-10 z-10 flex gap-4 rounded-[5px] bg-white p-2 shadow-md"
     />
   ),
 );
