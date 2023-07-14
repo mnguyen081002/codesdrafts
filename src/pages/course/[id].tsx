@@ -1,5 +1,5 @@
 import type { NextPageContext } from 'next';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
@@ -19,7 +19,7 @@ import CourseDetailTableOfContent from '../../components/sub/CourseDetailTableOf
 import CustomRating from '../../components/sub/CustomRating';
 import Footer from '../../layouts/Footer';
 import HeaderPrimary from '../../layouts/HeaderPrimary';
-import { PATH_AUTH } from '../../routes/path';
+import { PATH_AUTH, PATH_DASHBOARD } from '../../routes/path';
 
 type ICourseUrl = {
   id: string;
@@ -123,7 +123,16 @@ const CourseDetail = ({ course }: { course: ListCourseItemResponse }) => {
                 </p>
               )}
             </div>
-            <PrimaryButton className="py-[15px]" text="ĐĂNG KÝ NGAY" />
+            <PrimaryButton
+              className="py-[15px]"
+              text="ĐĂNG KÝ NGAY"
+              onClick={() => {
+                router.push({
+                  pathname: `/${PATH_DASHBOARD.PAYMENT}`,
+                  query: { id: course.id },
+                });
+              }}
+            />
             <div className="flex w-full flex-col justify-start gap-[15px]">
               <p className="font-lexend-deca font-semibold uppercase leading-5 text-light-text-primary">
                 Khóa học này bao gồm

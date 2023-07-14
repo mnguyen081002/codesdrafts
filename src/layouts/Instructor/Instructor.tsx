@@ -1,3 +1,5 @@
+import ColumnChartIcon from '@/common/Icons/ColumnChart';
+
 import DocumentIcon from '../../common/Icons/DocumentIcon';
 import GroupIcon from '../../common/Icons/GroupIcon';
 import NotificationIcon from '../../common/Icons/NotificationIcon';
@@ -21,6 +23,11 @@ export const listInstructorSidebarItem = [
     Icon: NotificationIcon,
     badge: true,
     text: 'Thông Báo',
+  },
+  {
+    redirectPath: 'statistical',
+    Icon: ColumnChartIcon,
+    text: 'Thống Kê',
   },
 ];
 

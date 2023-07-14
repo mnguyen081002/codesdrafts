@@ -223,7 +223,24 @@ export const CodeSmoothApi = {
       password,
     });
   },
+  payment({ course_id, payment_method }: PaymentRequest) {
+    return axiosClient.post<PaymentResponse>('/api/payment/create-payment-url', {
+      course_id,
+      payment_method,
+    });
+  },
 };
+
+export interface PaymentRequest {
+  course_id: number;
+  payment_method: string;
+}
+
+export interface PaymentResponse {
+  message: string;
+  data: string;
+}
+
 export interface LessonInCategoryResponse {
   id: number;
   title: string;
