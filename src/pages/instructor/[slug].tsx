@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import React from 'react';
 
+import Statistical from '@/components/Instructor/Statistical';
+
 import { InstructorLayout } from '../../layouts/Instructor/Instructor';
 import ListCoursePage from '../../layouts/Instructor/ListCourse';
 import { PATH_AUTH } from '../../routes/path';
@@ -12,6 +14,7 @@ const ManageCourseMain = () => {
     course: <ListCoursePage />,
     students: <div>create-course</div>,
     notification: <div>notification</div>,
+    statistical: <Statistical />,
   };
 
   // get query params
@@ -22,7 +25,7 @@ const ManageCourseMain = () => {
   // if query params change, update the page
 
   return (
-    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[150px] pt-[30px]">
+    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[120px] pt-[30px]">
       {mapPage[slug as string]}
     </div>
   );
