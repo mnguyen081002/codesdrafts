@@ -77,7 +77,7 @@ const Statistical = () => {
     </tr>
   ));
   return (
-    <div className="w-full px-10">
+    <div className="w-full px-16">
       <div className="mt-[50px] flex w-full items-center justify-between">
         <div className="flex w-[490px] flex-col">
           <div className="mb-[40px]  flex items-center gap-3">
