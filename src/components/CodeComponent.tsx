@@ -2,13 +2,14 @@ import { useClickOutside } from '@mantine/hooks';
 import Editor from '@monaco-editor/react';
 import { random } from 'lodash';
 import type { editor } from 'monaco-editor';
-import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useState } from 'react';
 
 import type { ExecuteResponse } from '../api/codesmooth-api';
+import { CodeSmoothApi } from '../api/codesmooth-api';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentPropsV2 } from '../shared/interface';
+import { executeCode } from '../utils/example';
 import { BaseComponentV2 } from './BaseComponent';
 import { PrimaryButton } from './Button';
 import CodeComponentEditor from './Lesson/CodeEditorComponent';
@@ -17,13 +18,12 @@ import CreateTestCaseComponent from './Lesson/CreateTestCase';
 import { ResultTable } from './Lesson/ResultTable';
 
 export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
-  const [executeRes, setExecuteRes] = useState<ExecuteResponse>();
   useState<editor.IStandaloneCodeEditor | null>(null);
   const [isWaitingExecute, setIsWaitingExecute] = useState(false);
   const [isSample, setIsSample] = useState(false);
-
+  const [result, setResult] = useState<ExecuteResponse>();
   params.reference.current =
-    params.reference.current.type === ComponentType.Code
+    params.reference.current?.type === ComponentType.Code
       ? params.reference.current
       : {
           type: ComponentType.Code,
@@ -34,8 +34,10 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
             language: 'typescript',
             code: '',
             judgeContent: {
-              executeCode: '',
               testCode: '',
+              answerCode: '',
+              sampleCode: '',
+              baseOn: 'CodeResults',
             },
             runable: false,
             timeLimit: 0,
@@ -43,9 +45,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
         };
 
   const { isExercise, runable } = params.reference.current.content;
-  const { executeCode } = params.reference.current.content.judgeContent;
-  const { testCode } = params.reference.current.content.judgeContent;
-  const { code } = params.reference.current.content;
+  // const { executeCode } = params.reference.current.content.judgeContent;
   const [language, setLanguage] = useState(params.reference.current.content.language);
   const [_, rerender] = useState(0);
 
@@ -69,14 +69,23 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
   const [opened, setOpened] = useState(false);
   const ref = useClickOutside(() => setOpened(false));
 
-  const router = useRouter();
+  const handleRun = async () => {
+    setIsWaitingExecute(true);
+    const r = await CodeSmoothApi.execute({
+      code: params.reference.current.content.code,
+      testCode: params.reference.current.content.judgeContent.testCode,
+      language: params.reference.current.content.language,
+    });
+    setIsWaitingExecute(false);
+    setResult(r.data.data);
+  };
   return (
     <div
       onClick={() => setOpened(true)}
       ref={ref}
       className={`h-fit w-full rounded-[5px] border border-light-border`}
     >
-      <BaseComponentV2 {...params} isFocus={opened}>
+      <BaseComponentV2 {...params}>
         <div className={`${opened && ' flex-col '}`}>
           {opened && (
             <CodeToolbar
@@ -88,6 +97,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
           )}
           <CodeComponentEditor
             onChange={(value) => {
+              if (!params.reference.current) return;
               params.reference.current.content.code = value;
               rerender(random(123));
             }}
@@ -99,17 +109,16 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               <PrimaryButton
                 text="Run"
                 className="rounded-none py-[9px] px-[12px]"
-                // onClick={handleRun}
+                onClick={handleRun}
               />
             </div>
           )}
-          {
-            <CreateTestCaseComponent
-              isExercise={isExercise}
-              language={language}
-              judgeContent={params.reference.current.content.judgeContent}
-            />
-          }
+          <CreateTestCaseComponent
+            isExercise={isExercise}
+            language={language}
+            content={params.reference.current.content}
+            rerender={() => rerender(random(123))}
+          />
           {opened && isExercise && isSample && (
             <>
               <Editor
@@ -124,7 +133,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               />
             </>
           )}
-          <ResultTable isWaitingExecute={isWaitingExecute} />
+          <ResultTable results={result} isWaitingExecute={isWaitingExecute} />
         </div>
       </BaseComponentV2>
     </div>

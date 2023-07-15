@@ -72,9 +72,8 @@ export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
           onDragEnd={params.onDragEnd}
           component={params.reference.current as ITextComponent}
           index={params.index}
-          isLast={params.isLast}
-          isFocus={params.isFocus}
           isReadOnly={params.isReadOnly}
+          setRefs={params.setRefs}
           rightOptions={
             <>
               <CodeIcon className="cursor-pointer" onClick={() => setType(ComponentType.Code)} />
@@ -86,7 +85,6 @@ export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
       return (
         <CodeComponent
           reference={params.reference as React.MutableRefObject<ICodeComponent>}
-          isLast={params.isLast}
           onDragStart={params.onDragStart}
           onDragEnter={params.onDragEnter}
           onDragEnd={params.onDragEnd}
@@ -104,8 +102,7 @@ export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
           onDragEnd={params.onDragEnd}
           component={params.reference.current as ITextComponent}
           index={params.index}
-          isLast={params.isLast}
-          isFocus={params.isFocus}
+          setRefs={params.setRefs}
           rightOptions={
             <>
               <CodeIcon className="cursor-pointer" onClick={() => setType(ComponentType.Code)} />

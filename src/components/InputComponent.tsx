@@ -1,9 +1,10 @@
+import isHotkey from 'is-hotkey';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { Descendant } from 'slate';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
+import { Editable, Slate, withReact } from 'slate-react';
 
 import CodeIcon from '../common/Icons/CodeIcon';
 import FormatAlignCenterIcon from '../common/Icons/FormatAlignCenterIcon';
@@ -115,144 +116,6 @@ const Element = ({ attributes, children, element }: any) => {
   }
 };
 
-// export const InputTextComponent: FC<InputTextComponentProps> = (params) => {
-//   const [placeholder, setPlaceholder] = useState('');
-//   const [isHidden, setHidden] = useState<boolean>(false);
-//   const [isShowParagraph, setIsShowParagraph] = useState<boolean>(false);
-//   const dispatch = useAppDispatch();
-//   const renderElement = useCallback((props: any) => <Element {...props} />, []);
-//   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
-//   const [editor] = useState(withHistory(withReact(createEditor())));
-//   const [reload, setReload] = useState<boolean>(false);
-
-//   const onKeyDown = (event) => {
-//     if (event.key === 'Backspace' && params.component.content.html === '') {
-//       dispatch(deleteComponentByIndex(params.index!));
-//       return false;
-//     }
-//     if (event.key === 'Enter' && event.shiftKey) {
-//       return true;
-//     }
-//     if (event.key === 'Enter' && !event.shiftKey) {
-//       event.preventDefault();
-//       handleEnter();
-//     }
-
-//     Object.keys(HOTKEYS).forEach((hotkey) => {
-//       if (isHotkey(hotkey, event as any)) {
-//         event.preventDefault();
-//         const mark = HOTKEYS[hotkey as keyof typeof HOTKEYS];
-//         CustomEditor.toggleMark(editor, mark);
-//       }
-//     });
-//     return true;
-//   };
-
-//   // const [initialValue, setInitialValue] = useState<Descendant[]>([]);
-//   // useEffect(() => {
-//   //   setInitialValue(CustomEditor.deserializeFromHtml(params.component.content.html));
-//   //   console.log({ initialValue });
-//   //   if (params.index !== 0) {
-//   //     // Transforms.select(editor, { offset: 0, path: [0, 0] });
-//   //     // ReactEditor.focus(editor);
-//   //   }
-//   //   // Transforms.select(editor, Editor.end(editor, []));
-//   //   // ReactEditor.focus(editor);
-//   // }, []);
-
-//   const initialValue: Descendant[] = CustomEditor.deserializeFromHtml(
-//     params.component.content.html,
-//   );
-//   useEffect(() => {
-//     if (params.isFocus) {
-//       ReactEditor.focus(editor);
-//     }
-//     editor.children = CustomEditor.deserializeFromHtml(params.component.content.html);
-
-//     setReload(!reload);
-//   }, []);
-
-//   return (
-//     <BaseComponent {...params}>
-//       <Slate
-//         editor={editor}
-//         value={initialValue}
-//         onChange={(v: any) => {
-//           dispatch(
-//             setComponent({
-//               component: {
-//                 ...params.component,
-//                 content: { html: CustomEditor.serialize({ children: v }) },
-//               },
-//               index: params.index,
-//             }),
-//           );
-//         }}
-//       >
-//         {isHidden && !params.isReadOnly ? (
-//           <Toolbar>
-//             <div
-//               onClick={() => {
-//                 setIsShowParagraph(!isShowParagraph);
-//               }}
-//               onMouseDown={(event: any) => {
-//                 event.preventDefault();
-//               }}
-//               className="relative flex cursor-pointer gap-2 border-r pr-4"
-//             >
-//               <BlockButton format="heading-one" icon={<H1Icon />} />
-//               <BlockButton format="heading-two" icon={<H2Icon />} />
-//               <BlockButton format="heading-three" icon={<H3Icon />} />
-//               <BlockButton format="heading-four" icon={<H4Icon />} />
-//               <MarkButton format="bold" icon={<FormatBoldIcon />} />
-//               <MarkButton format="italic" icon={<FormatItalicIcon />} />
-//               <MarkButton format="underline" icon={<FormatUnderlinedIcon />} />
-//               <MarkButton format="underline" icon={<StrikeThroughIcon />} />
-//               <MarkButton format="underline" icon={<Subscript />} />
-//               <MarkButton format="underline" icon={<Superscript />} />
-//             </div>
-//             <div className="flex gap-2 border-r pr-4">
-//               <MarkButton format="code" icon={<CodeIcon />} />
-//             </div>
-//             <div className="flex gap-2 border-r pr-4">
-//               <BlockButton format="left" icon={<FormatAlignLeftIcon />} />
-//               <BlockButton format="center" icon={<FormatAlignCenterIcon />} />
-//               <BlockButton format="right" icon={<FormatAlignRightIcon />} />
-//             </div>
-//             <div className="flex gap-2">
-//               {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}
-//               <BlockButton format="numbered-list" icon={<FormatListNumberedIcon />} />
-//               <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon />} />
-//             </div>
-//           </Toolbar>
-//         ) : null}
-//         <Editable
-//           className="items-center"
-//           renderElement={renderElement}
-//           renderLeaf={renderLeaf}
-//           autoFocus={!params.isReadOnly ? params.isFocus : false}
-//           spellCheck
-//           readOnly={params.isReadOnly}
-//           onFocus={() => {
-//             setPlaceholder('Type for widget');
-//             setHidden(true);
-//           }}
-//           onBlur={() => {
-//             setPlaceholder('');
-//             setHidden(false);
-//           }}
-//           onMouseEnter={() =>
-//             !params.isFocus && !params.isReadOnly && setPlaceholder('Start typing')
-//           }
-//           onMouseLeave={() => !params.isFocus && setPlaceholder('')}
-//           placeholder={placeholder}
-//           onKeyDown={onKeyDown}
-//         />
-//       </Slate>
-//     </BaseComponent>
-//   );
-// };
-
 export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
   const [placeholder, setPlaceholder] = useState('');
   const [isHidden, setHidden] = useState<boolean>(false);
@@ -261,37 +124,38 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
   const [editor] = useState(withHistory(withReact(createEditor())));
   const [reload, setReload] = useState<boolean>(false);
+  const [isFocus, setIsFocus] = useState<boolean>(false);
 
-  // const onKeyDown = (event) => {
-  //   if (event.key === 'Backspace' && params.component.content.html === '') {
-  //     dispatch(deleteComponentByIndex(params.index!));
-  //     return false;
-  //   }
-  //   if (event.key === 'Enter' && event.shiftKey) {
-  //     return true;
-  //   }
-  //   if (event.key === 'Enter' && !event.shiftKey) {
-  //     event.preventDefault();
-  //     handleEnter();
-  //   }
+  const onKeyDown = (event) => {
+    const regex = /(<([^>]+)>)/gi;
+    const body = params.reference.current.content.html;
+    const hasText = !!body?.replace(regex, '').length;
 
-  //   Object.keys(HOTKEYS).forEach((hotkey) => {
-  //     if (isHotkey(hotkey, event as any)) {
-  //       event.preventDefault();
-  //       const mark = HOTKEYS[hotkey as keyof typeof HOTKEYS];
-  //       CustomEditor.toggleMark(editor, mark);
-  //     }
-  //   });
-  //   return true;
-  // };
+    if (event.key === 'Backspace' && !hasText) {
+      console.log('Backspace');
+      if (!hasText) {
+        params.setRefs((prev) => [...prev.filter((item) => item !== params.reference)]);
+      }
+      return false;
+    }
+
+    Object.keys(HOTKEYS).forEach((hotkey) => {
+      if (isHotkey(hotkey, event as any)) {
+        event.preventDefault();
+        const mark = HOTKEYS[hotkey as keyof typeof HOTKEYS];
+        CustomEditor.toggleMark(editor, mark);
+      }
+    });
+    return true;
+  };
 
   const initialValue: Descendant[] = CustomEditor.deserializeFromHtml(
     params.reference.current.content.html,
   );
   useEffect(() => {
-    if (params.isFocus) {
-      ReactEditor.focus(editor);
-    }
+    // if (isFocus) {
+    //   ReactEditor.focus(editor);
+    // }
     editor.children = CustomEditor.deserializeFromHtml(params.reference.current.content.html);
 
     setReload(!reload);
@@ -347,7 +211,7 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
           className="items-center"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
-          autoFocus={!params.isReadOnly ? params.isFocus : false}
+          autoFocus={!params.isReadOnly ? isFocus : false}
           spellCheck
           readOnly={params.isReadOnly}
           onFocus={() => {
@@ -358,12 +222,13 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
             setPlaceholder('');
             setHidden(false);
           }}
+          onKeyDown={onKeyDown}
           onMouseEnter={() => !params.isReadOnly && setPlaceholder('Start typing')}
-          onMouseLeave={() => !params.isFocus && setPlaceholder('')}
+          onMouseLeave={() => !isFocus && setPlaceholder('')}
           placeholder={placeholder}
         />
       </Slate>
-      {!params.isReadOnly && (
+      {!params.isReadOnly && isFocus && (
         <div className="absolute right-[0.5rem] top-[15px] flex gap-3">{params.rightOptions}</div>
       )}
     </BaseComponentV2>

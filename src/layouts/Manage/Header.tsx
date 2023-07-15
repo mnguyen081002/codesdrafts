@@ -1,7 +1,10 @@
 import { Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
+import LoadingBar from 'react-top-loading-bar';
 
 import { Avatar } from '../../components/sub/avatar';
 import { APP_NAME } from '../../shared/constants/app';
@@ -83,15 +86,30 @@ const HeaderManage = ({
   rightContent?: React.ReactNode;
   showAvatar?: boolean;
 }) => {
+  const router = useRouter();
+  const [progress, setProgress] = useState(0);
+  const handleRouteChange = (url, { shallow }) => {
+    setProgress(10);
+  };
+
+  const handleRouteComplete = (url, { shallow }) => {
+    setProgress(100);
+  };
+
+  router.events?.on('routeChangeStart', handleRouteChange);
+  router.events?.on('routeChangeComplete', handleRouteComplete);
   return (
-    <div className="sticky top-0  z-40 flex h-[74px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
-      <div className="flex items-center gap-2">
-        <Image src="/logo-96.png" alt="logo" width={40} height={40} />
-        <p className="font-inter text-[20px] font-semibold leading-6">{APP_NAME}</p>
+    <>
+      <div className="sticky top-0  z-40 flex h-[74px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
+        <div className="flex items-center gap-2">
+          <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+          <p className="font-inter text-[20px] font-semibold leading-6">{APP_NAME}</p>
+        </div>
+        {rightContent}
+        {showAvatar && <MenuUser />}
       </div>
-      {rightContent}
-      {showAvatar && <MenuUser />}
-    </div>
+      <LoadingBar color="#1363DF" progress={progress} onLoaderFinished={() => setProgress(0)} />
+    </>
   );
 };
 

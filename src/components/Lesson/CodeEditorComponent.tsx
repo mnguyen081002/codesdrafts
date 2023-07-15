@@ -1,3 +1,4 @@
+import type { Monaco } from '@monaco-editor/react';
 import { Editor } from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
 import { useState } from 'react';
@@ -6,13 +7,18 @@ interface ICodeComponentEditorProps {
   value?: string;
   language?: string;
   onChange: (value?: string) => void;
+  disableValidation?: boolean;
 }
 
 function CodeComponentEditor(props: ICodeComponentEditorProps) {
   const [monacoInstance, setMonacoInstance] = useState<editor.IStandaloneCodeEditor>();
   const [h, setH] = useState(50);
-
-  const onCodeMount = (editor: editor.IStandaloneCodeEditor) => {
+  const onCodeMount = (editor: editor.IStandaloneCodeEditor, monaco: Monaco) => {
+    if (props.disableValidation) {
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: true,
+      });
+    }
     setMonacoInstance(editor);
   };
 

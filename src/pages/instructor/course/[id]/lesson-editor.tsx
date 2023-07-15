@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast, Zoom } from 'react-toastify';
 
 import type { ListCourseItemResponse } from '../../../../api/instructor/course';
 import CodeSmoothInstructorCourseApi from '../../../../api/instructor/course';
+import CodeSmoothInstructorLessonApi from '../../../../api/instructor/lesson';
 import ArrowDownV3Icon from '../../../../common/Icons/ArrowDownV3';
 import ArrowLeftV2Icon from '../../../../common/Icons/ArrowLeftV2';
 import ArrowRightIcon from '../../../../common/Icons/ArrowRightIcon';
@@ -12,10 +14,9 @@ import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
 import FormProvider from '../../../../components/hook-form/FormProvider';
 import { LessonComponentV2 } from '../../../../components/LessionComponent';
-import Footer from '../../../../layouts/Footer';
 import HeaderManage from '../../../../layouts/Manage/Header';
 import { ComponentType } from '../../../../shared/enum/component';
-import type { ITextComponent, LessonComponentProps } from '../../../../shared/interface';
+import type { LessonComponentProps } from '../../../../shared/interface';
 
 function LessonSectionItem({ selected = false }: { selected?: boolean }) {
   const [isHover, setIsHover] = useState(false);
@@ -125,14 +126,35 @@ type FormValuesProps = {
 const LessonEditor = () => {
   const router = useRouter();
   const [course, setCourse] = useState<ListCourseItemResponse>();
-
-  const methods = useForm<FormValuesProps>();
-  const { handleSubmit } = methods;
-  const [components, setComponents] = useState<any[]>([]);
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
+  const methods = useForm<FormValuesProps>({
+    defaultValues: {
+      summary: '',
+      title: '',
+    },
+  });
 
-  const onSubmit = (data: FormValuesProps) => {
-    console.log('components', components);
+  const { handleSubmit, reset } = methods;
+  const onSubmit = async (data: FormValuesProps) => {
+    const req = {
+      id: 646747403,
+      title: data.title,
+      summary: data.summary,
+      components: refs.map((x) => x.current),
+    };
+    toast.promise(
+      CodeSmoothInstructorLessonApi.saveLesson(req),
+      {
+        pending: 'Đang lưu bài học',
+        success: 'Lưu bài học thành công!',
+        error: 'Lưu bài học thất bại!',
+      },
+      {
+        autoClose: 500,
+        hideProgressBar: true,
+        transition: Zoom,
+      },
+    );
   };
 
   useEffect(() => {
@@ -142,33 +164,28 @@ const LessonEditor = () => {
     const fetchCourse = async () => {
       const res = await CodeSmoothInstructorCourseApi.getCourseById(Number(id));
       setCourse(res.data.data);
+      const l = await CodeSmoothInstructorLessonApi.getLesson(646747403);
+      reset({
+        title: l.data.data.title,
+        summary: l.data.data.summary,
+      });
+      setRefs(
+        l.data.data.components.map((e) => {
+          const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
+          ref.current = {
+            ...e,
+          };
+          return ref;
+        }),
+      );
     };
 
     fetchCourse();
   }, [router.query.id]);
 
-  useEffect(() => {
-    if (refs.length === 0) return;
-    const lastRef = refs[refs.length - 1];
-    if (lastRef !== undefined) {
-      const x: ITextComponent = {
-        type: ComponentType.Text,
-        content: {
-          html: '',
-        },
-      };
-      lastRef.current = x;
-    }
-    setComponents([
-      ...components,
-      {
-        ref: refs[refs.length - 1],
-      },
-    ]);
-  }, [refs]);
-
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {/* {isLoading && <LoadingOverlay visible={isLoading} overlayColor="#000" opacity={0.6} />} */}
       <HeaderManage
         rightContent={
           <div>
@@ -176,9 +193,9 @@ const LessonEditor = () => {
           </div>
         }
       />
-      <div className="flex">
+      <div className="flex overflow-hidden">
         <LessonSidebar course={course} />
-        <div className="flex flex-1 flex-col px-[325px] pt-[50px] pb-[200px] font-inter">
+        <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
               sx={{
@@ -202,21 +219,37 @@ const LessonEditor = () => {
             />
           </div>
           <div className="mt-4 flex flex-col">
-            {components.map((c, index) => {
-              return <LessonComponentV2 index={index} reference={c.ref} key={index} />;
+            {refs.map((c, index) => {
+              if (!c.current) return null;
+              return (
+                <LessonComponentV2 index={index} setRefs={setRefs} reference={c} key={index} />
+              );
             })}
 
             <div
               className="h-[50px] cursor-text"
               onClick={() => {
+                const lastRef = refs[refs.length - 1];
+                if (
+                  lastRef?.current.type === ComponentType.Text &&
+                  (lastRef.current.content as any).html === '<p></p>'
+                )
+                  return;
+
                 const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
+                ref.current = {
+                  type: ComponentType.Text,
+                  content: {
+                    html: '',
+                  },
+                };
+
                 setRefs([...refs, ref]);
               }}
             ></div>
           </div>
         </div>
       </div>
-      <Footer />
     </FormProvider>
   );
 };

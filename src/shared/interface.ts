@@ -6,9 +6,10 @@ export interface ICodeContent {
   code?: string;
   judgeContent: {
     testCode?: string;
-    executeCode?: string;
+    // executeCode?: string;
     answerCode?: string;
     sampleCode?: string;
+    baseOn?: string;
   };
   isReadOnly: boolean;
   language: string;
@@ -45,13 +46,12 @@ export interface IBaseComponentPropsV2<T = IContent> {
   onDragEnd?: any;
   index?: number;
   children?: any;
-  isLast?: boolean;
   className?: string;
-  isFocus?: boolean;
   isReadOnly?: boolean;
   baseRef?: any;
   reference: React.MutableRefObject<LessonComponentProps<T>>;
   onBlur?: any;
+  setRefs?: any;
 }
 export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;
@@ -60,8 +60,6 @@ export interface CodeComponentProps extends IBaseComponentProps {
 export interface LessonComponentProps<T = IContent> {
   type: ComponentType;
   content: T;
-  isFocus?: boolean;
-  focusIndex?: number;
 }
 
 export interface InputTextComponentProps extends IBaseComponentProps {

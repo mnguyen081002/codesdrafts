@@ -1,7 +1,7 @@
 import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
 import type { CourseCategoryType } from '../shared/enum/category';
-import type { ICodeComponent, LessonComponentProps } from '../shared/interface';
+import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import CodeSmoothAdminApi from './admin/setting';
 import axiosClient from './axiosClient';
@@ -34,7 +34,6 @@ interface ExecuteRequest {
   language: string;
   testCode: string | undefined;
   code: string | undefined;
-  executeCode: string | undefined;
 }
 
 export interface SaveLessonRequest {
@@ -103,11 +102,10 @@ export const CodeSmoothApi = {
     });
   },
 
-  execute: ({ code, testCode, language, executeCode }: ExecuteRequest) => {
+  execute: ({ code, testCode, language }: ExecuteRequest) => {
     return axiosClient.post<CodeSmoothApiResponse<ExecuteResponse>>(`/api/execute/`, {
       code,
       testCode,
-      executeCode,
       language,
     });
   },
@@ -140,68 +138,6 @@ export const CodeSmoothApi = {
 
   deleteCategoryById: (id: number) => {
     return axiosClient.delete(`/api/admin/category/${id}`);
-  },
-
-  saveLesson: (params: SaveLessonRequest) => {
-    const copy = params.components.map((component) => {
-      return {
-        ...component,
-        content: {
-          ...component.content,
-        },
-      };
-    });
-    // delete isFocus
-    copy.forEach((component) => {
-      delete component.isFocus;
-    });
-
-    return axiosClient.post('/api/admin/lesson', {
-      id: Number(params.id),
-      title: params.title,
-      summary: params.summary,
-      components: copy,
-      course_category_id: Number(params.course_category_id),
-    });
-  },
-
-  addLesson: (params: AddLessonRequest) => {
-    const copy = params.components.map((component) => {
-      return {
-        ...component,
-        content: {
-          ...component.content,
-        },
-      };
-    });
-    // delete isFocus
-    copy.forEach((component) => {
-      delete component.isFocus;
-    });
-
-    return axiosClient.post('/api/admin/lesson/add', {
-      id: Number(params.id),
-      title: params.title,
-      summary: params.summary,
-      components: copy,
-      order: params.order,
-      course_category_id: Number(params.course_category_id),
-    });
-  },
-
-  getLessonById: async (id: number) => {
-    return (await axiosClient.get(`/api/admin/lesson/${id}`)).data;
-  },
-
-  getSampleForLanguage: (language: string) => {
-    return axiosClient.get(`/api/admin/sample/${language}`);
-  },
-
-  createSampleForLanguage: (language: string, sample: ICodeComponent) => {
-    return axiosClient.post(`/api/admin/sample`, {
-      language,
-      sample,
-    });
   },
 
   createCourse: (params: SaveCourseRequest) => {

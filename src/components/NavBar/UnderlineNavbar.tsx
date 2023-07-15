@@ -231,7 +231,7 @@ function UnderlineNavbarWithOutSlug({
           </Link>
         </div>
       )}
-      <div className="absolute top-[53px] z-10 h-[1px] w-full bg-light-border" />
+      {/* <div className="absolute top-[53px] z-10 h-[1px] w-full bg-light-border" /> */}
     </div>
   );
 }
