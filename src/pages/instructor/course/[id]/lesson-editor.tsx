@@ -70,7 +70,7 @@ const LessonEditor = () => {
       components: refs.map((x) => x.current),
       section_id: Number(router.query.section_id),
     };
-    toast.promise(
+    await toast.promise(
       CodeSmoothInstructorLessonApi.saveLesson(req),
       {
         pending: 'Đang lưu bài học',
@@ -91,11 +91,11 @@ const LessonEditor = () => {
   }, [router.query.id, router.query.lesson_id]);
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider methods={methods}>
       <HeaderManage
         rightContent={
           <div>
-            <PrimaryOutlineButton type="submit" text="Lưu" />
+            <PrimaryOutlineButton onClick={handleSubmit(onSubmit)} text="Lưu" />
           </div>
         }
       />

@@ -1,11 +1,18 @@
+import { useClickOutside } from '@mantine/hooks';
+import { HttpStatusCode } from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import type { GetCourseByIDResponse, Lesson, Section } from '../../api/instructor/course';
+import type { AddSectionResponse } from '../../api/instructor/section';
+import CodeSmoothInstructorSectionApi from '../../api/instructor/section';
 import ArrowDownV3Icon from '../../common/Icons/ArrowDownV3';
 import ArrowLeftV2Icon from '../../common/Icons/ArrowLeftV2';
 import ArrowRightIcon from '../../common/Icons/ArrowRightIcon';
+import EditIcon from '../../common/Icons/EditIcon';
 import TrashIcon from '../../common/Icons/TrashIcon';
+import { TOAST_CONFIG } from '../../shared/constants/app';
 
 function LessonItem({ lesson }: { lesson: Lesson }) {
   const router = useRouter();
@@ -49,44 +56,114 @@ function LessonItem({ lesson }: { lesson: Lesson }) {
   );
 }
 
-function SectionItem({ section }: { section: Section }) {
+function SectionItem({
+  section,
+  onAddSection,
+  onDeletedSection,
+}: // onEditSection,
+{
+  section: Section;
+  onAddSection: (r?: AddSectionResponse) => void;
+  onDeletedSection: (section_id?: number) => void;
+  // onEditSection: (section_id: number, title: string) => void;
+}) {
   const [isHover, setIsHover] = useState(false);
   const router = useRouter();
 
   const { section_id, lesson_id } = router.query;
   const [isSeleted, setIsSeleted] = useState(Number(section_id) === section.id);
-
+  const [isEdit, setIsEdit] = useState(false);
+  const [titleEdited, setTitleEdited] = useState(section.title);
+  const [isLoading, setIsLoading] = useState(false);
+  const ref = useClickOutside(() => setIsEdit(false));
   useEffect(() => {
     setIsSeleted(Number(section_id) === section.id);
   }, [section_id]);
   return (
     <div className="cursor-pointer">
       <div
+        ref={ref}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         className=""
       >
         <div
-          className={` flex min-h-[45px] items-center justify-between ${
+          className={` flex min-h-[45px] w-[265px] items-center justify-between ${
             isSeleted && 'bg-light-sectionSelected'
           } px-[20px]`}
         >
-          <p
-            className={`text-xl font-normal ${
-              isSeleted ? 'text-light-primary' : 'text-light-text-primary'
-            }`}
-          >
-            {section.title}
-          </p>
+          {!isEdit ? (
+            <p
+              className={`text-xl font-normal ${
+                isSeleted ? 'text-light-primary' : 'text-light-text-primary'
+              }`}
+            >
+              {titleEdited}
+            </p>
+          ) : (
+            <input
+              className="h-fit  border-none bg-transparent text-xl font-normal text-light-text-primary outline-none"
+              defaultValue={titleEdited}
+              onChange={(e) => setTitleEdited(e.currentTarget.value)}
+              onKeyDown={async (e) => {
+                if (e.key === 'Enter') {
+                  setIsEdit(false);
+                  if (titleEdited === section.title && !isLoading) return;
+                  console.log('update section', e.key, titleEdited, section.title, isLoading);
+                  setIsLoading(true);
+                  const r = await toast.promise(
+                    CodeSmoothInstructorSectionApi.updateSection(section.id, e.currentTarget.value),
+                    {
+                      pending: 'Đang cập nhật danh mục...',
+                      success: 'Cập nhật danh mục thành công!',
+                      error: 'Cập nhật danh mục thất bại!',
+                    },
+                    TOAST_CONFIG,
+                  );
+                  if (r.status !== HttpStatusCode.Ok) {
+                    setTitleEdited(section.title);
+                  }
+                  setIsLoading(false);
+                }
+              }}
+            />
+          )}
           <ArrowRightIcon className="-rotate-90" pathFill={isSeleted ? '#1363DF' : '#64686B'} />
         </div>
         <div
           className={`flex ${
             isHover ? 'h-[40px]' : 'h-0'
-          } items-center justify-center gap-1 overflow-hidden transition-all hover:bg-[#f5f5f5]`}
+          } items-center justify-center gap-1 overflow-hidden transition-all `}
         >
-          <TrashIcon height="18px" width="18px" pathFill="#4C4E64" />
-          <p className="text-sm text-light-text-primary">Xóa danh mục</p>
+          <div
+            onClick={() => setIsEdit(true)}
+            className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
+          >
+            <EditIcon height="18px" width="18px" pathFill="#4C4E64" />
+            <p className="text-sm text-light-text-primary ">Sửa danh mục</p>
+          </div>
+          <div
+            onClick={async () => {
+              const r = await toast.promise(
+                CodeSmoothInstructorSectionApi.deleteSection(section.id),
+                {
+                  pending: 'Đang xóa danh mục...',
+                  success: 'Xóa danh mục thành công!',
+                  error: 'Xóa danh mục thất bại!',
+                },
+                TOAST_CONFIG,
+              );
+              if (r.status === HttpStatusCode.Ok) {
+                onDeletedSection(section.id);
+              } else {
+                onDeletedSection(undefined);
+              }
+            }}
+            className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
+          >
+            <TrashIcon height="18px" width="18px" pathFill="#4C4E64" />
+            <p className="text-sm text-light-text-primary ">Xóa danh mục</p>
+          </div>
         </div>
       </div>
 
@@ -94,7 +171,29 @@ function SectionItem({ section }: { section: Section }) {
         {section.lessons.map((lesson) => (
           <LessonItem lesson={lesson} key={lesson.id} />
         ))}
-        <div className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray">
+        <div
+          className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
+          onClick={async () => {
+            const r = await toast.promise(
+              CodeSmoothInstructorSectionApi.addSection({
+                course_id: Number(router.query.id),
+                order: section.order + 1,
+              }),
+              {
+                pending: 'Đang thêm danh mục...',
+                success: 'Thêm danh mục thành công!',
+                error: 'Lưu danh mục thất bại!',
+              },
+              TOAST_CONFIG,
+            );
+
+            if (r.status === HttpStatusCode.Created) {
+              onAddSection(r.data.data);
+            } else {
+              onAddSection(undefined);
+            }
+          }}
+        >
           <img src={'/images/icons/plus.svg'} alt="" className="h-[20px] w-[20px]" />
           <p className="text-sm text-light-text-primary">Thêm danh mục</p>
         </div>
@@ -110,6 +209,36 @@ interface LessonSidebarProps {
 function LessonSidebar(props: LessonSidebarProps) {
   const router = useRouter();
   const [isCollapse, setIsCollapse] = useState(false);
+  const [sections, setSections] = useState<Section[]>([]);
+
+  const onAddSection = (section?: AddSectionResponse) => {
+    if (!section) return;
+    setSections((sections) => [
+      ...sections,
+      {
+        ...section,
+      },
+    ]);
+  };
+
+  const onDeleteSection = (section_id?: number) => {
+    setSections((sections) => sections.filter((section) => section.id !== section_id));
+  };
+
+  const onEditSection = (section_id: number, title: string) => {
+    setSections((sections) => {
+      const sectionIndex = sections.findIndex((section) => section.id === section_id);
+      if (sectionIndex === -1) return sections;
+
+      sections[sectionIndex]!.title = title;
+
+      return [...sections];
+    });
+  };
+
+  useEffect(() => {
+    setSections(props.course?.sections || []);
+  }, [props.course]);
 
   return (
     <div className="relative w-fit">
@@ -136,9 +265,15 @@ function LessonSidebar(props: LessonSidebarProps) {
           <img src={props.course?.thumbnail} className="h-[150px] w-[225px] rounded-[5px]" alt="" />
           <p className="text-xl font-semibold leading-6">{props.course?.name}</p>
         </div>
-        <div className="flex flex-1 flex-col">
-          {props.course?.sections.map((section) => (
-            <SectionItem section={section} key={section.id} />
+        <div className="flex flex-1 flex-col overflow-y-auto">
+          {sections.map((section) => (
+            <SectionItem
+              // onEditSection={onEditSection}
+              onDeletedSection={onDeleteSection}
+              onAddSection={onAddSection}
+              section={section}
+              key={section.id}
+            />
           ))}
           {/* <LessonSection section={se} /> */}
           <div className="flex flex-col items-center justify-center py-[20px]">
