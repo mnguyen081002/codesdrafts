@@ -109,7 +109,6 @@ function SectionItem({
                 if (e.key === 'Enter') {
                   setIsEdit(false);
                   if (titleEdited === section.title && !isLoading) return;
-                  console.log('update section', e.key, titleEdited, section.title, isLoading);
                   setIsLoading(true);
                   const r = await toast.promise(
                     CodeSmoothInstructorSectionApi.updateSection(section.id, e.currentTarget.value),
@@ -139,8 +138,8 @@ function SectionItem({
             onClick={() => setIsEdit(true)}
             className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
           >
-            <EditIcon height="18px" width="18px" pathFill="#4C4E64" />
-            <p className="text-sm text-light-text-primary ">Sửa danh mục</p>
+            <EditIcon height="15px" width="15px" pathFill="#4C4E64" />
+            <p className="text-xs text-light-text-primary ">Sửa danh mục</p>
           </div>
           <div
             onClick={async () => {
@@ -161,8 +160,8 @@ function SectionItem({
             }}
             className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
           >
-            <TrashIcon height="18px" width="18px" pathFill="#4C4E64" />
-            <p className="text-sm text-light-text-primary ">Xóa danh mục</p>
+            <TrashIcon height="15px" width="15px" pathFill="#4C4E64" />
+            <p className="text-xs text-light-text-primary ">Xóa danh mục</p>
           </div>
         </div>
       </div>
