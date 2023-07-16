@@ -1,3 +1,4 @@
+import { useClickOutside } from '@mantine/hooks';
 import isHotkey from 'is-hotkey';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -160,9 +161,15 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
 
     setReload(!reload);
   }, []);
-
+  const ref = useClickOutside(() => setIsFocus(false));
   return (
-    <BaseComponentV2 {...params}>
+    <BaseComponentV2
+      onClick={() => {
+        setIsFocus(true);
+      }}
+      baseRef={ref}
+      {...params}
+    >
       <Slate
         editor={editor}
         value={initialValue}

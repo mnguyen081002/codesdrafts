@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { ExecuteResponse } from '../../api/codesmooth-api';
 import CloseIcon from '../../common/Icons/CloseIcon';
@@ -12,8 +12,14 @@ interface IResultTableProps {
 }
 
 function ResultTable(props: IResultTableProps) {
+  const [isShowResult, setIsShowResult] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsShowResult(true);
+  }, [props.isWaitingExecute]);
+
   const [selectingTitle, setSelectingTitle] = useState<string>('Kết quả');
-  return props.results ? (
+  return props.results && isShowResult ? (
     <div className="relative flex flex-col items-center gap-[20px] border-t border-light-border py-[25px] px-[15px]">
       {props.isWaitingExecute ? (
         <div className="flex h-16 items-center justify-center gap-2">
@@ -22,7 +28,14 @@ function ResultTable(props: IResultTableProps) {
         </div> // <ExecuteResult executeRes={executeRes!}></ExecuteResult>vnghygffgbhjuygfvbnmjuytgfcv bnhgvghbffvvvc c
       ) : (
         <>
-          <CloseIcon height="24" width="24" className="absolute right-4 top-4" />
+          <CloseIcon
+            onClick={() => {
+              setIsShowResult(false);
+            }}
+            height="24"
+            width="24"
+            className="absolute right-4 top-4 z-10 cursor-pointer"
+          />
           <UnderlineNavbarWithOutSlug
             onChange={(value) => {
               setSelectingTitle(value);

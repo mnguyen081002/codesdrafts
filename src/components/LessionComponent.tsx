@@ -8,53 +8,9 @@ import type { ICodeComponent, IComponentPropsV2, ITextComponent } from '../share
 import { CodeComponent } from './CodeComponent';
 import { InputTextComponentV2 } from './InputComponent';
 
-// const NoSSRInputTextComponent = dynamic(() => Promise.resolve(InputTextComponent), { ssr: false });
 const NoSSRInputTextComponentV2 = dynamic(() => Promise.resolve(InputTextComponentV2), {
   ssr: false,
 });
-
-// export const LessonComponent: FC<IComponentProps> = (params) => {
-//   switch (params.component.type) {
-//     case ComponentType.Text:
-//       return (
-//         <NoSSRInputTextComponent
-//           onDragStart={params.onDragStart}
-//           onDragEnter={params.onDragEnter}
-//           onDragEnd={params.onDragEnd}
-//           component={params.component as ITextComponent}
-//           index={params.index}
-//           isLast={params.isLast}
-//           isFocus={params.isFocus}
-//           isReadOnly={params.isReadOnly}
-//         />
-//       );
-//     case ComponentType.Code:
-//       return (
-//         <CodeComponent
-//           isLast={params.isLast}
-//           onDragStart={params.onDragStart}
-//           onDragEnter={params.onDragEnter}
-//           onDragEnd={params.onDragEnd}
-//           component={params.component as ICodeComponent}
-//           index={params.index}
-//           isFocus={params.isFocus}
-//           isReadOnly={params.isReadOnly}
-//         />
-//       );
-//     default:
-//       return (
-//         <NoSSRInputTextComponent
-//           onDragStart={params.onDragStart}
-//           onDragEnter={params.onDragEnter}
-//           onDragEnd={params.onDragEnd}
-//           component={params.component as ITextComponent}
-//           index={params.index}
-//           isLast={params.isLast}
-//           isFocus={params.isFocus}
-//         />
-//       );
-//   }
-// };
 
 export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
   const [type, setType] = useState<ComponentType>(params.reference.current.type);

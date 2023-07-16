@@ -113,12 +113,14 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               />
             </div>
           )}
-          <CreateTestCaseComponent
-            isExercise={isExercise}
-            language={language}
-            content={params.reference.current.content}
-            rerender={() => rerender(random(123))}
-          />
+          {opened && (
+            <CreateTestCaseComponent
+              isExercise={isExercise}
+              language={language}
+              content={params.reference.current.content}
+              rerender={() => rerender(random(123))}
+            />
+          )}
           {opened && isExercise && isSample && (
             <>
               <Editor

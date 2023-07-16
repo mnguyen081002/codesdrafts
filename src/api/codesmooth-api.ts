@@ -40,6 +40,7 @@ export interface SaveLessonRequest {
   id: number;
   course_category_id: number;
   title: string;
+  section_id: number;
   summary: string;
   components: LessonComponentProps[];
 }
