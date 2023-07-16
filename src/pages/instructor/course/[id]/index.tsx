@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 
 import { CodeSmoothApi } from '../../../../api/codesmooth-api';
-import type { ListCourseItemResponse } from '../../../../api/instructor/course';
+import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../../components/Button';
 import CourseUnderlineNavBar from '../../../../components/Instructor/UnderlineNavBar';
 import {
@@ -42,9 +42,9 @@ type ICourseUrl = {
 //   };
 // };
 
-const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse }) => {
+const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }) => {
   const router = useRouter();
-  const [course, setCourse] = useState<ListCourseItemResponse>(propsCourse);
+  const [course, setCourse] = useState<GetCourseByIDResponse>(propsCourse);
   const submitForReview = async () => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -181,36 +181,14 @@ const CourseDetail = ({ course: propsCourse }: { course: ListCourseItemResponse 
           />
           <CourseDetailSectionTitle title={'Nội dung giảng dạy'} text={''} noUnderline />
           <CourseDetailTableOfContent
-            data={[
-              {
-                title: '1. Giới thiệu khóa học',
-                contents: [
-                  'Figma là gì?',
-                  'Các thành phần trong Figma',
-                  'Giao diện Figma',
-                  'Những lưu ý khi sử dụng Figma',
-                  'Hướng dẫn cài đặt Figma',
-                  'Thiết lập tài khoản Figma',
-                  'Quy trình làm việc với Figma',
-                  'Case study',
-                  'Kết luận',
-                ],
-              },
-              {
-                title: '1. Giới thiệu khóa học',
-                contents: [
-                  'Figma là gì?',
-                  'Các thành phần trong Figma',
-                  'Giao diện Figma',
-                  'Những lưu ý khi sử dụng Figma',
-                  'Hướng dẫn cài đặt Figma',
-                  'Thiết lập tài khoản Figma',
-                  'Quy trình làm việc với Figma',
-                  'Case study',
-                  'Kết luận',
-                ],
-              },
-            ]}
+            data={course.sections.map((s) => {
+              return {
+                title: s.title,
+                contents: s.lessons.map((l) => {
+                  return l.title;
+                }),
+              };
+            })}
           />
           <CourseDetailSectionTitle title={'Tác giả'} text={''} className="mt-8" />
           <div className="flex h-[220px] justify-start gap-6">

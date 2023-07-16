@@ -55,7 +55,7 @@ export const CourseDetailContentOfTable = ({
             {title}
           </p>
           <img
-            className="transition-all duration-500 ease-in-out"
+            className="transition-all duration-300 ease-in-out"
             src="/images/icons/arrow.svg"
             alt=""
           />
@@ -75,7 +75,7 @@ export const CourseDetailContentOfTable = ({
       <div
         className={`${
           isSeleted ? h[contents.length - 1] : 'h-0'
-        } overflow-hidden transition-all duration-500 ease-in-out`}
+        } overflow-hidden transition-all duration-300 ease-in-out`}
       >
         {contents.map((item, index) => (
           <div
