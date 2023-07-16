@@ -72,6 +72,12 @@ const Element = ({ attributes, children, element }: any) => {
           {children}
         </ul>
       );
+    case 'heading-one':
+      return (
+        <h1 className="text-5xl font-semibold" {...attributes}>
+          {children}
+        </h1>
+      );
     case 'heading-two':
       return (
         <h2 className="text-4xl font-semibold" {...attributes}>

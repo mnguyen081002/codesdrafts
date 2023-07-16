@@ -84,6 +84,7 @@ const CustomEditor = {
   // },
   Head_TYPES: [
     'title',
+    'heading-one',
     'heading-two',
     'heading-three',
     'heading-four',
@@ -274,10 +275,13 @@ const CustomEditor = {
       default:
         break;
     }
+    console.log('node', node);
+
     switch (node.type) {
       case 'quote':
         return `<blockquote><p>${children}</p></blockquote>`;
       case 'paragraph':
+        console.log('??');
         return `<p>${children}</p>`;
       case 'link':
         return `<a href="${escapeHtml(node.url)}">${children}</a>`;
@@ -292,8 +296,6 @@ const CustomEditor = {
         return `<h3>${children}</h3>`;
       case 'heading-four':
         return `<h4>${children}</h4>`;
-      case 'heading-five':
-        return `<h5>${children}</h5>`;
       case 'list-item':
         return `<li>${children}</li>`;
       case 'numbered-list':
@@ -370,8 +372,6 @@ const CustomEditor = {
         return jsx('element', { type: 'heading-three' }, children);
       case 'H4':
         return jsx('element', { type: 'heading-four' }, children);
-      case 'H5':
-        return jsx('element', { type: 'heading-five' }, children);
       default:
         return children;
     }

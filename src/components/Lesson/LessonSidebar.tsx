@@ -1,5 +1,6 @@
 import { useClickOutside } from '@mantine/hooks';
 import { HttpStatusCode } from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -160,6 +161,7 @@ function SectionItem({
             }}
             className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
           >
+            {/** TODO: Popup confirm delete section */}
             <TrashIcon height="15px" width="15px" pathFill="#4C4E64" />
             <p className="text-xs text-light-text-primary ">Xóa danh mục</p>
           </div>
@@ -253,13 +255,13 @@ function LessonSidebar(props: LessonSidebarProps) {
       <div
         className={`flex h-[870px] flex-col justify-between border-r border-light-border font-lexend-deca transition-all duration-300`}
       >
-        <div
-          onClick={() => router.back()}
+        <Link
+          href={`/instructor/course/course-editor/?id=${router.query.id}`}
           className="flex h-[50px] cursor-pointer items-center gap-5 border-b border-light-border px-5 hover:bg-light-gray"
         >
           <ArrowLeftV2Icon className="mb-1" height="25px" width="25px" />
           <p>Quay lại</p>
-        </div>
+        </Link>
         <div className="flex flex-col gap-[10px] px-[20px] pt-[20px] pb-[30px]">
           <img src={props.course?.thumbnail} className="h-[150px] w-[225px] rounded-[5px]" alt="" />
           <p className="text-xl font-semibold leading-6">{props.course?.name}</p>

@@ -12,11 +12,11 @@ export type CodeElement = {
   type: 'code';
   children: CustomText[];
 };
-export type HeadingElement = {
-  type: 'heading-one';
-  align?: string;
-  children: CustomText[];
-};
+// export type HeadingElement = {
+//   type: 'heading-one';
+//   align?: string;
+//   children: CustomText[];
+// };
 
 export type ImageElement = {
   type: 'image';
@@ -49,7 +49,7 @@ export type BulletedListElement = {
 export type CustomElement =
   | CodeElement
   | ParagraphElement
-  | HeadingElement
+  // | HeadingElement
   | ImageElement
   | LinkElement
   | EditableCardElement
