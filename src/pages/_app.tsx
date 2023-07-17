@@ -1,18 +1,29 @@
 import '../styles/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, Overlay } from '@mantine/core';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
 import type { AppPropsWithLayout } from '@/types/shared';
 
+import { useAppSelector } from '../app/hooks';
 import { store } from '../app/store';
+import { selectLoading } from '../features/auth/appSlice';
 
+const Container = ({ children }: { children: React.ReactNode }) => {
+  const isLoading = useAppSelector(selectLoading);
+
+  return (
+    <>
+      {isLoading && <Overlay zIndex={40} color="#000" opacity={0.5} />}
+      {children}
+    </>
+  );
+};
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout || ((page) => page);
-
   return (
     <SessionProvider session={pageProps.session}>
       <Provider store={store}>
@@ -44,7 +55,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           }}
         >
           <ToastContainer />
-          {getLayout(<Component {...pageProps} />)}
+          <Container>{getLayout(<Component {...pageProps} />)}</Container>
         </MantineProvider>
       </Provider>
     </SessionProvider>

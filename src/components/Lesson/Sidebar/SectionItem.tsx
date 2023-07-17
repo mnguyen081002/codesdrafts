@@ -25,7 +25,6 @@ function SectionItem({
   onDeletedSection: (section_id?: number) => void;
   // onEditSection: (section_id: number, title: string) => void;
 }) {
-  const [isHover, setIsHover] = useState(false);
   const router = useRouter();
 
   const { section_id, lesson_id } = router.query;
@@ -44,8 +43,6 @@ function SectionItem({
     <div className="cursor-pointer" draggable>
       <div
         ref={ref}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
         className=""
         onClick={() => {
           setIsShowLesson(!isShowLesson);
@@ -100,7 +97,7 @@ function SectionItem({
         </div>
         <div
           className={`flex ${
-            isHover ? 'h-[40px]' : 'h-0'
+            isShowLesson ? 'h-[40px]' : 'h-0'
           } items-center justify-center gap-1 overflow-hidden transition-all `}
         >
           <div
@@ -135,8 +132,8 @@ function SectionItem({
           </div>
         </div>
       </div>
-      <div className="relative flex w-full   flex-col overflow-hidden">
-        {isShowLesson && (
+      {isShowLesson && (
+        <div className="relative flex w-full   flex-col overflow-hidden">
           <div>
             {lessons.map((lesson) => (
               <LessonItem
@@ -155,34 +152,35 @@ function SectionItem({
               />
             ))}
           </div>
-        )}
-        <div
-          className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
-          onClick={async () => {
-            const r = await toast.promise(
-              CodeSmoothInstructorSectionApi.addSection({
-                course_id: Number(router.query.id),
-                order: section.order + 1,
-              }),
-              {
-                pending: 'Đang thêm danh mục...',
-                success: 'Thêm danh mục thành công!',
-                error: 'Lưu danh mục thất bại!',
-              },
-              TOAST_CONFIG,
-            );
 
-            if (r.status === HttpStatusCode.Created) {
-              onAddSection(r.data.data);
-            } else {
-              onAddSection(undefined);
-            }
-          }}
-        >
-          <img src={'/images/icons/plus.svg'} alt="" className="h-[20px] w-[20px]" />
-          <p className="text-sm text-light-text-primary">Thêm danh mục</p>
+          <div
+            className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
+            onClick={async () => {
+              const r = await toast.promise(
+                CodeSmoothInstructorSectionApi.addSection({
+                  course_id: Number(router.query.id),
+                  order: section.order + 1,
+                }),
+                {
+                  pending: 'Đang thêm danh mục...',
+                  success: 'Thêm danh mục thành công!',
+                  error: 'Lưu danh mục thất bại!',
+                },
+                TOAST_CONFIG,
+              );
+
+              if (r.status === HttpStatusCode.Created) {
+                onAddSection(r.data.data);
+              } else {
+                onAddSection(undefined);
+              }
+            }}
+          >
+            <img src={'/images/icons/plus.svg'} alt="" className="h-[20px] w-[20px]" />
+            <p className="text-sm text-light-text-primary">Thêm danh mục</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

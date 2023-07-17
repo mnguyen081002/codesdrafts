@@ -5,7 +5,9 @@ import { toast } from 'react-toastify';
 import type { Lesson } from '../../../api/instructor/course';
 import type { AddLessonResponse } from '../../../api/instructor/lesson';
 import CodeSmoothInstructorLessonApi from '../../../api/instructor/lesson';
+import { useAppDispatch } from '../../../app/hooks';
 import TrashIcon from '../../../common/Icons/TrashIcon';
+import { setLoading } from '../../../features/auth/appSlice';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
 
 function LessonItem({
@@ -19,9 +21,7 @@ function LessonItem({
 }) {
   const router = useRouter();
   const [isSelect, setIsSelect] = useState(false);
-
-  const [isHover, setIsHover] = useState(false);
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (!router.isReady) return;
     const { lesson_id } = router.query;
@@ -29,7 +29,7 @@ function LessonItem({
   }, [router.query.lesson_id]);
 
   return (
-    <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+    <div>
       <div
         className={`px-[20px] hover:bg-[#f5f5f5]`}
         onClick={() =>
@@ -54,12 +54,12 @@ function LessonItem({
       </div>
       <div
         className={`flex ${
-          !isHover ? 'h-[0px]' : 'h-[40px]'
+          !isSelect ? 'h-[0px]' : 'h-[40px]'
         } items-center overflow-hidden pl-[20px] `}
       >
         <div
           onClick={async () => {
-            setIsHover(false);
+            dispatch(setLoading(true));
             const call = async () => {
               const r = await CodeSmoothInstructorLessonApi.addLesson({
                 section_id: lesson.section_id,
@@ -67,7 +67,7 @@ function LessonItem({
               });
               await onAddLesson(r.data.data);
             };
-            toast.promise(
+            await toast.promise(
               call(),
               {
                 pending: 'Đang thêm bài học',
@@ -76,6 +76,7 @@ function LessonItem({
               },
               TOAST_CONFIG,
             );
+            dispatch(setLoading(false));
           }}
           className="flex h-[40px] items-center gap-1 px-2 transition-all hover:bg-[#f5f5f5]"
         >
@@ -84,7 +85,8 @@ function LessonItem({
         </div>
         <div
           onClick={async () => {
-            setIsHover(false);
+            dispatch(setLoading(true));
+
             const call = async () => {
               const r = await CodeSmoothInstructorLessonApi.deleteLesson(lesson.id);
               if (r.status === 200) {
@@ -93,7 +95,7 @@ function LessonItem({
                 await onDeletedSection();
               }
             };
-            toast.promise(
+            await toast.promise(
               call(),
               {
                 pending: 'Đang xóa bài học',
@@ -102,6 +104,7 @@ function LessonItem({
               },
               TOAST_CONFIG,
             );
+            dispatch(setLoading(false));
           }}
           className="flex h-[40px] items-center px-2 transition-all hover:bg-[#f5f5f5]"
         >
