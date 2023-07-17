@@ -54,7 +54,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          <ToastContainer />
+          <ToastContainer limit={1} />
           <Container>{getLayout(<Component {...pageProps} />)}</Container>
         </MantineProvider>
       </Provider>

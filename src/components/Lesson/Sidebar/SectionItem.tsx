@@ -18,11 +18,13 @@ function SectionItem({
   section,
   onAddSection,
   onDeletedSection,
+  isLast,
 }: // onEditSection,
 {
   section: Section;
   onAddSection: (r?: AddSectionResponse) => void;
   onDeletedSection: (section_id?: number) => void;
+  isLast: boolean;
   // onEditSection: (section_id: number, title: string) => void;
 }) {
   const router = useRouter();
@@ -109,6 +111,12 @@ function SectionItem({
           </div>
           <div
             onClick={async () => {
+              if (isLast) {
+                toast.error('Không thể xóa danh mục cuối cùng!', TOAST_CONFIG);
+                toast.clearWaitingQueue();
+                return;
+              }
+
               const r = await toast.promise(
                 CodeSmoothInstructorSectionApi.deleteSection(section.id),
                 {
@@ -149,6 +157,7 @@ function SectionItem({
                 }}
                 lesson={lesson}
                 key={lesson.id}
+                isLast={lesson.id === lessons[lessons.length - 1]!.id}
               />
             ))}
           </div>

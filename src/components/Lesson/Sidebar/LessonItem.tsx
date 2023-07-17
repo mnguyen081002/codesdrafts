@@ -14,10 +14,12 @@ function LessonItem({
   lesson,
   onAddLesson,
   onDeletedSection,
+  isLast,
 }: {
   lesson: Lesson;
   onAddLesson: (r?: AddLessonResponse) => Promise<void>;
   onDeletedSection: (lesson_id?: number) => Promise<void>;
+  isLast: boolean;
 }) {
   const router = useRouter();
   const [isSelect, setIsSelect] = useState(false);
@@ -85,6 +87,11 @@ function LessonItem({
         </div>
         <div
           onClick={async () => {
+            if (isLast) {
+              toast.error('Không thể xóa bài học cuối cùng!', TOAST_CONFIG);
+              toast.clearWaitingQueue();
+              return;
+            }
             dispatch(setLoading(true));
 
             const call = async () => {

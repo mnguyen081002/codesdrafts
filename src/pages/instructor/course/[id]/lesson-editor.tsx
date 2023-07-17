@@ -26,6 +26,7 @@ const LessonEditor = () => {
   const router = useRouter();
   const [course, setCourse] = useState<GetCourseByIDResponse>();
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
+  const [isShowSidebar, setIsShowSidebar] = useState(true);
   const methods = useForm<FormValuesProps>({
     defaultValues: {
       summary: '',
@@ -100,7 +101,11 @@ const LessonEditor = () => {
         }
       />
       <div className="flex overflow-hidden">
-        <LessonSidebar course={course} />
+        <LessonSidebar
+          isCollapse={isShowSidebar}
+          onClickCollapse={() => setIsShowSidebar(!isShowSidebar)}
+          course={course}
+        />
         <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
