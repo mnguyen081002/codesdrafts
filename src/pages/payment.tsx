@@ -236,7 +236,7 @@ const Checkout = () => {
           )}
         </div>
       ) : (
-        <div className="flex h-fit w-full items-center px-[400px] py-[60px]">
+        <div className="flex h-fit w-full items-center justify-center py-[60px]">
           <div className="flex h-full w-fit gap-[40px] rounded-md border-2 border-light-border px-[50px] py-[40px]">
             <div className="flex h-[576px] gap-[50px]">
               <MainLeft></MainLeft>

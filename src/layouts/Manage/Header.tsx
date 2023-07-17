@@ -101,10 +101,10 @@ const HeaderManage = ({
   return (
     <>
       <div className="sticky top-0  z-20 flex h-[74px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
-        <div className="flex items-center gap-2">
+        <Link href={'/'} className="flex items-center gap-2">
           <Image src="/logo-96.png" alt="logo" width={40} height={40} />
           <p className="font-inter text-[20px] font-semibold leading-6">{APP_NAME}</p>
-        </div>
+        </Link>
         {rightContent}
         {showAvatar && <MenuUser />}
       </div>

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import NotificationIcon from '../../common/Icons/NotificationIcon';
 import SidebarManageMenuItem from './SidebarMenuItem';
 
@@ -18,7 +20,7 @@ function SidebarManage({
   bottom?: boolean;
 }) {
   return (
-    <div className="sticky left-0 top-[75px] flex h-[860px] w-[248px] flex-col gap-[5px] border-r border-light-border pt-5">
+    <div className="sticky left-0 top-[75px] flex h-[870px] w-[248px] flex-col gap-[5px] border-r border-light-border pt-5">
       <div className="flex h-full flex-col justify-between">
         <div className="flex w-full flex-col justify-center gap-[5px] px-5">
           {items.map((item) => (
@@ -35,12 +37,12 @@ function SidebarManage({
           <div>
             <div className="h-[1px] w-full bg-light-border"></div>
             <div className="px-5">
-              <SidebarManageMenuItem
-                redirectPath={`${redirectPath}/support`}
-                Icon={NotificationIcon}
-                badge
-                text="Thông báo"
-              />
+              <Link href={`${redirectPath}/support`}>
+                <div className="flex h-[42px] items-center gap-3 px-2">
+                  <NotificationIcon />
+                  <p>Hỗ trợ</p>
+                </div>
+              </Link>
             </div>
           </div>
         )}
