@@ -77,6 +77,7 @@ function CreateTestCaseComponent(props: ICreateTestCaseComponentProps) {
           onChange={(value) => {
             props.content.judgeContent.sampleCode = value;
           }}
+          disableValidation
           language={props.language}
           value={props.content.judgeContent.sampleCode}
         />

@@ -1,5 +1,4 @@
 import { useClickOutside } from '@mantine/hooks';
-import Editor from '@monaco-editor/react';
 import { random } from 'lodash';
 import type { editor } from 'monaco-editor';
 import type { FC } from 'react';
@@ -9,7 +8,6 @@ import type { ExecuteResponse } from '../api/codesmooth-api';
 import { CodeSmoothApi } from '../api/codesmooth-api';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentPropsV2 } from '../shared/interface';
-import { executeCode } from '../utils/example';
 import { BaseComponentV2 } from './BaseComponent';
 import { PrimaryButton } from './Button';
 import CodeComponentEditor from './Lesson/CodeEditorComponent';
@@ -101,6 +99,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               params.reference.current.content.code = value;
               rerender(random(123));
             }}
+            disableValidation
             language={language}
             value={params.reference.current.content.code}
           />
@@ -121,7 +120,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               rerender={() => rerender(random(123))}
             />
           )}
-          {opened && isExercise && isSample && (
+          {/* {opened && isExercise && isSample && (
             <>
               <Editor
                 defaultLanguage={language === 'c++' ? 'c' : language}
@@ -134,7 +133,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
                 language={language === 'c++' ? 'c' : language}
               />
             </>
-          )}
+          )} */}
           <ResultTable results={result} isWaitingExecute={isWaitingExecute} />
         </div>
       </BaseComponentV2>

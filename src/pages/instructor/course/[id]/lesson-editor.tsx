@@ -12,7 +12,7 @@ import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
 import FormProvider from '../../../../components/hook-form/FormProvider';
 import { LessonComponentV2 } from '../../../../components/LessionComponent';
-import LessonSidebar from '../../../../components/Lesson/LessonSidebar';
+import LessonSidebar from '../../../../components/Lesson/Sidebar/LessonSidebar';
 import HeaderManage from '../../../../layouts/Manage/Header';
 import { ComponentType } from '../../../../shared/enum/component';
 import type { LessonComponentProps } from '../../../../shared/interface';

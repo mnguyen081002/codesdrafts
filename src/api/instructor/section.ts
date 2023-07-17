@@ -17,7 +17,6 @@ export interface AddSectionResponse {
   created_at: string;
   updated_at: string;
 }
-
 export interface Lesson {
   id: number;
   created_at: string;
