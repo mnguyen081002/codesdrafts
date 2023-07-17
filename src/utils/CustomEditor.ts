@@ -275,14 +275,12 @@ const CustomEditor = {
       default:
         break;
     }
-    console.log('node', node);
 
     switch (node.type) {
       case 'quote':
         return `<blockquote><p>${children}</p></blockquote>`;
       case 'paragraph':
-        console.log('??');
-        return `<p>${children}</p>`;
+        return `<p className="font-lexend-deca text-lg">${children}</p>`;
       case 'link':
         return `<a href="${escapeHtml(node.url)}">${children}</a>`;
       case 'code':

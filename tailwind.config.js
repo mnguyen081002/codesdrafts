@@ -33,6 +33,7 @@ module.exports = {
             sencondary: 'rgba(76, 78, 100, 0.68)',
             main: '#4D92FF',
             placeholder: '#adb5bd',
+            lessonContent: '#2D2D2D',
           },
           error: {
             main: '#FF4D49',

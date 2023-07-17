@@ -115,8 +115,8 @@ function MainLeft() {
 
 function MainRight() {
   return (
-    <div className="flex flex-col gap-[15px] rounded-md bg-white p-4 shadow-md">
-      <img src="/images/course/Thumnail.png" alt="" />
+    <div className="flex w-[400px] flex-col gap-[15px] rounded-md bg-white p-4 shadow-md">
+      <img className="h-[246px] w-[369px]" src="/images/course/Thumnail.png" alt="" />
       <div className="flex h-full flex-col justify-between">
         <div className="flex flex-col gap-[12px]">
           <p className="font-lexend-deca text-2xl font-semibold leading-6 text-black">

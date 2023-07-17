@@ -52,12 +52,14 @@ export default function LongCourseCard({
           </div>
           <div className="flex w-fit items-center gap-[10px] rounded bg-[#f5f5f5] py-[4px] px-[8px]">
             <img
-              src={`/images/icons/${course.parent_id ? CourseStatus.Published : course.status}.svg`}
+              src={`/images/icons/${
+                course.published_course_id ? CourseStatus.Published : course.status
+              }.svg`}
               alt=""
               className="object-contain"
             />
             <p className="font-lexend-deca text-xs font-normal capitalize leading-5 text-[#747474]">
-              {statusMessage(course.parent_id ? CourseStatus.Published : course.status)}
+              {statusMessage(course.published_course_id ? CourseStatus.Published : course.status)}
             </p>
           </div>
         </div>

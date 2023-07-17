@@ -21,7 +21,6 @@ export interface ListCourseItemResponse {
   objectives: string[];
   total_enrollment: number;
   base_price: number;
-  parent_id?: number;
   published_at: string;
   published_course_id?: number;
   draft_course_id?: number;

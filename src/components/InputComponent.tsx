@@ -116,7 +116,11 @@ const Element = ({ attributes, children, element }: any) => {
       );
     default:
       return (
-        <p className="text-lg" style={style} {...attributes}>
+        <p
+          className="font-lexend-deca font-light text-lg"
+          style={style}
+          {...attributes}
+        >
           {children}
         </p>
       );
@@ -221,7 +225,7 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
           </Toolbar>
         ) : null}
         <Editable
-          className="items-center"
+          className="items-center  font-lexend-deca text-light-text-lessonContent"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           autoFocus={!params.isReadOnly ? isFocus : false}
