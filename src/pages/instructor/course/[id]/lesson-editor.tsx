@@ -91,6 +91,10 @@ const LessonEditor = () => {
     fetchCourse();
   }, [router.query.id, router.query.lesson_id]);
 
+  useEffect(() => {
+    console.log(refs, 'refs');
+  }, [refs]);
+
   return (
     <FormProvider methods={methods}>
       <HeaderManage
@@ -100,12 +104,31 @@ const LessonEditor = () => {
           </div>
         }
       />
-      <div className="flex overflow-hidden">
+      <div className="relative flex overflow-hidden">
         <LessonSidebar
           isCollapse={isCollapseSidebar}
           onClickCollapse={() => setIsCollapseSidebar(!isCollapseSidebar)}
           course={course}
         />
+        <div className="absolute right-0 flex h-[246px] w-[300px] flex-col gap-[5px] overflow-y-auto bg-[#FAFAFA] py-[10px] pl-[20px] pr-[40px] font-lexend-deca">
+          <p className="text-base font-semibold leading-5 text-[#444]">
+            1. Guide One welcome to this course! With the help of interactive
+          </p>
+          <div className="flex flex-col pl-[15px]">
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+          </div>
+          <p className="text-base font-semibold leading-5 text-[#444]">
+            1. Guide One welcome to this course! With the help of interactive
+          </p>
+          <div className="flex flex-col pl-[15px]">
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+            <p className="text-sm text-[#5C5E60]">a. Guide A</p>
+          </div>
+        </div>
+
         <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
