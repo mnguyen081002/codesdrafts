@@ -55,14 +55,16 @@ const getTableOfContentFormat = (
   return output;
 };
 
+const getS = (p: React.MutableRefObject<LessonComponentProps<IContent>>[]) =>
+  p.map((e) => (e.current.content as ITextContent).html).join('');
+
 function LessonTableOfContent(props: LessonTableOfContentProps) {
   const [tableOfContent, setTableOfContent] = useState<TableOfContent[]>([]);
   const data = useRef<React.MutableRefObject<LessonComponentProps<IContent>>[]>([]);
   console.log('Render LessonTableOfContent');
   const interval = useRef<any>();
-
+  let s = '';
   useEffect(() => {
-    // setData(props.values);
     if (interval.current) clearInterval(interval.current);
     if (props.values.length > 0) {
       interval.current = setInterval(() => {
@@ -88,13 +90,13 @@ function LessonTableOfContent(props: LessonTableOfContentProps) {
           },
           [],
         );
+        if (s === getS(props.values)) return;
+        s = getS(props.values);
 
         setTableOfContent(getTableOfContentFormat(headings));
-      }, 300);
+      }, 100);
     }
   }, [props.values]);
-
-  // console.log(data, 'tableOfContent');
 
   return (
     <div
