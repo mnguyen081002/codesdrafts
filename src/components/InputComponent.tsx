@@ -64,7 +64,9 @@ const BREAKLINE = 'enter';
 const Element = ({ attributes, children, element }: any) => {
   const getText = (element: any) => {
     if (element.children?.length === 0 || !element.children) return '';
-    if (element.children[0].text) return slugify(element.children[0].text);
+    if (element.children[0].text) {
+      return slugify(element.children[0].text);
+    }
     return getText(element.children);
   };
 
@@ -184,9 +186,6 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
     params.reference.current.content.html,
   );
   useEffect(() => {
-    // if (isFocus) {
-    //   ReactEditor.focus(editor);
-    // }
     editor.children = CustomEditor.deserializeFromHtml(params.reference.current.content.html);
 
     setReload(!reload);
