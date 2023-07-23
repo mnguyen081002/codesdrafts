@@ -12,6 +12,7 @@ import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
 import FormProvider from '../../../../components/hook-form/FormProvider';
 import { LessonComponentV2 } from '../../../../components/LessionComponent';
+import LessonTableOfContent from '../../../../components/Lesson/LessonTableOfContent';
 import LessonSidebar from '../../../../components/Lesson/Sidebar/LessonSidebar';
 import HeaderManage from '../../../../layouts/Manage/Header';
 import { ComponentType } from '../../../../shared/enum/component';
@@ -100,12 +101,13 @@ const LessonEditor = () => {
           </div>
         }
       />
-      <div className="flex overflow-hidden">
+      <div className="relative flex overflow-hidden">
         <LessonSidebar
           isCollapse={isCollapseSidebar}
           onClickCollapse={() => setIsCollapseSidebar(!isCollapseSidebar)}
           course={course}
         />
+        <LessonTableOfContent values={refs} />
         <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
@@ -136,7 +138,6 @@ const LessonEditor = () => {
                 <LessonComponentV2 index={index} setRefs={setRefs} reference={c} key={index} />
               );
             })}
-
             <div
               className="h-[50px] cursor-text"
               onClick={() => {

@@ -94,6 +94,7 @@ module.exports = {
         'lexend-deca': ['Lexend Deca', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         instructorSidebar: ['Plus Jakarta Sans', 'sans-serif'],
+        lessonContent: ['Lora', 'sans-serif'],
       },
       // animation: 'name duration timing-function delay iteration-count direction fill-mode play-state;
       animation: {

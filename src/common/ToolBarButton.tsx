@@ -3,37 +3,38 @@ import { useSlate } from 'slate-react';
 import CustomEditor from '../utils/CustomEditor';
 import { ToolbarButton } from './SlateCommonComponents';
 
-const MarkButton = ({ format, icon }: any) => {
+const MarkButton = ({ format, Icon }: { format: string; Icon: any }) => {
   const editor = useSlate();
-
+  const isActive = CustomEditor.isMarkActive(editor, format);
   return (
     <ToolbarButton
-      active={CustomEditor.isMarkActive(editor, format)}
+      active={isActive}
       onMouseDown={(event) => {
         event.preventDefault();
         CustomEditor.toggleMark(editor, format);
       }}
     >
-      {icon}
+      <Icon pathFill={`${isActive ? '#1363DF' : 'black'}`} />
     </ToolbarButton>
   );
 };
 
-const BlockButton = ({ format, icon }: any) => {
+const BlockButton = ({ format, Icon }: any) => {
   const editor = useSlate();
+  const isActive = CustomEditor.isBlockActive(
+    editor,
+    format,
+    CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type',
+  );
   return (
     <ToolbarButton
-      active={CustomEditor.isBlockActive(
-        editor,
-        format,
-        CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type',
-      )}
+      active={isActive}
       onMouseDown={(event: any) => {
         event.preventDefault();
         CustomEditor.toggleBlock(editor, format);
       }}
     >
-      {icon}
+      <Icon pathFill={`${isActive ? '#1363DF' : 'black'}`} />
     </ToolbarButton>
   );
 };

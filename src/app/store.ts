@@ -3,12 +3,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
 import appReducer from '../features/auth/appSlice';
+import tableContentSlice from '../features/auth/tableContentSlice';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store: Store = configureStore({
   reducer: {
-    // lesson: lessonReducer,
-    // lessonnav: lessonnavReducer,
+    tableContent: tableContentSlice,
     app: appReducer,
   },
   middleware: (getDefaultMiddleware: any) => getDefaultMiddleware().concat(sagaMiddleware),

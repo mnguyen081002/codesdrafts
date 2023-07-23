@@ -1,11 +1,12 @@
 import { useClickOutside } from '@mantine/hooks';
 import isHotkey from 'is-hotkey';
-import type { FC } from 'react';
+import type { CSSProperties, FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { Descendant } from 'slate';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, Slate, withReact } from 'slate-react';
+import slugify from 'slugify';
 
 import CodeIcon from '../common/Icons/CodeIcon';
 import FormatAlignCenterIcon from '../common/Icons/FormatAlignCenterIcon';
@@ -32,7 +33,7 @@ import { BaseComponentV2 } from './BaseComponent';
 const Leaf = ({ attributes, children, leaf }: any) => {
   let child = children;
   if (leaf.bold) {
-    child = <strong>{child}</strong>;
+    child = <strong className="font-medium">{child}</strong>;
   }
 
   if (leaf.code) {
@@ -57,8 +58,19 @@ const HOTKEYS = {
   'mod+`': 'code',
 };
 
+const NEW_COMPONENT = 'enter';
+const BREAKLINE = 'enter';
+
 const Element = ({ attributes, children, element }: any) => {
-  const style = { textAlign: element.align };
+  const getText = (element: any) => {
+    if (element.children?.length === 0 || !element.children) return '';
+    if (element.children[0].text) {
+      return slugify(element.children[0].text);
+    }
+    return getText(element.children);
+  };
+
+  const style: CSSProperties = { textAlign: element.align, lineHeight: '30px' };
   switch (element.type) {
     case 'block-quote':
       return (
@@ -74,31 +86,31 @@ const Element = ({ attributes, children, element }: any) => {
       );
     case 'heading-one':
       return (
-        <h1 className="text-5xl font-semibold" {...attributes}>
+        <h1 id={getText(element)} className="!mt-0 text-5xl leading-tight" {...attributes}>
           {children}
         </h1>
       );
     case 'heading-two':
       return (
-        <h2 className="text-4xl font-semibold" {...attributes}>
+        <h2 id={getText(element)} className="!mt-0 text-4xl" {...attributes}>
           {children}
         </h2>
       );
     case 'heading-three':
       return (
-        <h3 className="text-3xl font-semibold" {...attributes}>
+        <h3 id={getText(element)} className="!mt-0 text-3xl" {...attributes}>
           {children}
         </h3>
       );
     case 'heading-four':
       return (
-        <h4 className="text-2xl font-semibold" {...attributes}>
+        <h4 id={getText(element)} className="!mt-0 text-2xl" {...attributes}>
           {children}
         </h4>
       );
     case 'heading-five':
       return (
-        <h5 className="text-xl font-semibold" {...attributes}>
+        <h5 className="!mt-0 text-xl" {...attributes}>
           {children}
         </h5>
       );
@@ -116,11 +128,7 @@ const Element = ({ attributes, children, element }: any) => {
       );
     default:
       return (
-        <p
-          className="font-lexend-deca font-light text-lg"
-          style={style}
-          {...attributes}
-        >
+        <p className="!mt-0 font-lexend-deca text-lg font-light" style={style} {...attributes}>
           {children}
         </p>
       );
@@ -141,6 +149,20 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
     const regex = /(<([^>]+)>)/gi;
     const body = params.reference.current.content.html;
     const hasText = !!body?.replace(regex, '').length;
+
+    // shift enter to break line
+    if (event.key === 'Enter' && event.shiftKey) {
+      console.log('shift enter');
+
+      event.preventDefault();
+      editor.insertText('\n');
+      return true;
+    }
+
+    if (isHotkey(NEW_COMPONENT, event as any)) {
+      event.preventDefault();
+      return false;
+    }
 
     if (event.key === 'Backspace' && !hasText) {
       console.log('Backspace');
@@ -164,9 +186,6 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
     params.reference.current.content.html,
   );
   useEffect(() => {
-    // if (isFocus) {
-    //   ReactEditor.focus(editor);
-    // }
     editor.children = CustomEditor.deserializeFromHtml(params.reference.current.content.html);
 
     setReload(!reload);
@@ -198,34 +217,34 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
               }}
               className="relative flex cursor-pointer gap-2 border-r pr-4"
             >
-              <BlockButton format="heading-one" icon={<H1Icon />} />
-              <BlockButton format="heading-two" icon={<H2Icon />} />
-              <BlockButton format="heading-three" icon={<H3Icon />} />
-              <BlockButton format="heading-four" icon={<H4Icon />} />
-              <MarkButton format="bold" icon={<FormatBoldIcon />} />
-              <MarkButton format="italic" icon={<FormatItalicIcon />} />
-              <MarkButton format="underline" icon={<FormatUnderlinedIcon />} />
-              <MarkButton format="underline" icon={<StrikeThroughIcon />} />
-              <MarkButton format="underline" icon={<Subscript />} />
-              <MarkButton format="underline" icon={<Superscript />} />
+              <BlockButton format="heading-one" Icon={H1Icon} />
+              <BlockButton format="heading-two" Icon={H2Icon} />
+              <BlockButton format="heading-three" Icon={H3Icon} />
+              <BlockButton format="heading-four" Icon={H4Icon} />
+              <MarkButton format="bold" Icon={FormatBoldIcon} />
+              <MarkButton format="italic" Icon={FormatItalicIcon} />
+              <MarkButton format="underline" Icon={FormatUnderlinedIcon} />
+              <MarkButton format="underline" Icon={StrikeThroughIcon} />
+              <MarkButton format="underline" Icon={Subscript} />
+              <MarkButton format="underline" Icon={Superscript} />
             </div>
             <div className="flex gap-2 border-r pr-4">
-              <MarkButton format="code" icon={<CodeIcon />} />
+              <MarkButton format="code" Icon={CodeIcon} />
             </div>
             <div className="flex gap-2 border-r pr-4">
-              <BlockButton format="left" icon={<FormatAlignLeftIcon />} />
-              <BlockButton format="center" icon={<FormatAlignCenterIcon />} />
-              <BlockButton format="right" icon={<FormatAlignRightIcon />} />
+              <BlockButton format="left" Icon={FormatAlignLeftIcon} />
+              <BlockButton format="center" Icon={FormatAlignCenterIcon} />
+              <BlockButton format="right" Icon={FormatAlignRightIcon} />
             </div>
             <div className="flex gap-2">
               {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}
-              <BlockButton format="numbered-list" icon={<FormatListNumberedIcon />} />
-              <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon />} />
+              <BlockButton format="numbered-list" Icon={FormatListNumberedIcon} />
+              <BlockButton format="bulleted-list" Icon={FormatListBulletedIcon} />
             </div>
           </Toolbar>
         ) : null}
         <Editable
-          className="items-center  font-lexend-deca text-light-text-lessonContent"
+          className="font-lessonContent text-light-text-lessonContent"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           autoFocus={!params.isReadOnly ? isFocus : false}
