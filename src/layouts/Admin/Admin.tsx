@@ -5,6 +5,7 @@ import { ADMIN_PATH } from '../../routes/path';
 import Footer from '../Footer';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
+import Dashboard from './Dashboard';
 import AdminListCoursePage from './ListCourse';
 import AdminSetting from './Settings';
 
@@ -33,7 +34,7 @@ const listItem = [
 export const mapAdminPage = {
   [ADMIN_PATH.SETTING]: <AdminSetting />,
   [ADMIN_PATH.COURSES]: <AdminListCoursePage />,
-  [ADMIN_PATH.DASHBOARD]: <div>Dashboard</div>,
+  [ADMIN_PATH.DASHBOARD]: <Dashboard />,
 };
 
 const AdminLayout = ({ children }) => {
