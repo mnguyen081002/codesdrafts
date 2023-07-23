@@ -13,7 +13,7 @@ type StatisticalDataProps = {
   lefDivider?: boolean;
 };
 
-const StatisticalData = [
+export const StatisticalData = [
   {
     title: '$2,340',
     downText: 'Doanh số',
@@ -37,7 +37,7 @@ const StatisticalData = [
   },
 ];
 
-const StatisticalUI = ({ title, downText, leftIcon, lefDivider }: StatisticalDataProps) => {
+export const StatisticalUI = ({ title, downText, leftIcon, lefDivider }: StatisticalDataProps) => {
   return (
     <div className="flex items-center">
       <div className="flex flex-col text-[#2A3547]">
@@ -56,26 +56,26 @@ const StatisticalUI = ({ title, downText, leftIcon, lefDivider }: StatisticalDat
   );
 };
 
+export const rows = Array.from({ length: 3 }, (_, index) => (
+  <tr key={index} className="text-center text-sm font-normal text-[#2A3547]">
+    <td className="flex h-20 items-center gap-2">
+      <div>
+        <Image src="/images/manager/gaming.png" alt="manager" width={48} height={48} />
+      </div>
+      <div className="flex flex-col gap-[2px]">
+        <span className="text-sm font-semibold">Gaming Console</span>
+        <span className="text-left text-xs font-normal">Electronics</span>
+      </div>
+    </td>
+    <td className="w-[100px] ">100</td>
+    <td>50</td>
+    <td>35.000.000</td>
+    <td>
+      <LineChartMonthly name="" data={[10000000, 500000, 35000000]} />
+    </td>
+  </tr>
+));
 const Statistical = () => {
-  const rows = Array.from({ length: 3 }, (_, index) => (
-    <tr key={index} className="text-center text-sm font-normal text-[#2A3547]">
-      <td className="flex h-20 items-center gap-2">
-        <div>
-          <Image src="/images/manager/gaming.png" alt="manager" width={48} height={48} />
-        </div>
-        <div className="flex flex-col gap-[2px]">
-          <span className="text-sm font-semibold">Gaming Console</span>
-          <span className="text-left text-xs font-normal">Electronics</span>
-        </div>
-      </td>
-      <td className="w-[100px] ">100</td>
-      <td>50</td>
-      <td>35.000.000</td>
-      <td>
-        <LineChartMonthly name="" data={[10000000, 500000, 35000000]} />
-      </td>
-    </tr>
-  ));
   return (
     <div className="w-full px-16">
       <div className="mt-[50px] flex w-full items-center justify-between">
@@ -133,7 +133,7 @@ const Statistical = () => {
             </div>
           </div>
           <Table>
-            <thead>
+            <thead className="border-b">
               <tr>
                 <th>Khóa học</th>
                 <th>Lượt mua</th>

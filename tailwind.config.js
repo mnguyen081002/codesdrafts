@@ -20,6 +20,7 @@ module.exports = {
     extend: {
       colors: {
         light: {
+          'bg-icon': 'rgba(115, 220, 233, 0.18)',
           primary: '#1363DF',
           dark: '#0847AA',
           hoverPrimary: '#F5F9FF',
