@@ -33,7 +33,7 @@ export interface SettingResponse {
   updated_at: string;
   deleted_at: null;
   key: string;
-  value: string[];
+  values: string[];
   title: string;
 }
 
