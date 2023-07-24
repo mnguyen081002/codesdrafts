@@ -14,14 +14,15 @@ export default class _Document extends Document {
       <Html>
         <Head>
           {/* Google Tag Manager */}
-          <Script async src="https://www.googletagmanager.com/gtag/js?id=G-3N9693CWLT" />
+          <Script async src="https://www.googletagmanager.com/gtag/js?id=G-ZVG93323N6" />
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-3N9693CWLT');`,
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            
+              gtag('config', 'G-ZVG93323N6');`,
             }}
           />
           {/* End Google Tag Manager */}
