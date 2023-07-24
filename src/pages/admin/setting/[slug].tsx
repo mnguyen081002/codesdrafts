@@ -102,7 +102,7 @@ const SettingContent = () => {
     const { slug } = router.query as { slug: string };
     const res = await CodeSmoothApi.Admin.Setting.getSettingByKey(slug);
     setSetting(res.data.data);
-    setSettingValues(res.data.data.value);
+    setSettingValues(res.data.data.values);
   };
 
   const saveSetting = async (newValues: string[]) => {
