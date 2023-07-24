@@ -1,7 +1,9 @@
 import { createGetInitialProps } from '@mantine/next';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
 const getInitialProps = createGetInitialProps();
+declare let window: any;
 
 export default class _Document extends Document {
   static getInitialProps = getInitialProps;
@@ -10,7 +12,20 @@ export default class _Document extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          {/* Google Tag Manager */}
+          <Script async src="https://www.googletagmanager.com/gtag/js?id=G-3N9693CWLT" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3N9693CWLT');`,
+            }}
+          />
+          {/* End Google Tag Manager */}
+        </Head>
         <body>
           <Main />
           <NextScript />
