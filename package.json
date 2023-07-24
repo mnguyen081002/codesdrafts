@@ -42,6 +42,7 @@
     "@tanstack/react-query": "^4.29.7",
     "apexcharts": "^3.41.0",
     "axios": "^1.2.2",
+    "chrome-launcher": "^1.0.0",
     "dayjs": "^1.11.7",
     "escape-html": "^1.0.3",
     "formik": "^2.4.2",
@@ -50,6 +51,7 @@
     "is-hotkey": "^0.2.0",
     "is-url": "^1.2.4",
     "jwt-decode": "^3.1.2",
+    "lighthouse": "^10.4.0",
     "lodash": "^4.17.21",
     "lottie-react": "^2.3.1",
     "moment": "^2.29.4",
@@ -79,6 +81,7 @@
     "slate-react": "^0.87.1",
     "slugify": "^1.6.6",
     "swiper": "^10.0.3",
+    "yarn": "^1.22.19",
     "yup": "^1.2.0"
   },
   "devDependencies": {
