@@ -2,6 +2,7 @@ import '../styles/global.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { MantineProvider, Overlay } from '@mantine/core';
+import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -54,6 +55,25 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
             fontFamily: 'Inter, sans-serif',
           }}
         >
+          <Head>
+            <title> CodeDrafts - Học lập trình thật dễ</title>
+            <meta charSet="utf-8" />
+            <link rel="canonical" href="http://codedrafts.com" />
+            <meta
+              name="description"
+              content="Website CodeDrafts cung cấp các khóa học lập trình chuyên nghiệp và hữu ích về reactjs, nextjs, nodejs, golang, frontend, backend, và devops."
+            />
+
+            <meta
+              name="keywords"
+              content="học lập trình, pro lập trình, lập trình, khóa học lập trình, reactjs, nextjs, nodejs, golang, frontend, backend, devops"
+            />
+            <meta
+              name="keywords"
+              content="dạy lập trình, học lập trình, dạy lập trình miễn phí, học lập trình miễn phí, học lập trình online, học lập trình từ cơ bản đến nâng cao, khóa học lập trình, học lập trình trực tuyến"
+            />
+            <meta name="robots" content="index, follow" />
+          </Head>
           <ToastContainer limit={1} />
           <Container>{getLayout(<Component {...pageProps} />)}</Container>
         </MantineProvider>
