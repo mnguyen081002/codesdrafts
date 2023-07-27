@@ -56,7 +56,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           }}
         >
           <Head>
-            <title>CodeDrafts - Học lập trình thật dễ | Codedrafts, Code Drafts</title>
+            <title>CodeDrafts - Học lập trình thật dễ</title>
             <meta charSet="utf-8" />
             <link rel="canonical" href="Code Drafts" />
             <meta
