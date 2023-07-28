@@ -1,4 +1,5 @@
 import axiosClient from '../axiosClient';
+import type { BaseGetCourseByIDResponse, Category } from '../base/interface/course';
 import type { BaseQuery, BaseResponse } from '../baseHttp';
 import type { SaveCourseRequest } from '../codesmooth-api';
 
@@ -35,10 +36,6 @@ export interface ListCourseItemResponse {
 export interface InstructorListCourseRequest extends BaseQuery {
   status?: string;
 }
-export interface Category {
-  id: number;
-  name: string;
-}
 
 export interface InstructorCountCourseResponse {
   all: number;
@@ -47,52 +44,8 @@ export interface InstructorCountCourseResponse {
   rejected: number;
   draft: number;
 }
-export interface GetCourseByIDResponse {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: null;
-  name: string;
-  description: string;
-  short_description: string;
-  price: number;
-  base_price: number;
-  published_at: null;
-  target_audience: string;
-  requirements: string[];
-  objectives: string[];
-  thumbnail: string;
-  status: string;
-  owner_id: number;
-  feedback_email: string;
-  total_enrollment: number;
+export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
   published_course_id: number;
-  draft_course_id: null;
-  categories: Category[];
-  owner: Owner;
-  sections: Section[];
-}
-
-export interface Owner {
-  id: number;
-  username: string;
-  email: string;
-  avatar: string;
-}
-
-export interface Section {
-  id: number;
-  title: string;
-  type: string;
-  order: number;
-  lessons: Lesson[];
-}
-
-export interface Lesson {
-  id: number;
-  title: string;
-  order: number;
-  section_id: number;
 }
 
 const CodeSmoothInstructorCourseApi = {
