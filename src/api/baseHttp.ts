@@ -1,6 +1,6 @@
 import { OrderType } from '../shared/enum';
 
-export interface BaseResponse<T> {
+export interface BaseReadResponse<T> {
   data: T;
   message: string;
   meta?: {
@@ -12,6 +12,13 @@ export interface BaseResponse<T> {
     hasNextPage: boolean;
   };
 }
+
+export interface BaseResponse {
+  statusCode: number;
+  message: string;
+  error: string;
+}
+
 export class BaseQuery {
   readonly sort?: string = 'created_at';
 

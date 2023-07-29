@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
-import CodeSmoothAdminCourseApi from '../../../api/admin/course';
-import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import CodedraftsAdminCourseApi from '../../../api/admin/course';
+import { CodedraftsApi } from '../../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../../api/instructor/course';
 import AbsoluteCourseInfo from '../../../components/AbsoluteCourseInfo';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
@@ -23,7 +23,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
 
   const approved = async () => {
     try {
-      await CodeSmoothAdminCourseApi.approveCourse(id as string);
+      await CodedraftsAdminCourseApi.approveCourse(id as string);
       setCourse((pre) => ({ ...pre, status: CourseStatus.Published }));
     } catch (error) {
       // TODO: handle error
@@ -33,7 +33,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
 
   const reject = async () => {
     try {
-      await CodeSmoothAdminCourseApi.rejectCourse(id as string);
+      await CodedraftsAdminCourseApi.rejectCourse(id as string);
       setCourse((pre) => ({ ...pre, status: CourseStatus.Rejected }));
     } catch (error) {
       console.log(error);
@@ -114,7 +114,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodeSmoothApi.Instructor.Course.getCourseById(
+    const r = await CodedraftsApi.Instructor.Course.getCourseById(
       Number(id),
       session.token.user.accessToken,
     );

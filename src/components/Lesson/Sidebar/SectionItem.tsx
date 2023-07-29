@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import type { Lesson, Section } from '../../../api/instructor/course';
-import CodeSmoothInstructorLessonApi from '../../../api/instructor/lesson';
+import CodedraftsInstructorLessonApi from '../../../api/instructor/lesson';
 import type { AddSectionResponse } from '../../../api/instructor/section';
-import CodeSmoothInstructorSectionApi from '../../../api/instructor/section';
+import CodedraftsInstructorSectionApi from '../../../api/instructor/section';
 import ArrowRightIcon from '../../../common/Icons/ArrowRightIcon';
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
@@ -74,7 +74,7 @@ function SectionItem({
                   if (titleEdited === section.title && !isLoading) return;
                   setIsLoading(true);
                   const r = await toast.promise(
-                    CodeSmoothInstructorSectionApi.updateSection(section.id, e.currentTarget.value),
+                    CodedraftsInstructorSectionApi.updateSection(section.id, e.currentTarget.value),
                     {
                       pending: 'Đang cập nhật danh mục...',
                       success: 'Cập nhật danh mục thành công!',
@@ -118,7 +118,7 @@ function SectionItem({
               }
 
               const r = await toast.promise(
-                CodeSmoothInstructorSectionApi.deleteSection(section.id),
+                CodedraftsInstructorSectionApi.deleteSection(section.id),
                 {
                   pending: 'Đang xóa danh mục...',
                   success: 'Xóa danh mục thành công!',
@@ -147,12 +147,12 @@ function SectionItem({
               <LessonItem
                 onDeletedSection={async (lesson_id) => {
                   if (!lesson_id) return;
-                  const rs = await CodeSmoothInstructorLessonApi.getLessonsBySectionId(section.id);
+                  const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
                   setLessons(rs.data.data);
                 }}
                 onAddLesson={async (r) => {
                   if (!r) return;
-                  const rs = await CodeSmoothInstructorLessonApi.getLessonsBySectionId(section.id);
+                  const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
                   setLessons(rs.data.data);
                 }}
                 lesson={lesson}
@@ -166,7 +166,7 @@ function SectionItem({
             className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
             onClick={async () => {
               const r = await toast.promise(
-                CodeSmoothInstructorSectionApi.addSection({
+                CodedraftsInstructorSectionApi.addSection({
                   course_id: Number(router.query.id),
                   order: section.order + 1,
                 }),

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { ExecuteResponse } from '../../api/codesmooth-api';
+import type { ExecuteResponse } from '../../api/codedrafts-api';
 import CloseIcon from '../../common/Icons/CloseIcon';
 import DoneIcon from '../../common/Icons/DoneIcon';
 import { CircleLoading } from '../../common/Loading';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import { CodeSmoothApi } from '@/api/codesmooth-api';
+import { CodedraftsApi } from '@/api/codedrafts-api';
 
 import type { SettingResponse } from '../../../api/admin/setting';
 import EditIcon from '../../../common/Icons/EditIcon';
@@ -100,14 +100,14 @@ const SettingContent = () => {
   const getListSetting = async () => {
     if (!router.isReady) return;
     const { slug } = router.query as { slug: string };
-    const res = await CodeSmoothApi.Admin.Setting.getSettingByKey(slug);
+    const res = await CodedraftsApi.Admin.Setting.getSettingByKey(slug);
     setSetting(res.data.data);
     setSettingValues(res.data.data.values);
   };
 
   const saveSetting = async (newValues: string[]) => {
     try {
-      await CodeSmoothApi.Admin.Setting.saveSetting({
+      await CodedraftsApi.Admin.Setting.saveSetting({
         key: setting!.key,
         value: newValues,
         title: setting!.title,

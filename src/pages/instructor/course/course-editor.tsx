@@ -4,15 +4,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import type { ToastContentProps } from 'react-toastify';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
-import CodeSmoothAdminApi from '@/api/admin/setting';
+import CodedraftsAdminApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 
-import { CodeSmoothApi } from '../../../api/codesmooth-api';
-import CodeSmoothInstructorCourseApi from '../../../api/instructor/course';
+import type { BaseResponse } from '../../../api/baseHttp';
+import { CodedraftsApi } from '../../../api/codedrafts-api';
+import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
 import { requireAuth } from '../../../components/requireAuth';
@@ -21,11 +23,13 @@ import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructo
 import HeaderManage from '../../../layouts/Manage/Header';
 import SidebarManage from '../../../layouts/Manage/Sidebar';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
+import { toastGetErrorMessage } from '../../../utils/app';
 
 type FormValuesProps = {
   file: string;
   name: string;
-  price: number;
+  price: string;
+  base_price: string;
   description: string;
   short_description: string;
   target_audience: string;
@@ -39,13 +43,13 @@ const CreateCouse: React.FC = () => {
   const [objectives, setObjectives] = useState<string[]>([]);
   const [requirements, setRequirements] = useState<string[]>([]);
   const [id, setId] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const CourseSchema = Yup.object().shape({
     name: Yup.string().required('Vui lòng nhập tên khóa học'),
     price: Yup.string().required('Vui lòng nhập giá khóa học'),
+    base_price: Yup.string().required('Vui lòng nhập giá gốc khóa học'),
     description: Yup.string().required('Vui lòng nhập mô tả khóa học'),
     short_description: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
     target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
@@ -69,8 +73,17 @@ const CreateCouse: React.FC = () => {
       });
       return;
     }
+
+    if (Number(data.price) > Number(data.base_price)) {
+      setError('price', {
+        type: 'manual',
+        message: 'Giá khóa học không được lớn hơn giá gốc',
+      });
+      return;
+    }
+
     if (thumbnailUpload instanceof File) {
-      const uploadRes = await CodeSmoothApi.uploadFiles([thumbnailUpload]);
+      const uploadRes = await CodedraftsApi.uploadFiles([thumbnailUpload]);
 
       // eslint-disable-next-line prefer-destructuring
       thumbnail = uploadRes.data.urls[0];
@@ -86,34 +99,35 @@ const CreateCouse: React.FC = () => {
         return item.id;
       });
 
-    try {
-      const update = {
-        name: data.name,
-        price: Number(data.price),
-        category_ids: cats,
-        description: data.description,
-        short_description: data.short_description,
-        feedback_email: data.feedbackEmail,
-        requirements,
-        target_audience: data.target_audience,
-        thumbnail,
-        objectives,
-      };
+    const update = {
+      name: data.name,
+      price: Number(data.price),
+      base_price: Number(data.base_price),
+      category_ids: cats,
+      description: data.description,
+      short_description: data.short_description,
+      feedback_email: data.feedbackEmail,
+      requirements,
+      target_audience: data.target_audience,
+      thumbnail,
+      objectives,
+    };
 
-      await toast.promise(
-        !id
-          ? CodeSmoothInstructorCourseApi.createCourse(update)
-          : CodeSmoothInstructorCourseApi.updateCourse(Number(id), update),
-        {
-          pending: 'Đang lưu khóa học...',
-          success: 'Lưu khóa học thành công!',
-          error: 'Lưu khóa học thất bại!',
+    await toast.promise(
+      !id
+        ? CodedraftsInstructorCourseApi.createCourse(update)
+        : CodedraftsInstructorCourseApi.updateCourse(Number(id), update),
+      {
+        pending: 'Đang lưu khóa học...',
+        success: 'Lưu khóa học thành công!',
+        error: {
+          render({ data }: ToastContentProps<BaseResponse>) {
+            return toastGetErrorMessage(data);
+          },
         },
-        TOAST_CONFIG,
-      );
-    } catch (error) {
-      console.log(error);
-    }
+      },
+      TOAST_CONFIG,
+    );
   };
 
   useEffect(() => {
@@ -122,7 +136,7 @@ const CreateCouse: React.FC = () => {
         const { id } = router.query;
         if (id) {
           setId(id as string);
-          const r = await CodeSmoothApi.Instructor.Course.getCourseById(Number(id));
+          const r = await CodedraftsApi.Instructor.Course.getCourseById(Number(id));
           setObjectives(r.data.data.objectives);
           setRequirements(r.data.data.requirements);
           setOptionSetting(r.data.data.categories.map((item) => item.name));
@@ -133,7 +147,8 @@ const CreateCouse: React.FC = () => {
             name: r.data.data.name,
             short_description: r.data.data.short_description,
             target_audience: r.data.data.target_audience,
-            price: r.data.data.price,
+            price: r.data.data.price.toString(),
+            base_price: r.data.data.base_price.toString(),
           });
 
           setThumbnailUpload(r.data.data.thumbnail);
@@ -142,7 +157,7 @@ const CreateCouse: React.FC = () => {
     };
     const handleGetSetting = async () => {
       try {
-        const res = await CodeSmoothAdminApi.getCateSetting();
+        const res = await CodedraftsAdminApi.getCateSetting();
         setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
       } catch (error) {
         console.log(error);
@@ -219,6 +234,14 @@ const CreateCouse: React.FC = () => {
               noResize
             />
             <InputRectangle
+              name="base_price"
+              label="Giá gốc khóa học *"
+              maxLength={15}
+              placeholder="Nhập giá gốc khóa học"
+              type="number"
+              noResize
+            />
+            <InputRectangle
               name="description"
               label="Mô tả *"
               maxLength={800}
@@ -289,7 +312,23 @@ const CreateCouse: React.FC = () => {
               <div className="flex items-center gap-12">
                 <PrimaryButton
                   onClick={async () => {
-                    await CodeSmoothInstructorCourseApi.deleteCourse(Number(id));
+                    try {
+                      toast.promise(
+                        CodedraftsInstructorCourseApi.deleteCourse(Number(id)),
+                        {
+                          pending: 'Đang xóa khóa học...',
+                          success: 'Xóa khóa học thành công',
+                          error: {
+                            render({ data }: any) {
+                              return toastGetErrorMessage(data);
+                            },
+                          },
+                        },
+                        TOAST_CONFIG,
+                      );
+                    } catch (e) {
+                      console.log(e);
+                    }
                   }}
                   className="w-fit bg-red-600 px-[30px]"
                   text="XÓA KHÓA HỌC"

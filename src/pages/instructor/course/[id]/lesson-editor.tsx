@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { toast, Zoom } from 'react-toastify';
 
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
-import CodeSmoothInstructorCourseApi from '../../../../api/instructor/course';
+import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
 import type { SaveLessonRequest } from '../../../../api/instructor/lesson';
-import CodeSmoothInstructorLessonApi from '../../../../api/instructor/lesson';
+import CodedraftsInstructorLessonApi from '../../../../api/instructor/lesson';
 import { InputRectangle } from '../../../../common/Input';
 import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
@@ -40,7 +40,7 @@ const LessonEditor = () => {
     if (!router.query.id) return;
 
     const { id, section_id, lesson_id } = router.query;
-    const res = await CodeSmoothInstructorCourseApi.getCourseById(Number(id));
+    const res = await CodedraftsInstructorCourseApi.getCourseById(Number(id));
     if (!section_id) {
       router.push(
         `/instructor/course/${id}/lesson-editor?section_id=${res.data.data.sections[0]?.id}&lesson_id=${res.data.data.sections[0]?.lessons[0]?.id}`,
@@ -48,7 +48,7 @@ const LessonEditor = () => {
       return;
     }
     setCourse(res.data.data);
-    const l = await CodeSmoothInstructorLessonApi.getLesson(Number(router.query.lesson_id));
+    const l = await CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id));
     reset({
       title: l.data.data.title,
       summary: l.data.data.summary,
@@ -73,7 +73,7 @@ const LessonEditor = () => {
       section_id: Number(router.query.section_id),
     };
     await toast.promise(
-      CodeSmoothInstructorLessonApi.saveLesson(req),
+      CodedraftsInstructorLessonApi.saveLesson(req),
       {
         pending: 'Đang lưu bài học',
         success: 'Lưu bài học thành công!',

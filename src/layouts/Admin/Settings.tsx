@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import type { SettingResponse } from '../../api/admin/setting';
-import { CodeSmoothApi } from '../../api/codesmooth-api';
+import { CodedraftsApi } from '../../api/codedrafts-api';
 import ArrowRightIcon from '../../common/Icons/ArrowRightIcon';
 import AdminBar from '../../components/Admin/bar';
 import DecorAdmin from '../../components/Admin/decor';
@@ -28,7 +28,7 @@ const AdminSetting = () => {
   const [listSettings, setListSettings] = useState<SettingResponse[]>([]);
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const _ = await CodeSmoothApi.Admin.Setting.saveSetting(values);
+      const _ = await CodedraftsApi.Admin.Setting.saveSetting(values);
       // setMessage({
       //   isSuccess: true,
       //   message: 'Success',
@@ -42,7 +42,7 @@ const AdminSetting = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await CodeSmoothApi.Admin.Setting.getAllSettings();
+      const res = await CodedraftsApi.Admin.Setting.getAllSettings();
       setListSettings(res.data.data);
     };
 

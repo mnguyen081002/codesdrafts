@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 
-import { CodeSmoothApi } from '../../../../api/codesmooth-api';
+import { CodedraftsApi } from '../../../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
 import CourseDetailMain from '../../../../components/CourseDetailMain';
 import InstructorAbsoluteCourseInfo from '../../../../components/Instructor/InstructorAbsoluteCourseInfo';
@@ -20,7 +20,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
     const { id } = router.query;
 
     try {
-      await CodeSmoothApi.Instructor.Course.submitForReview(Number(id));
+      await CodedraftsApi.Instructor.Course.submitForReview(Number(id));
       setCourse((pre) => ({ ...pre, status: CourseStatus.Reviewing }));
     } catch (error) {
       // TODO: handle error
@@ -58,7 +58,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodeSmoothApi.Instructor.Course.getCourseById(
+    const r = await CodedraftsApi.Instructor.Course.getCourseById(
       Number(id),
       session.token.user.accessToken,
     );

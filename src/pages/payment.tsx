@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { CodeSmoothApi } from '@/api/codesmooth-api';
+import { CodedraftsApi } from '@/api/codedrafts-api';
 import { PrimaryButton, PrimaryOutlineButton } from '@/components/Button';
 import { Avatar } from '@/components/sub/avatar';
 import Footer from '@/layouts/Footer';
@@ -61,7 +61,7 @@ function MainLeft() {
 
   const handlePayment = async () => {
     try {
-      const res = await CodeSmoothApi.payment({
+      const res = await CodedraftsApi.payment({
         course_id: Number(id),
         payment_method: PayementMethod[selected]!.payment_method,
       });

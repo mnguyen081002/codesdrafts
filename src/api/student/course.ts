@@ -1,6 +1,6 @@
 import axiosClient from '../axiosClient';
 import type { BaseGetCourseByIDResponse } from '../base/interface/course';
-import type { BaseResponse } from '../baseHttp';
+import type { BaseReadResponse } from '../baseHttp';
 
 export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
   is_bought: boolean;
@@ -44,7 +44,7 @@ export enum Type {
 
 const StudentCourseApi = {
   getById: async (id: number) => {
-    return axiosClient.get<BaseResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
   },
 };
 

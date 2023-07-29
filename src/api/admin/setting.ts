@@ -1,5 +1,5 @@
 import axiosClient from '../axiosClient';
-import type { BaseQuery, BaseResponse } from '../baseHttp';
+import type { BaseQuery, BaseReadResponse } from '../baseHttp';
 import type { ListCourseItemResponse } from '../instructor/course';
 
 export interface CreateCategoryRequest {
@@ -60,7 +60,7 @@ export interface AdminGetCoursesQuery extends BaseQuery {
   status?: string;
 }
 
-const CodeSmoothAdminApi = {
+const CodedraftsAdminApi = {
   createCategory: (params: CreateCategoryRequest) => {
     return axiosClient.post<CreateCategoryReponse>('/api/admin/category', {
       ...params,
@@ -72,24 +72,24 @@ const CodeSmoothAdminApi = {
     });
   },
   getAllSettings: () => {
-    return axiosClient.get<BaseResponse<SettingResponse[]>>('/api/admin/setting');
+    return axiosClient.get<BaseReadResponse<SettingResponse[]>>('/api/admin/setting');
   },
   getSettingByKey: (key: string) => {
-    return axiosClient.get<BaseResponse<SettingResponse>>(`/api/admin/setting/${key}`);
+    return axiosClient.get<BaseReadResponse<SettingResponse>>(`/api/admin/setting/${key}`);
   },
   getCateSetting: () => {
-    return axiosClient.get<BaseResponse<CourseCategory[]>>(`/api/category`);
+    return axiosClient.get<BaseReadResponse<CourseCategory[]>>(`/api/category`);
   },
   getCourses: (params: AdminGetCoursesQuery) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>(`/api/admin/course`, {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>(`/api/admin/course`, {
       params,
     });
   },
   countCourse: () => {
-    return axiosClient.get<BaseResponse<AdminCountCourseResponse>>(
+    return axiosClient.get<BaseReadResponse<AdminCountCourseResponse>>(
       `/api/admin/course/count-course`,
     );
   },
 };
 
-export default CodeSmoothAdminApi;
+export default CodedraftsAdminApi;

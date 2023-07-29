@@ -152,7 +152,7 @@ function InputRounded(props: InputProps) {
 
 const InputRectangle = (props: InputProps) => {
   const { control } = useFormContext();
-
+  // rules valueAsNumber
   return (
     <Controller
       name={props.name}

@@ -1,5 +1,5 @@
 import axiosClient from '../axiosClient';
-import type { BaseResponse } from '../baseHttp';
+import type { BaseReadResponse } from '../baseHttp';
 
 interface AddSectionRequest {
   course_id: number;
@@ -35,20 +35,20 @@ export interface Owner {
   id: number;
 }
 
-const CodeSmoothInstructorSectionApi = {
+const CodedraftsInstructorSectionApi = {
   addSection: (data: AddSectionRequest) => {
-    return axiosClient.post<BaseResponse<AddSectionResponse>>(
+    return axiosClient.post<BaseReadResponse<AddSectionResponse>>(
       `/api/instructor/section/${data.course_id}/${data.order}`,
     );
   },
   deleteSection: (sectionId: number) => {
-    return axiosClient.delete<BaseResponse<any>>(`/api/instructor/section/${sectionId}`);
+    return axiosClient.delete<BaseReadResponse<any>>(`/api/instructor/section/${sectionId}`);
   },
   updateSection: (sectionId: number, title: string) => {
-    return axiosClient.patch<BaseResponse<any>>(`/api/instructor/section/${sectionId}`, {
+    return axiosClient.patch<BaseReadResponse<any>>(`/api/instructor/section/${sectionId}`, {
       title,
     });
   },
 };
 
-export default CodeSmoothInstructorSectionApi;
+export default CodedraftsInstructorSectionApi;

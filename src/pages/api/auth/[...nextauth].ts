@@ -7,7 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PATH_AUTH } from '@/routes/path';
 import type { ResLogin } from '@/shared/types/authType';
 
-import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import { CodedraftsApi } from '../../../api/codedrafts-api';
 
 export default NextAuth({
   providers: [
@@ -27,7 +27,7 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          const data: ResLogin = await CodeSmoothApi.login(
+          const data: ResLogin = await CodedraftsApi.login(
             credentials!.email,
             credentials!.password,
           ).then((res) => {

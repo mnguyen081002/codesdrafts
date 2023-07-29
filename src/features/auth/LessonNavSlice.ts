@@ -5,7 +5,7 @@
 //   CategoryResponse,
 //   CourseResponse,
 //   LessonInCategoryResponse,
-// } from '../../api/codesmooth-api';
+// } from '../../api/codedrafts-api';
 // import type { RootState } from '../../app/store';
 
 // export interface ILessonPageNav {

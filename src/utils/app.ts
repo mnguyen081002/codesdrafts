@@ -19,4 +19,8 @@ function extractTextFromLastHTMLTag(htmlString: string): string {
   return textContent || '';
 }
 
-export { extractTextFromLastHTMLTag };
+function toastGetErrorMessage(data: any) {
+  return `${data.response.data.message}`;
+}
+
+export { extractTextFromLastHTMLTag, toastGetErrorMessage };

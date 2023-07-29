@@ -1,7 +1,6 @@
 import axiosClient from '../axiosClient';
 import type { BaseGetCourseByIDResponse, Category } from '../base/interface/course';
-import type { BaseQuery, BaseResponse } from '../baseHttp';
-import type { SaveCourseRequest } from '../codesmooth-api';
+import type { BaseQuery, BaseReadResponse, BaseResponse } from '../baseHttp';
 
 export interface ListCourseItemResponse {
   id: number;
@@ -48,22 +47,36 @@ export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
   published_course_id: number;
 }
 
-const CodeSmoothInstructorCourseApi = {
+export interface CreateCourseRequest {
+  name: string;
+  description: string;
+  short_description: string;
+  target_audience: string;
+  category_ids: number[];
+  requirements: string[];
+  objectives: string[];
+  thumbnail: string;
+  price: number;
+  base_price: number;
+  feedback_email: string;
+}
+
+const CodedraftsInstructorCourseApi = {
   deleteCourse: (id: number) => {
     return axiosClient.delete(`/api/instructor/course/${id}`);
   },
-  createCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post('/api/instructor/course', {
+  createCourse: (params: CreateCourseRequest) => {
+    return axiosClient.post<BaseResponse>('/api/instructor/course', {
       ...params,
     });
   },
-  updateCourse: (id: number, params: SaveCourseRequest) => {
-    return axiosClient.put(`/api/instructor/course/${id}`, {
+  updateCourse: (id: number, params: CreateCourseRequest) => {
+    return axiosClient.put<BaseResponse>(`/api/instructor/course/${id}`, {
       ...params,
     });
   },
   listCourse: (params: InstructorListCourseRequest, token?: string) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/instructor/course', {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/instructor/course', {
       params: {
         page: params.page,
         take: params.take,
@@ -78,22 +91,25 @@ const CodeSmoothInstructorCourseApi = {
     });
   },
   getCourseById: (id: number, token?: string) => {
-    return axiosClient.get<BaseResponse<GetCourseByIDResponse>>(`/api/instructor/course/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(
+      `/api/instructor/course/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
   },
   submitForReview: (id: number) => {
-    return axiosClient.patch<BaseResponse<ListCourseItemResponse>>(
+    return axiosClient.patch<BaseReadResponse<ListCourseItemResponse>>(
       `/api/instructor/course/submit-for-review/${id}`,
     );
   },
   countCourse: () => {
-    return axiosClient.get<BaseResponse<InstructorCountCourseResponse>>(
+    return axiosClient.get<BaseReadResponse<InstructorCountCourseResponse>>(
       '/api/instructor/course/count-course',
     );
   },
 };
 
-export default CodeSmoothInstructorCourseApi;
+export default CodedraftsInstructorCourseApi;

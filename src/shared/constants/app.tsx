@@ -5,7 +5,7 @@ const APP_NAME = 'Code Drafts';
 
 export const ERROR_TOKEN = 'RefreshAccessTokenError';
 export const TOAST_CONFIG: ToastOptions = {
-  autoClose: 500,
+  autoClose: 2000,
   hideProgressBar: true,
   transition: Zoom,
 };

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 
 import type { CreateCategoryRequest } from '@/api/admin/setting';
-import { CodeSmoothApi } from '@/api/codesmooth-api';
+import { CodedraftsApi } from '@/api/codedrafts-api';
 
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
@@ -36,7 +36,7 @@ const SettingContent = () => {
           throw new Error('File is required');
         }
 
-        const res = await CodeSmoothApi.uploadFiles([file]);
+        const res = await CodedraftsApi.uploadFiles([file]);
 
         const reqCreateItem: CreateCategoryRequest = {
           name: values.name,
@@ -45,7 +45,7 @@ const SettingContent = () => {
           thumbnail: res.data.urls[0],
         };
 
-        const _ = await CodeSmoothApi.Admin.Setting.createCategory(reqCreateItem);
+        const _ = await CodedraftsApi.Admin.Setting.createCategory(reqCreateItem);
         // setMessage({
         //   isSuccess: true,
         //   message: 'Success',

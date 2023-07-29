@@ -1,6 +1,6 @@
 import axiosClient from '../axiosClient';
 
-const CodeSmoothAdminCourseApi = {
+const CodedraftsAdminCourseApi = {
   approveCourse: (courseId: string) => {
     return axiosClient.patch(`/api/admin/course/publish/${courseId}`);
   },
@@ -9,4 +9,4 @@ const CodeSmoothAdminCourseApi = {
   },
 };
 
-export default CodeSmoothAdminCourseApi;
+export default CodedraftsAdminCourseApi;

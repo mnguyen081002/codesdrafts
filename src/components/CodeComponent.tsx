@@ -4,8 +4,8 @@ import type { editor } from 'monaco-editor';
 import type { FC } from 'react';
 import { useState } from 'react';
 
-import type { ExecuteResponse } from '../api/codesmooth-api';
-import { CodeSmoothApi } from '../api/codesmooth-api';
+import type { ExecuteResponse } from '../api/codedrafts-api';
+import { CodedraftsApi } from '../api/codedrafts-api';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponentPropsV2 } from '../shared/interface';
 import { BaseComponentV2 } from './BaseComponent';
@@ -69,7 +69,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
 
   const handleRun = async () => {
     setIsWaitingExecute(true);
-    const r = await CodeSmoothApi.execute({
+    const r = await CodedraftsApi.execute({
       code: params.reference.current.content.code,
       testCode: params.reference.current.content.judgeContent.testCode,
       language: params.reference.current.content.language,

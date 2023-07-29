@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import type { Lesson } from '../../../api/instructor/course';
 import type { AddLessonResponse } from '../../../api/instructor/lesson';
-import CodeSmoothInstructorLessonApi from '../../../api/instructor/lesson';
+import CodedraftsInstructorLessonApi from '../../../api/instructor/lesson';
 import { useAppDispatch } from '../../../app/hooks';
 import TrashIcon from '../../../common/Icons/TrashIcon';
 import { setLoading } from '../../../features/auth/appSlice';
@@ -63,7 +63,7 @@ function LessonItem({
           onClick={async () => {
             dispatch(setLoading(true));
             const call = async () => {
-              const r = await CodeSmoothInstructorLessonApi.addLesson({
+              const r = await CodedraftsInstructorLessonApi.addLesson({
                 section_id: lesson.section_id,
                 order: lesson.order + 1,
               });
@@ -95,7 +95,7 @@ function LessonItem({
             dispatch(setLoading(true));
 
             const call = async () => {
-              const r = await CodeSmoothInstructorLessonApi.deleteLesson(lesson.id);
+              const r = await CodedraftsInstructorLessonApi.deleteLesson(lesson.id);
               if (r.status === 200) {
                 await onDeletedSection(lesson.id);
               } else {

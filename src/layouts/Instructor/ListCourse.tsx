@@ -5,7 +5,7 @@ import type {
   InstructorCountCourseResponse,
   ListCourseItemResponse,
 } from '../../api/instructor/course';
-import CodeSmoothInstructorCourseApi from '../../api/instructor/course';
+import CodedraftsInstructorCourseApi from '../../api/instructor/course';
 import LongCourseCard from '../../components/Card/LongCourseCard';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
 import { CourseStatus } from '../../shared/enum/course';
@@ -26,10 +26,10 @@ const ListCoursePage = () => {
 
     const fetch = async () => {
       const [res, count] = await Promise.all([
-        CodeSmoothInstructorCourseApi.listCourse({
+        CodedraftsInstructorCourseApi.listCourse({
           status: status === 'all' ? undefined : status,
         }),
-        CodeSmoothInstructorCourseApi.countCourse(),
+        CodedraftsInstructorCourseApi.countCourse(),
       ]);
       setCount(count.data.data);
       setListCourse(res.data.data);
