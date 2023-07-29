@@ -55,9 +55,7 @@ function CourseDetailMain(props: CourseDetailMainProps) {
         <CourseDetailSection
           contents={props.course?.objectives}
           title="Bạn sẽ học được gì?"
-          text="This tutorial will help you learn quickly and thoroughly. Lorem ipsum, or lipsum as it is
-        sometimes known, iaws dumm text used in laying out print, graphic or web designsm dolor sit
-        amet."
+          text="Trong khóa học này bạn sẽ học được những kiến thức và kỹ năng sau."
         />
         <CourseDetailSection
           contents={props.course?.requirements}
