@@ -102,7 +102,7 @@ function CourseDetailMain(props: CourseDetailMainProps) {
               Donald Logan has more than 15 years’ experience as a project management consultant,
               educator, technology consultant, business know.
             </p>
-            <PrimaryOutlineButton text="Xem thêm" />
+            <PrimaryOutlineButton className="w-[174px]" text="Xem thêm" />
           </div>
         </div>
       </div>

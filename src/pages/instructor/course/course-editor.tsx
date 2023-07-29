@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import CodeSmoothAdminApi from '@/api/admin/setting';
@@ -19,11 +20,12 @@ import Footer from '../../../layouts/Footer';
 import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructor';
 import HeaderManage from '../../../layouts/Manage/Header';
 import SidebarManage from '../../../layouts/Manage/Sidebar';
+import { TOAST_CONFIG } from '../../../shared/constants/app';
 
 type FormValuesProps = {
   file: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   short_description: string;
   target_audience: string;
@@ -97,11 +99,18 @@ const CreateCouse: React.FC = () => {
         thumbnail,
         objectives,
       };
-      if (!id) {
-        await CodeSmoothInstructorCourseApi.createCourse(update);
-      } else {
-        await CodeSmoothInstructorCourseApi.updateCourse(Number(id), update);
-      }
+
+      await toast.promise(
+        !id
+          ? CodeSmoothInstructorCourseApi.createCourse(update)
+          : CodeSmoothInstructorCourseApi.updateCourse(Number(id), update),
+        {
+          pending: 'Đang lưu khóa học...',
+          success: 'Lưu khóa học thành công!',
+          error: 'Lưu khóa học thất bại!',
+        },
+        TOAST_CONFIG,
+      );
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +118,6 @@ const CreateCouse: React.FC = () => {
 
   useEffect(() => {
     const loadCourse = async () => {
-      setIsLoading(true);
       if (router.isReady) {
         const { id } = router.query;
         if (id) {
@@ -123,17 +131,13 @@ const CreateCouse: React.FC = () => {
             description: r.data.data.description,
             feedbackEmail: r.data.data.feedback_email,
             name: r.data.data.name,
-            // objectives: r.data.data.objectives,
-            // requirements: r.data.data.requirements,
             short_description: r.data.data.short_description,
             target_audience: r.data.data.target_audience,
-            price: r.data.data.price.toString(),
-            // categories: r.data.data.categories.map((c) => c.name),
+            price: r.data.data.price,
           });
 
           setThumbnailUpload(r.data.data.thumbnail);
         }
-        setIsLoading(false);
       }
     };
     const handleGetSetting = async () => {
