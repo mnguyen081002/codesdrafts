@@ -30,13 +30,13 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
 
   return (
     <>
-      <HeaderInstructor />
+      <HeaderInstructor showAvatar />
       <CourseDetailMain
         course={course}
         absoluteCourseInfo={
           <InstructorAbsoluteCourseInfo course={course} submitForReview={submitForReview} />
         }
-      ></CourseDetailMain>
+      />
       <Footer />
     </>
   );

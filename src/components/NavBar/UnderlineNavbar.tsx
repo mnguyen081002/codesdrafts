@@ -50,14 +50,14 @@ const BottomOutlineNavbarButton = ({
           className={`${
             className || ''
           } font-lexend-deca text-[20px] font-normal capitalize  leading-[22px] ${
-            selected ? selectedColorClass : 'text-[#757575]'
+            selected ? selectedColorClass : 'text-[#414141]'
           }`}
         >
           {title}
         </p>
         {badge && (
           <div className="flex w-[22px] items-center justify-center rounded-[3px] bg-[#f1f1f1] px-[6.5px]">
-            <p className="items-center text-[12px] font-bold leading-[20px] text-[#757575]">
+            <p className="items-center text-[12px] font-bold leading-[20px] text-[#414141]">
               {badgeNumber}
             </p>
           </div>
@@ -166,9 +166,10 @@ function UnderlineNavbar({
           <img src="/images/icons/search.svg" className="cursor-pointer" alt="" />
           <Link href={`/instructor/course/course-editor`}>
             <PrimaryButton
-              text="+ Tạo Mới"
-              className="h-9 py-2 px-4"
-              textClassName="text-sm font-normal text-white font-lexend-deca"
+              text="+ Tạo mới"
+              className="p-[10px]"
+              isOrginalPadding={false}
+              textClassName="text-md font-normal text-white font-lexend-deca"
             />
           </Link>
         </div>
@@ -224,8 +225,8 @@ function UnderlineNavbarWithOutSlug({
           <img src="/images/icons/search.svg" className="cursor-pointer" alt="" />
           <Link href={`/instructor/course/course-editor`}>
             <PrimaryButton
-              text="+ Tạo Mới"
-              className="h-9 py-2 px-4"
+              text="+ Tạo mới"
+              className="h-9 py-[8px] px-[7px]"
               textClassName="text-sm font-normal text-white font-lexend-deca"
             />
           </Link>

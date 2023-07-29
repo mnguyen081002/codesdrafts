@@ -3,4 +3,5 @@ export enum CourseStatus {
   Published = 'published',
   Reviewing = 'reviewing',
   Rejected = 'rejected',
+  DraftHasPublishedCourse = 'draft_has_published_course',
 }

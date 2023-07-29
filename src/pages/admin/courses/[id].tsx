@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import CodedraftsAdminCourseApi from '../../../api/admin/course';
 import { CodedraftsApi } from '../../../api/codedrafts-api';
@@ -14,30 +15,42 @@ import Footer from '../../../layouts/Footer';
 import HeaderManage from '../../../layouts/Manage/Header';
 import { PATH_AUTH } from '../../../routes/path';
 import { CourseStatus } from '../../../shared/enum/course';
+import { toastGetErrorMessage } from '../../../utils/app';
 
 const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }) => {
   const router = useRouter();
   const [course, setCourse] = useState<GetCourseByIDResponse>(propsCourse);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [id, setId] = useState<string>('');
 
   const approved = async () => {
-    try {
-      await CodedraftsAdminCourseApi.approveCourse(id as string);
-      setCourse((pre) => ({ ...pre, status: CourseStatus.Published }));
-    } catch (error) {
-      // TODO: handle error
-      console.log(error);
-    }
+    setIsLoading(true);
+    await toast.promise(CodedraftsAdminCourseApi.approveCourse(id as string), {
+      pending: 'Đang phát hành khóa học',
+      success: 'Phát hành khóa học thành công',
+      error: {
+        render({ data }) {
+          return <div>{toastGetErrorMessage(data)}</div>;
+        },
+      },
+    });
+    setCourse((pre) => ({ ...pre, status: CourseStatus.Published }));
+    setIsLoading(false);
   };
 
   const reject = async () => {
-    try {
-      await CodedraftsAdminCourseApi.rejectCourse(id as string);
-      setCourse((pre) => ({ ...pre, status: CourseStatus.Rejected }));
-    } catch (error) {
-      console.log(error);
-    }
+    setIsLoading(true);
+    setCourse((pre) => ({ ...pre, status: CourseStatus.Rejected }));
+    await toast.promise(CodedraftsAdminCourseApi.rejectCourse(id as string), {
+      pending: 'Đang từ chối khóa học',
+      success: 'Từ chối khóa học thành công',
+      error: {
+        render({ data }) {
+          return <div>{toastGetErrorMessage(data)}</div>;
+        },
+      },
+    });
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -73,6 +86,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
                       onClick={reject}
                       className="py-[15px]"
                       text="Từ chối khóa học"
+                      disabled={isLoading}
                     />
                   </div>
                 )}
@@ -81,6 +95,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
                     onClick={reject}
                     className="py-[15px]"
                     text="Ngưng phát hành"
+                    disabled={isLoading}
                   />
                 )}
                 {course?.status === CourseStatus.Rejected && (

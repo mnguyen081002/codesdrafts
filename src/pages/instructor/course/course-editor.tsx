@@ -18,7 +18,6 @@ import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
 import { requireAuth } from '../../../components/requireAuth';
-import Footer from '../../../layouts/Footer';
 import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructor';
 import HeaderManage from '../../../layouts/Manage/Header';
 import SidebarManage from '../../../layouts/Manage/Sidebar';
@@ -199,7 +198,7 @@ const CreateCouse: React.FC = () => {
               ) : (
                 <PrimaryButton
                   className="ml-4 h-[40px] w-fit px-5"
-                  text="TẠO"
+                  text="Tạo"
                   textClassName="text-white"
                   type="submit"
                 />
@@ -339,7 +338,6 @@ const CreateCouse: React.FC = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </FormProvider>
     </>
   );

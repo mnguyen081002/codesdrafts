@@ -17,4 +17,7 @@ module.exports = withBundleAnalyzer({
   images: {
     unoptimized: true,
   },
+  env: {
+    HOST: process.env.HOST,
+  },
 });

@@ -45,6 +45,11 @@ export interface InstructorCountCourseResponse {
 }
 export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
   published_course_id: number;
+  rejected_reason: {
+    reason: string;
+    rejected_at: Date;
+    rejected_by: string;
+  };
 }
 
 export interface CreateCourseRequest {

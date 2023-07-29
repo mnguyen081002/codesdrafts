@@ -157,7 +157,7 @@ const MenuUser = () => {
 
 const HeaderPrimary = () => {
   return (
-    <div className="sticky top-0 z-20 flex h-[74px] w-full items-center justify-between bg-white pl-[50px] pr-[82px] shadow">
+    <div className="sticky top-0 z-30 flex h-[74px] w-full items-center justify-between bg-white pl-[50px] pr-[82px] shadow">
       <Link href={'/home'}>
         <Image src="/logo-96.png" alt="logo" width={40} height={40} />
       </Link>

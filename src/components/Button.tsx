@@ -40,8 +40,8 @@ function PrimaryButton({
 
       <p
         className={`${
-          textClassName || ''
-        } font-lexend-deca font-semibold leading-5 tracking-[0.15px] text-white`}
+          textClassName || 'font-semibold'
+        } font-lexend-deca leading-5 tracking-[0.15px] text-white`}
       >
         {text}
       </p>
@@ -58,6 +58,7 @@ function PrimaryOutlineButton({
   textHoverClassName = 'text-light-primary',
   bgHoverColor = 'hover:bg-light-hoverPrimary',
   type = 'button',
+  disabled,
 }: {
   text: string;
   onClick?: () => void;
@@ -66,6 +67,7 @@ function PrimaryOutlineButton({
   textHoverClassName?: string;
   bgHoverColor?: string;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }) {
   const [isHover, setIsHover] = useState(false);
 
@@ -75,6 +77,7 @@ function PrimaryOutlineButton({
       onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      disabled={disabled}
       className={`${
         className || ''
       } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-200 ease-in ${bgHoverColor} px-10 py-3 `}

@@ -8,7 +8,7 @@ interface AbsoluteCourseInfoProps<BaseGetCourseByIDResponse> {
 
 function AbsoluteCourseInfo(props: AbsoluteCourseInfoProps<BaseGetCourseByIDResponse>) {
   return (
-    <div className="absolute top-[142px] right-[128px] flex flex-col rounded-md bg-white px-4 pt-4 pb-10 shadow-md">
+    <div className="absolute top-[142px] right-[128px] flex w-[359px] flex-col rounded-md bg-white px-4 pt-4 pb-10 shadow-md">
       <img
         src={props.course?.thumbnail}
         alt="thumbnail"
