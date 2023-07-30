@@ -1,5 +1,5 @@
 import axiosClient from '../axiosClient';
-import type { BaseQuery, BaseReadResponse } from '../baseHttp';
+import type { BaseQuery, BaseReadResponse, BaseResponse } from '../baseHttp';
 import type { ListCourseItemResponse } from '../instructor/course';
 
 export interface CreateCategoryRequest {
@@ -9,16 +9,12 @@ export interface CreateCategoryRequest {
   thumbnail: string;
 }
 
-export interface CreateCategoryReponse {
-  name: string;
-  description: string;
-  thumbnail: string;
-  order: number;
-  id: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-  is_active: boolean;
+export interface UpdateCategoryRequest {
+  name?: string;
+  order?: number;
+  description?: string;
+  thumbnail?: string;
+  is_active?: boolean;
 }
 
 export interface SaveSettingRequest {
@@ -60,11 +56,19 @@ export interface AdminGetCoursesQuery extends BaseQuery {
   status?: string;
 }
 
-const CodedraftsAdminApi = {
+const CodedraftsAdminSettingApi = {
   createCategory: (params: CreateCategoryRequest) => {
-    return axiosClient.post<CreateCategoryReponse>('/api/admin/category', {
+    return axiosClient.post<BaseResponse>('/api/admin/category', {
       ...params,
     });
+  },
+  updateCategory: (id: number, params: UpdateCategoryRequest) => {
+    return axiosClient.put<BaseResponse>(`/api/admin/category/${id}`, {
+      ...params,
+    });
+  },
+  deleteCategory: (id: number) => {
+    return axiosClient.delete<BaseResponse>(`/api/admin/category/${id}`);
   },
   saveSetting: (params: SaveSettingRequest) => {
     return axiosClient.post('/api/admin/setting', {
@@ -78,7 +82,7 @@ const CodedraftsAdminApi = {
     return axiosClient.get<BaseReadResponse<SettingResponse>>(`/api/admin/setting/${key}`);
   },
   getCateSetting: () => {
-    return axiosClient.get<BaseReadResponse<CourseCategory[]>>(`/api/category`);
+    return axiosClient.get<BaseReadResponse<CourseCategory[]>>(`/api/admin/category`);
   },
   getCourses: (params: AdminGetCoursesQuery) => {
     return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>(`/api/admin/course`, {
@@ -92,4 +96,4 @@ const CodedraftsAdminApi = {
   },
 };
 
-export default CodedraftsAdminApi;
+export default CodedraftsAdminSettingApi;

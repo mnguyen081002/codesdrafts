@@ -1,3 +1,5 @@
+import type { CourseLevel, CourseTargetAudience } from '../../../../shared/enum/course';
+
 export interface BaseGetCourseByIDResponse {
   id: number;
   created_at: string;
@@ -9,7 +11,7 @@ export interface BaseGetCourseByIDResponse {
   price: number;
   base_price: number;
   published_at?: Date;
-  target_audience: string;
+  target_audience: CourseTargetAudience;
   requirements: string[];
   objectives: string[];
   thumbnail: string;
@@ -21,6 +23,11 @@ export interface BaseGetCourseByIDResponse {
   categories: Category[];
   owner: Owner;
   sections: Section[];
+  level: CourseLevel;
+  main_category: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface Section {

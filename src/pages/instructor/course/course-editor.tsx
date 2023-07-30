@@ -8,7 +8,7 @@ import type { ToastContentProps } from 'react-toastify';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
-import CodedraftsAdminApi from '@/api/admin/setting';
+import CodedraftsAdminSettingApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 
@@ -22,6 +22,7 @@ import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructo
 import HeaderManage from '../../../layouts/Manage/Header';
 import SidebarManage from '../../../layouts/Manage/Sidebar';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
+import { CourseLevel } from '../../../shared/enum/course';
 import { toastGetErrorMessage } from '../../../utils/app';
 
 type FormValuesProps = {
@@ -33,12 +34,14 @@ type FormValuesProps = {
   short_description: string;
   target_audience: string;
   feedbackEmail: string;
+  level: CourseLevel;
 };
 
 const CreateCouse: React.FC = () => {
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   const [optionSetting, setOptionSetting] = useState<string[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [parentCategories, setparentCategories] = useState<{ id: number; name: string }[]>([]);
   const [objectives, setObjectives] = useState<string[]>([]);
   const [requirements, setRequirements] = useState<string[]>([]);
   const [id, setId] = useState<string | undefined>();
@@ -110,6 +113,7 @@ const CreateCouse: React.FC = () => {
       target_audience: data.target_audience,
       thumbnail,
       objectives,
+      level: data.level,
     };
 
     await toast.promise(
@@ -148,6 +152,7 @@ const CreateCouse: React.FC = () => {
             target_audience: r.data.data.target_audience,
             price: r.data.data.price.toString(),
             base_price: r.data.data.base_price.toString(),
+            level: r.data.data.level,
           });
 
           setThumbnailUpload(r.data.data.thumbnail);
@@ -156,7 +161,7 @@ const CreateCouse: React.FC = () => {
     };
     const handleGetSetting = async () => {
       try {
-        const res = await CodedraftsAdminApi.getCateSetting();
+        const res = await CodedraftsAdminSettingApi.getCateSetting();
         setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
       } catch (error) {
         console.log(error);
@@ -259,6 +264,23 @@ const CreateCouse: React.FC = () => {
             <Link href={`/instructor/course/${id}/lesson-editor`} className="flex justify-center">
               <PrimaryOutlineButton className="w-fit" text="CHỈNH SỬA BÀI HỌC" />
             </Link>
+            {/* TODO: Để sau/>}
+            {/* <RHFMutiSelect
+              name="parentCategories"
+              options={parentCategories.map((item) => item.name)}
+              setValue={setOptionSetting}
+              value={optionSetting}
+              label={'Kĩ năng chính *'}
+              placeholder="Khóa học này sẽ nói về kĩ năng chính nào ? (Ấn để thêm)"
+              type="text"
+            /> */}
+            <RHFMutiSelect
+              name="level"
+              options={Object.values(CourseLevel)}
+              label={'Cấp độ *'}
+              placeholder="Chọn cấp độ khóa học"
+              type="text"
+            />
             <RHFMutiSelect
               name="categories"
               options={categories.map((item) => item.name)}

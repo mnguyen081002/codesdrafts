@@ -20,7 +20,7 @@ function CourseDetailMain(props: CourseDetailMainProps) {
     <div className="h-fit w-full font-lexend-deca">
       <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[70px] pl-[320px] pr-[560px]">
         <p className="w-fit rounded-3xl bg-[#1CCC19] py-1 px-3 font-lexend-deca font-semibold text-white">
-          Graphic Design
+          {props.course?.main_category.name}
         </p>
         <p className="font-lexend-deca text-[46px] font-semibold capitalize text-white">
           {props.course?.name}

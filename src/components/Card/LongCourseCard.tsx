@@ -52,17 +52,19 @@ export default function LongCourseCard({
                 </span>
               </p>
             </div>
-            <div className="flex gap-[10px]">
-              <div className="flex items-center gap-[10px]">
-                <img src="/images/icons/published.svg" alt="" className="object-contain" />
-                <p className="text-[#414141]">Đã Phát Hành</p>
-                <Link href={`${process.env.HOST}/course/${course.published_course_id}`}>
-                  <p className="text-sm font-normal text-[#747474] underline hover:text-light-text-primary">
-                    Xem khóa học đã phát hành
-                  </p>
-                </Link>
+            {course.published_course_id && (
+              <div className="flex gap-[10px]">
+                <div className="flex items-center gap-[10px]">
+                  <img src="/images/icons/published.svg" alt="" className="object-contain" />
+                  <p className="text-[#414141]">Đã Phát Hành</p>
+                  <Link href={`${process.env.HOST}/course/${course.published_course_id}`}>
+                    <p className="text-sm font-normal text-[#747474] underline hover:text-light-text-primary">
+                      Xem khóa học đã phát hành
+                    </p>
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="flex w-fit items-center gap-[10px] rounded bg-[#f5f5f5] py-[4px] px-[8px]">
             <img

@@ -3,7 +3,7 @@ import type { ResLogin, ResRegister } from '@/shared/types/authType';
 import type { CourseCategoryType } from '../shared/enum/category';
 import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
-import CodedraftsAdminApi from './admin/setting';
+import CodedraftsAdminSettingApi from './admin/setting';
 import axiosClient from './axiosClient';
 import type { BaseQuery, BaseReadResponse } from './baseHttp';
 import type { ListCourseItemResponse } from './instructor/course';
@@ -60,7 +60,7 @@ export interface GetCourseListQuery extends BaseQuery {
 
 export const CodedraftsApi = {
   Admin: {
-    Setting: CodedraftsAdminApi,
+    Setting: CodedraftsAdminSettingApi,
   },
   Instructor: {
     Course: CodedraftsInstructorCourseApi,

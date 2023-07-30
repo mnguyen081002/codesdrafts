@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import type { AdminCountCourseResponse } from '../../api/admin/setting';
-import CodedraftsAdminApi from '../../api/admin/setting';
+import CodedraftsAdminSettingApi from '../../api/admin/setting';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import LongCourseCard from '../../components/Card/LongCourseCard';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
@@ -23,10 +23,10 @@ const AdminListCoursePage = () => {
     }
 
     const fetch = async () => {
-      const res = await CodedraftsAdminApi.getCourses({
+      const res = await CodedraftsAdminSettingApi.getCourses({
         status: status === 'all' ? undefined : status,
       });
-      const count = await CodedraftsAdminApi.countCourse();
+      const count = await CodedraftsAdminSettingApi.countCourse();
       setCount(count.data.data);
       setListCourse(res.data.data);
     };
