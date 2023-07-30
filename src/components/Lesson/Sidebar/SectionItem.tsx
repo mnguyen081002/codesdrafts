@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import type { Lesson, Section } from '../../../api/instructor/course';
+import type { SidebarLesson, SidebarSection } from '../../../api/base/interface/course';
 import CodedraftsInstructorLessonApi from '../../../api/instructor/lesson';
 import type { AddSectionResponse } from '../../../api/instructor/section';
 import CodedraftsInstructorSectionApi from '../../../api/instructor/section';
@@ -21,7 +21,7 @@ function SectionItem({
   isLast,
 }: // onEditSection,
 {
-  section: Section;
+  section: SidebarSection;
   onAddSection: (r?: AddSectionResponse) => void;
   onDeletedSection: (section_id?: number) => void;
   isLast: boolean;
@@ -35,7 +35,7 @@ function SectionItem({
   const [titleEdited, setTitleEdited] = useState(section.title);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowLesson, setIsShowLesson] = useState(isSeleted);
-  const [lessons, setLessons] = useState<Lesson[]>(section.lessons);
+  const [lessons, setLessons] = useState<SidebarLesson[]>(section.lessons);
   const ref = useClickOutside(() => setIsEdit(false));
   useEffect(() => {
     setIsSeleted(Number(section_id) === section.id);

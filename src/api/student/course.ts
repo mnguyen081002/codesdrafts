@@ -13,29 +13,12 @@ export interface Owner {
   avatar: string;
 }
 
-export interface Section {
-  id: number;
-  title: SectionTitle;
-  type: Type;
-  order: number;
-  lessons: Lesson[];
-}
-
-export interface Lesson {
-  id: number;
-  title: LessonTitle;
-  order: number;
-  section_id: number;
-}
-
 export enum LessonTitle {
   NewLesson = 'New Lesson',
-  NodeJSPro1 = 'NodeJs Pro1',
 }
 
 export enum SectionTitle {
   NewSection = 'New Section',
-  NodeJSProSection1 = 'NodeJs Pro Section 1',
 }
 
 export enum Type {

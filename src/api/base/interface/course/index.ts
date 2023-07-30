@@ -22,7 +22,7 @@ export interface BaseGetCourseByIDResponse {
   draft_course_id: null;
   categories: Category[];
   owner: Owner;
-  sections: Section[];
+  sections: SidebarSection[];
   level: CourseLevel;
   main_category: {
     id: number;
@@ -30,15 +30,15 @@ export interface BaseGetCourseByIDResponse {
   };
 }
 
-export interface Section {
+export interface SidebarSection {
   id: number;
   title: string;
   type: string;
   order: number;
-  lessons: Lesson[];
+  lessons: SidebarLesson[];
 }
 
-export interface Lesson {
+export interface SidebarLesson {
   id: number;
   title: string;
   order: number;

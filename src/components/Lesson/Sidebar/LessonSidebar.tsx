@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { GetCourseByIDResponse, Section } from '../../../api/instructor/course';
+import type { SidebarSection } from '../../../api/base/interface/course';
+import type { GetCourseByIDResponse } from '../../../api/instructor/course';
 import type { AddSectionResponse } from '../../../api/instructor/section';
 import ArrowDownV3Icon from '../../../common/Icons/ArrowDownV3';
 import ArrowLeftV2Icon from '../../../common/Icons/ArrowLeftV2';
@@ -17,7 +18,7 @@ interface LessonSidebarProps {
 
 function LessonSidebar(props: LessonSidebarProps) {
   const router = useRouter();
-  const [sections, setSections] = useState<Section[]>([]);
+  const [sections, setSections] = useState<SidebarSection[]>([]);
 
   const onAddSection = (section?: AddSectionResponse) => {
     if (!section) return;

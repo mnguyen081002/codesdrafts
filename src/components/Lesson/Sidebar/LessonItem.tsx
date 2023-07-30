@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import type { Lesson } from '../../../api/instructor/course';
+import type { SidebarLesson } from '../../../api/base/interface/course';
 import type { AddLessonResponse } from '../../../api/instructor/lesson';
 import CodedraftsInstructorLessonApi from '../../../api/instructor/lesson';
 import { useAppDispatch } from '../../../app/hooks';
@@ -16,7 +16,7 @@ function LessonItem({
   onDeletedSection,
   isLast,
 }: {
-  lesson: Lesson;
+  lesson: SidebarLesson;
   onAddLesson: (r?: AddLessonResponse) => Promise<void>;
   onDeletedSection: (lesson_id?: number) => Promise<void>;
   isLast: boolean;
