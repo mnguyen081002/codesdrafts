@@ -1,3 +1,4 @@
+import type { CourseLevel } from '../../shared/enum/course';
 import axiosClient from '../axiosClient';
 import type { BaseGetCourseByIDResponse, Category } from '../base/interface/course';
 import type { BaseQuery, BaseReadResponse, BaseResponse } from '../baseHttp';
@@ -24,6 +25,7 @@ export interface ListCourseItemResponse {
   published_at: string;
   published_course_id?: number;
   draft_course_id?: number;
+  level: CourseLevel;
   owner: {
     id: number;
     username: string;

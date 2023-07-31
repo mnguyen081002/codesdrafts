@@ -2,6 +2,7 @@ import moment from 'moment';
 import Link from 'next/link';
 
 import type { ListCourseItemResponse } from '../../api/instructor/course';
+import LevelIcon from '../../common/Icons/LevelIcon';
 import { CourseStatus } from '../../shared/enum/course';
 
 export default function LongCourseCard({
@@ -87,9 +88,10 @@ export default function LongCourseCard({
           {course.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ
         </p>
         <p className="w-[150px] font-lexend-deca text-base font-light leading-6">3d20h11m</p>
-        <p className="w-[150px] font-lexend-deca text-base font-light leading-6">
-          {course.target_audience}
-        </p>
+        <div className="flex w-[150px] items-center gap-3">
+          <LevelIcon level={course.level} />
+          <p className=" font-lexend-deca text-base font-light leading-6">{course.level}</p>
+        </div>
       </td>
     </tr>
   );

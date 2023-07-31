@@ -22,7 +22,7 @@ import { listInstructorSidebarItem } from '../../../layouts/Instructor/Instructo
 import HeaderManage from '../../../layouts/Manage/Header';
 import SidebarManage from '../../../layouts/Manage/Sidebar';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
-import { CourseLevel } from '../../../shared/enum/course';
+import { CourseLevel, CourseTargetAudience } from '../../../shared/enum/course';
 import { toastGetErrorMessage } from '../../../utils/app';
 
 type FormValuesProps = {
@@ -316,8 +316,9 @@ const CreateCouse: React.FC = () => {
               type="text"
               isMulti
             />
-            <InputRectangle
+            <RHFMutiSelect
               name="target_audience"
+              options={Object.values(CourseTargetAudience)}
               label={'Đối tượng khóa học *'}
               maxLength={200}
               placeholder="Khóa học này dành cho những đối tượng nào ? (Ấn để thêm)"
