@@ -45,9 +45,7 @@ export const StatisticalUI = ({ title, downText, leftIcon, lefDivider }: Statist
           <span className="text-3xl font-semibold">{title}</span>
           {leftIcon}
         </div>
-        <span className="h-[25px] w-[65px] font-instructorSidebar text-sm font-normal">
-          {downText}
-        </span>
+        <span className="h-[25px] w-[65px]  text-sm font-normal">{downText}</span>
       </div>
       {lefDivider && (
         <Divider orientation="vertical" className="mx-[30px] h-full border-l-light-border" />
@@ -77,10 +75,10 @@ export const rows = Array.from({ length: 3 }, (_, index) => (
 ));
 const Statistical = () => {
   return (
-    <div className="w-full px-16">
-      <div className="mt-[50px] flex w-full items-center justify-between">
-        <div className="flex w-[490px] flex-col">
-          <div className="mb-[40px]  flex items-center gap-3">
+    <div className="w-full">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex flex-col">
+          <div className="mb-[40px] flex items-center gap-3">
             <Avatar />
             <span className="text-lg font-semibold text-[#2A3547]">Chào Minh Nguyên !</span>
           </div>
@@ -100,10 +98,10 @@ const Statistical = () => {
           <Image src="/svg/manager.svg" alt="manager" width={340} height={340} />
         </div>
       </div>
-      <div className="mt-[50px] flex w-full items-center justify-between">
-        <Paper shadow="xs" p={30} className="flex h-[390px] w-[478px] flex-col">
-          <span className="font-instructorSidebar text-lg font-semibold">Doanh thu khóa học</span>
-          <span className="font-instructorSidebar text-sm font-normal">Mỗi tháng</span>
+      <div className="mt-[50px] flex w-full items-center justify-between gap-[50px] ">
+        <Paper p={30} className="flex h-[390px] w-[478px] flex-col shadow-md">
+          <span className=" text-lg font-semibold">Doanh thu khóa học</span>
+          <span className=" text-sm font-normal">Mỗi tháng</span>
 
           <div>
             <ColumnChartMonthly
@@ -115,21 +113,21 @@ const Statistical = () => {
             <div className="flex items-center gap-4">
               <Image src="/svg/bluethreedot.svg" alt="manager" width={38} height={38} />
               <div className="flex flex-col items-center">
-                <span className="font-instructorSidebar text-sm font-normal">Doanh số</span>
+                <span className=" text-sm font-normal">Doanh số</span>
                 <span className="text-base font-semibold">$36,358</span>
               </div>
             </div>
           </div>
         </Paper>
-        <Paper shadow="xs" p={30} className="flex h-[390px] w-[764px] flex-col">
+        <Paper p={30} className="flex h-[390px] flex-1 flex-col shadow-md">
           <div
-            className="mb-6 flex items-end justify-between font-instructorSidebar text-lg
+            className="mb-6 flex items-end justify-between  text-lg
           font-semibold"
           >
-            <span>Hiệu suất các khóa học</span>
+            <span>Hiệu Suất Các Khóa Học</span>
             <div className="mr-12 flex cursor-pointer items-end gap-1">
               <Image src="/svg/TriangoDown.svg" alt="triangodown" width={24} height={24} />
-              <span className="font-instructorSidebar text-sm font-normal">March 2023</span>
+              <span className=" text-sm font-normal">March 2023</span>
             </div>
           </div>
           <Table>

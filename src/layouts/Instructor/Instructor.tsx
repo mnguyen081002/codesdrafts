@@ -3,6 +3,8 @@ import ColumnChartIcon from '@/common/Icons/ColumnChart';
 import DocumentIcon from '../../common/Icons/DocumentIcon';
 import GroupIcon from '../../common/Icons/GroupIcon';
 import NotificationIcon from '../../common/Icons/NotificationIcon';
+import ProfileIcon from '../../common/Icons/ProfileIcon';
+import TransactionIcon from '../../common/Icons/TransactionIcon';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
 
@@ -27,6 +29,16 @@ export const listInstructorSidebarItem = [
     redirectPath: 'statistical',
     Icon: ColumnChartIcon,
     text: 'Thống Kê',
+  },
+  {
+    redirectPath: 'transaction',
+    Icon: TransactionIcon,
+    text: 'Giao Dịch',
+  },
+  {
+    redirectPath: 'profile',
+    Icon: ProfileIcon,
+    text: 'Hồ Sơ',
   },
 ];
 

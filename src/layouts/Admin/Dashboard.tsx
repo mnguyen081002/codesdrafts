@@ -59,7 +59,7 @@ const PaymentGateways = () => {
     <Paper
       shadow="xs"
       p={30}
-      className="flex h-[440px] w-[421px] flex-col font-instructorSidebar text-[#2A3547]"
+      className="flex h-[440px] w-[421px] flex-col font-plusJakartaSans text-[#2A3547]"
     >
       <span className="text-2xl font-semibold">Payment Gateways</span>
       <span className="text-sm font-normal">Payment Platform For Income</span>
@@ -204,7 +204,7 @@ const Dashboard = () => {
             p={20}
             className="flex h-[145px] w-[300px] items-start justify-between"
           >
-            <div className="flex flex-col font-instructorSidebar">
+            <div className="flex flex-col font-plusJakartaSans">
               <span className="text-sm font-normal">{item.topName}</span>
               <span className="mt-3 text-[28px] font-semibold text-[#495057]">
                 {item.middleName}
@@ -224,8 +224,8 @@ const Dashboard = () => {
       </div>
       <div className="mt-[50px] flex w-full items-center justify-between">
         <Paper shadow="xs" p={30} className="flex h-[390px] w-[478px] flex-col">
-          <span className="font-instructorSidebar text-lg font-semibold">Doanh thu khóa học</span>
-          <span className="font-instructorSidebar text-sm font-normal">Mỗi tháng</span>
+          <span className="font-plusJakartaSans text-lg font-semibold">Doanh thu khóa học</span>
+          <span className="font-plusJakartaSans text-sm font-normal">Mỗi tháng</span>
 
           <div>
             <ColumnChartMonthly
@@ -237,7 +237,7 @@ const Dashboard = () => {
             <div className="flex items-center gap-4">
               <Image src="/svg/bluethreedot.svg" alt="manager" width={38} height={38} />
               <div className="flex flex-col items-center">
-                <span className="font-instructorSidebar text-sm font-normal">Doanh số</span>
+                <span className="font-plusJakartaSans text-sm font-normal">Doanh số</span>
                 <span className="text-base font-semibold">$36,358</span>
               </div>
             </div>
@@ -245,13 +245,13 @@ const Dashboard = () => {
         </Paper>
         <Paper shadow="xs" p={30} className="flex h-[390px] w-[764px] flex-col">
           <div
-            className="mb-6 flex items-end justify-between font-instructorSidebar text-lg
+            className="mb-6 flex items-end justify-between font-plusJakartaSans text-lg
           font-semibold"
           >
             <span>Hiệu suất các khóa học</span>
             <div className="mr-12 flex cursor-pointer items-end gap-1">
               <Image src="/svg/TriangoDown.svg" alt="triangodown" width={24} height={24} />
-              <span className="font-instructorSidebar text-sm font-normal">March 2023</span>
+              <span className="font-plusJakartaSans text-sm font-normal">March 2023</span>
             </div>
           </div>
           <Table>
