@@ -66,12 +66,12 @@ const SettingItem = ({
         </form>
       </Modal>
       <td>
-        <div className="flex h-[45px] items-center  px-[25px]">
+        <div className="flex h-[58px] items-center  px-[25px]">
           <p className="text-[20px]">{value}</p>
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center justify-end gap-2 px-[25px]">
+        <div className="flex h-[58px] items-center justify-end gap-2 px-[25px]">
           <EditIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
             height="24"
@@ -173,12 +173,12 @@ const SettingContent = () => {
           <thead>
             <tr className="h-10 text-[22px] font-semibold">
               <th>
-                <div className="flex h-[45px] items-center px-[25px]">
+                <div className="flex h-[58px] items-center px-[25px]">
                   <p className="">Giá trị</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center justify-end px-[25px]">
+                <div className="flex h-[58px] items-center justify-end px-[25px]">
                   <p className="">Action</p>
                 </div>
               </th>
