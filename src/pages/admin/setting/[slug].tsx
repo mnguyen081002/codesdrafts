@@ -66,12 +66,12 @@ const SettingItem = ({
         </form>
       </Modal>
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
-          <p className="">{value}</p>
+        <div className="flex h-[45px] items-center  px-[25px]">
+          <p className="text-[20px]">{value}</p>
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center justify-end gap-2 px-[10px]">
+        <div className="flex h-[45px] items-center justify-end gap-2 px-[25px]">
           <EditIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
             height="20"
@@ -169,16 +169,16 @@ const SettingContent = () => {
           </form>
         </Modal>
         <AdminBar open={open} />
-        <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
+        <table className="table-auto gap-[10px] rounded-[5px] shadow-md">
           <thead>
-            <tr className="h-10 text-lg font-medium text-light-text-primary">
+            <tr className="h-10 text-[22px] font-semibold">
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Giá trị</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center justify-end px-[15px]">
+                <div className="flex h-[45px] items-center justify-end px-[25px]">
                   <p className="">Action</p>
                 </div>
               </th>
