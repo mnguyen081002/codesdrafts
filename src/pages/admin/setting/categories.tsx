@@ -38,7 +38,7 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
         </a>
       </td>
       <td>
-        <div className="flex h-[45px] items-center px-[25px]">
+        <div className="flex h-[45px] items-center">
           <p className="">
             {props.category.description.length > 50
               ? `${props.category.description.substring(0, 50)}...`
@@ -336,33 +336,33 @@ const SettingContent = () => {
         <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
           <thead>
             <tr className="h-10 text-[22px] font-medium">
-              <th>
+              <th className="w-[150px]">
                 <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Tên</p>
                 </div>
               </th>
-              <th>
-                <div className="flex h-[45px] items-center px-[25px]">
+              <th className="w-[150px]">
+                <div className="flex h-[45px] items-center">
                   <p className="">Ảnh</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center px-[25px]">
+                <div className="flex h-[45px] items-center">
                   <p className="">Mô tả</p>
                 </div>
               </th>
-              <th>
-                <div className="flex h-[45px] items-center">
+              <th className="w-[120px]">
+                <div className="flex h-[45px] items-center justify-center">
                   <p className="">Thứ tự</p>
                 </div>
               </th>
-              <th>
-                <div className="flex h-[45px] items-center">
+              <th className="w-[120px]">
+                <div className="flex h-[45px] items-center justify-center">
                   <p className="">Trạng thái</p>
                 </div>
               </th>
-              <th>
-                <div className="flex h-[45px] items-center px-[25px]">
+              <th className="w-[120px]">
+                <div className="flex h-[45px] items-center justify-center">
                   <p className="">Action</p>
                 </div>
               </th>
