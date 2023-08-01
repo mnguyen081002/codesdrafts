@@ -11,8 +11,8 @@ function AdminBar({ open }: { open: () => void }) {
       </div>
       <PrimaryButton
         text="Thêm"
-        className="h-[32px] w-[60px] px-2 text-white"
-        textClassName="text-[14px]"
+        className="h-[40px] px-[20px] text-white "
+        textClassName="text-[16px] font-lexend-deca font-semibold"
         onClick={open}
       />
     </div>

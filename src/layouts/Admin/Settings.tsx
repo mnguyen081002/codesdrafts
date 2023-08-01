@@ -16,8 +16,10 @@ function SettingNavButton({ title, href, pkey }: { title: string; href: string; 
       href={href}
       className="flex justify-between border-t border-light-border px-[12px] pt-[15px]"
     >
-      <p className="text-lg font-normal text-light-text-primary">{title}</p>
-      <p className="text-lg font-normal text-light-text-primary">{pkey}</p>
+      <div className="flex">
+        <p className="w-[600px] text-[20px] font-medium">{title}</p>
+        <p className="text-[18px] text-light-text-primary">{pkey}</p>
+      </div>
       <ArrowRightIcon />
     </Link>
   );
@@ -50,7 +52,7 @@ const AdminSetting = () => {
   }, []);
 
   return (
-    <div className="flex w-full flex-col gap-[50px] px-[300px] pt-[60px]">
+    <div className="flex w-full flex-col gap-[50px] px-[150px] pt-[60px]">
       <DecorAdmin text="Cài đặt" />
       <Modal size={400} title="Cài đặt" opened={opened} onClose={close} centered>
         <Formik
@@ -137,9 +139,9 @@ const AdminSetting = () => {
       </Modal>
       <AdminBar open={open} />
       <div className="flex flex-col gap-[10px] rounded-[5px] p-[10px] shadow-md">
-        <div className="flex justify-between px-[12px] font-medium">
-          <p>Tên</p>
-          <p>Key</p>
+        <div className="flex px-[12px] text-[22px] font-semibold">
+          <p className="w-[600px] font-semibold">Tên</p>
+          <p className="font-semibold">Key</p>
           <p></p>
         </div>
         <SettingNavButton href={'/admin/setting/categories'} title="Danh Mục" />
