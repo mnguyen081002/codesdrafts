@@ -87,14 +87,14 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
           <EditIcon
             className="cursor-pointer"
             onClick={() => props.onEdit(props.category)}
-            height="20"
-            width="20"
+            height="24"
+            width="24"
           />
           <TrashIcon
             className="cursor-pointer"
             onClick={() => props.onDelete(props.category)}
-            height="20"
-            width="20"
+            height="24"
+            width="24"
           />
         </div>
       </td>

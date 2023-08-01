@@ -74,14 +74,14 @@ const SettingItem = ({
         <div className="flex h-[45px] items-center justify-end gap-2 px-[25px]">
           <EditIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
-            height="20"
-            width="20"
+            height="24"
+            width="24"
             onClick={open}
           />
           <TrashIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
-            height="20"
-            width="20"
+            height="24"
+            width="24"
             onClick={onDelete}
           />
         </div>
