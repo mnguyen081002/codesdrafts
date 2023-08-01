@@ -145,7 +145,7 @@ const SettingContent = () => {
 
   return (
     <AdminLayout>
-      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[300px] pt-[60px]">
+      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[150px] pt-[60px]">
         <DecorAdmin text="Danh mục" />
         <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
           <form onSubmit={formik.handleSubmit} className="w-full">

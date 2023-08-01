@@ -26,9 +26,9 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
   const [checked, setChecked] = useState(props.category.is_active);
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <tr key={props.category.id} className="border-t border-light-border">
+    <tr key={props.category.id} className="border-t border-light-border text-[20px]">
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
+        <div className="flex h-[45px] items-center px-[25px]">
           <p className="">{props.category.name}</p>
         </div>
       </td>
@@ -38,7 +38,7 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
         </a>
       </td>
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
+        <div className="flex h-[45px] items-center px-[25px]">
           <p className="">
             {props.category.description.length > 50
               ? `${props.category.description.substring(0, 50)}...`
@@ -47,12 +47,12 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
+        <div className="flex h-[45px] items-center px-[25px]">
           <p className="">{props.category.order}</p>
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
+        <div className="flex h-[45px] items-center px-[25px]">
           <Switch
             disabled={isLoading}
             checked={checked}
@@ -83,7 +83,7 @@ const AdminCategorySettingItem = (props: AdminCategorySettingItemProps) => {
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center gap-2 px-[10px]">
+        <div className="flex h-[45px] items-center gap-2 px-[25px]">
           <EditIcon
             className="cursor-pointer"
             onClick={() => props.onEdit(props.category)}
@@ -240,7 +240,7 @@ const SettingContent = () => {
 
   return (
     <AdminLayout>
-      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[300px] pt-[60px]">
+      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[150px] pt-[60px]">
         <DecorAdmin text="Danh mục" />
         <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
           <form onSubmit={formik.handleSubmit} className="w-full">
@@ -335,25 +335,25 @@ const SettingContent = () => {
         <AdminBar open={open} />
         <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
           <thead>
-            <tr className="h-10 text-lg font-medium text-light-text-primary">
+            <tr className="h-10 text-[22px] font-medium">
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Tên</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Ảnh</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Mô tả</p>
                 </div>
               </th>
               <th>
                 <div className="flex h-[45px] items-center">
-                  <p className="">Priority</p>
+                  <p className="">Thứ tự</p>
                 </div>
               </th>
               <th>
@@ -362,7 +362,7 @@ const SettingContent = () => {
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[45px] items-center px-[25px]">
                   <p className="">Action</p>
                 </div>
               </th>
