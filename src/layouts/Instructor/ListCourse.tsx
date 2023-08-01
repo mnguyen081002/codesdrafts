@@ -86,6 +86,11 @@ const ListCoursePage = () => {
               </tr>
             </thead>
             <tbody className="flex max-h-[580px] flex-col overflow-y-auto">
+              {listCourse.length === 0 && (
+                <tr className="flex h-[200px] items-center justify-center">
+                  <p className="text-xl font-semibold">Không có khóa học nào</p>
+                </tr>
+              )}
               {listCourse.map((course) => (
                 <LongCourseCard
                   onClick={() => {

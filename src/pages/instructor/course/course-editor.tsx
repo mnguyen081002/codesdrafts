@@ -351,6 +351,7 @@ const CreateCouse: React.FC = () => {
                     } catch (e) {
                       console.log(e);
                     }
+                    router.replace('/instructor/course?selection=all');
                   }}
                   className="w-fit bg-red-600 px-[30px]"
                   text="XÓA KHÓA HỌC"
