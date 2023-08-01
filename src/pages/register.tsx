@@ -61,7 +61,7 @@ const Register = (props: Props) => {
   const RegisterSchema = Yup.object().shape({
     email: Yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
     password: Yup.string().required('Mật khẩu là bắt buộc'),
-    username: Yup.string().required('Tên đăng nhập là bắt buộc'),
+    username: Yup.string().required('Tên người dùng là bắt buộc'),
     passwordConfirm: Yup.string().oneOf([Yup.ref('password')], 'Mật khẩu không trùng khớp'),
   });
 
@@ -132,7 +132,7 @@ const Register = (props: Props) => {
             />
             <RHFTextField
               name="username"
-              placeholder="Tên đăng nhập"
+              placeholder="Tên người dùng"
               sx={{
                 '& wrapper': {
                   width: rem(326),

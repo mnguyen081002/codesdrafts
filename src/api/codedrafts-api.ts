@@ -1,6 +1,5 @@
 import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
-import type { CourseCategoryType } from '../shared/enum/category';
 import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import CodedraftsAdminSettingApi from './admin/setting';
@@ -65,6 +64,11 @@ export const CodedraftsApi = {
   Instructor: {
     Course: CodedraftsInstructorCourseApi,
   },
+  verifyEmail: (token: string) => {
+    return axiosClient.post('/api/auth/verify-email', {
+      token,
+    });
+  },
   getMyCourseList: (props: GetCourseListQuery) => {
     return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/course/my-course', {
       params: props,
@@ -96,36 +100,6 @@ export const CodedraftsApi = {
       testCode,
       language,
     });
-  },
-
-  deleteLessonById(id: number) {
-    return axiosClient.delete(`/api/admin/lesson/${id}`);
-  },
-
-  createCategory: (
-    title: string,
-    id: number,
-    course_id: number,
-    type: CourseCategoryType,
-    order?: number,
-  ) => {
-    return axiosClient.post('/api/admin/category', {
-      title,
-      id: Number(id),
-      order,
-      type,
-      courseId: Number(course_id),
-    });
-  },
-
-  updateCategory: (title: string, id: number) => {
-    return axiosClient.patch(`/api/admin/category/${id}`, {
-      title,
-    });
-  },
-
-  deleteCategoryById: (id: number) => {
-    return axiosClient.delete(`/api/admin/category/${id}`);
   },
   login: async (email: string, password: string) => {
     return axiosClient.post<ResLogin>('/api/auth/login', {
