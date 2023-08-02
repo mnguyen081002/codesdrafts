@@ -1,15 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  em,
-  Flex,
-  Grid,
-  MantineProvider,
-  rem,
-} from '@mantine/core';
+import { Box, Container, Flex, MantineProvider, rem } from '@mantine/core';
 import type { NextPageContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,6 +17,10 @@ import { RHFTextField } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 import RHFPasswordField from '@/components/hook-form/RHFPasswordField';
 import { PATH_AUTH, PATH_DASHBOARD } from '@/routes/path';
+
+import { PrimaryButton } from '../components/Button';
+import Header from '../layouts/Header';
+import { Social } from './login';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -92,209 +86,141 @@ const Register = (props: Props) => {
   };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Header />
       <AuthWrapper>
         <Box
+          className="shadow-md"
           sx={(theme) => ({
             borderRadius: 15,
-            width: rem(400),
-            height: rem(600),
+            width: rem(467),
             backgroundColor: theme.white,
             position: 'relative',
             zIndex: 10,
-            padding: '4.01%',
-            paddingTop: rem(52),
-            paddingBottom: rem(100),
+            padding: `${rem(30)} ${rem(40)}`,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0px 3px 4px 0px rgb(198,198,198)',
           })}
         >
-          <Flex justify="center" mb={45}>
-            <Link href="/">
-              <Image src="/logo-96.png" width={60} height={60} alt="" />
-            </Link>
-          </Flex>
-          <Flex direction="column" gap={16} mb={rem(80)}>
-            <RHFTextField
-              name="email"
-              placeholder="Địa chỉ email"
-              sx={{
-                '& wrapper': {
-                  width: rem(326),
-                },
-                '& input': {
-                  height: rem(42),
-                  borderRadius: rem(8),
-                },
-              }}
-            />
-            <RHFTextField
-              name="username"
-              placeholder="Tên người dùng"
-              sx={{
-                '& wrapper': {
-                  width: rem(326),
-                },
-                '& input': {
-                  height: rem(42),
-                  borderRadius: rem(8),
-                },
-              }}
-            />
-            <RHFPasswordField
-              name="password"
-              placeholder="Mật khẩu"
-              styles={{
-                wrapper: {
-                  width: rem(326),
-                  '& input:focus': {
-                    border: '0 !important',
-                  },
-                },
-                input: {
-                  height: rem(42),
-                  borderRadius: rem(8),
-                },
-                innerInput: {
-                  height: 'auto',
-                },
-              }}
-            />
-            <RHFPasswordField
-              name="passwordConfirm"
-              placeholder="Nhập lại mật khẩu"
-              styles={{
-                wrapper: {
-                  width: rem(326),
-                  '& input:focus': {
-                    border: '0 !important',
-                  },
-                },
-                input: {
-                  height: rem(42),
-                  borderRadius: rem(8),
-                },
-                innerInput: {
-                  height: 'auto',
-                },
-              }}
-            />
-            <MantineProvider
-              theme={{
-                fontFamily: 'Inter, sans-serif',
-              }}
-            >
-              {errorRegister && (
-                <Container
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    gap: rem(8),
-                    color: '#FF3D71',
-                    height: rem(32),
-                    width: rem(326),
-                    padding: rem(8),
-                    borderRadius: rem(4),
-                    fontSize: rem(12),
-                    bottom: rem(230),
-                  }}
-                >
-                  <BiError size={20} />
-                  <span>{errorRegister}</span>
-                </Container>
-              )}
-              <Button
-                loading={loading}
-                type="submit"
-                className="bg-light-primary text-white hover:bg-light-primary"
-                sx={{
-                  marginTop: rem(30),
-                  boxShadow: '0px 12px 21px 4px #4461F226',
-                  width: rem(326),
-                  height: rem(42),
-                  fontSize: rem(16),
-                  fontWeight: 600,
-                  lineHeight: rem(30),
-                  letterSpacing: em(0.1),
-                  borderRadius: rem(8),
-                }}
-              >
-                Đăng ký
-              </Button>
-              <Container
-                sx={{
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'center',
-                  gap: rem(8),
-                  height: rem(32),
-                  width: rem(326),
-                  padding: rem(8),
-                  borderRadius: rem(4),
-                  fontSize: rem(14),
-                }}
-              >
-                <span
-                  style={{
-                    color: '#696767',
-                  }}
-                >
-                  Đã có tài khoản?
-                </span>
-                <Link href={PATH_AUTH.login} className="no-underline">
-                  Đăng nhập
+          <div>
+            <div>
+              <Flex justify="center" mb={45}>
+                <Link href="/">
+                  <Image src="/logo-96.png" width={80} height={80} alt="" />
                 </Link>
-              </Container>
-            </MantineProvider>
-          </Flex>
-          <Divider
-            label="Hoặc tiếp tục với"
-            labelPosition="center"
-            sx={(theme) => ({
-              color: theme.colors.gray[5],
-              position: 'absolute',
-              bottom: rem(110),
-            })}
-            w={rem(306)}
-          />
-          <Grid
-            sx={{
-              position: 'absolute',
-              bottom: rem(32),
-            }}
-          >
-            <Grid.Col span={4}>
-              <Image
-                className="cursor-pointer"
-                src="/images/icons/Google.svg"
-                width={80}
-                height={46}
-                alt=""
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Image
-                className="cursor-pointer"
-                src="/images/icons/Github.svg"
-                width={80}
-                height={46}
-                alt=""
-              />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <Image
-                className="cursor-pointer"
-                src="/images/icons/Facebook.svg"
-                width={80}
-                height={46}
-                alt=""
-              />
-            </Grid.Col>
-          </Grid>
+              </Flex>
+              <Flex direction="column" gap={16}>
+                <RHFTextField
+                  name="email"
+                  placeholder="Địa chỉ email"
+                  sx={{
+                    '& input': {
+                      height: rem(55),
+                      borderRadius: rem(8),
+                    },
+                  }}
+                />
+                <RHFTextField
+                  name="username"
+                  placeholder="Tên người dùng"
+                  sx={{
+                    '& input': {
+                      height: rem(55),
+                      borderRadius: rem(8),
+                    },
+                  }}
+                />
+                <RHFPasswordField
+                  name="password"
+                  placeholder="Mật khẩu"
+                  styles={{
+                    wrapper: {
+                      '& input:focus': {
+                        border: '0 !important',
+                      },
+                    },
+                    input: {
+                      height: rem(55),
+                      borderRadius: rem(8),
+                    },
+                    innerInput: {
+                      height: 'auto',
+                    },
+                  }}
+                />
+                <RHFPasswordField
+                  name="passwordConfirm"
+                  placeholder="Nhập lại mật khẩu"
+                  styles={{
+                    wrapper: {
+                      '& input:focus': {
+                        border: '0 !important',
+                      },
+                    },
+                    input: {
+                      height: rem(55),
+                      borderRadius: rem(8),
+                    },
+                    innerInput: {
+                      height: 'auto',
+                    },
+                  }}
+                />
+                <MantineProvider
+                  theme={{
+                    fontFamily: 'Inter, sans-serif',
+                  }}
+                >
+                  {errorRegister && (
+                    <Container
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        justifyContent: 'center',
+                        position: 'absolute',
+                        gap: rem(8),
+                        color: '#FF3D71',
+                        height: rem(32),
+                        width: rem(366),
+                        padding: rem(8),
+                        borderRadius: rem(4),
+                        fontSize: rem(12),
+                        bottom: rem(230),
+                      }}
+                    >
+                      <BiError size={20} />
+                      <span>{errorRegister}</span>
+                    </Container>
+                  )}
+                  <PrimaryButton className="mt-3 h-[55px]" type="submit" text="Đăng ký" />
+                  <Container
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      gap: rem(8),
+                      height: rem(32),
+                      width: rem(366),
+                      padding: rem(8),
+                      borderRadius: rem(4),
+                      fontSize: rem(14),
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: '#696767',
+                      }}
+                    >
+                      Đã có tài khoản?
+                    </span>
+                    <Link href={PATH_AUTH.login} className="no-underline">
+                      Đăng nhập
+                    </Link>
+                  </Container>
+                </MantineProvider>
+              </Flex>
+            </div>
+            <Social />
+          </div>
         </Box>
       </AuthWrapper>
     </FormProvider>

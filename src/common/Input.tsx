@@ -15,6 +15,7 @@ interface InputProps {
   noResize?: boolean;
   minRows?: number;
   value?: string;
+  onChange?: (event: React.ChangeEvent<any>) => void;
 }
 
 interface ThumbnailProps {
@@ -124,6 +125,7 @@ export const InputCustom = (props: InputProps) => {
           maxLength={props.maxLength}
           style={{ height: props.height }}
           value={props.value}
+          onChange={props.onChange}
         />
       )}
     </div>

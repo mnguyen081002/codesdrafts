@@ -69,6 +69,17 @@ export const CodedraftsApi = {
       token,
     });
   },
+  resetPassword: (token: string, password: string) => {
+    return axiosClient.post('/api/auth/reset-password', {
+      token,
+      password,
+    });
+  },
+  forgotPassword: (email: string) => {
+    return axiosClient.post('/api/auth/forgot-password', {
+      email,
+    });
+  },
   getMyCourseList: (props: GetCourseListQuery) => {
     return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/course/my-course', {
       params: props,

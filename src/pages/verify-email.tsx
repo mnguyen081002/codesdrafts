@@ -40,7 +40,10 @@ const VerifyEmailPage = () => {
                   <p className="w-fit text-[20px] font-bold">Thành công!</p>
                   <p className="text-[18px]">Mật khẩu của bạn đã được khôi phục</p>
                 </div>
-                <PrimaryButton text="Quay lại trang đăng nhập" />
+                <PrimaryButton
+                  text="Quay lại trang đăng nhập"
+                  onClick={() => router.push('/login')}
+                />
               </div>
             ) : (
               <div className="flex h-fit flex-col items-center justify-center gap-[50px] rounded-md py-[60px] px-[160px] shadow-md">
@@ -49,7 +52,10 @@ const VerifyEmailPage = () => {
                   <p className="w-fit text-[20px] font-bold">Thất bại!</p>
                   <p className="text-[18px]">Mã xác thực không hợp lệ</p>
                 </div>
-                <PrimaryButton text="Quay lại trang đăng nhập" />
+                <PrimaryButton
+                  text="Quay lại trang đăng nhập"
+                  onClick={() => router.push('/login')}
+                />
               </div>
             )}
           </>

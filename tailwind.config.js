@@ -95,6 +95,7 @@ module.exports = {
         inter: ['Inter', 'sans-serif'],
         plusJakartaSans: ['Plus Jakarta Sans', 'sans-serif'],
         lessonContent: ['Lora', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
       },
       // animation: 'name duration timing-function delay iteration-count direction fill-mode play-state;
       animation: {
