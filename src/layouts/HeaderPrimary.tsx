@@ -62,20 +62,20 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <Link href={'/course'}>
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Khóa học của tôi
             </Text>
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Giỏ hàng
           </Text>
         </Menu.Item>
         <Menu.Item>
           <Link href={'/instructor/course'}>
             <div className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
+              <Text color="dark" className="text-[16px]">
                 Quản lý dạy học
               </Text>
             </div>
@@ -84,7 +84,7 @@ const MenuUser = () => {
         {session.data?.token.user.role === 'ADMINSTRATOR' && (
           <Menu.Item>
             <Link href={'/admin/courses'} className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
+              <Text color="dark" className="text-[16px]">
                 Quản lý giảng viên
               </Text>
             </Link>
@@ -95,11 +95,10 @@ const MenuUser = () => {
 
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Thông báo
             </Text>
             <Text
-              size="sm"
               color="dark"
               className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
@@ -109,11 +108,10 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Tin nhắn
             </Text>
             <Text
-              size="sm"
               color="dark"
               className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
@@ -125,19 +123,19 @@ const MenuUser = () => {
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Cài đặt tài khoản
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Tin nhắn
           </Text>
         </Menu.Item>
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Hổ trợ
           </Text>
         </Menu.Item>
@@ -146,7 +144,7 @@ const MenuUser = () => {
             signOut();
           }}
         >
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Đăng xuất
           </Text>
         </Menu.Item>
