@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Container, Flex, MantineProvider, rem } from '@mantine/core';
+import { Box, Container, Flex, rem } from '@mantine/core';
 import type { NextPageContext } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -165,59 +165,47 @@ const Register = (props: Props) => {
                     },
                   }}
                 />
-                <MantineProvider
-                  theme={{
-                    fontFamily: 'Inter, sans-serif',
-                  }}
-                >
-                  {errorRegister && (
-                    <Container
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        position: 'absolute',
-                        gap: rem(8),
-                        color: '#FF3D71',
-                        height: rem(32),
-                        width: rem(366),
-                        padding: rem(8),
-                        borderRadius: rem(4),
-                        fontSize: rem(12),
-                        bottom: rem(230),
-                      }}
-                    >
-                      <BiError size={20} />
-                      <span>{errorRegister}</span>
-                    </Container>
-                  )}
-                  <PrimaryButton className="mt-3 h-[55px]" type="submit" text="Đăng ký" />
+                <PrimaryButton className="mt-3 h-[55px]" type="submit" text="Đăng ký" />
+                {errorRegister && (
                   <Container
                     sx={{
                       display: 'flex',
                       alignItems: 'flex-end',
                       justifyContent: 'center',
+                      bottom: rem(285),
                       gap: rem(8),
-                      height: rem(32),
+                      color: '#FF3D71',
                       width: rem(326),
                       padding: rem(8),
                       borderRadius: rem(4),
-                      fontSize: rem(14),
+                      fontSize: rem(12),
                     }}
                   >
-                    <span
-                      style={{
-                        color: '#696767',
-                      }}
-                      className="text-[16px]"
-                    >
-                      Đã có tài khoản ?
-                    </span>
-                    <Link href={PATH_AUTH.login} className="text-[16px] no-underline">
-                      Đăng nhập
-                    </Link>
+                    <BiError size={20} />
+                    <span>{errorRegister}</span>
                   </Container>
-                </MantineProvider>
+                )}
+                <Container
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                    gap: rem(8),
+                    height: rem(32),
+                    width: rem(326),
+                    padding: rem(8),
+                    borderRadius: rem(4),
+                    fontSize: rem(14),
+                  }}
+                >
+                  <span className="text-[16px] text-light-text-primary ">Đã có tài khoản ?</span>
+                  <Link
+                    href={PATH_AUTH.login}
+                    className="text-[16px] text-light-text-primary no-underline"
+                  >
+                    Đăng nhập
+                  </Link>
+                </Container>
               </Flex>
             </div>
             <Social />

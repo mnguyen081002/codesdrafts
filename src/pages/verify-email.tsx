@@ -38,7 +38,7 @@ const VerifyEmailPage = () => {
                 <img src="/svg/Balloon.svg" alt="balloon" />
                 <div className="flex w-full flex-col items-center justify-center">
                   <p className="w-fit text-[20px] font-bold">Thành công!</p>
-                  <p className="text-[18px]">Mật khẩu của bạn đã được khôi phục</p>
+                  <p className="text-[18px]">Email của bạn đã được xác thực</p>
                 </div>
                 <PrimaryButton
                   text="Quay lại trang đăng nhập"
@@ -50,7 +50,7 @@ const VerifyEmailPage = () => {
                 <img src="/svg/Danger.svg" alt="Danger" />
                 <div className="flex w-full flex-col items-center justify-center">
                   <p className="w-fit text-[20px] font-bold">Thất bại!</p>
-                  <p className="text-[18px]">Mã xác thực không hợp lệ</p>
+                  <p className="text-[18px]">Có lỗi xảy ra, vui lòng thử lại</p>
                 </div>
                 <PrimaryButton
                   text="Quay lại trang đăng nhập"

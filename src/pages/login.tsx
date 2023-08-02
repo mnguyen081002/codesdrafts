@@ -35,8 +35,8 @@ export function Social() {
         labelPosition="center"
         labelProps={{
           sx: {
-            color: '#696767',
-            fontSize: rem(16),
+            color: '#4C4E64',
+            fontSize: '16px',
           },
         }}
         sx={(theme) => ({
@@ -150,21 +150,21 @@ const Login = () => {
                     },
                   }}
                 />
-                <Link href="/auth/forgot-password" className="flex w-full justify-end">
-                  <p className="text-sm text-light-text-primary">Quên mật khẩu?</p>
+                <Link href="/forgot-password" className="flex w-full justify-end">
+                  <p className="text-[16px] text-light-text-primary">Quên mật khẩu?</p>
                 </Link>
                 <MantineProvider
                   theme={{
                     fontFamily: 'Inter, sans-serif',
                   }}
                 >
+                  <PrimaryButton type="submit" className="mt-2 h-[55px]" text="Đăng nhập" />
                   {errorLogin && (
                     <Container
                       sx={{
                         display: 'flex',
                         alignItems: 'flex-end',
                         justifyContent: 'center',
-                        position: 'absolute',
                         bottom: rem(285),
                         gap: rem(8),
                         color: '#FF3D71',
@@ -178,7 +178,6 @@ const Login = () => {
                       <span>{errorLogin}</span>
                     </Container>
                   )}
-                  <PrimaryButton type="submit" className="mt-2 h-[55px]" text="Đăng nhập" />
                   <Container
                     sx={{
                       display: 'flex',
@@ -192,22 +191,18 @@ const Login = () => {
                       fontSize: rem(14),
                     }}
                   >
-                    <span
-                      style={{
-                        color: '#696767',
-                      }}
-                      className="text-[16px]"
+                    <span className="text-[16px] text-light-text-primary">Chưa có tài khoản?</span>
+                    <Link
+                      href={PATH_AUTH.register}
+                      className="text-[16px] text-light-text-primary no-underline"
                     >
-                      Chưa có tài khoản?
-                    </span>
-                    <Link href={PATH_AUTH.register} className="text-[16px] no-underline">
                       Đăng ký
                     </Link>
                   </Container>
                 </MantineProvider>
               </Flex>
             </div>
-            <Social></Social>
+            <Social />
           </div>
         </Box>
       </AuthWrapper>
