@@ -199,7 +199,7 @@ const Register = (props: Props) => {
                       justifyContent: 'center',
                       gap: rem(8),
                       height: rem(32),
-                      width: rem(366),
+                      width: rem(326),
                       padding: rem(8),
                       borderRadius: rem(4),
                       fontSize: rem(14),
@@ -209,10 +209,11 @@ const Register = (props: Props) => {
                       style={{
                         color: '#696767',
                       }}
+                      className="text-[16px]"
                     >
-                      Đã có tài khoản?
+                      Đã có tài khoản ?
                     </span>
-                    <Link href={PATH_AUTH.login} className="no-underline">
+                    <Link href={PATH_AUTH.register} className="text-[16px] no-underline">
                       Đăng nhập
                     </Link>
                   </Container>
