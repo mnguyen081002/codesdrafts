@@ -213,7 +213,7 @@ const Register = (props: Props) => {
                     >
                       Đã có tài khoản ?
                     </span>
-                    <Link href={PATH_AUTH.register} className="text-[16px] no-underline">
+                    <Link href={PATH_AUTH.login} className="text-[16px] no-underline">
                       Đăng nhập
                     </Link>
                   </Container>

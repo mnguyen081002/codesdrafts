@@ -150,6 +150,9 @@ const Login = () => {
                     },
                   }}
                 />
+                <Link href="/auth/forgot-password" className="flex w-full justify-end">
+                  <p className="text-sm text-light-text-primary">Quên mật khẩu?</p>
+                </Link>
                 <MantineProvider
                   theme={{
                     fontFamily: 'Inter, sans-serif',
@@ -175,7 +178,7 @@ const Login = () => {
                       <span>{errorLogin}</span>
                     </Container>
                   )}
-                  <PrimaryButton type="submit" className="mt-3 h-[55px]" text="Đăng nhập" />
+                  <PrimaryButton type="submit" className="mt-2 h-[55px]" text="Đăng nhập" />
                   <Container
                     sx={{
                       display: 'flex',
