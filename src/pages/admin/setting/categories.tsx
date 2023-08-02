@@ -13,6 +13,7 @@ import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
 import AdminBar from '../../../components/Admin/bar';
 import DecorAdmin from '../../../components/Admin/decor';
+import { requireAuth } from '../../../components/requireAuth';
 import { AdminLayout } from '../../../layouts/Admin/Admin';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
 import { toastGetErrorMessage } from '../../../utils/app';
@@ -383,5 +384,11 @@ const SettingContent = () => {
     </AdminLayout>
   );
 };
+
+export const getServerSideProps = requireAuth(async () => {
+  return {
+    props: {},
+  };
+});
 
 export default SettingContent;

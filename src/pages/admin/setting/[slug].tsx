@@ -2,6 +2,7 @@ import { Button, Group, Input, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
@@ -206,6 +207,22 @@ const SettingContent = () => {
       </div>
     </AdminLayout>
   );
+};
+
+export const getServerSideProps = async () => {
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default SettingContent;
