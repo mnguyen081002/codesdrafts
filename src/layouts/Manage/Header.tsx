@@ -45,41 +45,31 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <Link href={'/home'} className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
-              Quay lại trang học viên
-            </Text>
+            <Text className="text-[16px]">Quay lại trang học viên</Text>
           </Link>
         </Menu.Item>
         <Menu.Item>
           <Link href={'/admin/courses'} className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
-              Quản lý dạy học
-            </Text>
+            <Text className="text-[16px]">Quản lý dạy học</Text>
           </Link>
         </Menu.Item>
         {session.data?.token.user.role === 'ADMINSTRATOR' && (
           <Menu.Item>
             <Link href={'/admin/courses'} className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
-                Quản lý giảng viên
-              </Text>
+              <Text className="text-[16px]">Quản lý giảng viên</Text>
             </Link>
           </Menu.Item>
         )}
         <Menu.Divider />
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
-            Hỗ trợ
-          </Text>
+          <Text className="text-[16px]">Hỗ trợ</Text>
         </Menu.Item>
         <Menu.Item
           onClick={() => {
             signOut();
           }}
         >
-          <Text size="sm" color="dark" className="text-lg">
-            Đăng xuất
-          </Text>
+          <Text className="text-[16px]">Đăng xuất</Text>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
