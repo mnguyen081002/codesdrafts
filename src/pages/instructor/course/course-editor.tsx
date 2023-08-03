@@ -34,6 +34,10 @@ type FormValuesProps = {
   target_audience: string;
   feedbackEmail: string;
   level: CourseLevel;
+  requirements: string[];
+  objectives: string[];
+  categories: string[];
+  thumbnailUpload: File | string;
 };
 
 const CreateCouse: React.FC = () => {
@@ -46,21 +50,30 @@ const CreateCouse: React.FC = () => {
 
   const router = useRouter();
   const { id } = router.query;
+  const CourseSchema1 = Yup.object().shape({});
 
   const CourseSchema = Yup.object().shape({
     name: Yup.string().required('Vui lòng nhập tên khóa học'),
-    price: Yup.string().required('Vui lòng nhập giá khóa học'),
+    price: Yup.string()
+      .required('Vui lòng nhập giá khóa học')
+      .min(0, 'Giá khóa học phải lớn hơn 0')
+      .max(Yup.ref('base_price'), 'Giá khóa học phải nhỏ hơn giá gốc'),
     base_price: Yup.string().required('Vui lòng nhập giá gốc khóa học'),
     description: Yup.string().required('Vui lòng nhập mô tả khóa học'),
     short_description: Yup.string().required('Vui lòng nhập mô tả ngắn khóa học'),
     target_audience: Yup.string().required('Vui lòng nhập đối tượng khóa học'),
+    level: Yup.string().required('Vui lòng nhập trình độ khóa học'),
+    requirements: Yup.array().min(1, 'Vui lòng nhập ít nhất 1 yêu cầu'),
+    thumbnailUpload: Yup.mixed().required('Vui lòng chọn ảnh'),
+    objectives: Yup.array().min(1, 'Vui lòng nhập ít nhất 1 mục tiêu'),
+    categories: Yup.array().min(1, 'Vui lòng chọn ít nhất 1 kĩ năng'),
     feedbackEmail: Yup.string()
       .required('Vui lòng nhập email')
       .email('Vui lòng nhập đúng định dạng email'),
   });
 
   const methods = useForm<FormValuesProps>({
-    resolver: yupResolver(CourseSchema),
+    resolver: yupResolver(CourseSchema1),
   });
 
   const { reset, handleSubmit, setError } = methods;
@@ -72,17 +85,7 @@ const CreateCouse: React.FC = () => {
         type: 'manual',
         message: 'Vui lòng chọn ảnh',
       });
-      return;
     }
-
-    if (Number(data.price) > Number(data.base_price)) {
-      setError('price', {
-        type: 'manual',
-        message: 'Giá khóa học không được lớn hơn giá gốc',
-      });
-      return;
-    }
-
     if (thumbnailUpload instanceof File) {
       const uploadRes = await CodedraftsApi.uploadFiles([thumbnailUpload]);
 
@@ -99,6 +102,23 @@ const CreateCouse: React.FC = () => {
       .map((item) => {
         return item.id;
       });
+
+    try {
+      await CourseSchema.validate(
+        { ...data, requirements, thumbnailUpload: thumbnail, objectives, categories: cats },
+        {
+          abortEarly: false,
+        },
+      );
+    } catch (error: any) {
+      error.inner.forEach((e) => {
+        setError(e.path as keyof FormValuesProps, {
+          type: 'manual',
+          message: e.message,
+        });
+      });
+      return;
+    }
 
     const update = {
       name: data.name,
