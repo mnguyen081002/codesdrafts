@@ -57,6 +57,18 @@ export interface GetCourseListQuery extends BaseQuery {
   category_id?: number;
 }
 
+export interface GetCategoriesPublicResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  name: string;
+  description: string;
+  thumbnail: string;
+  is_active: boolean;
+  order: number;
+}
+
 export const CodedraftsApi = {
   Admin: {
     Setting: CodedraftsAdminSettingApi,
@@ -92,6 +104,9 @@ export const CodedraftsApi = {
   },
   getCourseById: (id: number) => {
     return axiosClient.get<BaseReadResponse<ListCourseItemResponse>>(`/api/course/${id}`);
+  },
+  getCategories: () => {
+    return axiosClient.get<BaseReadResponse<GetCategoriesPublicResponse[]>>('/api/category');
   },
   uploadFiles: (files: File[]) => {
     const formData = new FormData();

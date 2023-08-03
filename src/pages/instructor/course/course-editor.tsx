@@ -8,7 +8,6 @@ import type { ToastContentProps } from 'react-toastify';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
-import CodedraftsAdminSettingApi from '@/api/admin/setting';
 import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 
@@ -161,7 +160,7 @@ const CreateCouse: React.FC = () => {
     };
     const handleGetSetting = async () => {
       try {
-        const res = await CodedraftsAdminSettingApi.getCateSetting();
+        const res = await CodedraftsApi.getCategories();
         setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
       } catch (error) {
         console.log(error);
@@ -300,7 +299,7 @@ const CreateCouse: React.FC = () => {
               label={'Mục tiêu khóa học *'}
               creatable
               maxLength={200}
-              placeholder="Người học sẽ học được gì khi hoàn thành khóa học ? (Ấn để thêm)"
+              placeholder="Người học sẽ học được gì khi hoàn thành khóa học ? (Nhập và ấn để thêm)"
               type="text"
               isMulti
             />
@@ -312,7 +311,7 @@ const CreateCouse: React.FC = () => {
               label={'Yêu cầu khóa học *'}
               maxLength={200}
               creatable
-              placeholder="Người học cần có những gì để có thể học khóa học này ? (Ấn để thêm)"
+              placeholder="Người học cần có những gì để có thể học khóa học này ? (Nhập và ấn để thêm)"
               type="text"
               isMulti
             />
