@@ -37,7 +37,6 @@ const AdminListCoursePage = () => {
       <div className="flex w-full flex-col gap-[27px] pb-[60px]">
         <UnderlineNavbar
           badge
-          isInstructor={true}
           navs={[
             {
               title: 'Tất cả',

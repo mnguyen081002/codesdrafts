@@ -13,7 +13,8 @@ export interface BaseReadResponse<T> {
   };
 }
 
-export interface BaseResponse {
+export interface BaseResponse<T = any> {
+  data: T;
   statusCode: number;
   message: string;
   error: string;

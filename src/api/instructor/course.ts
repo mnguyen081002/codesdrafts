@@ -73,7 +73,11 @@ const CodedraftsInstructorCourseApi = {
     return axiosClient.delete(`/api/instructor/course/${id}`);
   },
   createCourse: (params: CreateCourseRequest) => {
-    return axiosClient.post<BaseResponse>('/api/instructor/course', {
+    return axiosClient.post<
+      BaseResponse<{
+        course_id: number;
+      }>
+    >('/api/instructor/course', {
       ...params,
     });
   },

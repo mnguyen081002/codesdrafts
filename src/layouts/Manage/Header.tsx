@@ -49,7 +49,7 @@ const MenuUser = () => {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Link href={'/admin/courses'} className="flex items-center justify-between">
+          <Link href={'/instructor/course'} className="flex items-center justify-between">
             <Text className="text-[16px]">Quản lý dạy học</Text>
           </Link>
         </Menu.Item>

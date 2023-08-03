@@ -43,9 +43,9 @@ const CreateCouse: React.FC = () => {
   const [parentCategories, setparentCategories] = useState<{ id: number; name: string }[]>([]);
   const [objectives, setObjectives] = useState<string[]>([]);
   const [requirements, setRequirements] = useState<string[]>([]);
-  const [id, setId] = useState<string | undefined>();
 
   const router = useRouter();
+  const { id } = router.query;
 
   const CourseSchema = Yup.object().shape({
     name: Yup.string().required('Vui lòng nhập tên khóa học'),
@@ -115,7 +115,7 @@ const CreateCouse: React.FC = () => {
       level: data.level,
     };
 
-    await toast.promise(
+    const r = await toast.promise(
       !id
         ? CodedraftsInstructorCourseApi.createCourse(update)
         : CodedraftsInstructorCourseApi.updateCourse(Number(id), update),
@@ -130,6 +130,9 @@ const CreateCouse: React.FC = () => {
       },
       TOAST_CONFIG,
     );
+
+    router.query.id = r.data.data.course_id;
+    router.push(router);
   };
 
   useEffect(() => {
@@ -137,7 +140,6 @@ const CreateCouse: React.FC = () => {
       if (router.isReady) {
         const { id } = router.query;
         if (id) {
-          setId(id as string);
           const r = await CodedraftsApi.Instructor.Course.getCourseById(Number(id));
           setObjectives(r.data.data.objectives);
           setRequirements(r.data.data.requirements);
@@ -177,13 +179,18 @@ const CreateCouse: React.FC = () => {
         <HeaderManage
           rightContent={
             <div className="flex items-center">
-              <Link href={`/instructor/course/${id}`}>
-                <PrimaryOutlineButton
-                  className="border-none px-0 hover:bg-white"
-                  textHoverClassName="text-[#013F9E]"
-                  text="Xem trước"
-                />
-              </Link>
+              <PrimaryOutlineButton
+                className="border-none px-0 hover:bg-white"
+                textHoverClassName="text-[#013F9E]"
+                text="Xem trước"
+                onClick={() => {
+                  if (id) {
+                    router.push(`/instructor/course/${id}`);
+                  } else {
+                    toast.error('Vui lòng tạo khóa học trước khi xem trước', TOAST_CONFIG);
+                  }
+                }}
+              />
               {id ? (
                 <>
                   <PrimaryOutlineButton
