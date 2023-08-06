@@ -1,6 +1,6 @@
 // @mui
 import type { Sx } from '@mantine/core';
-import { Input } from '@mantine/core';
+import { Textarea } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
 
 // ----------------------------------------------------------------------
@@ -13,13 +13,7 @@ type Props = {
   className?: string;
 };
 
-export default function RHFTextField({
-  name,
-  helperText,
-  placeholder,
-  className,
-  ...other
-}: Props) {
+export default function RHFArea({ name, helperText, placeholder, className, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -27,15 +21,14 @@ export default function RHFTextField({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <Input.Wrapper error={error ? error?.message : helperText}>
-          <Input
-            placeholder={placeholder}
-            {...field}
-            {...other}
-            value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
-            className={className}
-          />
-        </Input.Wrapper>
+        <Textarea
+          className={className}
+          placeholder={placeholder}
+          {...field}
+          {...other}
+          value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
+          error={error ? error?.message : helperText}
+        />
       )}
     />
   );
