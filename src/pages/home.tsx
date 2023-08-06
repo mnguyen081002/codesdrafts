@@ -48,6 +48,7 @@ const Home = ({ session }) => {
       </Head>
 
       {session ? <HeaderPrimary /> : <Header />}
+
       <div className="mt-[12px] flex flex-col items-center justify-center gap-7">
         <CarouselHome />
         <HomeMain />
