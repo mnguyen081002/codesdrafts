@@ -42,7 +42,10 @@ function CourseDetailMain(props: CourseDetailMainProps) {
           </div>
           <CourseSubInfo icon="/images/course/File.svg" text="19" />
           <CourseSubInfo icon="/images/course/Clock.svg" text="20h18m" />
-          <CourseSubInfo icon="/images/course/People.svg" text="232" />
+          <CourseSubInfo
+            icon="/images/course/People.svg"
+            text={props.course.total_enrollment.toString()}
+          />
           <CustomRating />
         </div>
       </div>

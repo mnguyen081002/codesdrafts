@@ -17,9 +17,7 @@ function InstructorCourseInfoActionArea(props: InstructorCourseInfoActionAreaPro
         <div className="flex w-full flex-col gap-4">
           <div className="flex w-full flex-col flex-wrap items-center justify-center">
             <p className="text-lg font-medium">
-              {props.course?.status === CourseStatus.Rejected
-                ? 'Khóa học bị từ chối'
-                : 'Đã phát hành'}
+              {props.course?.status === CourseStatus.Rejected && 'Khóa học bị từ chối'}
             </p>
             {props.course?.status === CourseStatus.Rejected && (
               <p className="break-words text-base font-normal">

@@ -88,10 +88,12 @@ const HeaderManage = ({
   const router = useRouter();
   const [progress, setProgress] = useState(0);
   const handleRouteChange = (url, { shallow }) => {
+    if (shallow) return;
     setProgress(10);
   };
 
   const handleRouteComplete = (url, { shallow }) => {
+    if (shallow) return;
     setProgress(100);
   };
 

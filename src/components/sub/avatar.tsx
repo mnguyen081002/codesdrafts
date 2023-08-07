@@ -13,7 +13,7 @@ export const Avatar = (props: AvatarProps) => {
       <Image
         className="cursor-pointer rounded-full"
         src={`${props.url || '/images/home/Avatar.png'}`}
-        alt="search"
+        alt="avatar"
         width={props.w ?? 40}
         height={props.h ?? 40}
       />

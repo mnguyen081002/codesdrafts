@@ -244,14 +244,14 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
           </Toolbar>
         ) : null}
         <Editable
-          className="font-lessonContent text-light-text-lessonContent"
+          className="text-light-text-lessonContent"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           autoFocus={!params.isReadOnly ? isFocus : false}
           spellCheck
           readOnly={params.isReadOnly}
           onFocus={() => {
-            setPlaceholder('Type for widget');
+            setPlaceholder('Nhập / để tạo widget');
             setHidden(true);
           }}
           onBlur={() => {
@@ -259,13 +259,13 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
             setHidden(false);
           }}
           onKeyDown={onKeyDown}
-          onMouseEnter={() => !params.isReadOnly && setPlaceholder('Start typing')}
+          onMouseEnter={() => !params.isReadOnly && setPlaceholder('Bắt đầu nhập')}
           onMouseLeave={() => !isFocus && setPlaceholder('')}
           placeholder={placeholder}
         />
       </Slate>
       {!params.isReadOnly && isFocus && (
-        <div className="absolute right-[0.5rem] top-[15px] flex gap-3">{params.rightOptions}</div>
+        <div className="absolute right-[0.5rem] top-0 flex gap-3">{params.rightOptions}</div>
       )}
     </BaseComponentV2>
   );

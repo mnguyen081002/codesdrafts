@@ -4,9 +4,10 @@ import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
 import CodedraftsAdminSettingApi from './admin/setting';
 import axiosClient from './axiosClient';
-import type { BaseQuery, BaseReadResponse } from './baseHttp';
+import type { BaseQuery, BaseReadResponse, BaseResponse } from './baseHttp';
 import type { ListCourseItemResponse } from './instructor/course';
 import CodedraftsInstructorCourseApi from './instructor/course';
+import type { GetCourseByIDResponse } from './student/course';
 
 export interface CodedraftsApiResponseList<T> {
   data: T[];
@@ -69,12 +70,24 @@ export interface GetCategoriesPublicResponse {
   order: number;
 }
 
+export interface CalculatePaymentResponse {
+  price: number;
+  discount: number;
+  total: number;
+}
+
 export const CodedraftsApi = {
   Admin: {
     Setting: CodedraftsAdminSettingApi,
   },
   Instructor: {
     Course: CodedraftsInstructorCourseApi,
+  },
+  calculatePayment: (props: { course_id: number }) => {
+    return axiosClient.post<BaseResponse<CalculatePaymentResponse>>(
+      '/api/payment/calculate',
+      props,
+    );
   },
   verifyEmail: (token: string) => {
     return axiosClient.post('/api/auth/verify-email', {
@@ -103,7 +116,7 @@ export const CodedraftsApi = {
     });
   },
   getCourseById: (id: number) => {
-    return axiosClient.get<BaseReadResponse<ListCourseItemResponse>>(`/api/course/${id}`);
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
   },
   getCategories: () => {
     return axiosClient.get<BaseReadResponse<GetCategoriesPublicResponse[]>>('/api/category');

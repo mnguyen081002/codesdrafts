@@ -46,7 +46,7 @@ function LessonItem({
           } pl-[20px]`}
         >
           <p
-            className={`h-full text-center text-lg ${
+            className={`h-full text-start text-lg ${
               isSelect ? 'font-normal' : 'font-light'
             } text-light-text-primary`}
           >

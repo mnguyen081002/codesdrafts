@@ -10,6 +10,7 @@ type Props = {
   helperText?: string;
   placeholder?: string;
   sx?: Sx | (Sx | undefined)[];
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function RHFTextField({ name, helperText, placeholder, ...other }: Props) {
@@ -25,6 +26,10 @@ export default function RHFTextField({ name, helperText, placeholder, ...other }
             placeholder={placeholder}
             {...field}
             {...other}
+            onChange={(event) => {
+              field.onChange(event);
+              other.onChange?.(event);
+            }}
             value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           />
         </Input.Wrapper>

@@ -1,4 +1,5 @@
 import type { BaseGetCourseByIDResponse } from '../api/base/interface/course';
+import { formatCoursePrice } from '../utils/app';
 import CourseInfoInclude from './Student/CourseDetail/CourseInfoInclude';
 
 interface AbsoluteCourseInfoProps<BaseGetCourseByIDResponse> {
@@ -22,9 +23,7 @@ function AbsoluteCourseInfo(props: AbsoluteCourseInfoProps<BaseGetCourseByIDResp
               props.course.price.toString().length > 6 ? 'text-[22px]' : 'text-2xl'
             } font-lexend-deca  font-bold leading-5 tracking-[0.15px]`}
           >
-            {props.course?.price === 0
-              ? 'Miễn phí'
-              : `${props.course?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
+            {props.course?.price === 0 ? 'Miễn phí' : `${formatCoursePrice(props.course.price)}`}
           </p>
           {props.course?.price !== 0 && props.course?.price !== props.course?.base_price && (
             <p
@@ -32,7 +31,7 @@ function AbsoluteCourseInfo(props: AbsoluteCourseInfoProps<BaseGetCourseByIDResp
                 props.course.price.toString().length > 6 ? 'text-base' : 'text-lg'
               }font-bold text-light-text-primary line-through`}
             >
-              {props.course?.base_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+              {formatCoursePrice(props.course.base_price)}
             </p>
           )}
         </div>

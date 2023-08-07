@@ -41,6 +41,22 @@ function SectionItem({
     setIsSeleted(Number(section_id) === section.id);
   }, [section_id]);
 
+  useEffect(() => {
+    const { title, lesson_id } = router.query;
+
+    if (!title || !lesson_id) return;
+
+    // get lesson by id from section
+
+    lessons.forEach((lesson) => {
+      if (lesson.id === Number(lesson_id)) {
+        lesson.title = title as string;
+        setLessons([...lessons]);
+      }
+    });
+    setLessons([...section.lessons]);
+  }, [router.query.title]);
+
   return (
     <div className="cursor-pointer" draggable>
       <div

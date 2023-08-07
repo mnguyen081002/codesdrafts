@@ -11,7 +11,7 @@ import { InputRectangle } from '../../../../common/Input';
 import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
 import FormProvider from '../../../../components/hook-form/FormProvider';
-import { LessonComponentV2 } from '../../../../components/LessionComponent';
+import { LessonComponent } from '../../../../components/LessionComponent';
 import LessonTableOfContent from '../../../../components/Lesson/LessonTableOfContent';
 import LessonSidebar from '../../../../components/Lesson/Sidebar/LessonSidebar';
 import HeaderManage from '../../../../layouts/Manage/Header';
@@ -28,6 +28,7 @@ const LessonEditor = () => {
   const [course, setCourse] = useState<GetCourseByIDResponse>();
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
+  const [hoverStartTyping, setHoverStartTyping] = useState(false);
   const methods = useForm<FormValuesProps>({
     defaultValues: {
       summary: '',
@@ -111,12 +112,18 @@ const LessonEditor = () => {
         <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
+              onChange={(e) => {
+                router.query.title = e.target.value;
+                router.replace(router, undefined, { shallow: true });
+              }}
               sx={{
                 '& .mantine-Input-input': {
                   height: '44px',
                   '::placeholder': {
-                    color: '#64686B',
+                    color: 'rgb(45 45 45 / 0.3)',
                     fontSize: '18px',
+                    fontFamily: 'Lexend Deca',
+                    fontWeight: 300,
                   },
                 },
               }}
@@ -124,6 +131,7 @@ const LessonEditor = () => {
               name="title"
             />
             <InputRectangle
+              className="font-lexend-deca font-light text-light-text-lessonContent/30"
               minRows={8}
               maxLength={800}
               type="text"
@@ -132,11 +140,12 @@ const LessonEditor = () => {
             />
           </div>
           <div className="mt-4 flex flex-col">
+            <div className={`font-lexend-deca text-lg font-light text-light-text-lessonContent/30`}>
+              Hãy thêm nội dung bằng cách click vào bên dưới
+            </div>
             {refs.map((c, index) => {
               if (!c.current) return null;
-              return (
-                <LessonComponentV2 index={index} setRefs={setRefs} reference={c} key={index} />
-              );
+              return <LessonComponent index={index} setRefs={setRefs} reference={c} key={index} />;
             })}
             <div
               className="h-[50px] cursor-text"

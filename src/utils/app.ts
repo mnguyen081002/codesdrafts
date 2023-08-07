@@ -23,4 +23,8 @@ function toastGetErrorMessage(data: any) {
   return `${data.response.data.message}`;
 }
 
-export { extractTextFromLastHTMLTag, toastGetErrorMessage };
+function formatCoursePrice(price: number, suffix = ' VNĐ') {
+  return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} ${suffix}`;
+}
+
+export { extractTextFromLastHTMLTag, formatCoursePrice, toastGetErrorMessage };

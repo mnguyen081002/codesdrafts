@@ -54,18 +54,23 @@ const ListCoursePage = () => {
             <div className="flex flex-col rounded-[5px] border border-light-border">
               <table className="table-auto gap-[10px] rounded-[5px] p-[10px]">
                 <thead>
-                  <tr className="flex gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px] text-base uppercase leading-6 text-[#777]">
-                    <th className="flex w-[692px] justify-start">
+                  <tr className="flex border-b border-light-border py-[15px] pl-[25px] text-base uppercase leading-6 text-[#777]">
+                    <th className="flex flex-1 justify-start">
                       <p className="font-medium">KHÓA HỌC</p>
                     </th>
                     <th className="flex">
-                      <p className="w-[150px] text-start font-medium">Giá</p>
-                      <p className="w-[150px] text-start font-medium">Thời gian</p>
-                      <p className="w-[150px] text-start font-medium">Cấp độ</p>
+                      <p className="w-[150px] text-center font-medium">Giá</p>
+                      <p className="w-[150px] text-center font-medium">Thời gian</p>
+                      <p className="w-[150px] text-center font-medium">Cấp độ</p>
                     </th>
                   </tr>
                 </thead>
                 <tbody className="flex flex-col overflow-y-auto">
+                  {listCourse.length === 0 && (
+                    <tr className="flex h-[200px] items-center justify-center">
+                      <p className="text-xl font-semibold">Không có khóa học nào</p>
+                    </tr>
+                  )}
                   {listCourse.map((course) => (
                     <LongCourseCard
                       onClick={() => {

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import LevelIcon from '../../common/Icons/LevelIcon';
 import { CourseStatus } from '../../shared/enum/course';
+import { formatCoursePrice } from '../../utils/app';
 
 export default function LongCourseCard({
   course,
@@ -28,9 +29,9 @@ export default function LongCourseCard({
   return (
     <tr
       key={course.id}
-      className="flex items-center gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px]"
+      className="flex items-center border-b border-light-border py-[15px] pl-[25px] "
     >
-      <td className="flex h-full gap-[30px]">
+      <td className="flex h-full flex-1 gap-[30px]">
         <img
           onClick={onClick}
           className="h-[180px] w-[270px] cursor-pointer rounded-[5px]"
@@ -84,11 +85,17 @@ export default function LongCourseCard({
         </div>
       </td>
       <td className="flex items-center text-[#3f3f3f]">
-        <p className="w-[150px] font-lexend-deca text-lg font-normal leading-6">
-          {course.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ
+        <p className="w-[150px] text-center font-lexend-deca text-lg font-normal leading-6">
+          {formatCoursePrice(course.price)}
         </p>
-        <p className="w-[150px] font-lexend-deca text-base font-light leading-6">3d20h11m</p>
-        <div className="flex w-[150px] items-center gap-3">
+      </td>
+      <td>
+        <p className="w-[150px] text-center font-lexend-deca text-base font-light leading-6">
+          3d20h11m
+        </p>
+      </td>
+      <td>
+        <div className="flex w-[150px] items-center justify-center gap-3">
           <LevelIcon level={course.level} />
           <p className=" font-lexend-deca text-base font-light leading-6">{course.level}</p>
         </div>
