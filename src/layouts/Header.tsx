@@ -1,10 +1,12 @@
 import { Button, Flex, Group } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { PATH_AUTH } from '@/routes/path';
 
 const Header = () => {
+  const navigate = useRouter();
   return (
     <div className="flex h-[74px] px-[50px] shadow-md">
       <Flex justify="space-between" align="center" w="100%" h="100%">
@@ -33,6 +35,7 @@ const Header = () => {
               className="px-[18px] py-[6px] text-[16px] font-medium leading-[24px] tracking-[0.15px]"
               color="dark"
               variant="white"
+              onClick={() => navigate.push('/contact')}
             >
               Liên hệ
             </Button>

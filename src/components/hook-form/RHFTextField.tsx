@@ -11,9 +11,16 @@ type Props = {
   placeholder?: string;
   sx?: Sx | (Sx | undefined)[];
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
 };
 
-export default function RHFTextField({ name, helperText, placeholder, ...other }: Props) {
+export default function RHFTextField({
+  name,
+  helperText,
+  placeholder,
+  className,
+  ...other
+}: Props) {
   const { control } = useFormContext();
 
   return (
@@ -31,6 +38,7 @@ export default function RHFTextField({ name, helperText, placeholder, ...other }
               other.onChange?.(event);
             }}
             value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
+            className={className}
           />
         </Input.Wrapper>
       )}
