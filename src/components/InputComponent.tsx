@@ -120,12 +120,6 @@ const Element = ({ attributes, children, element }: any) => {
           {children}
         </h4>
       );
-    case 'heading-five':
-      return (
-        <h5 className="!mt-0 text-xl" {...attributes}>
-          {children}
-        </h5>
-      );
     case 'list-item':
       return (
         <li style={style} {...attributes}>

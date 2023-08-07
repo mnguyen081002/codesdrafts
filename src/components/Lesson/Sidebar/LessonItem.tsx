@@ -15,11 +15,13 @@ function LessonItem({
   onAddLesson,
   onDeletedSection,
   isLast,
+  isPreview = false,
 }: {
   lesson: SidebarLesson;
   onAddLesson: (r?: AddLessonResponse) => Promise<void>;
   onDeletedSection: (lesson_id?: number) => Promise<void>;
   isLast: boolean;
+  isPreview?: boolean;
 }) {
   const router = useRouter();
   const [isSelect, setIsSelect] = useState(false);
@@ -45,80 +47,78 @@ function LessonItem({
             isSelect ? 'border-l-[3px] border-selected' : 'border-l-[2px] border-light-border'
           } pl-[20px]`}
         >
-          <p
-            className={`h-full text-start text-lg ${
-              isSelect ? 'font-normal' : 'font-light'
-            } text-light-text-primary`}
-          >
+          <p className={`h-full text-start text-lg ${isSelect ? 'font-normal' : 'font-light'} `}>
             {lesson.title}
           </p>
         </div>
       </div>
-      <div
-        className={`flex ${
-          !isSelect ? 'h-[0px]' : 'h-[40px]'
-        } items-center overflow-hidden pl-[20px] `}
-      >
+      {!isPreview && (
         <div
-          onClick={async () => {
-            dispatch(setLoading(true));
-            const call = async () => {
-              const r = await CodedraftsInstructorLessonApi.addLesson({
-                section_id: lesson.section_id,
-                order: lesson.order + 1,
-              });
-              await onAddLesson(r.data.data);
-            };
-            await toast.promise(
-              call(),
-              {
-                pending: 'Đang thêm bài học',
-                success: 'Thêm bài học thành công!',
-                error: 'Thêm bài học thất bại!',
-              },
-              TOAST_CONFIG,
-            );
-            dispatch(setLoading(false));
-          }}
-          className="flex h-[40px] items-center gap-1 px-2 transition-all hover:bg-[#f5f5f5]"
+          className={`flex ${
+            !isSelect ? 'h-[0px]' : 'h-[40px]'
+          } items-center overflow-hidden pl-[20px] `}
         >
-          <img src={'/images/icons/plus.svg'} alt="" className="h-[15px] w-[15px]" />
-          <p className="text-xs text-light-text-primary">Thêm bài học</p>
-        </div>
-        <div
-          onClick={async () => {
-            if (isLast) {
-              toast.error('Không thể xóa bài học cuối cùng!', TOAST_CONFIG);
-              toast.clearWaitingQueue();
-              return;
-            }
-            dispatch(setLoading(true));
-
-            const call = async () => {
-              const r = await CodedraftsInstructorLessonApi.deleteLesson(lesson.id);
-              if (r.status === 200) {
-                await onDeletedSection(lesson.id);
-              } else {
-                await onDeletedSection();
+          <div
+            onClick={async () => {
+              dispatch(setLoading(true));
+              const call = async () => {
+                const r = await CodedraftsInstructorLessonApi.addLesson({
+                  section_id: lesson.section_id,
+                  order: lesson.order + 1,
+                });
+                await onAddLesson(r.data.data);
+              };
+              await toast.promise(
+                call(),
+                {
+                  pending: 'Đang thêm bài học',
+                  success: 'Thêm bài học thành công!',
+                  error: 'Thêm bài học thất bại!',
+                },
+                TOAST_CONFIG,
+              );
+              dispatch(setLoading(false));
+            }}
+            className="flex h-[40px] items-center gap-1 px-2 transition-all hover:bg-[#f5f5f5]"
+          >
+            <img src={'/images/icons/plus.svg'} alt="" className="h-[15px] w-[15px]" />
+            <p className="text-xs text-light-text-primary">Thêm bài học</p>
+          </div>
+          <div
+            onClick={async () => {
+              if (isLast) {
+                toast.error('Không thể xóa bài học cuối cùng!', TOAST_CONFIG);
+                toast.clearWaitingQueue();
+                return;
               }
-            };
-            await toast.promise(
-              call(),
-              {
-                pending: 'Đang xóa bài học',
-                success: 'Xóa bài học thành công!',
-                error: 'Xóa bài học thất bại!',
-              },
-              TOAST_CONFIG,
-            );
-            dispatch(setLoading(false));
-          }}
-          className="flex h-[40px] items-center px-2 transition-all hover:bg-[#f5f5f5]"
-        >
-          <TrashIcon pathFill="#4C4E64" height="15px" width="15px" />
-          <p className="text-xs text-light-text-primary">Xóa bài học</p>
+              dispatch(setLoading(true));
+
+              const call = async () => {
+                const r = await CodedraftsInstructorLessonApi.deleteLesson(lesson.id);
+                if (r.status === 200) {
+                  await onDeletedSection(lesson.id);
+                } else {
+                  await onDeletedSection();
+                }
+              };
+              await toast.promise(
+                call(),
+                {
+                  pending: 'Đang xóa bài học',
+                  success: 'Xóa bài học thành công!',
+                  error: 'Xóa bài học thất bại!',
+                },
+                TOAST_CONFIG,
+              );
+              dispatch(setLoading(false));
+            }}
+            className="flex h-[40px] items-center px-2 transition-all hover:bg-[#f5f5f5]"
+          >
+            <TrashIcon pathFill="#4C4E64" height="15px" width="15px" />
+            <p className="text-xs text-light-text-primary">Xóa bài học</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

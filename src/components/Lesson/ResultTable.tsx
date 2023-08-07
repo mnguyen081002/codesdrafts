@@ -63,22 +63,22 @@ function ResultTable(props: IResultTableProps) {
                   <thead className="bg-[#F8F8F8]">
                     <tr>
                       <th className="h-[42px] w-[120px] border-r border-light-border">
-                        <p className="font-plusJakartaSans text-sm font-semibold text-[#3A3A3A]">
+                        <p className="font-plusJakartaSans text-lg font-semibold text-[#3A3A3A]">
                           Kết quả
                         </p>
                       </th>
                       <th className="h-[42px] border-r border-light-border">
-                        <p className="font-plusJakartaSans text-sm font-semibold text-[#3A3A3A]">
+                        <p className="font-plusJakartaSans text-lg font-semibold text-[#3A3A3A]">
                           Đầu vào
                         </p>
                       </th>
                       <th className="h-[42px] border-r border-light-border">
-                        <p className="font-plusJakartaSans text-sm font-semibold text-[#3A3A3A]">
+                        <p className="font-plusJakartaSans text-lg font-semibold text-[#3A3A3A]">
                           Đầu ra mong đợi
                         </p>
                       </th>
                       <th className="h-[42px] border-light-border">
-                        <p className="font-plusJakartaSans text-sm font-semibold text-[#3A3A3A]">
+                        <p className="font-plusJakartaSans text-lg font-semibold text-[#3A3A3A]">
                           Đầu ra thực tế
                         </p>
                       </th>

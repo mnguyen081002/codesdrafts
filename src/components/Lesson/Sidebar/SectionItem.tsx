@@ -19,12 +19,14 @@ function SectionItem({
   onAddSection,
   onDeletedSection,
   isLast,
+  isPreview = false,
 }: // onEditSection,
 {
   section: SidebarSection;
   onAddSection: (r?: AddSectionResponse) => void;
   onDeletedSection: (section_id?: number) => void;
   isLast: boolean;
+  isPreview?: boolean;
   // onEditSection: (section_id: number, title: string) => void;
 }) {
   const router = useRouter();
@@ -37,6 +39,7 @@ function SectionItem({
   const [isShowLesson, setIsShowLesson] = useState(isSeleted);
   const [lessons, setLessons] = useState<SidebarLesson[]>(section.lessons);
   const ref = useClickOutside(() => setIsEdit(false));
+
   useEffect(() => {
     setIsSeleted(Number(section_id) === section.id);
   }, [section_id]);
@@ -113,54 +116,57 @@ function SectionItem({
             pathFill={isSeleted ? '#1363DF' : '#64686B'}
           />
         </div>
-        <div
-          className={`flex ${
-            isShowLesson ? 'h-[40px]' : 'h-0'
-          } items-center justify-center gap-1 overflow-hidden transition-all `}
-        >
+        {!isPreview && (
           <div
-            onClick={() => setIsEdit(true)}
-            className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
+            className={`flex ${
+              isShowLesson ? 'h-[40px]' : 'h-0'
+            } items-center justify-center gap-1 overflow-hidden transition-all `}
           >
-            <EditIcon height="15px" width="15px" pathFill="#4C4E64" />
-            <p className="text-xs text-light-text-primary ">Sửa danh mục</p>
-          </div>
-          <div
-            onClick={async () => {
-              if (isLast) {
-                toast.error('Không thể xóa danh mục cuối cùng!', TOAST_CONFIG);
-                toast.clearWaitingQueue();
-                return;
-              }
+            <div
+              onClick={() => setIsEdit(true)}
+              className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
+            >
+              <EditIcon height="15px" width="15px" pathFill="#4C4E64" />
+              <p className="text-xs text-light-text-primary ">Sửa danh mục</p>
+            </div>
+            <div
+              onClick={async () => {
+                if (isLast) {
+                  toast.error('Không thể xóa danh mục cuối cùng!', TOAST_CONFIG);
+                  toast.clearWaitingQueue();
+                  return;
+                }
 
-              const r = await toast.promise(
-                CodedraftsInstructorSectionApi.deleteSection(section.id),
-                {
-                  pending: 'Đang xóa danh mục...',
-                  success: 'Xóa danh mục thành công!',
-                  error: 'Xóa danh mục thất bại!',
-                },
-                TOAST_CONFIG,
-              );
-              if (r.status === HttpStatusCode.Ok) {
-                onDeletedSection(section.id);
-              } else {
-                onDeletedSection(undefined);
-              }
-            }}
-            className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
-          >
-            {/** TODO: Popup confirm delete section */}
-            <TrashIcon height="15px" width="15px" pathFill="#4C4E64" />
-            <p className="text-xs text-light-text-primary ">Xóa danh mục</p>
+                const r = await toast.promise(
+                  CodedraftsInstructorSectionApi.deleteSection(section.id),
+                  {
+                    pending: 'Đang xóa danh mục...',
+                    success: 'Xóa danh mục thành công!',
+                    error: 'Xóa danh mục thất bại!',
+                  },
+                  TOAST_CONFIG,
+                );
+                if (r.status === HttpStatusCode.Ok) {
+                  onDeletedSection(section.id);
+                } else {
+                  onDeletedSection(undefined);
+                }
+              }}
+              className="flex h-full flex-1 items-center justify-center gap-1 hover:bg-[#f5f5f5]"
+            >
+              {/** TODO: Popup confirm delete section */}
+              <TrashIcon height="15px" width="15px" pathFill="#4C4E64" />
+              <p className="text-xs text-light-text-primary ">Xóa danh mục</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {isShowLesson && (
         <div className="relative flex w-full   flex-col overflow-hidden">
           <div>
             {lessons.map((lesson) => (
               <LessonItem
+                isPreview={isPreview}
                 onDeletedSection={async (lesson_id) => {
                   if (!lesson_id) return;
                   const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
@@ -177,33 +183,34 @@ function SectionItem({
               />
             ))}
           </div>
+          {!isPreview && (
+            <div
+              className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
+              onClick={async () => {
+                const r = await toast.promise(
+                  CodedraftsInstructorSectionApi.addSection({
+                    course_id: Number(router.query.id),
+                    order: section.order + 1,
+                  }),
+                  {
+                    pending: 'Đang thêm danh mục...',
+                    success: 'Thêm danh mục thành công!',
+                    error: 'Lưu danh mục thất bại!',
+                  },
+                  TOAST_CONFIG,
+                );
 
-          <div
-            className="flex items-center gap-[5px] py-[10px] pl-[25px] hover:bg-light-gray"
-            onClick={async () => {
-              const r = await toast.promise(
-                CodedraftsInstructorSectionApi.addSection({
-                  course_id: Number(router.query.id),
-                  order: section.order + 1,
-                }),
-                {
-                  pending: 'Đang thêm danh mục...',
-                  success: 'Thêm danh mục thành công!',
-                  error: 'Lưu danh mục thất bại!',
-                },
-                TOAST_CONFIG,
-              );
-
-              if (r.status === HttpStatusCode.Created) {
-                onAddSection(r.data.data);
-              } else {
-                onAddSection(undefined);
-              }
-            }}
-          >
-            <img src={'/images/icons/plus.svg'} alt="" className="h-[20px] w-[20px]" />
-            <p className="text-sm text-light-text-primary">Thêm danh mục</p>
-          </div>
+                if (r.status === HttpStatusCode.Created) {
+                  onAddSection(r.data.data);
+                } else {
+                  onAddSection(undefined);
+                }
+              }}
+            >
+              <img src={'/images/icons/plus.svg'} alt="" className="h-[20px] w-[20px]" />
+              <p className="text-sm text-light-text-primary">Thêm danh mục</p>
+            </div>
+          )}
         </div>
       )}
     </div>

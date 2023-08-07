@@ -14,6 +14,7 @@ interface LessonSidebarProps {
   course?: GetCourseByIDResponse;
   isCollapse: boolean;
   onClickCollapse: () => void;
+  isPreview?: boolean;
 }
 
 function LessonSidebar(props: LessonSidebarProps) {
@@ -82,6 +83,7 @@ function LessonSidebar(props: LessonSidebarProps) {
             <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
               {sections.map((section) => (
                 <SectionItem
+                  isPreview={props.isPreview}
                   onDeletedSection={onDeleteSection}
                   onAddSection={onAddSection}
                   section={section}
@@ -89,13 +91,15 @@ function LessonSidebar(props: LessonSidebarProps) {
                   isLast={section.id === sections[sections.length - 1]!.id}
                 />
               ))}
-              <div className="flex flex-col items-center justify-center py-[20px]">
-                <div className="flex h-[44px] w-[202px] cursor-pointer items-center justify-center rounded-[3px] border border-light-border px-[15px] py-[12px] hover:bg-light-gray">
-                  <p className="text-sm font-normal text-light-text-primary">
-                    Đánh dấu đã hoàn thành
-                  </p>
+              {!props.isPreview && (
+                <div className="flex flex-col items-center justify-center py-[20px]">
+                  <div className="flex h-[44px] w-[202px] cursor-pointer items-center justify-center rounded-[3px] border border-light-border px-[15px] py-[12px] hover:bg-light-gray">
+                    <p className="text-sm font-normal text-light-text-primary">
+                      Đánh dấu đã hoàn thành
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="flex h-[28px] items-center justify-center border-t border-light-border">
               <ArrowDownV3Icon className="h-[8px] w-[18px] rotate-180" pathFill="#64686B" />

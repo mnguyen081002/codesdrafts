@@ -101,7 +101,7 @@ const HeaderManage = ({
   router.events?.on('routeChangeComplete', handleRouteComplete);
   return (
     <>
-      <div className="sticky top-0  z-20 flex h-[74px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
+      <div className="sticky top-0  z-20 flex h-[64px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
         <Link href={'/'} className="flex items-center gap-2">
           <Image src="/logo-96.png" alt="logo" width={40} height={40} />
           <p className="font-inter text-[20px] font-semibold leading-6">

@@ -8,7 +8,7 @@ import { PATH_AUTH } from '@/routes/path';
 const Header = () => {
   const navigate = useRouter();
   return (
-    <div className="flex h-[74px] px-[50px] shadow-md">
+    <div className="flex h-[64px] px-[50px] shadow-md">
       <Flex justify="space-between" align="center" w="100%" h="100%">
         <Group>
           <Flex justify="center">

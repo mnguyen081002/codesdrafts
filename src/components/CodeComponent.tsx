@@ -85,7 +85,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
     >
       <BaseComponentV2 {...params}>
         <div className={`${opened && ' flex-col '}`}>
-          {opened && (
+          {opened && !params.isReadOnly && (
             <CodeToolbar
               language={language}
               setLanguage={setLanguage}
@@ -112,7 +112,7 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
               />
             </div>
           )}
-          {opened && (
+          {opened && !params.isReadOnly && (
             <CreateTestCaseComponent
               isExercise={isExercise}
               language={language}

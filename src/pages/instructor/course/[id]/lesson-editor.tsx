@@ -28,13 +28,14 @@ const LessonEditor = () => {
   const [course, setCourse] = useState<GetCourseByIDResponse>();
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
   const methods = useForm<FormValuesProps>({
     defaultValues: {
       summary: '',
       title: '',
     },
   });
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, getValues } = methods;
 
   const fetchCourse = async () => {
     if (!router.query.id) return;
@@ -96,55 +97,109 @@ const LessonEditor = () => {
     fetchCourse();
   }, [router.query.id, router.query.lesson_id]);
 
+  useEffect(() => {
+    if (router.query.isPreview) {
+      setIsPreview(router.query.isPreview === 'true');
+    }
+  }, [router.query.isPreview]);
+
   return (
     <FormProvider methods={methods}>
       <HeaderManage
         rightContent={
-          <div>
-            <PrimaryOutlineButton onClick={handleSubmit(onSubmit)} text="Lưu" />
-          </div>
+          !isPreview ? (
+            <div className="flex">
+              <PrimaryOutlineButton
+                onClick={() => {
+                  router.query.isPreview = 'true';
+                  router.push(router, undefined, { shallow: true });
+                }}
+                textHoverClassName="text-[#013F9E] px-0"
+                className="border-none hover:bg-white"
+                text="Xem trước"
+              />
+
+              <PrimaryOutlineButton onClick={handleSubmit(onSubmit)} text="Lưu" />
+            </div>
+          ) : (
+            <div className="flex">
+              <PrimaryOutlineButton
+                onClick={() => {
+                  router.query.isPreview = 'false';
+                  router.push(router, undefined, { shallow: true });
+                }}
+                textHoverClassName="text-[#013F9E] px-0"
+                className="border-none hover:bg-white"
+                text="Quay lại"
+              />
+            </div>
+          )
         }
       />
       <div className="relative flex overflow-hidden">
         <LessonSidebar
+          isPreview={isPreview}
           isCollapse={isCollapseSidebar}
           onClickCollapse={() => setIsCollapseSidebar(!isCollapseSidebar)}
           course={course}
         />
         <LessonTableOfContent values={refs} />
-        <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
+        <div className="flex h-[calc(100vh-64px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
-            <RHFTextField
-              sx={{
-                '& .mantine-Input-input': {
-                  height: '44px',
-                  '::placeholder': {
-                    color: 'rgb(45 45 45 / 0.3)',
-                    fontSize: '18px',
-                    fontFamily: 'Lexend Deca',
-                    fontWeight: 300,
-                  },
-                },
-              }}
-              placeholder="Nhập tiêu đề ở đây"
-              name="title"
-            />
-            <InputRectangle
-              className="font-lexend-deca font-light text-light-text-lessonContent/30"
-              minRows={8}
-              maxLength={800}
-              type="text"
-              placeholder="Nhập tóm tắt ở đây"
-              name="summary"
-            />
+            {isPreview ? (
+              <div className="mb-5 flex flex-col gap-5">
+                <p className="font-lessonContent text-6xl font-medium ">{getValues('title')}</p>
+                <p className="text-lg text-light-text-lessonContent">{getValues('summary')}</p>
+              </div>
+            ) : (
+              <>
+                <RHFTextField
+                  sx={{
+                    '& .mantine-Input-input': {
+                      height: '44px',
+                      fontSize: '18px',
+                      fontFamily: 'Lexend Deca',
+                      fontWeight: 300,
+                      '::placeholder': {
+                        color: 'rgb(45 45 45 / 0.3)',
+                        fontSize: '18px',
+                        fontFamily: 'Lexend Deca',
+                        fontWeight: 300,
+                      },
+                    },
+                  }}
+                  placeholder="Nhập tiêu đề ở đây"
+                  name="title"
+                />
+                <InputRectangle
+                  className="font-lexend-deca text-lg font-light placeholder-light-text-lessonContent/30"
+                  minRows={8}
+                  maxLength={800}
+                  type="text"
+                  placeholder="Nhập tóm tắt ở đây"
+                  name="summary"
+                />
+              </>
+            )}
           </div>
           <div className="mt-4 flex flex-col">
-            <div className={`font-lexend-deca text-lg font-light text-light-text-lessonContent/30`}>
-              Hãy thêm nội dung bằng cách click vào bên dưới
-            </div>
+            {!isPreview && (
+              <div className={`h-8 text-lg font-light text-light-text-lessonContent/30`}>
+                {refs.length === 0 && 'Thêm nội dung bài học bằng cách click bên dưới'}
+              </div>
+            )}
+
             {refs.map((c, index) => {
               if (!c.current) return null;
-              return <LessonComponent index={index} setRefs={setRefs} reference={c} key={index} />;
+              return (
+                <LessonComponent
+                  isReadOnly={isPreview}
+                  index={index}
+                  setRefs={setRefs}
+                  reference={c}
+                  key={index}
+                />
+              );
             })}
             <div
               className="h-[50px] cursor-text"
