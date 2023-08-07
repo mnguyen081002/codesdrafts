@@ -261,6 +261,18 @@ const CustomEditor = {
       if (n.underline) {
         string = `<u>${string}</u>`;
       }
+
+      if (n.strikethrough) {
+        string = `<del>${string}</del>`;
+      }
+
+      if (n.subscript) {
+        string = `<sub>${string}</sub>`;
+      }
+
+      if (n.superscript) {
+        string = `<sup>${string}</sup>`;
+      }
       return `${string}`;
     }
 

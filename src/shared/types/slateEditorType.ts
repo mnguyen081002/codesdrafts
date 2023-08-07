@@ -60,6 +60,9 @@ export type CustomText = {
   text: string;
   bold?: boolean;
   italic?: boolean;
+  strikethrough?: boolean;
+  subscript?: boolean;
+  superscript?: boolean;
   underline?: boolean;
   code?: boolean;
   align?: 'left' | 'center' | 'right';

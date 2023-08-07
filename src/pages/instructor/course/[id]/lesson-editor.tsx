@@ -28,7 +28,6 @@ const LessonEditor = () => {
   const [course, setCourse] = useState<GetCourseByIDResponse>();
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
-  const [hoverStartTyping, setHoverStartTyping] = useState(false);
   const methods = useForm<FormValuesProps>({
     defaultValues: {
       summary: '',
@@ -73,6 +72,10 @@ const LessonEditor = () => {
       components: refs.map((x) => x.current),
       section_id: Number(router.query.section_id),
     };
+
+    router.query.title = data.title;
+    router.replace(router, undefined, { shallow: true });
+
     await toast.promise(
       CodedraftsInstructorLessonApi.saveLesson(req),
       {
@@ -112,10 +115,6 @@ const LessonEditor = () => {
         <div className="flex h-[calc(100vh-74px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <RHFTextField
-              onChange={(e) => {
-                router.query.title = e.target.value;
-                router.replace(router, undefined, { shallow: true });
-              }}
               sx={{
                 '& .mantine-Input-input': {
                   height: '44px',

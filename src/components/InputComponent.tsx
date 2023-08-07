@@ -48,6 +48,18 @@ const Leaf = ({ attributes, children, leaf }: any) => {
     child = <u>{child}</u>;
   }
 
+  if (leaf.strikethrough) {
+    child = <del>{child}</del>;
+  }
+
+  if (leaf.subscript) {
+    child = <sub>{child}</sub>;
+  }
+
+  if (leaf.superscript) {
+    child = <sup>{child}</sup>;
+  }
+
   return <span {...attributes}>{child}</span>;
 };
 
@@ -224,9 +236,9 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
               <MarkButton format="bold" Icon={FormatBoldIcon} />
               <MarkButton format="italic" Icon={FormatItalicIcon} />
               <MarkButton format="underline" Icon={FormatUnderlinedIcon} />
-              <MarkButton format="underline" Icon={StrikeThroughIcon} />
-              <MarkButton format="underline" Icon={Subscript} />
-              <MarkButton format="underline" Icon={Superscript} />
+              <MarkButton format="strikethrough" Icon={StrikeThroughIcon} />
+              <MarkButton format="subscript" Icon={Subscript} />
+              <MarkButton format="superscript" Icon={Superscript} />
             </div>
             <div className="flex gap-2 border-r pr-4">
               <MarkButton format="code" Icon={CodeIcon} />
@@ -265,7 +277,7 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
         />
       </Slate>
       {!params.isReadOnly && isFocus && (
-        <div className="absolute right-[0.5rem] top-0 flex gap-3">{params.rightOptions}</div>
+        <div className="absolute right-[-2rem] top-0 flex gap-3">{params.rightOptions}</div>
       )}
     </BaseComponentV2>
   );
