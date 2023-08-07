@@ -36,11 +36,12 @@ function LessonItem({
     <div>
       <div
         className={`px-[20px] hover:bg-[#f5f5f5]`}
-        onClick={() =>
-          router.push(
-            `/instructor/course/${router.query.id}/lesson-editor?section_id=${lesson.section_id}&lesson_id=${lesson.id}`,
-          )
-        }
+        onClick={() => {
+          if (router.query.lesson_id !== lesson.id.toString()) {
+            router.query.lesson_id = lesson.id.toString();
+            router.replace(router);
+          }
+        }}
       >
         <div
           className={`flex min-h-[40px] w-full cursor-pointer items-center ${

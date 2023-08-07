@@ -26,8 +26,12 @@ export enum Type {
 }
 
 const StudentCourseApi = {
-  getById: async (id: number) => {
-    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
+  getById: async (id: number, token: string) => {
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };
 

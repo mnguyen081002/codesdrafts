@@ -14,6 +14,7 @@ import FormProvider from '../../../../components/hook-form/FormProvider';
 import { LessonComponent } from '../../../../components/LessionComponent';
 import LessonTableOfContent from '../../../../components/Lesson/LessonTableOfContent';
 import LessonSidebar from '../../../../components/Lesson/Sidebar/LessonSidebar';
+import { requireAuth } from '../../../../components/requireAuth';
 import HeaderManage from '../../../../layouts/Manage/Header';
 import { ComponentType } from '../../../../shared/enum/component';
 import type { LessonComponentProps } from '../../../../shared/interface';
@@ -228,5 +229,11 @@ const LessonEditor = () => {
     </FormProvider>
   );
 };
+
+export const getServerSideProps = requireAuth(async () => {
+  return {
+    props: {},
+  };
+});
 
 export default LessonEditor;

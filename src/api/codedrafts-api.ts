@@ -76,12 +76,30 @@ export interface CalculatePaymentResponse {
   total: number;
 }
 
+export interface StudentGetLessonByID {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  course_id: null;
+  owner_id: number;
+  title: string;
+  isCompleted: boolean;
+  order: number;
+  components: any[];
+  summary: string;
+  section_id: number;
+}
+
 export const CodedraftsApi = {
   Admin: {
     Setting: CodedraftsAdminSettingApi,
   },
   Instructor: {
     Course: CodedraftsInstructorCourseApi,
+  },
+  getLessonById: (id: number) => {
+    return axiosClient.get<BaseReadResponse<StudentGetLessonByID>>(`/api/lesson/${id}`);
   },
   calculatePayment: (props: { course_id: number }) => {
     return axiosClient.post<BaseResponse<CalculatePaymentResponse>>(

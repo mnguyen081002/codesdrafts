@@ -1,9 +1,7 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { SidebarSection } from '../../../api/base/interface/course';
-import type { GetCourseByIDResponse } from '../../../api/instructor/course';
+import type { BaseGetCourseByIDResponse, SidebarSection } from '../../../api/base/interface/course';
 import type { AddSectionResponse } from '../../../api/instructor/section';
 import ArrowDownV3Icon from '../../../common/Icons/ArrowDownV3';
 import ArrowLeftV2Icon from '../../../common/Icons/ArrowLeftV2';
@@ -11,7 +9,7 @@ import ArrowRightIcon from '../../../common/Icons/ArrowRightIcon';
 import SectionItem from './SectionItem';
 
 interface LessonSidebarProps {
-  course?: GetCourseByIDResponse;
+  course?: BaseGetCourseByIDResponse;
   isCollapse: boolean;
   onClickCollapse: () => void;
   isPreview?: boolean;
@@ -65,13 +63,15 @@ function LessonSidebar(props: LessonSidebarProps) {
           <div
             className={`flex h-[870px] flex-col justify-between border-r border-light-border font-lexend-deca transition-all duration-300`}
           >
-            <Link
-              href={`/instructor/course/course-editor/?id=${router.query.id}`}
+            <button
+              onClick={() => {
+                router.back();
+              }}
               className="flex h-[50px] cursor-pointer items-center gap-5 border-b border-light-border px-5 hover:bg-light-gray"
             >
               <ArrowLeftV2Icon className="mb-1" height="25px" width="25px" />
               <p>Quay lại</p>
-            </Link>
+            </button>
             <div className="flex flex-col gap-[10px] px-[20px] pt-[20px] pb-[30px]">
               <img
                 src={props.course?.thumbnail}
