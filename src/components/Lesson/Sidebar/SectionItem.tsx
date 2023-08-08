@@ -41,8 +41,9 @@ function SectionItem({
   const ref = useClickOutside(() => setIsEdit(false));
 
   useEffect(() => {
+    const { section_id } = router.query;
     setIsSeleted(Number(section_id) === section.id);
-  }, [section_id]);
+  }, [router.query.section_id]);
 
   useEffect(() => {
     const { title, lesson_id } = router.query;
@@ -167,7 +168,7 @@ function SectionItem({
             {lessons.map((lesson) => (
               <LessonItem
                 isPreview={isPreview}
-                onDeletedSection={async (lesson_id) => {
+                onDeletedLesson={async (lesson_id) => {
                   if (!lesson_id) return;
                   const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
                   setLessons(rs.data.data);

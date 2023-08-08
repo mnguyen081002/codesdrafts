@@ -64,6 +64,7 @@ function LessonSidebar(props: LessonSidebarProps) {
             className={`flex h-[870px] flex-col justify-between border-r border-light-border font-lexend-deca transition-all duration-300`}
           >
             <button
+              type="button"
               onClick={() => {
                 router.back();
               }}

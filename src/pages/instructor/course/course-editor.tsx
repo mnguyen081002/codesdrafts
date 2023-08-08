@@ -216,7 +216,10 @@ const CreateCouse: React.FC = () => {
                   <PrimaryOutlineButton
                     textHoverClassName="text-[#013F9E] px-0"
                     className="border-none hover:bg-white"
-                    text="Huỷ bỏ"
+                    text="Hủy bỏ"
+                    onClick={() => {
+                      router.back();
+                    }}
                   />
                   <PrimaryOutlineButton
                     bgHoverColor="hover:bg-light-primary"
@@ -276,6 +279,7 @@ const CreateCouse: React.FC = () => {
               label="Mô tả *"
               maxLength={800}
               placeholder="Nhập mô tả khóa học"
+              rightLabel="Tối đa 800 ký tự"
               type="text"
               minRows={10}
             />
@@ -284,6 +288,7 @@ const CreateCouse: React.FC = () => {
               label="Mô tả ngắn *"
               maxLength={300}
               placeholder="Nhập mô tả ngắn khóa học"
+              rightLabel="Tối đa 300 ký tự"
               type="text"
               minRows={10}
             />
@@ -353,7 +358,7 @@ const CreateCouse: React.FC = () => {
             <InputRectangle
               name="feedbackEmail"
               label="Feedback Email"
-              placeholder="Nhập email"
+              placeholder="Nhập email *"
               type="text"
             />
             <div className="mt-6 flex flex-col items-center gap-10">

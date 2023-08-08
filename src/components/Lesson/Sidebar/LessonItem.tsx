@@ -13,13 +13,13 @@ import { TOAST_CONFIG } from '../../../shared/constants/app';
 function LessonItem({
   lesson,
   onAddLesson,
-  onDeletedSection,
+  onDeletedLesson,
   isLast,
   isPreview = false,
 }: {
   lesson: SidebarLesson;
   onAddLesson: (r?: AddLessonResponse) => Promise<void>;
-  onDeletedSection: (lesson_id?: number) => Promise<void>;
+  onDeletedLesson: (lesson_id?: number) => Promise<void>;
   isLast: boolean;
   isPreview?: boolean;
 }) {
@@ -39,6 +39,7 @@ function LessonItem({
         onClick={() => {
           if (router.query.lesson_id !== lesson.id.toString()) {
             router.query.lesson_id = lesson.id.toString();
+            router.query.section_id = lesson.section_id.toString();
             router.replace(router);
           }
         }}
@@ -97,9 +98,9 @@ function LessonItem({
               const call = async () => {
                 const r = await CodedraftsInstructorLessonApi.deleteLesson(lesson.id);
                 if (r.status === 200) {
-                  await onDeletedSection(lesson.id);
+                  await onDeletedLesson(lesson.id);
                 } else {
-                  await onDeletedSection();
+                  await onDeletedLesson();
                 }
               };
               await toast.promise(

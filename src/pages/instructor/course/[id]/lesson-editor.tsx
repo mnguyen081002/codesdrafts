@@ -44,7 +44,7 @@ const LessonEditor = () => {
     const { id, section_id, lesson_id } = router.query;
     const res = await CodedraftsInstructorCourseApi.getCourseById(Number(id));
     if (!section_id) {
-      router.push(
+      router.replace(
         `/instructor/course/${id}/lesson-editor?section_id=${res.data.data.sections[0]?.id}&lesson_id=${res.data.data.sections[0]?.lessons[0]?.id}`,
       );
       return;

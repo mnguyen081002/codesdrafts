@@ -1,3 +1,5 @@
+import { Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import type { NextPageContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -22,6 +24,8 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
   const [course, setCourse] = useState<GetCourseByIDResponse>(propsCourse);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [id, setId] = useState<string>('');
+  const [opened, { open, close }] = useDisclosure(false);
+  const [reason, setReason] = useState<string>('');
 
   const approved = async () => {
     setIsLoading(true);
@@ -39,18 +43,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
   };
 
   const reject = async () => {
-    setIsLoading(true);
-    setCourse((pre) => ({ ...pre, status: CourseStatus.Rejected }));
-    await toast.promise(CodedraftsAdminCourseApi.rejectCourse(id as string), {
-      pending: 'Đang từ chối khóa học',
-      success: 'Từ chối khóa học thành công',
-      error: {
-        render({ data }) {
-          return <div>{toastGetErrorMessage(data)}</div>;
-        },
-      },
-    });
-    setIsLoading(false);
+    open();
   };
 
   useEffect(() => {
@@ -72,6 +65,37 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
           </Link>
         }
       />
+      <Modal opened={opened} onClose={close} title="Lý do từ chối" centered>
+        <div className="flex flex-col gap-2">
+          <textarea
+            className="h-40 w-full resize-none rounded-md border border-light-border p-2 focus:outline-none"
+            placeholder="Lý do từ chối"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
+          <div className="flex justify-end gap-2">
+            <PrimaryOutlineButton text="Hủy" onClick={close} />
+            <PrimaryButton
+              text="Gửi"
+              onClick={async () => {
+                setIsLoading(true);
+                setCourse((pre) => ({ ...pre, status: CourseStatus.Rejected }));
+                await toast.promise(CodedraftsAdminCourseApi.rejectCourse(Number(id), reason), {
+                  pending: 'Đang từ chối khóa học',
+                  success: 'Từ chối khóa học thành công',
+                  error: {
+                    render({ data }) {
+                      return <div>{toastGetErrorMessage(data)}</div>;
+                    },
+                  },
+                });
+                setIsLoading(false);
+                close();
+              }}
+            />
+          </div>
+        </div>
+      </Modal>
       <CourseDetailMain
         course={course}
         absoluteCourseInfo={

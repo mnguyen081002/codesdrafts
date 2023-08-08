@@ -6,12 +6,12 @@ import StudentCourseApi from '../../../api/student/course';
 import CourseDetailMain from '../../../components/CourseDetailMain';
 import StudentAbsoluteCourseInfo from '../../../components/Student/CourseDetail/AbsoluteCourseInfo';
 import Footer from '../../../layouts/Footer';
-import Header from '../../../layouts/Header';
+import SessionHeader from '../../../layouts/SessonHeader';
 
 const CourseDetail = ({ course }: { course: GetCourseByIDResponse }) => {
   return (
     <>
-      <Header />
+      <SessionHeader />
       <CourseDetailMain
         course={course}
         absoluteCourseInfo={<StudentAbsoluteCourseInfo course={course} />}
