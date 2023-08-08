@@ -4,9 +4,9 @@ import Header from './Header';
 import HeaderPrimary from './HeaderPrimary';
 
 const SessionHeader = () => {
-  const session = useSession();
+  const session: any = useSession();
 
-  return session ? <HeaderPrimary /> : <Header />;
+  return session.status !== 'unauthenticated' ? <HeaderPrimary /> : <Header />;
 };
 
 export default SessionHeader;
