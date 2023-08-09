@@ -3,12 +3,15 @@ import { useDisclosure } from '@mantine/hooks';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import type { SettingResponse } from '../../api/admin/setting';
-import { CodeSmoothApi } from '../../api/codesmooth-api';
+import CodedraftsAdminSettingApi from '../../api/admin/setting';
 import ArrowRightIcon from '../../common/Icons/ArrowRightIcon';
 import AdminBar from '../../components/Admin/bar';
 import DecorAdmin from '../../components/Admin/decor';
+import { TOAST_CONFIG } from '../../shared/constants/app';
+import { toastGetErrorMessage } from '../../utils/app';
 
 function SettingNavButton({ title, href, pkey }: { title: string; href: string; pkey?: string }) {
   return (
@@ -16,8 +19,10 @@ function SettingNavButton({ title, href, pkey }: { title: string; href: string; 
       href={href}
       className="flex justify-between border-t border-light-border px-[12px] pt-[15px]"
     >
-      <p className="text-lg font-normal text-light-text-primary">{title}</p>
-      <p className="text-lg font-normal text-light-text-primary">{pkey}</p>
+      <div className="flex">
+        <p className="w-[600px] text-[20px] font-medium">{title}</p>
+        <p className="text-[18px] text-light-text-primary">{pkey}</p>
+      </div>
       <ArrowRightIcon />
     </Link>
   );
@@ -27,22 +32,28 @@ const AdminSetting = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [listSettings, setListSettings] = useState<SettingResponse[]>([]);
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const _ = await CodeSmoothApi.Admin.Setting.saveSetting(values);
-      // setMessage({
-      //   isSuccess: true,
-      //   message: 'Success',
-      // });
-    } catch (error: any) {
-      // setMessage({ message: error.data.message, isSuccess: false });
-    }
+    const _ = await CodedraftsAdminSettingApi.saveSetting(values);
+
+    await toast.promise(
+      CodedraftsAdminSettingApi.saveSetting(values),
+      {
+        pending: 'Đang lưu...',
+        success: 'Thành công',
+        error: {
+          render({ data }) {
+            return toastGetErrorMessage(data);
+          },
+        },
+      },
+      TOAST_CONFIG,
+    );
 
     resetForm({});
   };
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await CodeSmoothApi.Admin.Setting.getAllSettings();
+      const res = await CodedraftsAdminSettingApi.getAllSettings();
       setListSettings(res.data.data);
     };
 
@@ -50,7 +61,7 @@ const AdminSetting = () => {
   }, []);
 
   return (
-    <div className="flex w-full flex-col gap-[50px] px-[300px] pt-[60px]">
+    <div className="flex w-full flex-col gap-[50px] px-[150px] pt-[60px]">
       <DecorAdmin text="Cài đặt" />
       <Modal size={400} title="Cài đặt" opened={opened} onClose={close} centered>
         <Formik
@@ -137,9 +148,9 @@ const AdminSetting = () => {
       </Modal>
       <AdminBar open={open} />
       <div className="flex flex-col gap-[10px] rounded-[5px] p-[10px] shadow-md">
-        <div className="flex justify-between px-[12px] font-medium">
-          <p>Tên</p>
-          <p>Key</p>
+        <div className="flex px-[12px] text-[22px] font-semibold">
+          <p className="w-[600px] font-semibold">Tên</p>
+          <p className="font-semibold">Key</p>
           <p></p>
         </div>
         <SettingNavButton href={'/admin/setting/categories'} title="Danh Mục" />

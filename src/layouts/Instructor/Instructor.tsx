@@ -3,7 +3,8 @@ import ColumnChartIcon from '@/common/Icons/ColumnChart';
 import DocumentIcon from '../../common/Icons/DocumentIcon';
 import GroupIcon from '../../common/Icons/GroupIcon';
 import NotificationIcon from '../../common/Icons/NotificationIcon';
-import Footer from '../Footer';
+import ProfileIcon from '../../common/Icons/ProfileIcon';
+import TransactionIcon from '../../common/Icons/TransactionIcon';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
 
@@ -29,18 +30,27 @@ export const listInstructorSidebarItem = [
     Icon: ColumnChartIcon,
     text: 'Thống Kê',
   },
+  {
+    redirectPath: 'transaction',
+    Icon: TransactionIcon,
+    text: 'Giao Dịch',
+  },
+  {
+    redirectPath: 'profile',
+    Icon: ProfileIcon,
+    text: 'Hồ Sơ',
+  },
 ];
 
 const InstructorLayout = ({ children }) => {
   return (
-    <>
+    <div className="h-screen overflow-clip">
       <HeaderManage showAvatar />
       <div className="flex w-full">
         <SidebarManage bottom items={listInstructorSidebarItem} redirectPath="instructor" />
         {children}
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 

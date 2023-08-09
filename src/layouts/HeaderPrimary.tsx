@@ -1,7 +1,10 @@
 import { Menu, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
+import { useState } from 'react';
+import LoadingBar from 'react-top-loading-bar';
 
 import DropdownList from '../components/DropdownList';
 import { Avatar } from '../components/sub/avatar';
@@ -62,20 +65,20 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <Link href={'/course'}>
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Khóa học của tôi
             </Text>
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Giỏ hàng
           </Text>
         </Menu.Item>
         <Menu.Item>
           <Link href={'/instructor/course'}>
             <div className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
+              <Text color="dark" className="text-[16px]">
                 Quản lý dạy học
               </Text>
             </div>
@@ -84,7 +87,7 @@ const MenuUser = () => {
         {session.data?.token.user.role === 'ADMINSTRATOR' && (
           <Menu.Item>
             <Link href={'/admin/courses'} className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
+              <Text color="dark" className="text-[16px]">
                 Quản lý giảng viên
               </Text>
             </Link>
@@ -95,11 +98,10 @@ const MenuUser = () => {
 
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Thông báo
             </Text>
             <Text
-              size="sm"
               color="dark"
               className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
@@ -109,11 +111,10 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <div className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
+            <Text color="dark" className="text-[16px]">
               Tin nhắn
             </Text>
             <Text
-              size="sm"
               color="dark"
               className="flex h-[19px] w-[19px] items-center justify-center rounded-xl bg-[#1363DF] text-white"
             >
@@ -125,19 +126,19 @@ const MenuUser = () => {
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Cài đặt tài khoản
           </Text>
         </Menu.Item>
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Tin nhắn
           </Text>
         </Menu.Item>
         <Menu.Divider />
 
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Hổ trợ
           </Text>
         </Menu.Item>
@@ -146,7 +147,7 @@ const MenuUser = () => {
             signOut();
           }}
         >
-          <Text size="sm" color="dark" className="text-lg">
+          <Text color="dark" className="text-[16px]">
             Đăng xuất
           </Text>
         </Menu.Item>
@@ -156,25 +157,42 @@ const MenuUser = () => {
 };
 
 const HeaderPrimary = () => {
-  return (
-    <div className="sticky top-0 z-20 flex h-[74px] w-full items-center justify-between bg-white pl-[50px] pr-[82px] shadow">
-      <Link href={'/home'}>
-        <Image src="/logo-96.png" alt="logo" width={40} height={40} />
-      </Link>
-      <ListPopularCourse />
-      <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">
-        <input
-          className="border-none bg-white"
-          placeholder="Tìm kiếm"
-          // rightSection={
-          //   <Image src="/images/home/Adornment-End.svg" alt="search" width={20} height={20} />
-          // }
-        />
-        <Image src="/images/home/Adornment-End.svg" alt="search" width={25} height={25} />
-      </div>
+  const router = useRouter();
+  const [progress, setProgress] = useState(0);
+  const handleRouteChange = (url, { shallow }) => {
+    if (shallow) return;
+    setProgress(10);
+  };
 
-      <MenuUser />
-    </div>
+  const handleRouteComplete = (url, { shallow }) => {
+    if (shallow) return;
+    setProgress(100);
+  };
+
+  router.events?.on('routeChangeStart', handleRouteChange);
+  router.events?.on('routeChangeComplete', handleRouteComplete);
+  return (
+    <>
+      <div className="sticky top-0 z-30 flex h-[64px] w-full items-center justify-between bg-white pl-[30px] pr-[40px] shadow">
+        <Link href={'/home'}>
+          <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+        </Link>
+        <ListPopularCourse />
+        <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">
+          <input
+            className="border-none bg-white"
+            placeholder="Tìm kiếm"
+            // rightSection={
+            //   <Image src="/images/home/Adornment-End.svg" alt="search" width={20} height={20} />
+            // }
+          />
+          <Image src="/images/home/Adornment-End.svg" alt="search" width={25} height={25} />
+        </div>
+
+        <MenuUser />
+      </div>
+      <LoadingBar color="#1363DF" progress={progress} onLoaderFinished={() => setProgress(0)} />
+    </>
   );
 };
 export default HeaderPrimary;

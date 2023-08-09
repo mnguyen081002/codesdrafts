@@ -19,4 +19,12 @@ function extractTextFromLastHTMLTag(htmlString: string): string {
   return textContent || '';
 }
 
-export { extractTextFromLastHTMLTag };
+function toastGetErrorMessage(data: any) {
+  return `${data.response.data.message}`;
+}
+
+function formatCoursePrice(price: number, suffix = ' VNĐ') {
+  return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} ${suffix}`;
+}
+
+export { extractTextFromLastHTMLTag, formatCoursePrice, toastGetErrorMessage };

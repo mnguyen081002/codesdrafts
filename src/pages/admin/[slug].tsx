@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 
+import { requireAuth } from '../../components/requireAuth';
 import { AdminLayout, mapAdminPage } from '../../layouts/Admin/Admin';
 
 const ManageAdmin = () => {
@@ -21,5 +22,11 @@ const Manage = () => {
     </AdminLayout>
   );
 };
+
+export const getServerSideProps = requireAuth(async () => {
+  return {
+    props: {},
+  };
+});
 
 export default Manage;

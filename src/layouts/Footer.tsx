@@ -12,7 +12,7 @@ const Footer = () => {
               <Link href="/" className="flex gap-[10px] font-bold text-white no-underline">
                 <Image src="/logo-96.png" width={40} height={40} alt="" />
                 <Box>
-                  <Title className="text-[18px]">CodeSmooth</Title>
+                  <Title className="text-[18px]">Codedrafts</Title>
                   <Text className="text-[9px]">GROW YOUR SKILLS</Text>
                 </Box>
               </Link>
@@ -64,7 +64,7 @@ const Footer = () => {
         style={{ borderTop: '1px solid #363A93' }}
       >
         <Box className="flex h-[72px] w-[960px] items-center justify-between text-[14px] font-extralight">
-          <Text>Copyright © 2023 CodeSmooth. All Rights Reserved.</Text>
+          <Text>Copyright © 2023 Codedrafts. All Rights Reserved.</Text>
           <Flex gap={32}>
             <Text>Privacy Policy</Text>
             <Text>Terms & Conditions</Text>

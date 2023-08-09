@@ -15,6 +15,7 @@ interface InputProps {
   noResize?: boolean;
   minRows?: number;
   value?: string;
+  onChange?: (event: React.ChangeEvent<any>) => void;
 }
 
 interface ThumbnailProps {
@@ -43,7 +44,11 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
         >
           {!props.thumbnailUpload ? (
             <div className="flex h-[200px] w-[300px] flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]">
-              <img className="h-[55px] w-[55px]" src="/images/icons/wallpaper.svg" alt="" />
+              <img
+                className="h-[55px] w-[55px] rounded-[5px]"
+                src="/images/icons/wallpaper.svg"
+                alt=""
+              />
               <p className="font-lexend-deca text-sm font-normal leading-6 text-light-text-main">
                 1122 x 748
               </p>
@@ -56,7 +61,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
               </p>
               <input
                 type="file"
-                className="absolute z-10 h-[200px] w-[300px] cursor-pointer opacity-0"
+                className="absolute z-10 h-[200px] w-[300px] cursor-pointer rounded-[5px] opacity-0"
                 onChange={(event) => {
                   if (event.target.files) {
                     props.setThumbnailUpload(event.target.files[0]);
@@ -68,7 +73,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
           ) : (
             <div className="relative w-fit">
               <img
-                className=" h-[200px] w-[300px]"
+                className=" h-[200px] w-[300px] rounded-[5px]"
                 src={
                   props.thumbnailUpload instanceof File
                     ? URL.createObjectURL(props.thumbnailUpload)
@@ -120,6 +125,7 @@ export const InputCustom = (props: InputProps) => {
           maxLength={props.maxLength}
           style={{ height: props.height }}
           value={props.value}
+          onChange={props.onChange}
         />
       )}
     </div>
@@ -152,7 +158,7 @@ function InputRounded(props: InputProps) {
 
 const InputRectangle = (props: InputProps) => {
   const { control } = useFormContext();
-
+  // rules valueAsNumber
   return (
     <Controller
       name={props.name}

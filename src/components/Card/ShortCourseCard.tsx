@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import type { ListCourseItemResponse } from '../../api/instructor/course';
+import { formatCoursePrice } from '../../utils/app';
 
 interface ShortCourseCardProps {
   course: ListCourseItemResponse;
@@ -84,9 +85,7 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
             </Text>
           </Group>
           <Text size="18px" fw={700}>
-            {course.price === 0
-              ? 'Miễn phí'
-              : `${course?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`}
+            {course.price === 0 ? 'Miễn phí' : formatCoursePrice(course.price)}
           </Text>
         </Group>
         <Button

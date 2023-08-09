@@ -7,7 +7,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PATH_AUTH } from '@/routes/path';
 import type { ResLogin } from '@/shared/types/authType';
 
-import { CodeSmoothApi } from '../../../api/codesmooth-api';
+import { StudentApi } from '../../../api/codedrafts-api';
 
 export default NextAuth({
   providers: [
@@ -27,7 +27,7 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          const data: ResLogin = await CodeSmoothApi.login(
+          const data: ResLogin = await StudentApi.login(
             credentials!.email,
             credentials!.password,
           ).then((res) => {
@@ -67,7 +67,7 @@ export default NextAuth({
     async jwt({ token, user }: any) {
       if (user) {
         if (user.id_token) {
-          const data: ResLogin = await CodeSmoothApi.loginSocial({
+          const data: ResLogin = await StudentApi.loginSocial({
             id_token: user.id_token,
             social: user.provider || 'google',
           }).then((res) => {

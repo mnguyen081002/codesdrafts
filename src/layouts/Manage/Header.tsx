@@ -45,34 +45,31 @@ const MenuUser = () => {
         </Menu.Item>
         <Menu.Item>
           <Link href={'/home'} className="flex items-center justify-between">
-            <Text size="sm" color="dark" className="text-lg">
-              Quay lại trang học viên
-            </Text>
+            <Text className="text-[16px]">Quay lại trang học viên</Text>
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link href={'/instructor/course'} className="flex items-center justify-between">
+            <Text className="text-[16px]">Quản lý dạy học</Text>
           </Link>
         </Menu.Item>
         {session.data?.token.user.role === 'ADMINSTRATOR' && (
           <Menu.Item>
             <Link href={'/admin/courses'} className="flex items-center justify-between">
-              <Text size="sm" color="dark" className="text-lg">
-                Quản lý giảng viên
-              </Text>
+              <Text className="text-[16px]">Quản lý giảng viên</Text>
             </Link>
           </Menu.Item>
         )}
         <Menu.Divider />
         <Menu.Item>
-          <Text size="sm" color="dark" className="text-lg">
-            Hỗ trợ
-          </Text>
+          <Text className="text-[16px]">Hỗ trợ</Text>
         </Menu.Item>
         <Menu.Item
           onClick={() => {
             signOut();
           }}
         >
-          <Text size="sm" color="dark" className="text-lg">
-            Đăng xuất
-          </Text>
+          <Text className="text-[16px]">Đăng xuất</Text>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
@@ -82,17 +79,21 @@ const MenuUser = () => {
 const HeaderManage = ({
   rightContent,
   showAvatar,
+  suffix = '',
 }: {
   rightContent?: React.ReactNode;
   showAvatar?: boolean;
+  suffix?: string;
 }) => {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
   const handleRouteChange = (url, { shallow }) => {
+    if (shallow) return;
     setProgress(10);
   };
 
   const handleRouteComplete = (url, { shallow }) => {
+    if (shallow) return;
     setProgress(100);
   };
 
@@ -100,10 +101,12 @@ const HeaderManage = ({
   router.events?.on('routeChangeComplete', handleRouteComplete);
   return (
     <>
-      <div className="sticky top-0  z-20 flex h-[74px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
+      <div className="sticky top-0  z-20 flex h-[64px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
         <Link href={'/'} className="flex items-center gap-2">
           <Image src="/logo-96.png" alt="logo" width={40} height={40} />
-          <p className="font-inter text-[20px] font-semibold leading-6">{APP_NAME}</p>
+          <p className="font-inter text-[20px] font-semibold leading-6">
+            {`${APP_NAME} ${suffix}`}
+          </p>
         </Link>
         {rightContent}
         {showAvatar && <MenuUser />}

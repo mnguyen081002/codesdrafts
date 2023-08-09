@@ -2,6 +2,7 @@ import type { MutableRefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import slugify from 'slugify';
 
+import ArrowDownV3Icon from '../../common/Icons/ArrowDownV3';
 import { ComponentType } from '../../shared/enum/component';
 import type { IContent, ITextContent, LessonComponentProps } from '../../shared/interface';
 import { extractTextFromLastHTMLTag } from '../../utils/app';
@@ -61,7 +62,8 @@ const getS = (p: React.MutableRefObject<LessonComponentProps<IContent>>[]) =>
 function LessonTableOfContent(props: LessonTableOfContentProps) {
   const [tableOfContent, setTableOfContent] = useState<TableOfContent[]>([]);
   const data = useRef<React.MutableRefObject<LessonComponentProps<IContent>>[]>([]);
-  console.log('Render LessonTableOfContent');
+  const [isCollapse, setIsCollapse] = useState(false);
+
   const interval = useRef<any>();
   let s = '';
   useEffect(() => {
@@ -101,52 +103,61 @@ function LessonTableOfContent(props: LessonTableOfContentProps) {
   return (
     <div
       id="tableOfContent"
-      className="absolute right-2 flex max-h-[246px] w-[300px] flex-col gap-[5px] overflow-y-auto bg-[#FAFAFA] py-[10px] pl-[20px] pr-[40px] font-lessonContent"
+      className="absolute right-2 flex max-h-[246px] w-[300px]  flex-col bg-[#FAFAFA]  font-lessonContent"
     >
-      {tableOfContent.map((item, index) => (
-        <div key={index}>
-          <a
-            href={`#${slugify(item.text)}`}
-            className="cursor-pointer text-lg font-semibold leading-5 text-[#444]"
-          >
-            {item.text}
-          </a>
-          <div className="flex flex-col pl-[15px]">
-            {item.children.map((child, index) => (
-              <div key={index}>
-                <a
-                  href={`#${slugify(child.text)}`}
-                  key={index}
-                  className="text-base text-[#5C5E60]"
-                >
-                  {child.text}
-                </a>
-                <div className="flex flex-col pl-[15px]">
-                  {child.children.map((c, index) => (
+      <div className="relative">
+        <ArrowDownV3Icon
+          onClick={() => setIsCollapse(!isCollapse)}
+          className={`absolute top-[10px] right-[10px] z-40 cursor-pointer transition-all delay-100 ${
+            isCollapse && 'rotate-180'
+          }`}
+        />
+      </div>
+      <div className="z-10 flex h-[50px] items-center bg-[#FAFAFA] px-[20px] py-[10px] text-lg font-semibold leading-5 text-[#444]">
+        <p>Mục lục</p>
+      </div>
+      <div className="relative">
+        <div
+          className={`absolute max-h-[246px] overflow-y-scroll border-t border-light-border transition-all delay-100  ${
+            !isCollapse ? 'top-0' : 'top-[-450px]'
+          } flex w-full flex-col bg-[#FAFAFA] px-[20px] ${tableOfContent.length === 0 && 'hidden'}`}
+        >
+          {tableOfContent.map((item, index) => (
+            <div key={index}>
+              <a
+                href={`#${slugify(item.text)}`}
+                className="cursor-pointer text-lg font-semibold leading-5 text-[#444]"
+              >
+                {item.text}
+              </a>
+              <div className="flex flex-col pl-[15px]">
+                {item.children.map((child, index) => (
+                  <div key={index}>
                     <a
-                      href={`#${slugify(c.text)}`}
+                      href={`#${slugify(child.text)}`}
                       key={index}
                       className="text-base text-[#5C5E60]"
                     >
-                      {c.text}
+                      {child.text}
                     </a>
-                  ))}
-                </div>
+                    <div className="flex flex-col pl-[15px]">
+                      {child.children.map((c, index) => (
+                        <a
+                          href={`#${slugify(c.text)}`}
+                          key={index}
+                          className="text-base text-[#5C5E60]"
+                        >
+                          {c.text}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      ))}
-
-      {/* <p className="text-base font-semibold leading-5 text-[#444]">
-        1. Guide One welcome to this course! With the help of interactive
-      </p>
-      <div className="flex flex-col pl-[15px]">
-        <p className="text-sm text-[#5C5E60]">a. Guide A</p>
-        <p className="text-sm text-[#5C5E60]">a. Guide A</p>
-        <p className="text-sm text-[#5C5E60]">a. Guide A</p>
-        <p className="text-sm text-[#5C5E60]">a. Guide A</p>
-      </div> */}
+      </div>
     </div>
   );
 }

@@ -1,21 +1,19 @@
 import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
-import type { CourseCategoryType } from '../shared/enum/category';
 import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
-import CodeSmoothAdminApi from './admin/setting';
 import axiosClient from './axiosClient';
-import type { BaseQuery, BaseResponse } from './baseHttp';
+import type { BaseQuery, BaseReadResponse, BaseResponse } from './baseHttp';
 import type { ListCourseItemResponse } from './instructor/course';
-import CodeSmoothInstructorCourseApi from './instructor/course';
+import type { GetCourseByIDResponse } from './student/course';
 
-export interface CodeSmoothApiResponseList<T> {
+export interface CodedraftsApiResponseList<T> {
   data: T[];
   meta: Meta;
   message: string;
 }
 
-export interface CodeSmoothApiResponse<T> {
+export interface CodedraftsApiResponse<T> {
   data: T;
   message: string;
 }
@@ -54,42 +52,119 @@ export interface AddLessonRequest {
   components: LessonComponentProps[];
 }
 
-export interface SaveCourseRequest {
-  name: string;
-  description: string;
-  short_description: string;
-  target_audience: string;
-  category_ids: number[];
-  requirements: string[];
-  objectives: string[];
-  thumbnail: string;
-  price: number;
-  feedback_email: string;
-}
-
 export interface GetCourseListQuery extends BaseQuery {
   category_id?: number;
 }
 
-export const CodeSmoothApi = {
-  Admin: {
-    Setting: CodeSmoothAdminApi,
+export interface GetCategoriesPublicResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  name: string;
+  description: string;
+  thumbnail: string;
+  is_active: boolean;
+  order: number;
+}
+
+export interface CalculatePaymentResponse {
+  price: number;
+  discount: number;
+  total: number;
+}
+
+export interface StudentGetLessonByID {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  course_id: null;
+  owner_id: number;
+  title: string;
+  isCompleted: boolean;
+  order: number;
+  components: any[];
+  summary: string;
+  section_id: number;
+}
+export interface ShortLesson {
+  id: number;
+  title: string;
+  order: number;
+  completed_count: number;
+  section_id: number;
+}
+
+export interface GetSectionWithLessonByCourseIDResponse {
+  id: number;
+  title: string;
+  type: string;
+  order: number;
+  course_id: number;
+  lessons: ShortLesson[];
+}
+
+export interface GetLesonBySectionIDResponse {
+  id: number;
+  course_id: number;
+  title: string;
+  order: number;
+  section_id: number;
+  completed_count: number;
+}
+
+export const StudentApi = {
+  getLessonsBySectionId: (sectionId: number) => {
+    return axiosClient.get<BaseReadResponse<GetLesonBySectionIDResponse[]>>(
+      `/api/lesson/get-lession-by-section-id/${sectionId}`,
+    );
   },
-  Instructor: {
-    Course: CodeSmoothInstructorCourseApi,
+  getLessonById: (id: number) => {
+    return axiosClient.get<BaseReadResponse<StudentGetLessonByID>>(`/api/lesson/${id}`);
+  },
+  calculatePayment: (props: { course_id: number }) => {
+    return axiosClient.post<BaseResponse<CalculatePaymentResponse>>(
+      '/api/payment/calculate',
+      props,
+    );
+  },
+  verifyEmail: (token: string) => {
+    return axiosClient.post('/api/auth/verify-email', {
+      token,
+    });
+  },
+  resetPassword: (token: string, password: string) => {
+    return axiosClient.post('/api/auth/reset-password', {
+      token,
+      password,
+    });
+  },
+  forgotPassword: (email: string) => {
+    return axiosClient.post('/api/auth/forgot-password', {
+      email,
+    });
   },
   getMyCourseList: (props: GetCourseListQuery) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/course/my-course', {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/course/my-course', {
       params: props,
     });
   },
   getCourseList: (props: GetCourseListQuery) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/course', {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/course', {
       params: props,
     });
   },
   getCourseById: (id: number) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse>>(`/api/course/${id}`);
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
+  },
+  getSectionWithLessonByCourseId: (id: number) => {
+    return axiosClient.get<BaseReadResponse<GetSectionWithLessonByCourseIDResponse[]>>(
+      `/api/section/${id}`,
+    );
+  },
+  getCategories: () => {
+    return axiosClient.get<BaseReadResponse<GetCategoriesPublicResponse[]>>('/api/category');
   },
   uploadFiles: (files: File[]) => {
     const formData = new FormData();
@@ -104,46 +179,10 @@ export const CodeSmoothApi = {
   },
 
   execute: ({ code, testCode, language }: ExecuteRequest) => {
-    return axiosClient.post<CodeSmoothApiResponse<ExecuteResponse>>(`/api/execute/`, {
+    return axiosClient.post<CodedraftsApiResponse<ExecuteResponse>>(`/api/execute/`, {
       code,
       testCode,
       language,
-    });
-  },
-
-  deleteLessonById(id: number) {
-    return axiosClient.delete(`/api/admin/lesson/${id}`);
-  },
-
-  createCategory: (
-    title: string,
-    id: number,
-    course_id: number,
-    type: CourseCategoryType,
-    order?: number,
-  ) => {
-    return axiosClient.post('/api/admin/category', {
-      title,
-      id: Number(id),
-      order,
-      type,
-      courseId: Number(course_id),
-    });
-  },
-
-  updateCategory: (title: string, id: number) => {
-    return axiosClient.patch(`/api/admin/category/${id}`, {
-      title,
-    });
-  },
-
-  deleteCategoryById: (id: number) => {
-    return axiosClient.delete(`/api/admin/category/${id}`);
-  },
-
-  createCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post('/api/instructor/course', {
-      ...params,
     });
   },
   login: async (email: string, password: string) => {

@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { GetCourseByIDResponse, Section } from '../../../api/instructor/course';
+import type { BaseGetCourseByIDResponse, SidebarSection } from '../../../api/base/interface/course';
 import type { AddSectionResponse } from '../../../api/instructor/section';
 import ArrowDownV3Icon from '../../../common/Icons/ArrowDownV3';
 import ArrowLeftV2Icon from '../../../common/Icons/ArrowLeftV2';
@@ -10,14 +9,17 @@ import ArrowRightIcon from '../../../common/Icons/ArrowRightIcon';
 import SectionItem from './SectionItem';
 
 interface LessonSidebarProps {
-  course?: GetCourseByIDResponse;
+  course?: BaseGetCourseByIDResponse;
   isCollapse: boolean;
   onClickCollapse: () => void;
+  isPreview?: boolean;
+  sections: SidebarSection[];
 }
 
 function LessonSidebar(props: LessonSidebarProps) {
   const router = useRouter();
-  const [sections, setSections] = useState<Section[]>([]);
+
+  const [sections, setSections] = useState<SidebarSection[]>(props.sections);
 
   const onAddSection = (section?: AddSectionResponse) => {
     if (!section) return;
@@ -34,8 +36,8 @@ function LessonSidebar(props: LessonSidebarProps) {
   };
 
   useEffect(() => {
-    setSections(props.course?.sections || []);
-  }, [props.course]);
+    setSections(props.sections);
+  }, [props.sections]);
 
   return (
     <div
@@ -63,13 +65,16 @@ function LessonSidebar(props: LessonSidebarProps) {
           <div
             className={`flex h-[870px] flex-col justify-between border-r border-light-border font-lexend-deca transition-all duration-300`}
           >
-            <Link
-              href={`/instructor/course/course-editor/?id=${router.query.id}`}
+            <button
+              type="button"
+              onClick={() => {
+                router.back();
+              }}
               className="flex h-[50px] cursor-pointer items-center gap-5 border-b border-light-border px-5 hover:bg-light-gray"
             >
               <ArrowLeftV2Icon className="mb-1" height="25px" width="25px" />
               <p>Quay lại</p>
-            </Link>
+            </button>
             <div className="flex flex-col gap-[10px] px-[20px] pt-[20px] pb-[30px]">
               <img
                 src={props.course?.thumbnail}
@@ -81,6 +86,7 @@ function LessonSidebar(props: LessonSidebarProps) {
             <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
               {sections.map((section) => (
                 <SectionItem
+                  isPreview={props.isPreview}
                   onDeletedSection={onDeleteSection}
                   onAddSection={onAddSection}
                   section={section}
@@ -88,13 +94,15 @@ function LessonSidebar(props: LessonSidebarProps) {
                   isLast={section.id === sections[sections.length - 1]!.id}
                 />
               ))}
-              <div className="flex flex-col items-center justify-center py-[20px]">
-                <div className="flex h-[44px] w-[202px] cursor-pointer items-center justify-center rounded-[3px] border border-light-border px-[15px] py-[12px] hover:bg-light-gray">
-                  <p className="text-sm font-normal text-light-text-primary">
-                    Đánh dấu đã hoàn thành
-                  </p>
+              {!props.isPreview && (
+                <div className="flex flex-col items-center justify-center py-[20px]">
+                  <div className="flex h-[44px] w-[202px] cursor-pointer items-center justify-center rounded-[3px] border border-light-border px-[15px] py-[12px] hover:bg-light-gray">
+                    <p className="text-sm font-normal text-light-text-primary">
+                      Đánh dấu đã hoàn thành
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="flex h-[28px] items-center justify-center border-t border-light-border">
               <ArrowDownV3Icon className="h-[8px] w-[18px] rotate-180" pathFill="#64686B" />

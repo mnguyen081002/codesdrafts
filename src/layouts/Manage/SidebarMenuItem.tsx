@@ -50,7 +50,7 @@ function SidebarManageMenuItem({
     >
       <div className={`${bg} flex  items-center gap-4 `}>
         <Icon pathFill={`${selected ? 'white' : '#000000CC'}`} />
-        <p className={`font-instructorSidebar text-base ${textClass}`}>{text}</p>
+        <p className={`font-plusJakartaSans text-base ${textClass}`}>{text}</p>
       </div>
       {badge && (
         <div

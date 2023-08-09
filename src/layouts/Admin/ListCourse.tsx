@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import type { AdminCountCourseResponse } from '../../api/admin/setting';
-import CodeSmoothAdminApi from '../../api/admin/setting';
+import CodedraftsAdminSettingApi from '../../api/admin/setting';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import LongCourseCard from '../../components/Card/LongCourseCard';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
@@ -23,10 +23,10 @@ const AdminListCoursePage = () => {
     }
 
     const fetch = async () => {
-      const res = await CodeSmoothAdminApi.getCourses({
+      const res = await CodedraftsAdminSettingApi.getCourses({
         status: status === 'all' ? undefined : status,
       });
-      const count = await CodeSmoothAdminApi.countCourse();
+      const count = await CodedraftsAdminSettingApi.countCourse();
       setCount(count.data.data);
       setListCourse(res.data.data);
     };
@@ -37,7 +37,6 @@ const AdminListCoursePage = () => {
       <div className="flex w-full flex-col gap-[27px] pb-[60px]">
         <UnderlineNavbar
           badge
-          isInstructor={true}
           navs={[
             {
               title: 'Tất cả',
@@ -64,14 +63,18 @@ const AdminListCoursePage = () => {
         <div className="flex flex-col rounded-[5px] border border-light-border">
           <table className="table-auto gap-[10px] rounded-[5px] p-[10px]">
             <thead>
-              <tr className="flex gap-[80px] border-b border-light-border py-[15px] pl-[25px] pr-[98px] text-base uppercase leading-6 text-[#777]">
-                <th className="flex w-[692px] justify-start">
+              <tr className="flex border-b border-light-border py-[15px] pl-[25px] text-base uppercase leading-6 text-[#777]">
+                <th className="flex flex-1 justify-start">
                   <p className="font-medium">KHÓA HỌC</p>
                 </th>
                 <th className="flex">
-                  <p className="w-[150px] text-start font-medium">Giá</p>
-                  <p className="w-[150px] text-start font-medium">Thời gian</p>
-                  <p className="w-[150px] text-start font-medium">Cấp độ</p>
+                  <p className="w-[150px] text-center font-medium">Giá</p>
+                </th>
+                <th className="flex">
+                  <p className="w-[150px] text-center font-medium">Thời gian</p>
+                </th>
+                <th className="flex">
+                  <p className="w-[150px] text-center font-medium">Cấp độ</p>
                 </th>
               </tr>
             </thead>

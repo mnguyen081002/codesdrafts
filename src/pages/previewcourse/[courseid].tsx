@@ -15,8 +15,8 @@
 // import type { FC } from 'react';
 // import { useEffect, useState } from 'react';
 
-// import type { CategoryResponse, CourseResponse } from '../../api/codesmooth-api';
-// import { CodeSmoothApi } from '../../api/codesmooth-api';
+// import type { CategoryResponse, CourseResponse } from '../../api/codedrafts-api';
+// import { CodedraftsApi } from '../../api/codedrafts-api';
 // import Button from '../../common/Button';
 // import { CoureTag } from '../../components/Course/CourseTag';
 // import CourseSkeleton from '../../components/Skeleton/CourseSkeleton';
@@ -87,7 +87,7 @@
 //     if (!router.isReady) return;
 //     const { courseid } = router.query;
 //     const fetchCourseHandler = async () => {
-//       const courseRes = await CodeSmoothApi.getCourseById(Number(courseid));
+//       const courseRes = await CodedraftsApi.getCourseById(Number(courseid));
 //       setCourse(courseRes.data);
 //       setIsLoaded(true);
 //     };

@@ -10,40 +10,15 @@ export const AuthWrapper = ({ children }: Props) => {
   return (
     <Box
       sx={(theme) => ({
-        minHeight: '100vh',
+        minHeight: '873px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F1F7FF',
         position: 'relative',
         overflow: 'hidden',
         padding: ` 0 ${rem(16)}`,
       })}
     >
-      <Box
-        sx={{
-          width: rem(233.36),
-          height: rem(187.87),
-          backgroundColor: '#DDA82A',
-          filter: 'blur(158.5px)',
-          position: 'absolute',
-          left: '10.05%',
-          bottom: '13.7%',
-          zIndex: 1,
-        }}
-      />
-      <Box
-        sx={{
-          width: rem(233.36),
-          height: rem(187.87),
-          backgroundColor: '#5470FA',
-          filter: 'blur(158.5px)',
-          position: 'absolute',
-          right: '7.44%',
-          bottom: '4.21%',
-          zIndex: 1,
-        }}
-      />
       <Box
         sx={{
           width: rem(286),

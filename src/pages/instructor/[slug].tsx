@@ -23,7 +23,7 @@ const ManageCourseMain = () => {
   // if query params change, update the page
 
   return (
-    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[120px] pt-[30px]">
+    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[150px] pt-[60px]">
       {mapPage[slug as string]}
     </div>
   );

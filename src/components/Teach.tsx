@@ -2,15 +2,15 @@
 // import Link from 'next/link';
 // import { useEffect, useState } from 'react';
 
-// import type { CodeSmoothApiResponseList, CourseResponse } from '../api/codesmooth-api';
-// import { CodeSmoothApi } from '../api/codesmooth-api';
+// import type { CodedraftsApiResponseList, CourseResponse } from '../api/codedrafts-api';
+// import { CodedraftsApi } from '../api/codedrafts-api';
 // import { useAppDispatch } from '../app/hooks';
 // import { resetLesson } from '../features/auth/LessonSlice';
 // import { generateId } from '../utils/genId';
 // import SmallCourseCard from './SmallCourseCard';
 
 // const Teach = () => {
-//   const [listCourses, setListCourses] = useState<CodeSmoothApiResponseList<CourseResponse>>({
+//   const [listCourses, setListCourses] = useState<CodedraftsApiResponseList<CourseResponse>>({
 //     data: [],
 //     message: '',
 //     meta: {
@@ -27,7 +27,7 @@
 
 //   useEffect(() => {
 //     setIsLoading(true);
-//     CodeSmoothApi.getListCourses()
+//     CodedraftsApi.getListCourses()
 //       .then((data) => {
 //         setListCourses(data);
 //       })

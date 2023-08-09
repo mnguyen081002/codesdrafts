@@ -2,12 +2,12 @@ import { Button, Group, Input, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import { CodeSmoothApi } from '@/api/codesmooth-api';
-
 import type { SettingResponse } from '../../../api/admin/setting';
+import CodedraftsAdminSettingApi from '../../../api/admin/setting';
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
 import AdminBar from '../../../components/Admin/bar';
@@ -66,22 +66,22 @@ const SettingItem = ({
         </form>
       </Modal>
       <td>
-        <div className="flex h-[45px] items-center px-[10px]">
-          <p className="">{value}</p>
+        <div className="flex h-[58px] items-center  px-[25px]">
+          <p className="text-[20px]">{value}</p>
         </div>
       </td>
       <td>
-        <div className="flex h-[45px] items-center justify-end gap-2 px-[10px]">
+        <div className="flex h-[58px] items-center justify-end gap-2 px-[25px]">
           <EditIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
-            height="20"
-            width="20"
+            height="24"
+            width="24"
             onClick={open}
           />
           <TrashIcon
             className="cursor-pointer rounded-full hover:bg-slate-200"
-            height="20"
-            width="20"
+            height="24"
+            width="24"
             onClick={onDelete}
           />
         </div>
@@ -100,14 +100,14 @@ const SettingContent = () => {
   const getListSetting = async () => {
     if (!router.isReady) return;
     const { slug } = router.query as { slug: string };
-    const res = await CodeSmoothApi.Admin.Setting.getSettingByKey(slug);
+    const res = await CodedraftsAdminSettingApi.getSettingByKey(slug);
     setSetting(res.data.data);
-    setSettingValues(res.data.data.value);
+    setSettingValues(res.data.data.values);
   };
 
   const saveSetting = async (newValues: string[]) => {
     try {
-      await CodeSmoothApi.Admin.Setting.saveSetting({
+      await CodedraftsAdminSettingApi.saveSetting({
         key: setting!.key,
         value: newValues,
         title: setting!.title,
@@ -145,7 +145,7 @@ const SettingContent = () => {
 
   return (
     <AdminLayout>
-      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[300px] pt-[60px]">
+      <div className="flex  h-[860px] flex-1 flex-col gap-[50px] px-[150px] pt-[60px]">
         <DecorAdmin text="Danh mục" />
         <Modal size={400} title="Danh Mục" opened={opened} onClose={close} centered>
           <form onSubmit={formik.handleSubmit} className="w-full">
@@ -169,16 +169,16 @@ const SettingContent = () => {
           </form>
         </Modal>
         <AdminBar open={open} />
-        <table className="table-auto gap-[10px] rounded-[5px] p-[10px] shadow-md">
+        <table className="table-auto gap-[10px] rounded-[5px] shadow-md">
           <thead>
-            <tr className="h-10 text-lg font-medium text-light-text-primary">
+            <tr className="h-10 text-[22px] font-semibold">
               <th>
-                <div className="flex h-[45px] items-center px-[15px]">
+                <div className="flex h-[58px] items-center px-[25px]">
                   <p className="">Giá trị</p>
                 </div>
               </th>
               <th>
-                <div className="flex h-[45px] items-center justify-end px-[15px]">
+                <div className="flex h-[58px] items-center justify-end px-[25px]">
                   <p className="">Action</p>
                 </div>
               </th>
@@ -206,6 +206,22 @@ const SettingContent = () => {
       </div>
     </AdminLayout>
   );
+};
+
+export const getServerSideProps = async () => {
+  const session = await getSession();
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default SettingContent;

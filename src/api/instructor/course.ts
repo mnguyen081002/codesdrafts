@@ -1,6 +1,7 @@
+import type { CourseLevel } from '../../shared/enum/course';
 import axiosClient from '../axiosClient';
-import type { BaseQuery, BaseResponse } from '../baseHttp';
-import type { SaveCourseRequest } from '../codesmooth-api';
+import type { BaseGetCourseByIDResponse, Category } from '../base/interface/course';
+import type { BaseQuery, BaseReadResponse, BaseResponse } from '../baseHttp';
 
 export interface ListCourseItemResponse {
   id: number;
@@ -24,6 +25,7 @@ export interface ListCourseItemResponse {
   published_at: string;
   published_course_id?: number;
   draft_course_id?: number;
+  level: CourseLevel;
   owner: {
     id: number;
     username: string;
@@ -35,10 +37,6 @@ export interface ListCourseItemResponse {
 export interface InstructorListCourseRequest extends BaseQuery {
   status?: string;
 }
-export interface Category {
-  id: number;
-  name: string;
-}
 
 export interface InstructorCountCourseResponse {
   all: number;
@@ -47,70 +45,49 @@ export interface InstructorCountCourseResponse {
   rejected: number;
   draft: number;
 }
-export interface GetCourseByIDResponse {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: null;
+export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
+  published_course_id: number;
+  rejected_reason: {
+    reason: string;
+    rejected_at: Date;
+    rejected_by: string;
+  };
+}
+
+export interface CreateCourseRequest {
   name: string;
   description: string;
   short_description: string;
-  price: number;
-  base_price: number;
-  published_at: null;
   target_audience: string;
+  category_ids: number[];
   requirements: string[];
   objectives: string[];
   thumbnail: string;
-  status: string;
-  owner_id: number;
+  price: number;
+  base_price: number;
   feedback_email: string;
-  total_enrollment: number;
-  published_course_id: number;
-  draft_course_id: null;
-  categories: Category[];
-  owner: Owner;
-  sections: Section[];
 }
 
-export interface Owner {
-  id: number;
-  username: string;
-  email: string;
-  avatar: string;
-}
-
-export interface Section {
-  id: number;
-  title: string;
-  type: string;
-  order: number;
-  lessons: Lesson[];
-}
-
-export interface Lesson {
-  id: number;
-  title: string;
-  order: number;
-  section_id: number;
-}
-
-const CodeSmoothInstructorCourseApi = {
+const CodedraftsInstructorCourseApi = {
   deleteCourse: (id: number) => {
     return axiosClient.delete(`/api/instructor/course/${id}`);
   },
-  createCourse: (params: SaveCourseRequest) => {
-    return axiosClient.post('/api/instructor/course', {
+  createCourse: (params: CreateCourseRequest) => {
+    return axiosClient.post<
+      BaseResponse<{
+        course_id: number;
+      }>
+    >('/api/instructor/course', {
       ...params,
     });
   },
-  updateCourse: (id: number, params: SaveCourseRequest) => {
-    return axiosClient.put(`/api/instructor/course/${id}`, {
+  updateCourse: (id: number, params: CreateCourseRequest) => {
+    return axiosClient.put<BaseResponse>(`/api/instructor/course/${id}`, {
       ...params,
     });
   },
   listCourse: (params: InstructorListCourseRequest, token?: string) => {
-    return axiosClient.get<BaseResponse<ListCourseItemResponse[]>>('/api/instructor/course', {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>('/api/instructor/course', {
       params: {
         page: params.page,
         take: params.take,
@@ -125,22 +102,25 @@ const CodeSmoothInstructorCourseApi = {
     });
   },
   getCourseById: (id: number, token?: string) => {
-    return axiosClient.get<BaseResponse<GetCourseByIDResponse>>(`/api/instructor/course/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(
+      `/api/instructor/course/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
   },
   submitForReview: (id: number) => {
-    return axiosClient.patch<BaseResponse<ListCourseItemResponse>>(
+    return axiosClient.patch<BaseReadResponse<ListCourseItemResponse>>(
       `/api/instructor/course/submit-for-review/${id}`,
     );
   },
   countCourse: () => {
-    return axiosClient.get<BaseResponse<InstructorCountCourseResponse>>(
+    return axiosClient.get<BaseReadResponse<InstructorCountCourseResponse>>(
       '/api/instructor/course/count-course',
     );
   },
 };
 
-export default CodeSmoothInstructorCourseApi;
+export default CodedraftsInstructorCourseApi;

@@ -1,6 +1,6 @@
 import type { ICodeContent, LessonComponentProps } from '../../shared/interface';
 import axiosClient from '../axiosClient';
-import type { BaseResponse } from '../baseHttp';
+import type { BaseReadResponse } from '../baseHttp';
 
 export interface SampleTestResponse {
   id: string;
@@ -60,27 +60,32 @@ export interface GetLessonsBySectionIDResponse {
   order: number;
 }
 
-const CodeSmoothInstructorLessonApi = {
+const CodedraftsInstructorLessonApi = {
   getSampleTest: (language: string) => {
-    return axiosClient.get<BaseResponse<SampleTestResponse>>(`/api/instructor/sample/${language}`);
+    return axiosClient.get<BaseReadResponse<SampleTestResponse>>(
+      `/api/instructor/sample/${language}`,
+    );
   },
   saveLesson: (data: SaveLessonRequest) => {
-    return axiosClient.post<BaseResponse<any>>('/api/instructor/lesson', data);
+    return axiosClient.post<BaseReadResponse<any>>('/api/instructor/lesson', data);
   },
   getLesson: (id: number) => {
-    return axiosClient.get<BaseResponse<GetLessonResponse>>(`/api/instructor/lesson/${id}`);
+    return axiosClient.get<BaseReadResponse<GetLessonResponse>>(`/api/instructor/lesson/${id}`);
   },
   addLesson: (data: AddLessonDto) => {
-    return axiosClient.post<BaseResponse<AddLessonResponse>>('/api/instructor/lesson/add', data);
+    return axiosClient.post<BaseReadResponse<AddLessonResponse>>(
+      '/api/instructor/lesson/add',
+      data,
+    );
   },
   getLessonsBySectionId: (sectionId: number) => {
-    return axiosClient.get<BaseResponse<GetLessonsBySectionIDResponse[]>>(
+    return axiosClient.get<BaseReadResponse<GetLessonsBySectionIDResponse[]>>(
       `/api/instructor/lesson/get-lession-by-section-id/${sectionId}`,
     );
   },
   deleteLesson: (lessonId: number) => {
-    return axiosClient.delete<BaseResponse<any>>(`/api/instructor/lesson/${lessonId}`);
+    return axiosClient.delete<BaseReadResponse<any>>(`/api/instructor/lesson/${lessonId}`);
   },
 };
 
-export default CodeSmoothInstructorLessonApi;
+export default CodedraftsInstructorLessonApi;

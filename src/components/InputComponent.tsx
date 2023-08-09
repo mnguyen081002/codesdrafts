@@ -48,6 +48,18 @@ const Leaf = ({ attributes, children, leaf }: any) => {
     child = <u>{child}</u>;
   }
 
+  if (leaf.strikethrough) {
+    child = <del>{child}</del>;
+  }
+
+  if (leaf.subscript) {
+    child = <sub>{child}</sub>;
+  }
+
+  if (leaf.superscript) {
+    child = <sup>{child}</sup>;
+  }
+
   return <span {...attributes}>{child}</span>;
 };
 
@@ -70,7 +82,10 @@ const Element = ({ attributes, children, element }: any) => {
     return getText(element.children);
   };
 
-  const style: CSSProperties = { textAlign: element.align, lineHeight: '30px' };
+  const style: CSSProperties = {
+    textAlign: element.align,
+    lineHeight: '30px',
+  };
   switch (element.type) {
     case 'block-quote':
       return (
@@ -86,33 +101,31 @@ const Element = ({ attributes, children, element }: any) => {
       );
     case 'heading-one':
       return (
-        <h1 id={getText(element)} className="!mt-0 text-5xl leading-tight" {...attributes}>
+        <h1
+          id={getText(element)}
+          className="!mt-0 font-lexend-deca text-5xl leading-tight"
+          {...attributes}
+        >
           {children}
         </h1>
       );
     case 'heading-two':
       return (
-        <h2 id={getText(element)} className="!mt-0 text-4xl" {...attributes}>
+        <h2 id={getText(element)} className="!mt-0 font-lexend-deca text-4xl" {...attributes}>
           {children}
         </h2>
       );
     case 'heading-three':
       return (
-        <h3 id={getText(element)} className="!mt-0 text-3xl" {...attributes}>
+        <h3 id={getText(element)} className="!mt-0 font-lexend-deca text-3xl" {...attributes}>
           {children}
         </h3>
       );
     case 'heading-four':
       return (
-        <h4 id={getText(element)} className="!mt-0 text-2xl" {...attributes}>
+        <h4 id={getText(element)} className="!mt-0 font-lexend-deca text-2xl" {...attributes}>
           {children}
         </h4>
-      );
-    case 'heading-five':
-      return (
-        <h5 className="!mt-0 text-xl" {...attributes}>
-          {children}
-        </h5>
       );
     case 'list-item':
       return (
@@ -224,9 +237,9 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
               <MarkButton format="bold" Icon={FormatBoldIcon} />
               <MarkButton format="italic" Icon={FormatItalicIcon} />
               <MarkButton format="underline" Icon={FormatUnderlinedIcon} />
-              <MarkButton format="underline" Icon={StrikeThroughIcon} />
-              <MarkButton format="underline" Icon={Subscript} />
-              <MarkButton format="underline" Icon={Superscript} />
+              <MarkButton format="strikethrough" Icon={StrikeThroughIcon} />
+              <MarkButton format="subscript" Icon={Subscript} />
+              <MarkButton format="superscript" Icon={Superscript} />
             </div>
             <div className="flex gap-2 border-r pr-4">
               <MarkButton format="code" Icon={CodeIcon} />
@@ -244,14 +257,14 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
           </Toolbar>
         ) : null}
         <Editable
-          className="font-lessonContent text-light-text-lessonContent"
+          className="text-light-text-lessonContent"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           autoFocus={!params.isReadOnly ? isFocus : false}
           spellCheck
           readOnly={params.isReadOnly}
           onFocus={() => {
-            setPlaceholder('Type for widget');
+            setPlaceholder('Nhập / để tạo widget');
             setHidden(true);
           }}
           onBlur={() => {
@@ -259,13 +272,13 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
             setHidden(false);
           }}
           onKeyDown={onKeyDown}
-          onMouseEnter={() => !params.isReadOnly && setPlaceholder('Start typing')}
+          onMouseEnter={() => !params.isReadOnly && setPlaceholder('Bắt đầu nhập')}
           onMouseLeave={() => !isFocus && setPlaceholder('')}
           placeholder={placeholder}
         />
       </Slate>
       {!params.isReadOnly && isFocus && (
-        <div className="absolute right-[0.5rem] top-[15px] flex gap-3">{params.rightOptions}</div>
+        <div className="absolute right-[-2rem] top-0 flex gap-3">{params.rightOptions}</div>
       )}
     </BaseComponentV2>
   );

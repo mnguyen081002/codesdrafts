@@ -6,13 +6,13 @@ import CodeIcon from '../common/Icons/CodeIcon';
 import { ComponentType } from '../shared/enum/component';
 import type { ICodeComponent, IComponentPropsV2, ITextComponent } from '../shared/interface';
 import { CodeComponent } from './CodeComponent';
-import { InputTextComponentV2 } from './InputComponent';
+import { InputTextComponentV2 as InputTextComponent } from './InputComponent';
 
-const NoSSRInputTextComponentV2 = dynamic(() => Promise.resolve(InputTextComponentV2), {
+const NoSSRInputTextComponent = dynamic(() => Promise.resolve(InputTextComponent), {
   ssr: false,
 });
 
-export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
+export const LessonComponent: FC<IComponentPropsV2> = (params) => {
   const [type, setType] = useState<ComponentType>(params.reference.current.type);
   useEffect(() => {
     setType(params.reference.current.type);
@@ -21,7 +21,7 @@ export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
   switch (type) {
     case ComponentType.Text:
       return (
-        <NoSSRInputTextComponentV2
+        <NoSSRInputTextComponent
           reference={params.reference as React.MutableRefObject<ITextComponent>}
           onDragStart={params.onDragStart}
           onDragEnter={params.onDragEnter}
@@ -51,7 +51,7 @@ export const LessonComponentV2: FC<IComponentPropsV2> = (params) => {
       );
     default:
       return (
-        <NoSSRInputTextComponentV2
+        <NoSSRInputTextComponent
           reference={params.reference as React.MutableRefObject<ITextComponent>}
           onDragStart={params.onDragStart}
           onDragEnter={params.onDragEnter}

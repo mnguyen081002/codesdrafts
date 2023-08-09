@@ -1,6 +1,9 @@
-import CategoryIcon from '../../common/Icons/CategoryIcon';
+import ColumnChartIcon from '../../common/Icons/ColumnChart';
 import DocumentIcon from '../../common/Icons/DocumentIcon';
+import GroupIcon from '../../common/Icons/GroupIcon';
+import NotificationIcon from '../../common/Icons/NotificationIcon';
 import SettingIcon from '../../common/Icons/SettingIcon';
+import TransactionIcon from '../../common/Icons/TransactionIcon';
 import { ADMIN_PATH } from '../../routes/path';
 import Footer from '../Footer';
 import HeaderManage from '../Manage/Header';
@@ -9,10 +12,6 @@ import Dashboard from './Dashboard';
 import AdminListCoursePage from './ListCourse';
 import AdminSetting from './Settings';
 
-enum AdminPathEnum {
-  setting = 'setting',
-}
-
 const listItem = [
   {
     redirectPath: ADMIN_PATH.COURSES,
@@ -20,14 +19,30 @@ const listItem = [
     text: 'Khóa học',
   },
   {
-    redirectPath: ADMIN_PATH.SETTING,
-    Icon: SettingIcon,
-    text: 'Cài Đặt',
+    redirectPath: ADMIN_PATH.STUDENTS,
+    Icon: GroupIcon,
+    text: 'Học Viên',
+  },
+  {
+    redirectPath: ADMIN_PATH.NOTIFICATIONS,
+    Icon: NotificationIcon,
+    badge: true,
+    text: 'Thông Báo',
   },
   {
     redirectPath: ADMIN_PATH.DASHBOARD,
-    Icon: CategoryIcon,
-    text: 'Dashboard',
+    Icon: ColumnChartIcon,
+    text: 'Thống Kê',
+  },
+  {
+    redirectPath: ADMIN_PATH.TRANSACTIONS,
+    Icon: TransactionIcon,
+    text: 'Giao Dịch',
+  },
+  {
+    redirectPath: ADMIN_PATH.SETTING,
+    Icon: SettingIcon,
+    text: 'Cài Đặt',
   },
 ];
 
@@ -40,7 +55,7 @@ export const mapAdminPage = {
 const AdminLayout = ({ children }) => {
   return (
     <>
-      <HeaderManage showAvatar />
+      <HeaderManage suffix="Admin" showAvatar />
       <div className="flex w-full">
         <SidebarManage items={listItem} redirectPath="admin" />
         {children}

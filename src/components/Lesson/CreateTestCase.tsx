@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import CodeSmoothInstructorLessonApi from '../../api/instructor/lesson';
+import CodedraftsInstructorLessonApi from '../../api/instructor/lesson';
 import type { ICodeContent } from '../../shared/interface';
 import { PrimaryButton } from '../Button';
 import { UnderlineNavbarWithOutSlug } from '../NavBar/UnderlineNavbar';
@@ -16,7 +16,7 @@ function CreateTestCaseComponent(props: ICreateTestCaseComponentProps) {
   const [selectingTab, setSelectingTab] = useState('Tạo test cases');
 
   const getSampleTest = async () => {
-    const r = await CodeSmoothInstructorLessonApi.getSampleTest(props.language);
+    const r = await CodedraftsInstructorLessonApi.getSampleTest(props.language);
     props.content.judgeContent.testCode = r.data.data.content.judgeContent.testCode;
     props.content.code = r.data.data.content.code;
     props.rerender();

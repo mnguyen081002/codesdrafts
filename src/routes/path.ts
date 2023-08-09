@@ -13,4 +13,7 @@ export enum ADMIN_PATH {
   DASHBOARD = 'dashboard',
   SETTING = 'setting',
   COURSES = 'courses',
+  STUDENTS = 'students',
+  NOTIFICATIONS = 'notifications',
+  TRANSACTIONS = 'transactions',
 }
