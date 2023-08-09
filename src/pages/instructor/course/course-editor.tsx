@@ -357,8 +357,8 @@ const CreateCouse: React.FC = () => {
             />
             <InputRectangle
               name="feedbackEmail"
-              label="Feedback Email"
-              placeholder="Nhập email *"
+              label="Feedback Email *"
+              placeholder="Nhập email"
               type="text"
             />
             <div className="mt-6 flex flex-col items-center gap-10">

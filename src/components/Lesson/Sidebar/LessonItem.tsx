@@ -35,7 +35,7 @@ function LessonItem({
   return (
     <div>
       <div
-        className={`px-[20px] hover:bg-[#f5f5f5]`}
+        className={`px-[20px] ${isSelect && 'bg-[#f5f5f5]'} hover:bg-[#f5f5f5]`}
         onClick={() => {
           if (router.query.lesson_id !== lesson.id.toString()) {
             router.query.lesson_id = lesson.id.toString();
