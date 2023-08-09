@@ -13,18 +13,6 @@ export interface Owner {
   avatar: string;
 }
 
-export enum LessonTitle {
-  NewLesson = 'New Lesson',
-}
-
-export enum SectionTitle {
-  NewSection = 'New Section',
-}
-
-export enum Type {
-  Section = 'SECTION',
-}
-
 const StudentCourseApi = {
   getById: async (id: number, token: string) => {
     return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`, {

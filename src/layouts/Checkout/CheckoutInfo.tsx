@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import type { CalculatePaymentResponse } from '../../api/codedrafts-api';
-import { CodedraftsApi } from '../../api/codedrafts-api';
+import { StudentApi } from '../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../api/student/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
 import { Avatar } from '../../components/sub/avatar';
@@ -27,7 +27,7 @@ export function CheckoutInfo() {
 
   const handlePayment = async () => {
     try {
-      const res = await CodedraftsApi.payment({
+      const res = await StudentApi.payment({
         course_id: Number(id),
         payment_method: selected,
       });
@@ -41,8 +41,8 @@ export function CheckoutInfo() {
     if (!router.query.id) return;
     const fetch = async () => {
       try {
-        const r = await CodedraftsApi.calculatePayment({ course_id: Number(id) });
-        const c = await CodedraftsApi.getCourseById(Number(id));
+        const r = await StudentApi.calculatePayment({ course_id: Number(id) });
+        const c = await StudentApi.getCourseById(Number(id));
         setPaymentInfo(r.data.data);
         setCourse(c.data.data);
       } catch (error: any) {

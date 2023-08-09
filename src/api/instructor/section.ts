@@ -17,22 +17,25 @@ export interface AddSectionResponse {
   created_at: string;
   updated_at: string;
 }
-export interface Lesson {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: null;
-  title: string;
-  isCompleted: boolean;
-  order: number;
-  components: any[];
-  summary: string;
-  section_id: number;
-  course: Owner;
-}
-
 export interface Owner {
   id: number;
+}
+
+export interface GetSectionWithLessonByCourseIDResponse {
+  id: number;
+  title: string;
+  type: string;
+  order: number;
+  course_id: number;
+  lessons: Lesson[];
+}
+
+export interface Lesson {
+  id: number;
+  title: string;
+  order: number;
+  section_id: number;
+  completed_count: number;
 }
 
 const CodedraftsInstructorSectionApi = {
@@ -48,6 +51,11 @@ const CodedraftsInstructorSectionApi = {
     return axiosClient.patch<BaseReadResponse<any>>(`/api/instructor/section/${sectionId}`, {
       title,
     });
+  },
+  getSectionsWithLessonByCourseId: (courseId: number) => {
+    return axiosClient.get<BaseReadResponse<GetSectionWithLessonByCourseIDResponse[]>>(
+      `/api/instructor/section/${courseId}`,
+    );
   },
 };
 

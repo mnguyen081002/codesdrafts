@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 
-import { CodedraftsApi } from '../../../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
+import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
 import CourseDetailMain from '../../../../components/CourseDetailMain';
 import InstructorAbsoluteCourseInfo from '../../../../components/Instructor/InstructorAbsoluteCourseInfo';
 import Footer from '../../../../layouts/Footer';
@@ -20,7 +20,7 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
     const { id } = router.query;
 
     try {
-      await CodedraftsApi.Instructor.Course.submitForReview(Number(id));
+      await CodedraftsInstructorCourseApi.submitForReview(Number(id));
       setCourse((pre) => ({ ...pre, status: CourseStatus.Reviewing }));
     } catch (error) {
       // TODO: handle error
@@ -58,7 +58,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodedraftsApi.Instructor.Course.getCourseById(
+    const r = await CodedraftsInstructorCourseApi.getCourseById(
       Number(id),
       session.token.user.accessToken,
     );

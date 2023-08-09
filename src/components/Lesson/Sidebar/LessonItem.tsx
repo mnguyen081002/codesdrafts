@@ -53,14 +53,7 @@ function LessonItem({
           <p className={`h-full text-start text-lg ${isSelect ? 'font-normal' : 'font-light'} `}>
             {lesson.title}
           </p>
-          {lesson.is_completed && (
-            <DoneIcon
-              pathFill="#48AE29"
-              height="14px"
-              width="14"
-              className={`${isSelect ? 'block' : 'hidden'}`}
-            />
-          )}
+          {lesson.completed_count > 0 && <DoneIcon pathFill="#48AE29" height="14px" width="14" />}
         </div>
       </div>
       {!isPreview && (

@@ -8,8 +8,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import CodedraftsAdminCourseApi from '../../../api/admin/course';
-import { CodedraftsApi } from '../../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../../api/instructor/course';
+import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
 import AbsoluteCourseInfo from '../../../components/AbsoluteCourseInfo';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
 import CourseDetailMain from '../../../components/CourseDetailMain';
@@ -153,7 +153,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodedraftsApi.Instructor.Course.getCourseById(
+    const r = await CodedraftsInstructorCourseApi.getCourseById(
       Number(id),
       session.token.user.accessToken,
     );

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import type { CourseCategory as AdminCategory } from '@/api/admin/setting';
 import CodedraftsAdminSettingApi from '@/api/admin/setting';
-import { CodedraftsApi } from '@/api/codedrafts-api';
+import { StudentApi } from '@/api/codedrafts-api';
 
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
@@ -143,7 +143,7 @@ const SettingContent = () => {
           order: values.order,
         };
         if (file) {
-          const res = await CodedraftsApi.uploadFiles([file]);
+          const res = await StudentApi.uploadFiles([file]);
           // eslint-disable-next-line prefer-destructuring
           reqCreateItem.thumbnail = res.data.urls[0];
         } else {

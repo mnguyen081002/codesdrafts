@@ -1,7 +1,7 @@
 import { Box, Title } from '@mantine/core';
 import React, { useEffect } from 'react';
 
-import { CodedraftsApi } from '../../api/codedrafts-api';
+import { StudentApi } from '../../api/codedrafts-api';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import SwiperListCard from './SwiperListCard';
 
@@ -55,7 +55,7 @@ const LabelListSwiper = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const r = await CodedraftsApi.getCourseList({});
+        const r = await StudentApi.getCourseList({});
         setCourseList(r.data.data);
       } catch (e) {
         console.log(e);

@@ -2,11 +2,9 @@ import type { ResLogin, ResRegister } from '@/shared/types/authType';
 
 import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
-import CodedraftsAdminSettingApi from './admin/setting';
 import axiosClient from './axiosClient';
 import type { BaseQuery, BaseReadResponse, BaseResponse } from './baseHttp';
 import type { ListCourseItemResponse } from './instructor/course';
-import CodedraftsInstructorCourseApi from './instructor/course';
 import type { GetCourseByIDResponse } from './student/course';
 
 export interface CodedraftsApiResponseList<T> {
@@ -90,13 +88,37 @@ export interface StudentGetLessonByID {
   summary: string;
   section_id: number;
 }
+export interface ShortLesson {
+  id: number;
+  title: string;
+  order: number;
+  completed_count: number;
+  section_id: number;
+}
 
-export const CodedraftsApi = {
-  Admin: {
-    Setting: CodedraftsAdminSettingApi,
-  },
-  Instructor: {
-    Course: CodedraftsInstructorCourseApi,
+export interface GetSectionWithLessonByCourseIDResponse {
+  id: number;
+  title: string;
+  type: string;
+  order: number;
+  course_id: number;
+  lessons: ShortLesson[];
+}
+
+export interface GetLesonBySectionIDResponse {
+  id: number;
+  course_id: number;
+  title: string;
+  order: number;
+  section_id: number;
+  completed_count: number;
+}
+
+export const StudentApi = {
+  getLessonsBySectionId: (sectionId: number) => {
+    return axiosClient.get<BaseReadResponse<GetLesonBySectionIDResponse[]>>(
+      `/api/lesson/get-lession-by-section-id/${sectionId}`,
+    );
   },
   getLessonById: (id: number) => {
     return axiosClient.get<BaseReadResponse<StudentGetLessonByID>>(`/api/lesson/${id}`);
@@ -135,6 +157,11 @@ export const CodedraftsApi = {
   },
   getCourseById: (id: number) => {
     return axiosClient.get<BaseReadResponse<GetCourseByIDResponse>>(`/api/course/${id}`);
+  },
+  getSectionWithLessonByCourseId: (id: number) => {
+    return axiosClient.get<BaseReadResponse<GetSectionWithLessonByCourseIDResponse[]>>(
+      `/api/section/${id}`,
+    );
   },
   getCategories: () => {
     return axiosClient.get<BaseReadResponse<GetCategoriesPublicResponse[]>>('/api/category');

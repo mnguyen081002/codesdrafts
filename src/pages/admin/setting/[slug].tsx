@@ -6,9 +6,8 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
-import { CodedraftsApi } from '@/api/codedrafts-api';
-
 import type { SettingResponse } from '../../../api/admin/setting';
+import CodedraftsAdminSettingApi from '../../../api/admin/setting';
 import EditIcon from '../../../common/Icons/EditIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
 import AdminBar from '../../../components/Admin/bar';
@@ -101,14 +100,14 @@ const SettingContent = () => {
   const getListSetting = async () => {
     if (!router.isReady) return;
     const { slug } = router.query as { slug: string };
-    const res = await CodedraftsApi.Admin.Setting.getSettingByKey(slug);
+    const res = await CodedraftsAdminSettingApi.getSettingByKey(slug);
     setSetting(res.data.data);
     setSettingValues(res.data.data.values);
   };
 
   const saveSetting = async (newValues: string[]) => {
     try {
-      await CodedraftsApi.Admin.Setting.saveSetting({
+      await CodedraftsAdminSettingApi.saveSetting({
         key: setting!.key,
         value: newValues,
         title: setting!.title,

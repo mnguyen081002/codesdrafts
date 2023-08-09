@@ -25,7 +25,7 @@ const Header = () => {
   router.events?.on('routeChangeComplete', handleRouteComplete);
   return (
     <>
-      <div className="flex h-[64px] px-[50px] shadow-md">
+      <div className="flex h-[64px] px-[30px] shadow-md">
         <Flex justify="space-between" align="center" w="100%" h="100%">
           <Group>
             <Flex justify="center">

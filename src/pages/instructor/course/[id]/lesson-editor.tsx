@@ -7,6 +7,8 @@ import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
 import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
 import type { SaveLessonRequest } from '../../../../api/instructor/lesson';
 import CodedraftsInstructorLessonApi from '../../../../api/instructor/lesson';
+import type { GetSectionWithLessonByCourseIDResponse } from '../../../../api/instructor/section';
+import CodedraftsInstructorSectionApi from '../../../../api/instructor/section';
 import { InputRectangle } from '../../../../common/Input';
 import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
@@ -27,6 +29,7 @@ type FormValuesProps = {
 const LessonEditor = () => {
   const router = useRouter();
   const [course, setCourse] = useState<GetCourseByIDResponse>();
+  const [sections, setSections] = useState<GetSectionWithLessonByCourseIDResponse[]>([]);
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
@@ -42,15 +45,20 @@ const LessonEditor = () => {
     if (!router.query.id) return;
 
     const { id, section_id, lesson_id } = router.query;
-    const res = await CodedraftsInstructorCourseApi.getCourseById(Number(id));
+    const [res, s, l] = await Promise.all([
+      CodedraftsInstructorCourseApi.getCourseById(Number(id)),
+      CodedraftsInstructorSectionApi.getSectionsWithLessonByCourseId(Number(id)),
+      CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id)),
+    ]);
     if (!section_id) {
       router.replace(
         `/instructor/course/${id}/lesson-editor?section_id=${res.data.data.sections[0]?.id}&lesson_id=${res.data.data.sections[0]?.lessons[0]?.id}`,
       );
       return;
     }
+
     setCourse(res.data.data);
-    const l = await CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id));
+    setSections(s.data.data);
     reset({
       title: l.data.data.title,
       summary: l.data.data.summary,
@@ -96,7 +104,7 @@ const LessonEditor = () => {
 
   useEffect(() => {
     fetchCourse();
-  }, [router.query.id, router.query.lesson_id]);
+  }, []);
 
   useEffect(() => {
     if (router.query.isPreview) {
@@ -143,6 +151,7 @@ const LessonEditor = () => {
           isCollapse={isCollapseSidebar}
           onClickCollapse={() => setIsCollapseSidebar(!isCollapseSidebar)}
           course={course}
+          sections={sections}
         />
         <LessonTableOfContent values={refs} />
         <div className="flex h-[calc(100vh-64px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">

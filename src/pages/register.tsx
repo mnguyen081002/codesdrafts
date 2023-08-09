@@ -11,7 +11,7 @@ import { BiError } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
-import { CodedraftsApi } from '@/api/codedrafts-api';
+import { StudentApi } from '@/api/codedrafts-api';
 import { AuthWrapper } from '@/components/auth';
 import { RHFTextField } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
@@ -73,7 +73,7 @@ const Register = (props: Props) => {
   const onSubmit = async (data: FormValuesProps) => {
     const { email, password, username } = data;
     setLoading(true);
-    const result: any = await CodedraftsApi.register(email, username, password)
+    const result: any = await StudentApi.register(email, username, password)
       .then((res) => {
         reset(defaultValues);
         toast.success('Đăng ký thành công');

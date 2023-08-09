@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CodedraftsApi } from '../../api/codedrafts-api';
+import { StudentApi } from '../../api/codedrafts-api';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import LongCourseCard from '../../components/Card/LongCourseCard';
 import { UnderlineNavbar } from '../../components/NavBar/UnderlineNavbar';
@@ -22,7 +22,7 @@ const ListCoursePage = () => {
       });
     }
     const fetch = async () => {
-      const res = await CodedraftsApi.getMyCourseList({});
+      const res = await StudentApi.getMyCourseList({});
 
       setListCourse(res.data.data);
     };

@@ -13,11 +13,13 @@ interface LessonSidebarProps {
   isCollapse: boolean;
   onClickCollapse: () => void;
   isPreview?: boolean;
+  sections: SidebarSection[];
 }
 
 function LessonSidebar(props: LessonSidebarProps) {
   const router = useRouter();
-  const [sections, setSections] = useState<SidebarSection[]>([]);
+
+  const [sections, setSections] = useState<SidebarSection[]>(props.sections);
 
   const onAddSection = (section?: AddSectionResponse) => {
     if (!section) return;
@@ -34,8 +36,8 @@ function LessonSidebar(props: LessonSidebarProps) {
   };
 
   useEffect(() => {
-    setSections(props.course?.sections || []);
-  }, [props.course]);
+    setSections(props.sections);
+  }, [props.sections]);
 
   return (
     <div

@@ -43,7 +43,7 @@ export interface SidebarLesson {
   title: string;
   order: number;
   section_id: number;
-  is_completed?: boolean;
+  completed_count: number;
 }
 
 export interface Category {

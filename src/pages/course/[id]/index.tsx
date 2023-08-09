@@ -1,6 +1,7 @@
 import type { NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
 
+import { StudentApi } from '../../../api/codedrafts-api';
 import type { GetCourseByIDResponse } from '../../../api/student/course';
 import StudentCourseApi from '../../../api/student/course';
 import CourseDetailMain from '../../../components/CourseDetailMain';
@@ -28,11 +29,16 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
 
-  const r = await StudentCourseApi.getById(Number(id), session?.token?.user?.accessToken);
-
+  const [r, s] = await Promise.all([
+    StudentCourseApi.getById(Number(id), session?.token?.user?.accessToken),
+    StudentApi.getSectionWithLessonByCourseId(Number(id)),
+  ]);
   return {
     props: {
-      course: r.data.data,
+      course: {
+        ...r.data.data,
+        sections: s.data.data,
+      },
     },
   };
 }

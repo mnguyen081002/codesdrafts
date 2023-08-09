@@ -3,12 +3,15 @@ import { useDisclosure } from '@mantine/hooks';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import type { SettingResponse } from '../../api/admin/setting';
-import { CodedraftsApi } from '../../api/codedrafts-api';
+import CodedraftsAdminSettingApi from '../../api/admin/setting';
 import ArrowRightIcon from '../../common/Icons/ArrowRightIcon';
 import AdminBar from '../../components/Admin/bar';
 import DecorAdmin from '../../components/Admin/decor';
+import { TOAST_CONFIG } from '../../shared/constants/app';
+import { toastGetErrorMessage } from '../../utils/app';
 
 function SettingNavButton({ title, href, pkey }: { title: string; href: string; pkey?: string }) {
   return (
@@ -29,22 +32,28 @@ const AdminSetting = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [listSettings, setListSettings] = useState<SettingResponse[]>([]);
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const _ = await CodedraftsApi.Admin.Setting.saveSetting(values);
-      // setMessage({
-      //   isSuccess: true,
-      //   message: 'Success',
-      // });
-    } catch (error: any) {
-      // setMessage({ message: error.data.message, isSuccess: false });
-    }
+    const _ = await CodedraftsAdminSettingApi.saveSetting(values);
+
+    await toast.promise(
+      CodedraftsAdminSettingApi.saveSetting(values),
+      {
+        pending: 'Đang lưu...',
+        success: 'Thành công',
+        error: {
+          render({ data }) {
+            return toastGetErrorMessage(data);
+          },
+        },
+      },
+      TOAST_CONFIG,
+    );
 
     resetForm({});
   };
 
   useEffect(() => {
     const fetch = async () => {
-      const res = await CodedraftsApi.Admin.Setting.getAllSettings();
+      const res = await CodedraftsAdminSettingApi.getAllSettings();
       setListSettings(res.data.data);
     };
 

@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { CodedraftsApi } from '../../../api/codedrafts-api';
+import type { GetSectionWithLessonByCourseIDResponse } from '../../../api/codedrafts-api';
+import { StudentApi } from '../../../api/codedrafts-api';
 import type { GetLessonResponse } from '../../../api/instructor/lesson';
 import type { GetCourseByIDResponse } from '../../../api/student/course';
 import { LessonComponent } from '../../../components/LessionComponent';
@@ -15,6 +16,7 @@ import type { LessonComponentProps } from '../../../shared/interface';
 const Lesson = () => {
   const router = useRouter();
   const [course, setCourse] = useState<GetCourseByIDResponse>();
+  const [sections, setSections] = useState<GetSectionWithLessonByCourseIDResponse[]>([]);
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
   const [lesson, setLesson] = useState<GetLessonResponse>();
@@ -23,17 +25,21 @@ const Lesson = () => {
     if (!router.query.id) return;
 
     const { id, section_id, lesson_id } = router.query;
-    const res = await CodedraftsApi.getCourseById(Number(id));
+    const [res, s] = await Promise.all([
+      StudentApi.getCourseById(Number(id)),
+      StudentApi.getSectionWithLessonByCourseId(Number(id)),
+    ]);
     if (!section_id) {
       router.replace(
-        `/course/${id}/lesson?section_id=${res.data.data.sections[0]?.id}&lesson_id=${res.data.data.sections[0]?.lessons[0]?.id}`,
+        `/course/${id}/lesson?section_id=${s.data.data[0]?.id}&lesson_id=${s.data.data[0]?.lessons[0]?.id}`,
         undefined,
         { shallow: true },
       );
       return;
     }
     setCourse(res.data.data);
-    const l = await CodedraftsApi.getLessonById(Number(lesson_id));
+    setSections(s.data.data);
+    const l = await StudentApi.getLessonById(Number(lesson_id));
     setLesson(l.data.data);
     setRefs(
       l.data.data.components.map((e) => {
@@ -48,7 +54,7 @@ const Lesson = () => {
 
   useEffect(() => {
     fetchCourse();
-  }, [router.query.id, router.query.lesson_id]);
+  }, []);
   return (
     <>
       <HeaderPrimary />
@@ -58,6 +64,7 @@ const Lesson = () => {
           isCollapse={isCollapseSidebar}
           onClickCollapse={() => setIsCollapseSidebar(!isCollapseSidebar)}
           course={course}
+          sections={sections}
         />
         <LessonTableOfContent values={refs} />
         <div className="flex h-[calc(100vh-64px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">

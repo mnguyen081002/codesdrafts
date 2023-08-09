@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
-import { CodedraftsApi } from '../api/codedrafts-api';
+import { StudentApi } from '../api/codedrafts-api';
 import { PrimaryButton } from '../components/Button';
 import Footer from '../layouts/Footer';
 import Header from '../layouts/Header';
@@ -16,7 +16,7 @@ const VerifyEmailPage = () => {
       const token = router.query.token as string;
       const verifyEmail = async () => {
         try {
-          await CodedraftsApi.verifyEmail(token);
+          await StudentApi.verifyEmail(token);
           setIsSuccess(true);
         } catch (error) {
           setIsSuccess(false);

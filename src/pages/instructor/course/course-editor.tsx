@@ -12,7 +12,7 @@ import { RHFMutiSelect } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 
 import type { BaseResponse } from '../../../api/baseHttp';
-import { CodedraftsApi } from '../../../api/codedrafts-api';
+import { StudentApi } from '../../../api/codedrafts-api';
 import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
 import { InputRectangle, InputRounded, RFHInputThumbnail } from '../../../common/Input';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
@@ -87,7 +87,7 @@ const CreateCouse: React.FC = () => {
       });
     }
     if (thumbnailUpload instanceof File) {
-      const uploadRes = await CodedraftsApi.uploadFiles([thumbnailUpload]);
+      const uploadRes = await StudentApi.uploadFiles([thumbnailUpload]);
 
       // eslint-disable-next-line prefer-destructuring
       thumbnail = uploadRes.data.urls[0];
@@ -160,7 +160,7 @@ const CreateCouse: React.FC = () => {
       if (router.isReady) {
         const { id } = router.query;
         if (id) {
-          const r = await CodedraftsApi.Instructor.Course.getCourseById(Number(id));
+          const r = await CodedraftsInstructorCourseApi.getCourseById(Number(id));
           setObjectives(r.data.data.objectives);
           setRequirements(r.data.data.requirements);
           setOptionSetting(r.data.data.categories.map((item) => item.name));
@@ -182,7 +182,7 @@ const CreateCouse: React.FC = () => {
     };
     const handleGetSetting = async () => {
       try {
-        const res = await CodedraftsApi.getCategories();
+        const res = await StudentApi.getCategories();
         setCategories(res.data.data.map((item) => ({ id: item.id, name: item.name })));
       } catch (error) {
         console.log(error);
