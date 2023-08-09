@@ -1,8 +1,8 @@
-import console from 'console';
 import type { JwtPayload } from 'jwt-decode';
 import jwt_decode from 'jwt-decode';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 
 import { PATH_AUTH } from '@/routes/path';
 import type { ResLogin } from '@/shared/types/authType';
@@ -56,12 +56,28 @@ export default NextAuth({
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    }),
   ],
 
   callbacks: {
     // The jwt() callback is called when a new token is created.
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
+        if (user.id_token) {
+          const data: ResLogin = await CodeSmoothApi.loginSocial({
+            id_token: user.id_token,
+            social: user.provider || 'google',
+          }).then((res) => {
+            return res.data; // return the data from the server response (token, user) as a object (token, user) with the type ResLogin
+          });
+          user.username = data.user.username;
+          user.avatar = data.user.avatar;
+          user.email = data.user.email;
+          user.accessToken = data.token.access_token;
+        }
         return {
           ...token,
           user,
@@ -80,6 +96,11 @@ export default NextAuth({
         };
       }
       return session;
+    },
+    async signIn({ user, account }: any) {
+      user.id_token = account.id_token;
+      user.provider = account.provider;
+      return true;
     },
   },
   // The signIn page is the page that the user is redirected to when they are not logged in.

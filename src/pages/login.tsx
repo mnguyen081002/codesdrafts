@@ -219,7 +219,8 @@ const Login = () => {
                 src="/images/icons/Google.svg"
                 width={80}
                 height={46}
-                alt=""
+                alt="google"
+                onClick={() => signIn('google')}
               />
             </Grid.Col>
             <Grid.Col span={4}>
