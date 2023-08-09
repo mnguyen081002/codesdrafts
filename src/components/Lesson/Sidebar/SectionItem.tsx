@@ -73,7 +73,7 @@ function SectionItem({
         <div
           className={` flex min-h-[45px] w-[265px] items-center justify-between ${
             isSeleted && 'bg-light-sectionSelected'
-          } px-[20px]`}
+          } px-[10px]`}
         >
           {!isEdit ? (
             <p

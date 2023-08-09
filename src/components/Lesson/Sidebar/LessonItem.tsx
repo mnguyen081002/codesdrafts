@@ -6,6 +6,7 @@ import type { SidebarLesson } from '../../../api/base/interface/course';
 import type { AddLessonResponse } from '../../../api/instructor/lesson';
 import CodedraftsInstructorLessonApi from '../../../api/instructor/lesson';
 import { useAppDispatch } from '../../../app/hooks';
+import DoneIcon from '../../../common/Icons/DoneIcon';
 import TrashIcon from '../../../common/Icons/TrashIcon';
 import { setLoading } from '../../../features/auth/appSlice';
 import { TOAST_CONFIG } from '../../../shared/constants/app';
@@ -35,7 +36,7 @@ function LessonItem({
   return (
     <div>
       <div
-        className={`px-[20px] ${isSelect && 'bg-[#f5f5f5]'} hover:bg-[#f5f5f5]`}
+        className={`px-[10px] ${isSelect && 'bg-[#f5f5f5]'} hover:bg-[#f5f5f5]`}
         onClick={() => {
           if (router.query.lesson_id !== lesson.id.toString()) {
             router.query.lesson_id = lesson.id.toString();
@@ -45,13 +46,21 @@ function LessonItem({
         }}
       >
         <div
-          className={`flex min-h-[40px] w-full cursor-pointer items-center ${
+          className={`flex min-h-[40px] w-full cursor-pointer items-center justify-between ${
             isSelect ? 'border-l-[3px] border-selected' : 'border-l-[2px] border-light-border'
-          } pl-[20px]`}
+          } pl-[10px]`}
         >
           <p className={`h-full text-start text-lg ${isSelect ? 'font-normal' : 'font-light'} `}>
             {lesson.title}
           </p>
+          {lesson.is_completed && (
+            <DoneIcon
+              pathFill="#48AE29"
+              height="14px"
+              width="14"
+              className={`${isSelect ? 'block' : 'hidden'}`}
+            />
+          )}
         </div>
       </div>
       {!isPreview && (

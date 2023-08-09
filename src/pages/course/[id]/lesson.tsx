@@ -63,7 +63,7 @@ const Lesson = () => {
         <div className="flex h-[calc(100vh-64px)] flex-1 flex-col overflow-y-auto px-[325px] pt-[50px] pb-[200px] font-inter">
           <div className="flex flex-col gap-5">
             <div className="mb-5 flex flex-col gap-5">
-              <p className="font-lessonContent text-6xl font-medium ">{lesson?.title}</p>
+              <p className="font-lessonContent text-5xl font-medium ">{lesson?.title}</p>
               <p className="text-lg text-light-text-lessonContent">{lesson?.summary}</p>
             </div>
           </div>
