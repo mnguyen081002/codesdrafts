@@ -192,6 +192,7 @@ export const StudentApi = {
       requestFrom: 'CMS',
     });
   },
+
   register: async (email: string, username: string, password: string) => {
     return axiosClient.post<ResRegister>('/api/auth/register', {
       email,
@@ -205,11 +206,22 @@ export const StudentApi = {
       payment_method,
     });
   },
+  loginSocial: async ({ id_token, social }: GoogleRequest) => {
+    return axiosClient.post<ResLogin>('/api/auth/login-social', {
+      token: id_token,
+      social,
+    });
+  },
 };
 
 export interface PaymentRequest {
   course_id: number;
   payment_method: string;
+}
+
+export interface GoogleRequest {
+  id_token: string;
+  social: string;
 }
 
 export interface PaymentResponse {
