@@ -34,9 +34,6 @@ function StudentAbsoluteCourseInfo(props: StudentAbsoluteCourseInfoProps) {
             onClick={() => {
               router.push({
                 pathname: `./${props.course.id}/lesson`,
-                query: {
-                  id: props.course.id,
-                },
               });
             }}
           />

@@ -45,18 +45,17 @@ const LessonEditor = () => {
     if (!router.query.id) return;
 
     const { id, section_id, lesson_id } = router.query;
-    const [res, s, l] = await Promise.all([
+    const [res, s] = await Promise.all([
       CodedraftsInstructorCourseApi.getCourseById(Number(id)),
       CodedraftsInstructorSectionApi.getSectionsWithLessonByCourseId(Number(id)),
-      CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id)),
     ]);
     if (!section_id) {
       router.replace(
         `/instructor/course/${id}/lesson-editor?section_id=${res.data.data.sections[0]?.id}&lesson_id=${res.data.data.sections[0]?.lessons[0]?.id}`,
       );
-      return;
     }
 
+    const l = await CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id));
     setCourse(res.data.data);
     setSections(s.data.data);
     reset({

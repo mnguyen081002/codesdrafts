@@ -22,20 +22,20 @@ const Lesson = () => {
   const [lesson, setLesson] = useState<GetLessonResponse>();
 
   const fetchCourse = async () => {
-    if (!router.query.id) return;
-
     const { id, section_id, lesson_id } = router.query;
+
+    if (!id) return;
+
     const [res, s] = await Promise.all([
       StudentApi.getCourseById(Number(id)),
       StudentApi.getSectionWithLessonByCourseId(Number(id)),
     ]);
-    if (!section_id) {
+    if (!section_id || !lesson_id) {
       router.replace(
         `/course/${id}/lesson?section_id=${s.data.data[0]?.id}&lesson_id=${s.data.data[0]?.lessons[0]?.id}`,
         undefined,
         { shallow: true },
       );
-      return;
     }
     setCourse(res.data.data);
     setSections(s.data.data);
