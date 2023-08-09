@@ -149,8 +149,12 @@ const LessonEditor = () => {
           <div className="flex flex-col gap-5">
             {isPreview ? (
               <div className="mb-5 flex flex-col gap-5">
-                <p className="font-lessonContent text-6xl font-medium ">{getValues('title')}</p>
-                <p className="text-lg text-light-text-lessonContent">{getValues('summary')}</p>
+                <p className="font-lexend-deca text-5xl font-medium text-light-text-lessonContent">
+                  {getValues('title')}
+                </p>
+                <p className="font-lexend-deca text-lg text-light-text-lessonContent">
+                  {getValues('summary')}
+                </p>
               </div>
             ) : (
               <>

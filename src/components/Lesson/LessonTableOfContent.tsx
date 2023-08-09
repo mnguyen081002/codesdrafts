@@ -120,7 +120,7 @@ function LessonTableOfContent(props: LessonTableOfContentProps) {
         <div
           className={`absolute max-h-[246px] overflow-y-scroll border-t border-light-border transition-all delay-100  ${
             !isCollapse ? 'top-0' : 'top-[-450px]'
-          } flex w-full flex-col bg-[#FAFAFA] px-[20px] pb-[10px]`}
+          } flex w-full flex-col bg-[#FAFAFA] px-[20px] ${tableOfContent.length === 0 && 'hidden'}`}
         >
           {tableOfContent.map((item, index) => (
             <div key={index}>
