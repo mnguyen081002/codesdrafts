@@ -30,6 +30,8 @@ export interface GetLessonResponse {
   order: number;
   components: LessonComponentProps<ICodeContent>[];
   summary: string;
+  is_first: boolean;
+  is_last: boolean;
 }
 
 export interface AddLessonResponse {

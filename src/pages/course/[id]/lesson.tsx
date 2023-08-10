@@ -45,17 +45,6 @@ const Lesson = () => {
     }
     setCourse(res.data.data);
     setSections(s.data.data);
-    // const l = await StudentApi.getLessonById(Number(s.data.data[0]?.lessons[0]?.id), Number(id));
-    // setLesson(l.data.data);
-    // setRefs(
-    //   l.data.data.components.map((e) => {
-    //     const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
-    //     ref.current = {
-    //       ...e,
-    //     };
-    //     return ref;
-    //   }),
-    // );
   };
 
   useEffect(() => {
