@@ -14,6 +14,7 @@ import type { NextPageContext } from 'next';
 import Image from 'next/image';
 import { getSession, useSession } from 'next-auth/react';
 
+import Facebook from '@/components/Facebook/Facebook';
 // import { SwiperListCard } from '@/components/home/SwiperListCard';
 import { ChildTopic, topics } from '@/components/landing';
 import LandingWrapper from '@/components/landing/landing-wrapper';
@@ -481,6 +482,7 @@ const LandingPage = () => {
           {/* <SwiperListCard classSwiper="swiper2" /> */}
         </Container>
       </Container>
+      <Facebook />
       <Footer />
     </LandingWrapper>
   );

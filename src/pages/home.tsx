@@ -2,6 +2,7 @@ import type { NextPageContext } from 'next';
 import Head from 'next/head';
 import { getSession } from 'next-auth/react';
 
+import Facebook from '@/components/Facebook/Facebook';
 import { CarouselHome, HomeMain } from '@/components/home';
 import Footer from '@/layouts/Footer';
 import HeaderPrimary from '@/layouts/HeaderPrimary';
@@ -53,6 +54,7 @@ const Home = ({ session }) => {
         <CarouselHome />
         <HomeMain />
       </div>
+      <Facebook />
       <Footer />
     </>
   );
