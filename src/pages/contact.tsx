@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
 import { PrimaryButton } from '@/components/Button';
+import Facebook from '@/components/Facebook/Facebook';
 import { RHFTextField } from '@/components/hook-form';
 import FormProvider from '@/components/hook-form/FormProvider';
 import RHFArea from '@/components/hook-form/RHFArea';
@@ -199,6 +200,7 @@ const Contact = ({ session }) => {
                 />
               </div>
             </FormProvider>
+            <Facebook />
           </MantineProvider>
         </div>
       </div>

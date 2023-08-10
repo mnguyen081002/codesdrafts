@@ -6,7 +6,6 @@ import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
-import Facebook from '@/components/Facebook/Facebook';
 import type { AppPropsWithLayout } from '@/types/shared';
 
 import { useAppSelector } from '../app/hooks';
@@ -58,7 +57,6 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           <ToastContainer limit={1} />
           <Container>{getLayout(<Component {...pageProps} />)}</Container>
         </MantineProvider>
-        <Facebook />
       </Provider>
     </SessionProvider>
   );
