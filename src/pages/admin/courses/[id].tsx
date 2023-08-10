@@ -123,8 +123,13 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
                   />
                 )}
                 {course?.status === CourseStatus.Rejected && (
-                  <div className="flex items-center justify-center">
-                    <p className="text-lg font-medium">Đã phát hành</p>
+                  <div className="flex w-full flex-col flex-wrap items-center justify-center">
+                    <p className="text-lg font-medium">Đã từ chối</p>
+                    {course?.status === CourseStatus.Rejected && (
+                      <p className="break-words text-base font-normal">
+                        Lý do: {course?.rejected_reason.reason}
+                      </p>
+                    )}
                   </div>
                 )}
               </>
