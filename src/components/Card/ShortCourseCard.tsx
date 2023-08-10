@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import type { ListCourseItemResponse } from '../../api/instructor/course';
-import { formatCoursePrice } from '../../utils/app';
+import { convertTime, formatCoursePrice } from '../../utils/app';
 
 interface ShortCourseCardProps {
   course: ListCourseItemResponse;
@@ -59,7 +59,7 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
             <Group className="flex gap-1">
               <Image src="/images/home/clock.svg" height={10} width={10} alt="Clock" />
               <Text size="14px" color="dimmed">
-                30.5 giờ
+                {convertTime(course.reading_time)}
               </Text>
             </Group>
           </Group>

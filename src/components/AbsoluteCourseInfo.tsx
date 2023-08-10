@@ -1,5 +1,5 @@
 import type { BaseGetCourseByIDResponse } from '../api/base/interface/course';
-import { formatCoursePrice } from '../utils/app';
+import { convertTime, formatCoursePrice } from '../utils/app';
 import CourseInfoInclude from './Student/CourseDetail/CourseInfoInclude';
 
 interface AbsoluteCourseInfoProps<BaseGetCourseByIDResponse> {
@@ -40,7 +40,11 @@ function AbsoluteCourseInfo(props: AbsoluteCourseInfoProps<BaseGetCourseByIDResp
           <p className="font-lexend-deca font-semibold uppercase leading-5 text-light-text-primary">
             Khóa học này bao gồm
           </p>
-          <CourseInfoInclude title="Thời gian" icon="/images/course/ClockBlue.svg" text="20h 18m" />
+          <CourseInfoInclude
+            title="Thời gian"
+            icon="/images/course/ClockBlue.svg"
+            text={convertTime(props.course?.reading_time)}
+          />
           {props.course?.categories.length > 0 && (
             <CourseInfoInclude
               title="Danh mục"

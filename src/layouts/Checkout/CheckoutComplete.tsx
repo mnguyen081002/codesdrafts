@@ -1,3 +1,4 @@
+import { Loader } from '@mantine/core';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -8,6 +9,12 @@ export function CheckoutComplete() {
 
   const { query } = router;
   const { vnp_TransactionStatus } = query;
+  if (vnp_TransactionStatus === undefined)
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <Loader />
+      </div>
+    );
   return (
     <div className="flex flex-col items-center justify-center">
       {vnp_TransactionStatus === '00' ? (

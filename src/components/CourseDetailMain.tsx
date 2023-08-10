@@ -1,3 +1,5 @@
+import { convertTime } from '@/utils/app';
+
 import type { BaseGetCourseByIDResponse } from '../api/base/interface/course';
 import { PrimaryOutlineButton } from './Button';
 import CourseUnderlineNavBar from './Instructor/UnderlineNavBar';
@@ -41,7 +43,10 @@ function CourseDetailMain(props: CourseDetailMainProps) {
             </div>
           </div>
           <CourseSubInfo icon="/images/course/File.svg" text="19" />
-          <CourseSubInfo icon="/images/course/Clock.svg" text="20h18m" />
+          <CourseSubInfo
+            icon="/images/course/Clock.svg"
+            text={convertTime(props.course?.reading_time)}
+          />
           <CourseSubInfo
             icon="/images/course/People.svg"
             text={props.course.total_enrollment.toString()}
