@@ -45,8 +45,11 @@ export function Social() {
         })}
       />
       <div className="mt-3 flex w-full justify-between">
-        <div className="flex h-[55px] w-[100px] items-center  justify-center rounded-[5px] border border-light-border">
-          <img className="cursor-pointer" src="/images/icons/Google.svg" alt="" />
+        <div
+          className="flex h-[55px] w-[100px] cursor-pointer items-center justify-center rounded-[5px] border border-light-border"
+          onClick={() => signIn('google')}
+        >
+          <img src="/images/icons/Google.svg" alt="" />
         </div>
         <div className="flex h-[55px] w-[100px] cursor-pointer items-center justify-center rounded-[5px] border border-light-border">
           <img src="/images/icons/Github.svg" alt="" />
