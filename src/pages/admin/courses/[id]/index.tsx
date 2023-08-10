@@ -7,17 +7,17 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import CodedraftsAdminCourseApi from '../../../api/admin/course';
-import type { GetCourseByIDResponse } from '../../../api/instructor/course';
-import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
-import AbsoluteCourseInfo from '../../../components/AbsoluteCourseInfo';
-import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
-import CourseDetailMain from '../../../components/CourseDetailMain';
-import Footer from '../../../layouts/Footer';
-import HeaderManage from '../../../layouts/Manage/Header';
-import { PATH_AUTH } from '../../../routes/path';
-import { CourseStatus } from '../../../shared/enum/course';
-import { toastGetErrorMessage } from '../../../utils/app';
+import CodedraftsAdminCourseApi from '../../../../api/admin/course';
+import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
+import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
+import AbsoluteCourseInfo from '../../../../components/AbsoluteCourseInfo';
+import { PrimaryButton, PrimaryOutlineButton } from '../../../../components/Button';
+import CourseDetailMain from '../../../../components/CourseDetailMain';
+import Footer from '../../../../layouts/Footer';
+import HeaderManage from '../../../../layouts/Manage/Header';
+import { PATH_AUTH } from '../../../../routes/path';
+import { CourseStatus } from '../../../../shared/enum/course';
+import { toastGetErrorMessage } from '../../../../utils/app';
 
 const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }) => {
   const router = useRouter();
