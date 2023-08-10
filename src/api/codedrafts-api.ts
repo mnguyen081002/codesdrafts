@@ -221,7 +221,24 @@ export const StudentApi = {
       social,
     });
   },
+  contact: async ({ name, email, message, phone, subject }: ContactRequest) => {
+    return axiosClient.post('/api/other/contact', {
+      name,
+      email,
+      phone,
+      message,
+      subject,
+    });
+  },
 };
+
+export interface ContactRequest {
+  name: string;
+  email: string;
+  message: string;
+  phone: string;
+  subject: string;
+}
 
 export interface PaymentRequest {
   course_id: number;
