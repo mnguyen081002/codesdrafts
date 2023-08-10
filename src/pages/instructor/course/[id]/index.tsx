@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
 import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
+import CodedraftsInstructorSectionApi from '../../../../api/instructor/section';
 import CourseDetailMain from '../../../../components/CourseDetailMain';
 import InstructorAbsoluteCourseInfo from '../../../../components/Instructor/InstructorAbsoluteCourseInfo';
 import Footer from '../../../../layouts/Footer';
@@ -58,14 +59,20 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodedraftsInstructorCourseApi.getCourseById(
-      Number(id),
-      session.token.user.accessToken,
-    );
+    const [r, s] = await Promise.all([
+      CodedraftsInstructorCourseApi.getCourseById(Number(id), session.token.user.accessToken),
+      CodedraftsInstructorSectionApi.getSectionsWithLessonByCourseId(
+        Number(id),
+        session.token.user.accessToken,
+      ),
+    ]);
 
     return {
       props: {
-        course: r.data.data,
+        course: {
+          ...r.data.data,
+          sections: s.data.data,
+        },
       },
     };
   } catch (error) {

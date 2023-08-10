@@ -8,8 +8,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import CodedraftsAdminCourseApi from '../../../../api/admin/course';
+import CodedraftsAdminLessonApi from '../../../../api/admin/lesson';
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
-import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
 import AbsoluteCourseInfo from '../../../../components/AbsoluteCourseInfo';
 import { PrimaryButton, PrimaryOutlineButton } from '../../../../components/Button';
 import CourseDetailMain from '../../../../components/CourseDetailMain';
@@ -158,15 +158,20 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodedraftsInstructorCourseApi.getCourseById(
-      Number(id),
-      session.token.user.accessToken,
-    );
+    const [r, s] = await Promise.all([
+      CodedraftsAdminCourseApi.getCourseById(Number(id), session.token.user.accessToken),
+      CodedraftsAdminLessonApi.getSectionWithLessonByCourseId(
+        Number(id),
+        session.token.user.accessToken,
+      ),
+    ]);
 
     return {
       props: {
-        course: r.data.data,
-        session: null,
+        course: {
+          ...r.data.data,
+          sections: s.data.data,
+        },
       },
     };
   } catch (error) {
