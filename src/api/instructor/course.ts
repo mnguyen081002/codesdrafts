@@ -26,6 +26,7 @@ export interface ListCourseItemResponse {
   published_course_id?: number;
   draft_course_id?: number;
   level: CourseLevel;
+  reading_time: number;
   owner: {
     id: number;
     username: string;
@@ -52,6 +53,7 @@ export interface GetCourseByIDResponse extends BaseGetCourseByIDResponse {
     rejected_at: Date;
     rejected_by: string;
   };
+  reading_time: number;
 }
 
 export interface CreateCourseRequest {

@@ -21,6 +21,7 @@ export interface BaseGetCourseByIDResponse {
   total_enrollment: number;
   draft_course_id: null;
   categories: Category[];
+  reading_time: number;
   owner: Owner;
   sections: SidebarSection[];
   level: CourseLevel;

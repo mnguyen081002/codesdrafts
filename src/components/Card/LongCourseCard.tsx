@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { ListCourseItemResponse } from '../../api/instructor/course';
 import LevelIcon from '../../common/Icons/LevelIcon';
 import { CourseStatus } from '../../shared/enum/course';
-import { formatCoursePrice } from '../../utils/app';
+import { convertTime, formatCoursePrice } from '../../utils/app';
 
 export default function LongCourseCard({
   course,
@@ -91,7 +91,7 @@ export default function LongCourseCard({
       </td>
       <td>
         <p className="w-[150px] text-center font-lexend-deca text-base font-light leading-6">
-          3d20h11m
+          {convertTime(course.reading_time)}
         </p>
       </td>
       <td>

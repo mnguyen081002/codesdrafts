@@ -27,4 +27,29 @@ function formatCoursePrice(price: number, suffix = ' VNĐ') {
   return `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} ${suffix}`;
 }
 
+// convert time from minutes to hours and minutes
+export function convertTime(time: number): string {
+  if (!time) {
+    return '0 phút';
+  }
+  if (time < 0) {
+    return '0 phút';
+  }
+
+  const hours = Math.floor(time / 60);
+  const minutes = time % 60;
+
+  let result = '';
+
+  if (hours > 0) {
+    result += `${hours}giờ `;
+  }
+
+  if (minutes > 0) {
+    result += `${minutes} phút`;
+  }
+
+  return result.trim();
+}
+
 export { extractTextFromLastHTMLTag, formatCoursePrice, toastGetErrorMessage };
