@@ -4,8 +4,10 @@ import type { NextPageContext } from 'next';
 import Image from 'next/image';
 import { getSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
+import { StudentApi } from '@/api/codedrafts-api';
 import { PrimaryButton } from '@/components/Button';
 import Facebook from '@/components/Facebook/Facebook';
 import { RHFTextField } from '@/components/hook-form';
@@ -66,8 +68,8 @@ const Contact = ({ session }) => {
   });
 
   const defaultValues = {
-    email: '',
     name: '',
+    email: '',
     phone: '',
     title: '',
     content: '',
@@ -79,7 +81,16 @@ const Contact = ({ session }) => {
   });
   const { reset, handleSubmit } = methods;
 
-  const onSubmit = async (data: FormValuesProps) => {};
+  const onSubmit = async (data: FormValuesProps) => {
+    const { email, name, phone, title, content } = data;
+    try {
+      await StudentApi.contact({ name, email, phone, message: title, subject: content });
+      toast.success('Gửi liên hệ thành công');
+      reset(defaultValues);
+    } catch (error: any) {
+      toast.error(error?.response.data.message || 'Gửi liên hệ thất bại');
+    }
+  };
 
   return (
     <div className="h-full w-full">
