@@ -33,6 +33,8 @@ function LessonItem({
     setIsSelect(Number(lesson_id) === lesson.id);
   }, [router.query.lesson_id]);
 
+  console.log('Render LessonItem', lesson.completed_count, lesson.id);
+
   return (
     <div>
       <div

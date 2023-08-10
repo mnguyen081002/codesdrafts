@@ -55,22 +55,22 @@ const LessonEditor = () => {
       );
     }
 
-    const l = await CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id));
+    // const l = await CodedraftsInstructorLessonApi.getLesson(Number(s.data.data[0]?.lessons[0]?.id));
     setCourse(res.data.data);
     setSections(s.data.data);
-    reset({
-      title: l.data.data.title,
-      summary: l.data.data.summary,
-    });
-    setRefs(
-      l.data.data.components.map((e) => {
-        const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
-        ref.current = {
-          ...e,
-        };
-        return ref;
-      }),
-    );
+    // reset({
+    //   title: l.data.data.title,
+    //   summary: l.data.data.summary,
+    // });
+    // setRefs(
+    //   l.data.data.components.map((e) => {
+    //     const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
+    //     ref.current = {
+    //       ...e,
+    //     };
+    //     return ref;
+    //   }),
+    // );
   };
 
   const onSubmit = async (data: FormValuesProps) => {
@@ -104,6 +104,28 @@ const LessonEditor = () => {
   useEffect(() => {
     fetchCourse();
   }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { lesson_id } = router.query;
+      if (!lesson_id) return;
+      const l = await CodedraftsInstructorLessonApi.getLesson(Number(lesson_id));
+      reset({
+        title: l.data.data.title,
+        summary: l.data.data.summary,
+      });
+      setRefs(
+        l.data.data.components.map((e) => {
+          const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
+          ref.current = {
+            ...e,
+          };
+          return ref;
+        }),
+      );
+    };
+    fetch();
+  }, [router.query.lesson_id]);
 
   useEffect(() => {
     if (router.query.isPreview) {

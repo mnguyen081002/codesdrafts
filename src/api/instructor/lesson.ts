@@ -27,7 +27,6 @@ export interface GetLessonResponse {
   updated_at: string;
   deleted_at: null;
   title: string;
-  isCompleted: boolean;
   order: number;
   components: LessonComponentProps<ICodeContent>[];
   summary: string;

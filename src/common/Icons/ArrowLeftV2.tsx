@@ -4,10 +4,10 @@ import { BaseSVGIcon } from './Interface';
 const ArrowLeftV2Icon = (props: IconProps) => (
   <BaseSVGIcon
     {...props}
-    className={`flex rotate-180 transform ${props.className}`}
+    className={`flex ${props.className}`}
     pathId="Vector"
-    viewBox="0 0 25 25"
-    d="M10.0002 3.64355L8.82516 4.81855L13.4752 9.47689H3.3335V11.1436H13.4752L8.82516 15.8019L10.0002 16.9769L16.6668 10.3102L10.0002 3.64355Z"
+    viewBox="0 0 21 20"
+    d="M10.495 16.6666L11.67 15.4916L7.01996 10.8333H17.1616V9.16663H7.01996L11.67 4.50829L10.495 3.33329L3.82829 9.99996L10.495 16.6666Z"
   />
 );
 
