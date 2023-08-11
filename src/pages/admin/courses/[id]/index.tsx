@@ -7,17 +7,17 @@ import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import CodedraftsAdminCourseApi from '../../../api/admin/course';
-import type { GetCourseByIDResponse } from '../../../api/instructor/course';
-import CodedraftsInstructorCourseApi from '../../../api/instructor/course';
-import AbsoluteCourseInfo from '../../../components/AbsoluteCourseInfo';
-import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
-import CourseDetailMain from '../../../components/CourseDetailMain';
-import Footer from '../../../layouts/Footer';
-import HeaderManage from '../../../layouts/Manage/Header';
-import { PATH_AUTH } from '../../../routes/path';
-import { CourseStatus } from '../../../shared/enum/course';
-import { toastGetErrorMessage } from '../../../utils/app';
+import CodedraftsAdminCourseApi from '../../../../api/admin/course';
+import CodedraftsAdminLessonApi from '../../../../api/admin/lesson';
+import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
+import AbsoluteCourseInfo from '../../../../components/AbsoluteCourseInfo';
+import { PrimaryButton, PrimaryOutlineButton } from '../../../../components/Button';
+import CourseDetailMain from '../../../../components/CourseDetailMain';
+import Footer from '../../../../layouts/Footer';
+import HeaderManage from '../../../../layouts/Manage/Header';
+import { PATH_AUTH } from '../../../../routes/path';
+import { CourseStatus } from '../../../../shared/enum/course';
+import { toastGetErrorMessage } from '../../../../utils/app';
 
 const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }) => {
   const router = useRouter();
@@ -123,8 +123,13 @@ const CourseDetail = ({ course: propsCourse }: { course: GetCourseByIDResponse }
                   />
                 )}
                 {course?.status === CourseStatus.Rejected && (
-                  <div className="flex items-center justify-center">
-                    <p className="text-lg font-medium">Đã phát hành</p>
+                  <div className="flex w-full flex-col flex-wrap items-center justify-center">
+                    <p className="text-lg font-medium">Đã từ chối</p>
+                    {course?.status === CourseStatus.Rejected && (
+                      <p className="break-words text-base font-normal">
+                        Lý do: {course?.rejected_reason.reason}
+                      </p>
+                    )}
                   </div>
                 )}
               </>
@@ -153,15 +158,20 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const { id } = context.query;
   try {
-    const r = await CodedraftsInstructorCourseApi.getCourseById(
-      Number(id),
-      session.token.user.accessToken,
-    );
+    const [r, s] = await Promise.all([
+      CodedraftsAdminCourseApi.getCourseById(Number(id), session.token.user.accessToken),
+      CodedraftsAdminLessonApi.getSectionWithLessonByCourseId(
+        Number(id),
+        session.token.user.accessToken,
+      ),
+    ]);
 
     return {
       props: {
-        course: r.data.data,
-        session: null,
+        course: {
+          ...r.data.data,
+          sections: s.data.data,
+        },
       },
     };
   } catch (error) {

@@ -151,8 +151,10 @@ const CreateCouse: React.FC = () => {
       TOAST_CONFIG,
     );
 
-    router.query.id = r.data.data.course_id;
-    router.push(router);
+    if (!id) {
+      router.query.id = r.data.data.course_id;
+      router.push(router, undefined, { shallow: true });
+    }
   };
 
   useEffect(() => {

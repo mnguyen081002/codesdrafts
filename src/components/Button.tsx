@@ -59,7 +59,11 @@ function PrimaryOutlineButton({
   bgHoverColor = 'hover:bg-light-hoverPrimary',
   type = 'button',
   disabled,
+  leftIcon,
+  rightIcon,
 }: {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   text: string;
   onClick?: () => void;
   className?: string;
@@ -82,6 +86,7 @@ function PrimaryOutlineButton({
         className || ''
       } flex cursor-pointer items-center justify-center rounded-md border border-light-primary transition-colors duration-200 ease-in ${bgHoverColor} px-10 py-3 `}
     >
+      {rightIcon && rightIcon}
       <p
         className={`${
           textClassName || ''
@@ -91,6 +96,7 @@ function PrimaryOutlineButton({
       >
         {text}
       </p>
+      {leftIcon && leftIcon}
     </button>
   );
 }

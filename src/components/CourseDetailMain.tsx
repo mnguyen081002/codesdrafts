@@ -49,7 +49,7 @@ function CourseDetailMain(props: CourseDetailMainProps) {
           />
           <CourseSubInfo
             icon="/images/course/People.svg"
-            text={props.course.total_enrollment.toString()}
+            text={props.course?.total_enrollment.toString()}
           />
           <CustomRating />
         </div>

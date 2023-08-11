@@ -27,10 +27,11 @@ export interface GetLessonResponse {
   updated_at: string;
   deleted_at: null;
   title: string;
-  isCompleted: boolean;
   order: number;
   components: LessonComponentProps<ICodeContent>[];
   summary: string;
+  is_first: boolean;
+  is_last: boolean;
 }
 
 export interface AddLessonResponse {

@@ -52,9 +52,14 @@ const CodedraftsInstructorSectionApi = {
       title,
     });
   },
-  getSectionsWithLessonByCourseId: (courseId: number) => {
+  getSectionsWithLessonByCourseId: (courseId: number, token?: string) => {
     return axiosClient.get<BaseReadResponse<GetSectionWithLessonByCourseIDResponse[]>>(
       `/api/instructor/section/${courseId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
   },
 };

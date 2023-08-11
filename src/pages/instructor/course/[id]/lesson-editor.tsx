@@ -1,3 +1,4 @@
+import { Checkbox } from '@mantine/core';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -5,10 +6,12 @@ import { toast, Zoom } from 'react-toastify';
 
 import type { GetCourseByIDResponse } from '../../../../api/instructor/course';
 import CodedraftsInstructorCourseApi from '../../../../api/instructor/course';
-import type { SaveLessonRequest } from '../../../../api/instructor/lesson';
+import type { GetLessonResponse, SaveLessonRequest } from '../../../../api/instructor/lesson';
 import CodedraftsInstructorLessonApi from '../../../../api/instructor/lesson';
 import type { GetSectionWithLessonByCourseIDResponse } from '../../../../api/instructor/section';
 import CodedraftsInstructorSectionApi from '../../../../api/instructor/section';
+import ArrowLeftV2Icon from '../../../../common/Icons/ArrowLeftV2';
+import ArrowRightV2Icon from '../../../../common/Icons/ArrowRightV2';
 import { InputRectangle } from '../../../../common/Input';
 import { PrimaryOutlineButton } from '../../../../components/Button';
 import { RHFTextField } from '../../../../components/hook-form';
@@ -33,6 +36,8 @@ const LessonEditor = () => {
   const [refs, setRefs] = useState<React.MutableRefObject<LessonComponentProps>[]>([]);
   const [isCollapseSidebar, setIsCollapseSidebar] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
+  const [lesson, setLesson] = useState<GetLessonResponse>();
+
   const methods = useForm<FormValuesProps>({
     defaultValues: {
       summary: '',
@@ -55,22 +60,8 @@ const LessonEditor = () => {
       );
     }
 
-    const l = await CodedraftsInstructorLessonApi.getLesson(Number(router.query.lesson_id));
     setCourse(res.data.data);
     setSections(s.data.data);
-    reset({
-      title: l.data.data.title,
-      summary: l.data.data.summary,
-    });
-    setRefs(
-      l.data.data.components.map((e) => {
-        const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
-        ref.current = {
-          ...e,
-        };
-        return ref;
-      }),
-    );
   };
 
   const onSubmit = async (data: FormValuesProps) => {
@@ -104,6 +95,29 @@ const LessonEditor = () => {
   useEffect(() => {
     fetchCourse();
   }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { lesson_id } = router.query;
+      if (!lesson_id) return;
+      const l = await CodedraftsInstructorLessonApi.getLesson(Number(lesson_id));
+      reset({
+        title: l.data.data.title,
+        summary: l.data.data.summary,
+      });
+      setRefs(
+        l.data.data.components.map((e) => {
+          const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
+          ref.current = {
+            ...e,
+          };
+          return ref;
+        }),
+      );
+      setLesson(l.data.data);
+    };
+    fetch();
+  }, [router.query.lesson_id]);
 
   useEffect(() => {
     if (router.query.isPreview) {
@@ -235,6 +249,68 @@ const LessonEditor = () => {
                 setRefs([...refs, ref]);
               }}
             ></div>
+            {isPreview && (
+              <>
+                <div className="my-7 flex w-full justify-end">
+                  <Checkbox
+                    sx={{
+                      '& .mantine-Checkbox-input': {
+                        borderColor: '#d6d6d6',
+                        ':checked': {
+                          backgroundColor: '#13cc4a',
+                        },
+                      },
+                    }}
+                    label="Đánh dấu đã hoàn thành"
+                  />
+                </div>
+                <div className="flex w-full justify-between">
+                  {!lesson?.is_first ? (
+                    <PrimaryOutlineButton
+                      onClick={() => {
+                        const listLessons = sections?.map((section) => section.lessons).flat();
+                        const currentLessonIndex = listLessons?.findIndex(
+                          (l) => l.id === lesson?.id,
+                        );
+                        const prevLesson = listLessons?.[currentLessonIndex! - 1];
+                        if (!prevLesson) return;
+                        router.query.section_id = prevLesson.section_id.toString();
+                        router.query.lesson_id = prevLesson.id.toString();
+                        router.push(router);
+                      }}
+                      text="Quay lại"
+                      className="gap-[10px] border-light-text-primary px-[15px] py-[12px]"
+                      textClassName="font-semibold text-[13px] text-[#4C4E64]"
+                      rightIcon={<ArrowLeftV2Icon width="20px" height="20px" />}
+                    />
+                  ) : (
+                    <div></div>
+                  )}
+                  {!lesson?.is_last ? (
+                    <PrimaryOutlineButton
+                      onClick={() => {
+                        const listLessons = sections?.map((section) => section.lessons).flat();
+                        const currentLessonIndex = listLessons?.findIndex(
+                          (l) => l.id === lesson?.id,
+                        );
+                        const nextLesson = listLessons?.[currentLessonIndex! + 1];
+
+                        if (!nextLesson) return;
+                        router.query.section_id = nextLesson.section_id.toString();
+                        router.query.lesson_id = nextLesson.id.toString();
+                        router.push(router);
+                      }}
+                      leftIcon={<ArrowRightV2Icon pathFill="#1363DF" width="20px" height="20px" />}
+                      textClassName="font-semibold text-[13px]"
+                      className="gap-[10px] px-[15px] py-[12px]"
+                      text="Tiếp tục"
+                    />
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

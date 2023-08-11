@@ -61,6 +61,8 @@ function SectionItem({
     setLessons([...section.lessons]);
   }, [router.query.title]);
 
+  console.log('Rerender Section Item');
+
   return (
     <div className="cursor-pointer" draggable>
       <div

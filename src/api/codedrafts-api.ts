@@ -82,11 +82,13 @@ export interface StudentGetLessonByID {
   course_id: null;
   owner_id: number;
   title: string;
-  isCompleted: boolean;
   order: number;
   components: any[];
   summary: string;
+  is_completed: boolean;
   section_id: number;
+  is_first: boolean;
+  is_last: boolean;
 }
 export interface ShortLesson {
   id: number;
@@ -120,8 +122,8 @@ export const StudentApi = {
       `/api/lesson/get-lession-by-section-id/${sectionId}`,
     );
   },
-  getLessonById: (id: number) => {
-    return axiosClient.get<BaseReadResponse<StudentGetLessonByID>>(`/api/lesson/${id}`);
+  getLessonById: (id: number, courseId: number) => {
+    return axiosClient.get<BaseReadResponse<StudentGetLessonByID>>(`/api/lesson/${id}/${courseId}`);
   },
   calculatePayment: (props: { course_id: number }) => {
     return axiosClient.post<BaseResponse<CalculatePaymentResponse>>(
@@ -138,6 +140,13 @@ export const StudentApi = {
     return axiosClient.post('/api/auth/reset-password', {
       token,
       password,
+    });
+  },
+  markLessonComplete: (id: number, course_id: number, isCompleted: boolean) => {
+    return axiosClient.post<BaseResponse<null>>(`/api/lesson/mark-as-completed`, {
+      lesson_id: id,
+      course_id,
+      isCompleted,
     });
   },
   forgotPassword: (email: string) => {
