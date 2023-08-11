@@ -102,6 +102,7 @@ function CourseDetailMain(props: CourseDetailMainProps) {
                 average={{
                   color: '5C5C5C',
                   value: 4.5,
+                  review_count: props.course?.review_count,
                 }}
               />
             </div>

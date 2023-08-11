@@ -5,6 +5,7 @@ interface CustomRatingProps {
   average?: {
     value?: number;
     color?: string;
+    review_count?: number;
   };
 }
 
@@ -21,7 +22,7 @@ const CustomRating = ({ average }: CustomRatingProps) => {
       />
       <span className={`text-lg leading-5 ${average?.color || 'text-white'} opacity-70`}>4.5</span>
       <span className="text-lg font-normal leading-5 text-[#838383] opacity-70">
-        (<span>350</span>)
+        (<span>{average?.review_count || 0}</span>)
       </span>
     </div>
   );

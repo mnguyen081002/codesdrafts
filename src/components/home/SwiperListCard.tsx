@@ -11,9 +11,9 @@ type SwiperListCardProps = {
 const SwiperListCard = ({ classSwiper, courses }: SwiperListCardProps) => {
   const handlerPrev = () => {
     const swiperEl = document.querySelector(`#${classSwiper}`) as any;
+    console.log(swiperEl);
     swiperEl.swiper.slidePrev();
   };
-
   const handlerNext = () => {
     const swiperEl = document.querySelector(`#${classSwiper}`) as any;
     swiperEl.swiper.slideNext();

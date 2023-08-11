@@ -221,7 +221,20 @@ export const StudentApi = {
       subject,
     });
   },
+  getListThumbnail: async () => {
+    return axiosClient.get<ListThumbnailResponse>('/api/settings/thumbnail');
+  },
 };
+
+export interface ListThumbnailResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  key: string;
+  title: string;
+  values: string[];
+}
 
 export interface ContactRequest {
   name: string;
