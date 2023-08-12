@@ -8,9 +8,9 @@ import { register } from 'swiper/element/bundle';
 import LabelListSwiper, { HightLightLabelCourse } from './LabelListSwiper';
 import { popularCourse } from './mockData';
 // register Swiper custom elements
-register();
 
 const HomeMain = () => {
+  register();
   return (
     <div className="w-[1460px] overflow-hidden">
       <Group position="left" className="my-4">

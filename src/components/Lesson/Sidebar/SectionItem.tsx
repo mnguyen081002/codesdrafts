@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import CodedraftsInstructorLessonApi from '@/api/instructor/lesson';
+
 import type { SidebarLesson, SidebarSection } from '../../../api/base/interface/course';
-import { StudentApi } from '../../../api/codedrafts-api';
 import type { AddSectionResponse } from '../../../api/instructor/section';
 import CodedraftsInstructorSectionApi from '../../../api/instructor/section';
 import ArrowRightIcon from '../../../common/Icons/ArrowRightIcon';
@@ -172,12 +173,12 @@ function SectionItem({
                 isPreview={isPreview}
                 onDeletedLesson={async (lesson_id) => {
                   if (!lesson_id) return;
-                  const rs = await StudentApi.getLessonsBySectionId(section.id);
+                  const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
                   setLessons(rs.data.data);
                 }}
                 onAddLesson={async (r) => {
                   if (!r) return;
-                  const rs = await StudentApi.getLessonsBySectionId(section.id);
+                  const rs = await CodedraftsInstructorLessonApi.getLessonsBySectionId(section.id);
                   setLessons(rs.data.data);
                 }}
                 lesson={lesson}

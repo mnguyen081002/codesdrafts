@@ -1,4 +1,4 @@
-import type { ResLogin, ResRegister } from '@/shared/types/authType';
+import type { ResLogin, ResRegister, User } from '@/shared/types/authType';
 
 import type { LessonComponentProps } from '../shared/interface';
 import type { TestResult } from '../utils/example';
@@ -50,10 +50,6 @@ export interface AddLessonRequest {
   summary: string;
   order: number;
   components: LessonComponentProps[];
-}
-
-export interface GetCourseListQuery extends BaseQuery {
-  category_id?: number;
 }
 
 export interface GetCategoriesPublicResponse {
@@ -186,6 +182,13 @@ export const StudentApi = {
       },
     });
   },
+  review: ({ course_id, comment, rating }: ReviewRequest) => {
+    return axiosClient.post<BaseResponse<null>>('/api/review', {
+      course_id,
+      comment,
+      rating,
+    });
+  },
 
   execute: ({ code, testCode, language }: ExecuteRequest) => {
     return axiosClient.post<CodedraftsApiResponse<ExecuteResponse>>(`/api/execute/`, {
@@ -230,7 +233,57 @@ export const StudentApi = {
       subject,
     });
   },
+  getListThumbnail: async () => {
+    return axiosClient.get<ListThumbnailResponse>('/api/settings/thumbnail');
+  },
+  getListReviews: async ({ course_id, limit, page }: GetReviewListQuery) => {
+    return axiosClient.get<BaseReadResponse<ReviewResponse[]>>(`/api/review/${course_id}`, {
+      params: {
+        limit,
+        page,
+      },
+    });
+  },
 };
+
+export interface GetCourseListQuery extends BaseQuery {
+  category_id?: number;
+}
+
+export interface ReviewResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  rating: number;
+  comment: string;
+  user: User;
+  like_count: number;
+  dislike_count: number;
+  is_like_count: number;
+  is_dislike_count: number;
+}
+
+export interface GetReviewListQuery {
+  course_id?: number;
+  limit?: number;
+  page?: number;
+}
+
+export interface ReviewRequest {
+  course_id: number;
+  comment: string;
+  rating: number;
+}
+
+export interface ListThumbnailResponse {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  key: string;
+  title: string;
+  values: string[];
+}
 
 export interface ContactRequest {
   name: string;

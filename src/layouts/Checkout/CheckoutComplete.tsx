@@ -4,17 +4,25 @@ import { useRouter } from 'next/router';
 
 import { PrimaryButton } from '../../components/Button';
 
+type Props = {
+  className?: string;
+};
+
+export const CommonLoading = (props: Props) => {
+  return (
+    <div className={props.className}>
+      <Loader />
+    </div>
+  );
+};
+
 export function CheckoutComplete() {
   const router = useRouter();
 
   const { query } = router;
   const { vnp_TransactionStatus } = query;
   if (vnp_TransactionStatus === undefined)
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Loader />
-      </div>
-    );
+    return <CommonLoading className="flex h-screen w-full items-center justify-center" />;
   return (
     <div className="flex flex-col items-center justify-center">
       {vnp_TransactionStatus === '00' ? (
