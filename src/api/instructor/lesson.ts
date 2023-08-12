@@ -59,6 +59,7 @@ export interface GetLessonsBySectionIDResponse {
   title: string;
   section_id: number;
   order: number;
+  completed_count: number;
 }
 
 const CodedraftsInstructorLessonApi = {

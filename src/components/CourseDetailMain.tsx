@@ -1,3 +1,12 @@
+import { Rating } from '@mantine/core';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+import type { ReviewResponse } from '@/api/codedrafts-api';
+import { StudentApi } from '@/api/codedrafts-api';
+import { CommonLoading } from '@/layouts/Checkout/CheckoutComplete';
 import { convertTime } from '@/utils/app';
 
 import type { BaseGetCourseByIDResponse } from '../api/base/interface/course';
@@ -17,7 +26,142 @@ interface CourseDetailMainProps {
   absoluteCourseInfo: React.ReactNode;
 }
 
+interface CourseOverviewProps {
+  course: BaseGetCourseByIDResponse;
+}
+
+const OverView = (props: CourseOverviewProps) => {
+  return (
+    <>
+      <p className="font-lexend-deca text-base font-light leading-8 text-light-text-primary">
+        {props.course?.description}
+      </p>
+      <CourseDetailSection
+        contents={props.course?.objectives}
+        title="Bạn sẽ học được gì?"
+        text="Trong khóa học này bạn sẽ học được những kiến thức và kỹ năng sau."
+      />
+      <CourseDetailSection
+        contents={props.course?.requirements}
+        title="Yêu cầu"
+        text="Cần một số yêu cầu cần thiết để bạn có thể hoàn thành khóa học này."
+      />
+      <CourseDetailSectionTitle title={'Nội dung giảng dạy'} text={''} noUnderline />
+      <CourseDetailTableOfContent
+        data={props.course.sections.map((s) => {
+          return {
+            title: s.title,
+            contents: s.lessons.map((l) => {
+              return l.title;
+            }),
+          };
+        })}
+      />
+    </>
+  );
+};
+
+type PropReviews = {
+  course_id: number;
+  isVisible: boolean;
+};
+
+type EleReviewProps = {
+  review: ReviewResponse;
+};
+
+const EleReview = (props: EleReviewProps) => {
+  return (
+    <div>
+      <div className="my-5 flex items-center gap-4">
+        <Avatar url={props.review.user.avatar || ''} w={60} h={60} />
+        <div className="flex flex-col justify-start gap-2">
+          <p className="font-lexend-deca text-[18px] font-normal leading-[22px] text-black">
+            {props.review.user.username}
+          </p>
+          <Rating value={props.review.rating} />
+        </div>
+      </div>
+      <p className="text-lg font-light text-[#4c4e64]">{props.review.comment}</p>
+      <div className="flex items-center">
+        <p className="text-base font-light text-[#79797D]">Hữu ích?</p>
+        <div className="flex items-center">
+          <Image
+            className="mx-5 cursor-pointer"
+            width={16}
+            height={16}
+            src="/svg/review/like.svg"
+            alt="like"
+          />
+          <Image
+            className="cursor-pointer"
+            width={16}
+            height={16}
+            src="/svg/review/dislike.svg"
+            alt="dislike"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ListReviews = ({ course_id, isVisible }: PropReviews) => {
+  const [reviews, setReviews] = useState<ReviewResponse[]>([]);
+  const [page, setPage] = useState(0);
+  const limit = 5;
+
+  const loadMoreReviews = async () => {
+    try {
+      const response = await StudentApi.getListReviews({
+        course_id,
+        limit,
+        page: page + 1,
+      });
+
+      const newReviews = response.data.data;
+      setReviews((prevReviews) => [...prevReviews, ...newReviews]);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error('Error loading more reviews:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadMoreReviews();
+  }, [page === 0]);
+
+  return (
+    <div
+      // eslint-disable-next-line tailwindcss/no-custom-classname
+      className={`${isVisible ? 'block' : 'hidden'}`}
+      id="scrollableDiv"
+      style={{
+        height: 800,
+        overflow: 'auto',
+        width: '100%',
+      }}
+    >
+      <InfiniteScroll
+        dataLength={
+          reviews.length // This is important field to render the next data
+        }
+        next={loadMoreReviews}
+        hasMore={true}
+        loader={<CommonLoading />}
+        scrollableTarget="scrollableDiv"
+      >
+        {reviews.map((review) => (
+          <EleReview key={review.id} review={review} />
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
+};
+
 function CourseDetailMain(props: CourseDetailMainProps) {
+  const router = useRouter();
+  const selection = router.query.selection as string;
   return (
     <div className="h-fit w-full font-lexend-deca">
       <div className="relative flex w-full flex-col justify-start gap-[20px] bg-[#041734] py-[70px] pl-[320px] pr-[560px]">
@@ -57,30 +201,9 @@ function CourseDetailMain(props: CourseDetailMainProps) {
       {props.absoluteCourseInfo}
       <div className="ml-[320px] flex w-[1000px] flex-col items-start gap-7 py-[70px]">
         <CourseUnderlineNavBar />
-        <p className="font-lexend-deca text-base font-light leading-8 text-light-text-primary">
-          {props.course?.description}
-        </p>
-        <CourseDetailSection
-          contents={props.course?.objectives}
-          title="Bạn sẽ học được gì?"
-          text="Trong khóa học này bạn sẽ học được những kiến thức và kỹ năng sau."
-        />
-        <CourseDetailSection
-          contents={props.course?.requirements}
-          title="Yêu cầu"
-          text="Cần một số yêu cầu cần thiết để bạn có thể hoàn thành khóa học này."
-        />
-        <CourseDetailSectionTitle title={'Nội dung giảng dạy'} text={''} noUnderline />
-        <CourseDetailTableOfContent
-          data={props.course.sections.map((s) => {
-            return {
-              title: s.title,
-              contents: s.lessons.map((l) => {
-                return l.title;
-              }),
-            };
-          })}
-        />
+        {selection === 'overview' && <OverView course={props.course} />}
+        <ListReviews course_id={props.course.id} isVisible={selection === 'review'} />
+
         <CourseDetailSectionTitle title={'Tác giả'} text={''} className="mt-8" />
         <div className="flex h-[220px] justify-start gap-6">
           <img className="h-[220px] w-[220px]" src={props.course?.owner.avatar} alt="" />
