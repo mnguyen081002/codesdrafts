@@ -10,6 +10,7 @@ export interface BaseGetCourseByIDResponse {
   short_description: string;
   price: number;
   base_price: number;
+  is_reviewed?: boolean;
   published_at?: Date;
   target_audience: CourseTargetAudience;
   requirements: string[];

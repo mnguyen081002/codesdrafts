@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
+import Profile from '@/components/Instructor/Profile';
 import Statistical from '@/components/Instructor/Statistical';
 
 import { requireAuth } from '../../components/requireAuth';
@@ -13,6 +14,7 @@ const ManageCourseMain = () => {
     students: <div>create-course</div>,
     notification: <div>notification</div>,
     statistical: <Statistical />,
+    profile: <Profile />,
   };
 
   // get query params
@@ -23,7 +25,7 @@ const ManageCourseMain = () => {
   // if query params change, update the page
 
   return (
-    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[150px] pt-[60px]">
+    <div className="flex h-[860px] w-[1670px] flex-col gap-[35px] px-[150px] pt-[50px]">
       {mapPage[slug as string]}
     </div>
   );

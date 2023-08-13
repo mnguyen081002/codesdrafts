@@ -49,13 +49,13 @@ export function Social() {
           className="flex h-[55px] w-[100px] cursor-pointer items-center justify-center rounded-[5px] border border-light-border"
           onClick={() => signIn('google')}
         >
-          <img src="/images/icons/Google.svg" alt="" />
+          <img src="/images/icons/Google.svg" alt="google" />
         </div>
         <div className="flex h-[55px] w-[100px] cursor-pointer items-center justify-center rounded-[5px] border border-light-border">
-          <img src="/images/icons/Github.svg" alt="" />
+          <img src="/images/icons/Github.svg" alt="github" onClick={() => signIn('github')} />
         </div>
         <div className="flex h-[55px] w-[100px] cursor-pointer items-center justify-center rounded-[5px] border border-light-border">
-          <img src="/images/icons/Facebook.svg" alt="" />
+          <img src="/images/icons/Facebook.svg" alt="facebook" onClick={() => signIn('facebook')} />
         </div>
       </div>
     </div>

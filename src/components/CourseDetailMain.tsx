@@ -1,11 +1,13 @@
 import { Rating } from '@mantine/core';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { toast } from 'react-toastify';
 
-import type { ReviewResponse } from '@/api/codedrafts-api';
+import type { ActionReviewRequest, ReviewResponse } from '@/api/codedrafts-api';
 import { StudentApi } from '@/api/codedrafts-api';
+import DisLikeIcon from '@/common/Icons/DislikeIcon';
+import LikeIcon from '@/common/Icons/LikeIcon';
 import { CommonLoading } from '@/layouts/Checkout/CheckoutComplete';
 import { convertTime } from '@/utils/app';
 
@@ -71,6 +73,42 @@ type EleReviewProps = {
 };
 
 const EleReview = (props: EleReviewProps) => {
+  const [likeCount, setLikeCount] = useState(props.review.like_count);
+  const [dislikeCount, setDislikeCount] = useState(props.review.dislike_count);
+  const [isLiked, setIsLiked] = useState(props.review.is_like);
+  const [isDisliked, setIsDisliked] = useState(props.review.is_dislike);
+
+  const ActionReview = async ({ review_id, action }: ActionReviewRequest) => {
+    try {
+      if (action === 'like') {
+        if (isLiked) {
+          return;
+        }
+        await StudentApi.actionReview({ review_id, action });
+        setLikeCount((prev) => prev + 1);
+        setIsLiked(true);
+        setDislikeCount((prev) => prev - 1);
+        setIsDisliked(false);
+        return;
+      }
+
+      if (isDisliked) {
+        return;
+      }
+
+      await StudentApi.actionReview({ review_id, action });
+      setLikeCount((prev) => prev - 1);
+      setDislikeCount((prev) => prev + 1);
+      setIsDisliked(true);
+      setIsLiked(false);
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        toast.error('Vui lòng đăng nhập');
+      }
+      console.error('Error action review:', error);
+    }
+  };
+
   return (
     <div>
       <div className="my-5 flex items-center gap-4">
@@ -86,20 +124,38 @@ const EleReview = (props: EleReviewProps) => {
       <div className="flex items-center">
         <p className="text-base font-light text-[#79797D]">Hữu ích?</p>
         <div className="flex items-center">
-          <Image
-            className="mx-5 cursor-pointer"
-            width={16}
-            height={16}
-            src="/svg/review/like.svg"
-            alt="like"
-          />
-          <Image
-            className="cursor-pointer"
-            width={16}
-            height={16}
-            src="/svg/review/dislike.svg"
-            alt="dislike"
-          />
+          <div className="mx-5 flex items-center gap-[6px]">
+            <LikeIcon
+              className="h-4 w-4 cursor-pointer"
+              onClick={() => {
+                ActionReview({ review_id: props.review.id, action: 'like' });
+              }}
+              pathFill={`${isLiked ? '#0014ee' : '#4c4e64'}`}
+            />
+            {likeCount === 0 ? (
+              <span></span>
+            ) : (
+              <span className="font-lexend-deca text-sm font-normal text-[#4c4e64]">
+                {likeCount}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-[6px]">
+            <DisLikeIcon
+              className="h-4 w-4 cursor-pointer"
+              onClick={() => {
+                ActionReview({ review_id: props.review.id, action: 'dislike' });
+              }}
+              pathFill={`${isDisliked ? '#0014ee' : '#4c4e64'}`}
+            />
+            {dislikeCount === 0 ? (
+              <span></span>
+            ) : (
+              <span className="font-lexend-deca text-sm font-normal text-[#4c4e64]">
+                {dislikeCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -148,7 +204,7 @@ const ListReviews = ({ course_id, isVisible }: PropReviews) => {
         }
         next={loadMoreReviews}
         hasMore={true}
-        loader={<CommonLoading />}
+        loader={reviews.length !== 0 && <CommonLoading />}
         scrollableTarget="scrollableDiv"
       >
         {reviews.map((review) => (

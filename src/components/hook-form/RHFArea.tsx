@@ -11,9 +11,17 @@ type Props = {
   placeholder?: string;
   sx?: Sx | (Sx | undefined)[];
   className?: string;
+  label?: string;
 };
 
-export default function RHFArea({ name, helperText, placeholder, className, ...other }: Props) {
+export default function RHFArea({
+  name,
+  lable,
+  helperText,
+  placeholder,
+  className,
+  ...other
+}: Props) {
   const { control } = useFormContext();
 
   return (
@@ -22,6 +30,7 @@ export default function RHFArea({ name, helperText, placeholder, className, ...o
       control={control}
       render={({ field, fieldState: { error } }) => (
         <Textarea
+          label={lable}
           className={className}
           placeholder={placeholder}
           {...field}
