@@ -23,6 +23,8 @@ interface RHFInputAutoCompleteProps extends InputProps {
   isMulti?: boolean;
   creatable?: boolean;
   value?: string[] | string;
+  noGap?: boolean;
+  rightSection?: React.ReactNode;
 }
 // NOTE: RHF data.value not working with Mantine MultiSelect, use State instead
 export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
@@ -43,7 +45,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
             }}
             error={error ? error.message : props.helperText}
           >
-            <div className="flex flex-col gap-[6px]">
+            <div className={`${props.noGap ? 'flex flex-col' : 'flex flex-col gap-[6px]'}`}>
               <div className="flex justify-between">
                 <p className="text-base font-normal ">{props.label}</p>
               </div>
@@ -74,6 +76,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                   data={props.options || []}
                   className="placeholder-light-text-placeholder"
                   placeholder={props.placeholder}
+                  rightSection={props.rightSection}
                 />
               )}
             </div>

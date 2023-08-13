@@ -2,6 +2,8 @@ import type { JwtPayload } from 'jwt-decode';
 import jwt_decode from 'jwt-decode';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import FacebookProvider from 'next-auth/providers/facebook';
+import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
 import { PATH_AUTH } from '@/routes/path';
@@ -59,6 +61,14 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    }),
+    GitHubProvider({
+      clientId: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET || '',
+    }),
+    FacebookProvider({
+      clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID || '',
+      clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET || '',
     }),
   ],
 

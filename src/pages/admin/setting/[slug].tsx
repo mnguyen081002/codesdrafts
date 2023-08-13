@@ -1,10 +1,12 @@
 import { Button, Group, Input, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFormik } from 'formik';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+
+import { requireAuth } from '@/components/requireAuth';
 
 import type { SettingResponse } from '../../../api/admin/setting';
 import CodedraftsAdminSettingApi from '../../../api/admin/setting';
@@ -208,20 +210,10 @@ const SettingContent = () => {
   );
 };
 
-export const getServerSideProps = async () => {
-  const session = await getSession();
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+export const getServerSideProps: GetServerSideProps = requireAuth(async () => {
   return {
     props: {},
   };
-};
+});
 
 export default SettingContent;

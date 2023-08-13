@@ -16,6 +16,7 @@ interface InputProps {
   minRows?: number;
   value?: string;
   onChange?: (event: React.ChangeEvent<any>) => void;
+  disabled?: boolean;
 }
 
 interface ThumbnailProps {
@@ -23,10 +24,12 @@ interface ThumbnailProps {
   helperText?: string;
   thumbnailUpload: any;
   setThumbnailUpload: any;
+  hideCloseIcon?: boolean;
 }
 
 const RFHInputThumbnail = (props: ThumbnailProps) => {
   const { control } = useFormContext();
+  const handleGetThumbnail = async () => {};
 
   return (
     <Controller
@@ -42,7 +45,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
           }}
           error={error ? error?.message : props.helperText}
         >
-          {!props.thumbnailUpload ? (
+          {!props.thumbnailUpload && (
             <div className="flex h-[200px] w-[300px] flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]">
               <img
                 className="h-[55px] w-[55px] rounded-[5px]"
@@ -70,7 +73,8 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 accept="image/png, image/jpeg, image/gif"
               />
             </div>
-          ) : (
+          )}
+          {props.thumbnailUpload && (
             <div className="relative w-fit">
               <img
                 className=" h-[200px] w-[300px] rounded-[5px]"
@@ -81,12 +85,33 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 }
                 alt=""
               />
-              <img
-                src="/images/icons/close.svg"
-                alt=""
-                onClick={() => props.setThumbnailUpload(undefined)}
-                className="absolute top-1 right-1 h-4 w-4 cursor-pointer rounded-full bg-white"
-              />
+              {!props.hideCloseIcon && (
+                <img
+                  src="/images/icons/close.svg"
+                  alt=""
+                  onClick={() => props.setThumbnailUpload(undefined)}
+                  className="absolute top-1 right-1 h-4 w-4 cursor-pointer rounded-full bg-white"
+                />
+              )}
+              {props.hideCloseIcon && (
+                <div
+                  onClick={handleGetThumbnail}
+                  className="absolute -bottom-4 -right-6 flex h-[28px] w-[60px] cursor-pointer items-center gap-[5px] rounded-md border-2 bg-white p-[6px]"
+                >
+                  <img src="/svg/edit.svg" alt="edit-icon" className="h-4 w-4 rounded-full" />
+                  <span className="font-lexend-deca text-xs font-normal text-[#4c4e64]">Sửa</span>
+                  <input
+                    type="file"
+                    className="absolute z-10 h-[28px] w-[60px] cursor-pointer rounded-[5px] opacity-0"
+                    onChange={(event) => {
+                      if (event.target.files) {
+                        props.setThumbnailUpload(event.target.files[0]);
+                      }
+                    }}
+                    accept="image/png, image/jpeg, image/gif"
+                  />
+                </div>
+              )}
             </div>
           )}
         </Input.Wrapper>
@@ -116,6 +141,7 @@ export const InputCustom = (props: InputProps) => {
           maxLength={props.maxLength || 999}
           minRows={props.minRows || 1}
           value={props.value}
+          disabled={props.disabled}
         />
       ) : (
         <input
@@ -126,6 +152,7 @@ export const InputCustom = (props: InputProps) => {
           style={{ height: props.height }}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disabled}
         />
       )}
     </div>
@@ -137,7 +164,7 @@ function InputRounded(props: InputProps) {
 
   return (
     <Controller
-      name={props.name}
+      name={props.name || ''}
       control={control}
       render={({ field, fieldState: { error } }) => (
         <Input.Wrapper

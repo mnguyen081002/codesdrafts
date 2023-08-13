@@ -244,7 +244,15 @@ export const StudentApi = {
       },
     });
   },
+  actionReview: async ({ review_id, action }: ActionReviewRequest) => {
+    return axiosClient.post<BaseResponse<null>>(`/api/review/${action}/${review_id}`);
+  },
 };
+
+export interface ActionReviewRequest {
+  review_id: number;
+  action: 'like' | 'dislike';
+}
 
 export interface GetCourseListQuery extends BaseQuery {
   category_id?: number;
@@ -259,8 +267,8 @@ export interface ReviewResponse {
   user: User;
   like_count: number;
   dislike_count: number;
-  is_like_count: number;
-  is_dislike_count: number;
+  is_like: boolean;
+  is_dislike: boolean;
 }
 
 export interface GetReviewListQuery {

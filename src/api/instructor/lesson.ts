@@ -88,6 +88,41 @@ const CodedraftsInstructorLessonApi = {
   deleteLesson: (lessonId: number) => {
     return axiosClient.delete<BaseReadResponse<any>>(`/api/instructor/lesson/${lessonId}`);
   },
+  getMe: () => {
+    return axiosClient.get<UserInfo>(`/api/user/me`);
+  },
+  updateMe: (data: UpdateUserInfo) => {
+    return axiosClient.put<BaseReadResponse<any>>(`/api/user`, data);
+  },
+};
+
+export type UpdateUserInfo = {
+  username: string;
+  avatar: string;
+  bio: string;
+  title: string;
+  facebook_url: string;
+  twitter_url: string;
+  linkedin_url: string;
+  youtube_url: string;
+};
+
+export type UserInfo = {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  username: string;
+  email: string;
+  avatar: string;
+  role: string;
+  status: string;
+  bio: string;
+  title: string;
+  facebook_url: string;
+  twitter_url: string;
+  linkedin_url: string;
+  github_url: string;
+  youtube_url: string;
 };
 
 export default CodedraftsInstructorLessonApi;

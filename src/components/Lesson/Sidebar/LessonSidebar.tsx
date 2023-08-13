@@ -21,7 +21,6 @@ interface LessonSidebarProps {
   isCollapse: boolean;
   onClickCollapse: () => void;
   isPreview?: boolean;
-  is_reviewd?: boolean;
   sections: SidebarSection[];
 }
 
@@ -77,7 +76,6 @@ function LessonSidebar(props: LessonSidebarProps) {
       console.log(error);
     }
   };
-
   return (
     <div
       className={`sticky top-0 transition-all duration-300 ${
@@ -133,7 +131,7 @@ function LessonSidebar(props: LessonSidebarProps) {
                   isLast={section.id === sections[sections.length - 1]!.id}
                 />
               ))}
-              {props.is_reviewd && (
+              {!props.course?.is_reviewed && (
                 <div className="flex flex-col items-center justify-center py-[20px]">
                   <div
                     onClick={open}
