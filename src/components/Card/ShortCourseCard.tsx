@@ -78,10 +78,10 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
         </Group>
         <Group className="flex justify-between pt-1">
           <Group className="flex gap-1">
-            <Rating fractions={2} value={3.5} />
-            <p className="text-sm font-semibold text-[#353535]">4.5</p>
+            <Rating fractions={2} value={course.rating} readOnly />
+            <p className="text-sm font-semibold text-[#353535]">{course.rating}</p>
             <Text size="13px" color="dimmed">
-              (350)
+              ({course.total_enrollment})
             </Text>
           </Group>
           <Text size="18px" fw={700}>

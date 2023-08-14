@@ -25,6 +25,7 @@ export interface BaseGetCourseByIDResponse {
   reading_time: number;
   review_count: number;
   owner: Owner;
+  rating: number;
   sections: SidebarSection[];
   level: CourseLevel;
   main_category: {
