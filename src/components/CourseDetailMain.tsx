@@ -251,7 +251,10 @@ function CourseDetailMain(props: CourseDetailMainProps) {
             icon="/images/course/People.svg"
             text={props.course?.total_enrollment.toString()}
           />
-          <CustomRating />
+          <CustomRating
+            rating={props.course?.rating}
+            total_enrollment={props.course?.total_enrollment}
+          />
         </div>
       </div>
       {props.absoluteCourseInfo}

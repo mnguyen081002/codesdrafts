@@ -16,7 +16,7 @@ type Props = {
 
 export default function RHFArea({
   name,
-  lable,
+  label,
   helperText,
   placeholder,
   className,
@@ -30,7 +30,7 @@ export default function RHFArea({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <Textarea
-          label={lable}
+          label={label}
           className={className}
           placeholder={placeholder}
           {...field}

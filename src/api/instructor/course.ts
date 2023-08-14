@@ -27,6 +27,7 @@ export interface ListCourseItemResponse {
   draft_course_id?: number;
   level: CourseLevel;
   reading_time: number;
+  rating: number;
   owner: {
     id: number;
     username: string;
