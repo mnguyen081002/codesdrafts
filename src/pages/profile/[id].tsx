@@ -12,6 +12,7 @@ import SwiperListCard from '@/components/home/SwiperListCard';
 import { InstructorDetail } from '@/components/Profile/InstructorDetail';
 import Header from '@/layouts/Header';
 import HeaderPrimary from '@/layouts/HeaderPrimary';
+import { toastGetErrorMessage } from '@/utils/app';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -40,16 +41,25 @@ const Info = ({ session }) => {
   const { id } = router.query;
 
   useEffect(() => {
-    const loadProfile = async () => {
-      const { data } = await CodedraftsInstructorCourseApi.getInstrutorInfo(String(id));
-      setProfile(data.data);
+    const loadData = async () => {
+      const profilePromise = CodedraftsInstructorCourseApi.getInstrutorInfo(String(id));
+      const coursePromise = CodedraftsInstructorCourseApi.getInstrutorCourse(String(id));
+
+      try {
+        const [profileResponse, courseResponse] = await Promise.all([
+          profilePromise,
+          coursePromise,
+        ]);
+        setProfile(profileResponse.data.data);
+        setCourse(courseResponse.data.data);
+      } catch (error) {
+        toastGetErrorMessage(error);
+      }
     };
-    const loadCourseInstrutor = async () => {
-      const { data } = await CodedraftsInstructorCourseApi.getInstrutorCourse(String(id));
-      setCourse(data.data);
-    };
-    loadProfile();
-    loadCourseInstrutor();
+
+    if (isReady) {
+      loadData();
+    }
   }, [isReady]);
 
   return (

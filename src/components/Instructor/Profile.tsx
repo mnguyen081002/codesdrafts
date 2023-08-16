@@ -76,7 +76,6 @@ const Profile = () => {
     const loadTitle = async () => {
       const titleRes = await CodedraftsAdminSettingApi.getSettingByKey('title');
       settitle(titleRes.data.data);
-      console.log(titleRes.data.data);
     };
 
     if (isReady) {

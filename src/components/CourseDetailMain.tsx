@@ -272,7 +272,13 @@ function CourseDetailMain(props: CourseDetailMainProps) {
 
         <CourseDetailSectionTitle title={'Tác giả'} text={''} className="mt-8" />
         <div className="flex h-[220px] justify-start gap-6">
-          <img className="h-[220px] w-[220px]" src={props.course?.owner.avatar} alt="" />
+          <Link
+            href={`/profile/${props.course?.owner.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="h-[220px] w-[220px]" src={props.course?.owner.avatar} alt="" />
+          </Link>
           <div className="flex w-[576px] flex-col justify-start gap-2">
             <div className="flex flex-col items-start gap-1">
               <p className="font-lexend-deca text-[22px] font-medium leading-[22px] text-black">
