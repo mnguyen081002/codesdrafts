@@ -59,7 +59,7 @@ const PaymentGateways = () => {
     <Paper
       shadow="xs"
       p={30}
-      className="flex h-[440px] w-[421px] flex-col font-plusJakartaSans text-[#2A3547]"
+      className="flex h-[440px] w-[321px] flex-col font-plusJakartaSans text-[#2A3547]"
     >
       <span className="text-2xl font-semibold">Payment Gateways</span>
       <span className="text-sm font-normal">Payment Platform For Income</span>

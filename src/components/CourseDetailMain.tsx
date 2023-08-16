@@ -1,4 +1,5 @@
 import { Rating } from '@mantine/core';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -232,7 +233,13 @@ function CourseDetailMain(props: CourseDetailMainProps) {
         </p>
         <div className="flex items-center gap-[25px]">
           <div className="flex items-center gap-[9px]">
-            <Avatar url={props.course?.owner.avatar} w={60} h={60} />
+            <Link
+              href={`/profile/${props.course?.owner.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Avatar url={props.course?.owner.avatar} w={60} h={60} />
+            </Link>
             <div className="flex h-[43px] w-[260px] flex-col justify-start gap-[9px]">
               <p className="font-inter text-2xl font-semibold leading-5 text-white opacity-[87%]">
                 {props.course?.owner.username}
@@ -265,7 +272,13 @@ function CourseDetailMain(props: CourseDetailMainProps) {
 
         <CourseDetailSectionTitle title={'Tác giả'} text={''} className="mt-8" />
         <div className="flex h-[220px] justify-start gap-6">
-          <img className="h-[220px] w-[220px]" src={props.course?.owner.avatar} alt="" />
+          <Link
+            href={`/profile/${props.course?.owner.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="h-[220px] w-[220px]" src={props.course?.owner.avatar} alt="" />
+          </Link>
           <div className="flex w-[576px] flex-col justify-start gap-2">
             <div className="flex flex-col items-start gap-1">
               <p className="font-lexend-deca text-[22px] font-medium leading-[22px] text-black">

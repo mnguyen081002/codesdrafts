@@ -69,19 +69,19 @@ const LabelListSwiper = () => {
       <div>
         <HightLightLabelCourse courseName="Backend" />
 
-        <SwiperListCard courses={courseList} classSwiper="swiper-container-Backend" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-Backend" haveArrow />
       </div>
       <div>
         <HightLightLabelCourse courseName="Lộ trình" />
-        <SwiperListCard courses={courseList} classSwiper="swiper-container-2" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-2" haveArrow />
       </div>
       <div>
         <HightLightLabelCourse courseName="Frontend" />
-        <SwiperListCard courses={courseList} classSwiper="swiper-container-Frontend" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-Frontend" haveArrow />
       </div>
       <div>
         <HightLightLabelCourse courseName="DevOps" />
-        <SwiperListCard courses={courseList} classSwiper="swiper-container-DevOps" />
+        <SwiperListCard courses={courseList} classSwiper="swiper-container-DevOps" haveArrow />
       </div>
     </div>
   );

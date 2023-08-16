@@ -28,7 +28,7 @@ type FormValuesProps = {
   youtube_url: string;
 };
 
-const socialSettings = [
+export const socialSettings = [
   {
     name: 'facebook_url',
     icon: '/svg/social/facebook.svg',
@@ -76,7 +76,6 @@ const Profile = () => {
     const loadTitle = async () => {
       const titleRes = await CodedraftsAdminSettingApi.getSettingByKey('title');
       settitle(titleRes.data.data);
-      console.log(titleRes.data.data);
     };
 
     if (isReady) {
@@ -126,7 +125,6 @@ const Profile = () => {
           <InputRectangle
             name="username"
             label="Tên"
-            maxLength={15}
             placeholder="Nhập tên"
             type="string"
             noResize
@@ -136,7 +134,6 @@ const Profile = () => {
               <InputRectangle
                 name="email"
                 label="Email"
-                maxLength={15}
                 placeholder="Nhập email"
                 type="string"
                 noResize
@@ -177,7 +174,6 @@ const Profile = () => {
                 <InputRectangle
                   key={item.name}
                   name={item.name}
-                  maxLength={15}
                   placeholder="Liên kết đến trang cá nhân"
                   type="string"
                   noResize
