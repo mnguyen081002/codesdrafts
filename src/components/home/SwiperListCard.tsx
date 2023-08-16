@@ -6,12 +6,12 @@ import ShortCourseCard from '../Card/ShortCourseCard';
 type SwiperListCardProps = {
   classSwiper: string;
   courses: ListCourseItemResponse[];
+  haveArrow?: boolean;
 };
 
-const SwiperListCard = ({ classSwiper, courses }: SwiperListCardProps) => {
+const SwiperListCard = ({ classSwiper, courses, haveArrow }: SwiperListCardProps) => {
   const handlerPrev = () => {
     const swiperEl = document.querySelector(`#${classSwiper}`) as any;
-    console.log(swiperEl);
     swiperEl.swiper.slidePrev();
   };
   const handlerNext = () => {
@@ -20,9 +20,11 @@ const SwiperListCard = ({ classSwiper, courses }: SwiperListCardProps) => {
   };
   return (
     <div className="relative w-[1500px]">
-      <div className="absolute bottom-[14rem] left-[-50px] z-10 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-black">
-        <ArrowLeftIcon height="30" width="30" pathFill="white" onClick={handlerPrev} />
-      </div>
+      {haveArrow && (
+        <div className="absolute bottom-[14rem] left-[-50px] z-10 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-black">
+          <ArrowLeftIcon height="30" width="30" pathFill="white" onClick={handlerPrev} />
+        </div>
+      )}
       <swiper-container
         id={classSwiper}
         style={{
@@ -36,9 +38,11 @@ const SwiperListCard = ({ classSwiper, courses }: SwiperListCardProps) => {
           <ShortCourseCard course={course} key={index} />
         ))}
       </swiper-container>
-      <div className="absolute bottom-[14rem] -right-12 z-10 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-black">
-        <ArrowRightIcon height="30" width="30" pathFill="white" onClick={handlerNext} />
-      </div>
+      {haveArrow && (
+        <div className="absolute bottom-[14rem] -right-12 z-10 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full bg-black">
+          <ArrowRightIcon height="30" width="30" pathFill="white" onClick={handlerNext} />
+        </div>
+      )}
     </div>
   );
 };

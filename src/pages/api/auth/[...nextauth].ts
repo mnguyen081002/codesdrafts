@@ -108,6 +108,7 @@ export default NextAuth({
       return session;
     },
     async signIn({ user, account }: any) {
+      console.log({ user, account });
       user.id_token = account.id_token;
       user.provider = account.provider;
       return true;

@@ -5,7 +5,6 @@ import NotificationIcon from '../../common/Icons/NotificationIcon';
 import SettingIcon from '../../common/Icons/SettingIcon';
 import TransactionIcon from '../../common/Icons/TransactionIcon';
 import { ADMIN_PATH } from '../../routes/path';
-import Footer from '../Footer';
 import HeaderManage from '../Manage/Header';
 import SidebarManage from '../Manage/Sidebar';
 import Dashboard from './Dashboard';
@@ -60,7 +59,6 @@ const AdminLayout = ({ children }) => {
         <SidebarManage items={listItem} redirectPath="admin" />
         {children}
       </div>
-      <Footer />
     </>
   );
 };

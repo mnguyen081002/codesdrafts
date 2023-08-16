@@ -2,6 +2,7 @@ import type { CourseLevel } from '../../shared/enum/course';
 import axiosClient from '../axiosClient';
 import type { BaseGetCourseByIDResponse, Category } from '../base/interface/course';
 import type { BaseQuery, BaseReadResponse, BaseResponse } from '../baseHttp';
+import type { UserInfo } from './lesson';
 
 export interface ListCourseItemResponse {
   id: number;
@@ -122,6 +123,14 @@ const CodedraftsInstructorCourseApi = {
   countCourse: () => {
     return axiosClient.get<BaseReadResponse<InstructorCountCourseResponse>>(
       '/api/instructor/course/count-course',
+    );
+  },
+  getInstrutorInfo: (id: string) => {
+    return axiosClient.get<BaseReadResponse<UserInfo>>(`/api/user/info/${id}`);
+  },
+  getInstrutorCourse: (id: string) => {
+    return axiosClient.get<BaseReadResponse<ListCourseItemResponse[]>>(
+      `/api/course/instructor/${id}`,
     );
   },
 };
