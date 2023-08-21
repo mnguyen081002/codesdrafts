@@ -18,7 +18,7 @@ export function CheckoutInfo() {
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
   const [vietqr, setVietqr] = useState<string>('VIETQR');
-  const [countdown, setCountdown] = useState(900);
+  const [countdown, setCountdown] = useState(0);
   const [isPaymentAllowed, setIsPaymentAllowed] = useState(true);
   const [selected, setSelected] = useState<string>('VIETQR');
   const [course, setCourse] = useState<GetCourseByIDResponse>();
@@ -32,12 +32,15 @@ export function CheckoutInfo() {
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000);
+    if (countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+    return () => {};
+  }, [countdown]);
 
   const handlePayment = async () => {
     try {
@@ -49,6 +52,7 @@ export function CheckoutInfo() {
         setVietqr(res.data.data.url);
         setIsPaymentAllowed(false);
       }
+      setCountdown(900);
       open();
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -58,7 +62,6 @@ export function CheckoutInfo() {
   useEffect(() => {
     if (countdown <= 0) {
       setIsPaymentAllowed(true);
-      toast.error('Giao dịch đã hết hạn', TOAST_CONFIG);
       close();
     }
   }, [countdown]);

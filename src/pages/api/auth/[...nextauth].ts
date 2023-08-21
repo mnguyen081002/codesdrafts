@@ -76,7 +76,7 @@ export default NextAuth({
     // The jwt() callback is called when a new token is created.
     async jwt({ token, user }: any) {
       if (user) {
-        if (user.id_token) {
+        if (user.provider === 'google' && user.id_token) {
           const data: ResLogin = await StudentApi.loginSocial({
             token: user.id_token,
             social: user.provider || 'google',
@@ -89,7 +89,7 @@ export default NextAuth({
           user.accessToken = data.token.access_token;
         }
 
-        if (user.access_token) {
+        if (user.provider === 'github' && user.access_token) {
           const data: ResLogin = await StudentApi.loginSocial({
             token: user.access_token,
             social: user.provider || 'github',
@@ -102,7 +102,7 @@ export default NextAuth({
           user.accessToken = data.token.access_token;
         }
 
-        if (user.social_user_id) {
+        if (user.social_user_id && user.provider === 'facebook') {
           const data: ResLogin = await StudentApi.loginSocial({
             token: user.access_token,
             social: user.provider || 'facebook',
