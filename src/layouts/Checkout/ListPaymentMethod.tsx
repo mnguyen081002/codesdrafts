@@ -8,7 +8,7 @@ interface PaymentMethodItemProps {
 
 function PaymentMethodItem(props: PaymentMethodItemProps) {
   return (
-    <div className="flex items-center justify-between rounded-md border border-light-border bg-[#FCFCFC] py-2 px-5">
+    <div className="flex items-center justify-between rounded-md border border-light-border bg-[#FCFCFC] py-3 px-5">
       <div className="flex items-center gap-[10px]">
         <div className="relative h-[20px] w-[20px] rounded-full border border-[#4d4d4d]">
           {props.isSelected && (

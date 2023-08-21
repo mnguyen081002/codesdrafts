@@ -1,7 +1,7 @@
 import type { SelectItemProps } from '@mantine/core';
 import { Autocomplete, Box, Flex, Input, MultiSelect } from '@mantine/core';
 import Image from 'next/image';
-import { type Dispatch, type SetStateAction, forwardRef } from 'react';
+import React, { type Dispatch, type SetStateAction, forwardRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import type { PaymentResponse } from '../Instructor/Profile';
@@ -33,7 +33,7 @@ interface RHFInputAutoCompleteProps extends InputProps {
 }
 // NOTE: RHF data.value not working with Mantine MultiSelect, use State instead
 export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
-  const { control, setValue } = useFormContext();
+  const { control } = useFormContext();
 
   const Item = forwardRef<HTMLDivElement, SelectItemProps>(({ label, value, ...others }, ref) => {
     const foundItem = props.paymentList?.find((item) => item.name === label);
@@ -79,6 +79,9 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
 
   AutoCompleteItem.displayName = 'AutoCompleteItem';
 
+  const ref = React.useRef<HTMLInputElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   return (
     <Controller
       name={props.name}
@@ -121,14 +124,12 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
                   <Autocomplete
                     value={field.value || ''}
                     onChange={(value) => {
-                      const foundItem = props.paymentList?.find((item) => item.name === value);
-                      field.onChange(foundItem?.code);
+                      field.onChange(value);
                     }}
                     size="md"
                     data={props.options || []}
                     className="overflow-auto placeholder-light-text-placeholder"
                     placeholder={props.placeholder}
-                    rightSection={props.rightSection}
                     itemComponent={AutoCompleteItem}
                     limit={63}
                     sx={{
@@ -136,6 +137,27 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
                         maxHeight: '400px',
                         overflow: 'scroll',
                       },
+                    }}
+                    ref={ref}
+                    rightSection={
+                      <div
+                        onClick={() => {
+                          setIsDropdownOpen(!isDropdownOpen);
+                          ref.current?.click();
+                          ref.current?.focus();
+                        }}
+                      >
+                        {props.rightSection}
+                      </div>
+                    }
+                    onClick={() => {
+                      setIsDropdownOpen(!isDropdownOpen);
+                    }}
+                    onDropdownClose={() => {
+                      setIsDropdownOpen(false);
+                    }}
+                    onDropdownOpen={() => {
+                      setIsDropdownOpen(true);
                     }}
                   />
                 </>

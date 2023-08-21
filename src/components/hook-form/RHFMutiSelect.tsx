@@ -1,5 +1,6 @@
 import { Autocomplete, Input, MultiSelect } from '@mantine/core';
 import type { Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface InputProps {
@@ -28,7 +29,9 @@ interface RHFInputAutoCompleteProps extends InputProps {
 }
 // NOTE: RHF data.value not working with Mantine MultiSelect, use State instead
 export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
-  const { control, setValue } = useFormContext();
+  const { control } = useFormContext();
+  const ref = React.useRef<HTMLInputElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <Controller
@@ -68,6 +71,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                 />
               ) : (
                 <Autocomplete
+                  ref={ref}
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
@@ -76,7 +80,26 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                   data={props.options || []}
                   className="placeholder-light-text-placeholder"
                   placeholder={props.placeholder}
-                  rightSection={props.rightSection}
+                  rightSection={
+                    <div
+                      onClick={() => {
+                        setIsDropdownOpen(!isDropdownOpen);
+                        ref.current?.click();
+                        ref.current?.focus();
+                      }}
+                    >
+                      {props.rightSection}
+                    </div>
+                  }
+                  onClick={() => {
+                    setIsDropdownOpen(!isDropdownOpen);
+                  }}
+                  onDropdownClose={() => {
+                    setIsDropdownOpen(false);
+                  }}
+                  onDropdownOpen={() => {
+                    setIsDropdownOpen(true);
+                  }}
                 />
               )}
             </div>

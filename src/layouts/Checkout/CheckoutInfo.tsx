@@ -11,7 +11,7 @@ import type { GetCourseByIDResponse } from '../../api/student/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
 import { Avatar } from '../../components/sub/avatar';
 import { TOAST_CONFIG } from '../../shared/constants/app';
-import { formatCoursePrice, toastGetErrorMessage } from '../../utils/app';
+import { formatCoursePrice, formatTimeCountDown, toastGetErrorMessage } from '../../utils/app';
 import { ListPaymentMethod } from './ListPaymentMethod';
 
 export function CheckoutInfo() {
@@ -82,9 +82,9 @@ export function CheckoutInfo() {
   }, [router.query.id]);
   return (
     <div className="flex w-full justify-center py-[80px]">
-      <Modal opened={opened} onClose={close}>
+      <Modal opened={opened} onClose={close} className="flex items-center justify-center">
         <p className="mb-5 text-center font-lexend-deca text-base font-normal">
-          Giao dịch sẽ hủy sau: {Math.floor(countdown / 60)}:{countdown % 60}
+          Giao dịch sẽ hủy sau: {formatTimeCountDown(countdown)}
         </p>
         <Image src={vietqr} alt="vietqr-code" width={500} height={500} />
       </Modal>

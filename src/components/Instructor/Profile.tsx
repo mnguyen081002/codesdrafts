@@ -76,8 +76,21 @@ const Profile = () => {
   const [title, settitle] = useState<SettingResponse>();
 
   useEffect(() => {
+    const loadPaymentMethod = async () => {
+      if (paymentMethod.length > 0) return;
+      const paymentMethodRes = await axios.get('https://api.vietqr.io/v2/banks');
+      setPaymentMethod(paymentMethodRes.data.data);
+    };
+
     const loadProfile = async () => {
       const profile = await CodedraftsInstructorLessonApi.getMe();
+      const paymentList = paymentMethod;
+      if (paymentList.length === 0) {
+        const paymentMethodRes = await axios.get('https://api.vietqr.io/v2/banks');
+        setPaymentMethod(paymentMethodRes.data.data);
+        paymentList.push(...paymentMethodRes.data.data);
+      }
+      const foundItem = paymentList.find((item) => item.code === profile.data.bank_code);
 
       reset({
         username: profile.data.username,
@@ -89,7 +102,7 @@ const Profile = () => {
         linkedin_url: profile.data.linkedin_url,
         youtube_url: profile.data.youtube_url,
         bankOwnerName: profile.data.bank_owner_name,
-        bankCode: profile.data.bank_code,
+        bankCode: foundItem?.name,
         bankNumber: profile.data.bank_number,
       });
       setThumbnailUpload(profile.data.avatar);
@@ -98,11 +111,6 @@ const Profile = () => {
     const loadTitle = async () => {
       const titleRes = await CodedraftsAdminSettingApi.getSettingByKey('title');
       settitle(titleRes.data.data);
-    };
-
-    const loadPaymentMethod = async () => {
-      const paymentMethodRes = await axios.get('https://api.vietqr.io/v2/banks');
-      setPaymentMethod(paymentMethodRes.data.data);
     };
 
     if (isReady) {
@@ -122,6 +130,8 @@ const Profile = () => {
       } else {
         thumbnail = thumbnailUpload;
       }
+      const foundItem = paymentMethod.find((item) => item.name === data.bankCode);
+
       await CodedraftsInstructorLessonApi.updateMe({
         avatar: thumbnail,
         bio: data.bio,
@@ -132,7 +142,7 @@ const Profile = () => {
         username: data.username,
         youtube_url: data.youtube_url,
         bank_owner_name: data.bankOwnerName,
-        bank_code: data.bankCode,
+        bank_code: foundItem!.code,
         bank_number: data.bankNumber,
       });
       toast.success('Cập nhật thành công');
@@ -178,7 +188,13 @@ const Profile = () => {
                 type="text"
                 noGap
                 rightSection={
-                  <Image src="/svg/down-arrow.svg" alt="arrow-down" width={24} height={24} />
+                  <Image
+                    className="cursor-pointer"
+                    src="/svg/down-arrow.svg"
+                    alt="arrow-down"
+                    width={24}
+                    height={24}
+                  />
                 }
               />
             </Grid.Col>
@@ -226,7 +242,13 @@ const Profile = () => {
             type="string"
             noResize
             rightSection={
-              <Image src="/svg/down-arrow.svg" alt="arrow-down" width={24} height={24} />
+              <Image
+                className="cursor-pointer"
+                src="/svg/down-arrow.svg"
+                alt="arrow-down"
+                width={24}
+                height={24}
+              />
             }
             paymentList={paymentMethod}
           />

@@ -57,7 +57,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                 src="/images/icons/wallpaper.svg"
                 alt=""
               />
-              {!props.hideCloseIcon && (
+              {/* {!props.hideCloseIcon && (
                 <>
                   <p className="font-lexend-deca text-sm font-normal leading-6 text-light-text-main">
                     1122 x 748
@@ -80,7 +80,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
                     accept="image/png, image/jpeg, image/gif"
                   />
                 </>
-              )}
+              )} */}
             </div>
           )}
           {props.thumbnailUpload && (
