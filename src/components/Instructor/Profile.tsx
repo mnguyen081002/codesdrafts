@@ -94,19 +94,21 @@ const Profile = () => {
       });
       setThumbnailUpload(profile.data.avatar);
     };
+
     const loadTitle = async () => {
       const titleRes = await CodedraftsAdminSettingApi.getSettingByKey('title');
       settitle(titleRes.data.data);
     };
+
     const loadPaymentMethod = async () => {
       const paymentMethodRes = await axios.get('https://api.vietqr.io/v2/banks');
       setPaymentMethod(paymentMethodRes.data.data);
     };
 
     if (isReady) {
-      loadProfile();
-      loadTitle();
-      loadPaymentMethod();
+      Promise.all([loadProfile(), loadTitle(), loadPaymentMethod()]).catch((error) => {
+        toast.error(error?.response?.data?.message || 'Lỗi khi tải dữ liệu');
+      });
     }
   }, [isReady]);
 
