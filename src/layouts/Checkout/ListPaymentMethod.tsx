@@ -29,18 +29,23 @@ interface ListPaymentMethodProps {
 }
 
 export function ListPaymentMethod(props: ListPaymentMethodProps) {
-  const [selected, setSelected] = useState<string>('MOMO');
+  const [selected, setSelected] = useState<string>('VIETQR');
 
   const PaymentMethod = [
+    // {
+    //   title: 'Thanh toán bằng MoMo',
+    //   image: '/images/icons/momo.png',
+    //   payment_method: 'MOMO',
+    // },
+    // {
+    //   title: 'Thanh toán bằng VNpay',
+    //   image: '/images/icons/vnpay.png',
+    //   payment_method: 'VN_PAY',
+    // },
     {
-      title: 'Thanh toán bằng MoMo',
-      image: '/images/icons/momo.png',
-      payment_method: 'MOMO',
-    },
-    {
-      title: 'Thanh toán bằng VNpay',
-      image: '/images/icons/vnpay.png',
-      payment_method: 'VN_PAY',
+      title: 'Thanh toán bằng VietQR',
+      image: '/images/icons/viet-qr.svg',
+      payment_method: 'VIETQR',
     },
   ];
   return (

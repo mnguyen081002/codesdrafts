@@ -12,8 +12,6 @@ import { APP_NAME } from '../../shared/constants/app';
 const MenuUser = () => {
   const session: any = useSession();
 
-  console.log('session', session);
-
   return (
     <Menu shadow="md" width={285} position="top-end">
       <Menu.Target>

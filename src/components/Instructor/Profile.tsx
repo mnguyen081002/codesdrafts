@@ -1,4 +1,5 @@
 import { Grid } from '@mantine/core';
+import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ import { PrimaryButton } from '../Button';
 import { RHFMutiSelect } from '../hook-form';
 import FormProvider from '../hook-form/FormProvider';
 import RHFArea from '../hook-form/RHFArea';
+import RHFMutiSelectPayment from '../hook-form/RHFMutiSelectPayment';
 
 type FormValuesProps = {
   username: string;
@@ -26,6 +28,9 @@ type FormValuesProps = {
   twitter_url: string;
   linkedin_url: string;
   youtube_url: string;
+  bankNumber: string;
+  bankCode: string;
+  bankOwnerName: string;
 };
 
 export const socialSettings = [
@@ -47,10 +52,23 @@ export const socialSettings = [
   },
 ];
 
+export interface PaymentResponse {
+  bin: string;
+  code: string;
+  id: number;
+  isTransfer: number;
+  logo: string;
+  lookupSupported: number;
+  name: string;
+  shortName: string;
+  short_name: string;
+}
+
 const Profile = () => {
   const { isReady } = useRouter();
 
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
+  const [paymentMethod, setPaymentMethod] = useState<PaymentResponse[]>([]);
 
   const methods = useForm<FormValuesProps>({});
 
@@ -70,6 +88,9 @@ const Profile = () => {
         twitter_url: profile.data.twitter_url,
         linkedin_url: profile.data.linkedin_url,
         youtube_url: profile.data.youtube_url,
+        bankOwnerName: profile.data.bank_owner_name,
+        bankCode: profile.data.bank_code,
+        bankNumber: profile.data.bank_number,
       });
       setThumbnailUpload(profile.data.avatar);
     };
@@ -77,20 +98,23 @@ const Profile = () => {
       const titleRes = await CodedraftsAdminSettingApi.getSettingByKey('title');
       settitle(titleRes.data.data);
     };
+    const loadPaymentMethod = async () => {
+      const paymentMethodRes = await axios.get('https://api.vietqr.io/v2/banks');
+      setPaymentMethod(paymentMethodRes.data.data);
+    };
 
     if (isReady) {
       loadProfile();
       loadTitle();
+      loadPaymentMethod();
     }
   }, [isReady]);
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
       let thumbnail: string;
-
       if (thumbnailUpload instanceof File) {
         const uploadRes = await StudentApi.uploadFiles([thumbnailUpload]);
-
         // eslint-disable-next-line prefer-destructuring
         thumbnail = uploadRes.data.urls[0];
       } else {
@@ -105,6 +129,9 @@ const Profile = () => {
         twitter_url: data.twitter_url,
         username: data.username,
         youtube_url: data.youtube_url,
+        bank_owner_name: data.bankOwnerName,
+        bank_code: data.bankCode,
+        bank_number: data.bankNumber,
       });
       toast.success('Cập nhật thành công');
     } catch (error: any) {
@@ -182,7 +209,34 @@ const Profile = () => {
               </div>
             ))}
           </div>
-          <div className="mb-4 flex justify-center">
+          <InputRectangle
+            name="bankNumber"
+            label="Số tài khoản ngân hàng"
+            placeholder="Nhập số tài khoản ngân hàng"
+            type="string"
+            noResize
+          />
+          <RHFMutiSelectPayment
+            options={paymentMethod.map((item) => item.name)}
+            name="bankCode"
+            label="Ngân hàng thụ hưởng"
+            placeholder="Nhập ngân hàng thụ hưởng"
+            type="string"
+            noResize
+            rightSection={
+              <Image src="/svg/down-arrow.svg" alt="arrow-down" width={24} height={24} />
+            }
+            paymentList={paymentMethod}
+          />
+          <InputRectangle
+            name="bankOwnerName"
+            label="Tên chủ tài khoản"
+            placeholder="Nhập tên chủ tài khoản(Viết hoa không dấu, không chứa ký tự đặc biệt)"
+            type="string"
+            noResize
+          />
+
+          <div className="mb-14 mt-5 flex justify-center">
             <PrimaryButton type="submit" className="w-[100px]" text="Lưu" />
           </div>
         </div>

@@ -218,10 +218,11 @@ export const StudentApi = {
       payment_method,
     });
   },
-  loginSocial: async ({ id_token, social }: GoogleRequest) => {
+  loginSocial: async ({ token, social, social_user_id }: SocialRequest) => {
     return axiosClient.post<ResLogin>('/api/auth/login-social', {
-      token: id_token,
+      token,
       social,
+      social_user_id,
     });
   },
   contact: async ({ name, email, message, phone, subject }: ContactRequest) => {
@@ -306,15 +307,21 @@ export interface PaymentRequest {
   payment_method: string;
 }
 
-export interface GoogleRequest {
-  id_token: string;
+export interface SocialRequest {
+  token: string;
   social: string;
+  social_user_id?: string;
 }
 
 export interface PaymentResponse {
   message: string;
-  data: string;
+  data: VietQRResponse;
 }
+
+export type VietQRResponse = {
+  payment_method: string;
+  url: string;
+};
 
 export interface LessonInCategoryResponse {
   id: number;

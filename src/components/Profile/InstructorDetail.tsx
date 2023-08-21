@@ -12,9 +12,8 @@ type Props = {
 };
 
 export const InstructorDetail = (props: Props) => {
-  console.log(props.profile);
   return (
-    <Card shadow="sm" padding="lg" radius="8px" withBorder className="w-[1480px]">
+    <Card shadow="sm" padding="lg" radius="8px" withBorder className="mr-8 w-[1440px]">
       <div className="flex items-start">
         <Image
           className="mr-9"

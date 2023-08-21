@@ -46,38 +46,49 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
           error={error ? error?.message : props.helperText}
         >
           {!props.thumbnailUpload && (
-            <div className="flex h-[200px] w-[300px] flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]">
+            <div
+              className={`flex
+              ${
+                props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'
+              } flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]`}
+            >
               <img
                 className="h-[55px] w-[55px] rounded-[5px]"
                 src="/images/icons/wallpaper.svg"
                 alt=""
               />
-              <p className="font-lexend-deca text-sm font-normal leading-6 text-light-text-main">
-                1122 x 748
-              </p>
-              <p className="font-lexend-deca text-lg leading-6 text-light-text-main">
-                Tải ảnh lên
-                <span className="text-black"> hoặc kéo thả</span>
-              </p>
-              <p className="font-lexend-deca text-sm font-light text-[#8A8A8A]">
-                PNG, JPG, GIF lên đến 2MB
-              </p>
-              <input
-                type="file"
-                className="absolute z-10 h-[200px] w-[300px] cursor-pointer rounded-[5px] opacity-0"
-                onChange={(event) => {
-                  if (event.target.files) {
-                    props.setThumbnailUpload(event.target.files[0]);
-                  }
-                }}
-                accept="image/png, image/jpeg, image/gif"
-              />
+              {!props.hideCloseIcon && (
+                <>
+                  <p className="font-lexend-deca text-sm font-normal leading-6 text-light-text-main">
+                    1122 x 748
+                  </p>
+                  <p className="font-lexend-deca text-lg leading-6 text-light-text-main">
+                    Tải ảnh lên
+                    <span className="text-black"> hoặc kéo thả</span>
+                  </p>
+                  <p className="font-lexend-deca text-sm font-light text-[#8A8A8A]">
+                    PNG, JPG, GIF lên đến 2MB
+                  </p>
+                  <input
+                    type="file"
+                    className={`absolute z-10 h-[200px] w-[300px] cursor-pointer rounded-[5px] opacity-0`}
+                    onChange={(event) => {
+                      if (event.target.files) {
+                        props.setThumbnailUpload(event.target.files[0]);
+                      }
+                    }}
+                    accept="image/png, image/jpeg, image/gif"
+                  />
+                </>
+              )}
             </div>
           )}
           {props.thumbnailUpload && (
             <div className="relative w-fit">
               <img
-                className=" h-[200px] w-[300px] rounded-[5px]"
+                className={`${
+                  props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'
+                } rounded-[5px]`}
                 src={
                   props.thumbnailUpload instanceof File
                     ? URL.createObjectURL(props.thumbnailUpload)
@@ -185,7 +196,6 @@ function InputRounded(props: InputProps) {
 
 const InputRectangle = (props: InputProps) => {
   const { control } = useFormContext();
-  // rules valueAsNumber
   return (
     <Controller
       name={props.name}
