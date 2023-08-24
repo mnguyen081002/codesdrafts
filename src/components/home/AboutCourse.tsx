@@ -12,7 +12,7 @@ import { popularCourse } from './mockData';
 const HomeMain = () => {
   register();
   return (
-    <div className="w-[1460px] overflow-hidden">
+    <div className="w-[1460px]">
       <Group position="left" className="my-4">
         <HightLightLabelCourse courseName="chủ đề" />
       </Group>

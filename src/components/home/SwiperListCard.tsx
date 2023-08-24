@@ -30,6 +30,8 @@ const SwiperListCard = ({ classSwiper, courses, haveArrow }: SwiperListCardProps
         style={{
           width: '100%',
           height: '500px',
+          overflow: 'hidden',
+          padding: '0 20px',
           display: 'flex',
         }}
         slides-per-view="4"
