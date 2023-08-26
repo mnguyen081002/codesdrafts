@@ -214,6 +214,7 @@ const InputRectangle = (props: InputProps) => {
             value={field.value}
             {...props}
             className={`rounded-[5px] ${props.className}`}
+            type={props.type}
           />
         </Input.Wrapper>
       )}

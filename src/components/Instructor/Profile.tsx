@@ -167,6 +167,7 @@ const Profile = () => {
             placeholder="Nhập tên"
             type="string"
             noResize
+            className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
           <Grid display="flex" align="center">
             <Grid.Col span={6}>
@@ -177,6 +178,7 @@ const Profile = () => {
                 type="string"
                 noResize
                 disabled
+                className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -196,6 +198,7 @@ const Profile = () => {
                     height={24}
                   />
                 }
+                className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
               />
             </Grid.Col>
           </Grid>
@@ -208,6 +211,7 @@ const Profile = () => {
                 height: '110px',
               },
             }}
+            className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
           <p className="font-lexend-deca text-base font-normal text-[#4c4e64]">
             Tài khoản mạng xã hội
@@ -222,7 +226,7 @@ const Profile = () => {
                   placeholder="Liên kết đến trang cá nhân"
                   type="string"
                   noResize
-                  className="w-[1320px]"
+                  className="w-[1320px] font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
                 />
               </div>
             ))}
@@ -231,8 +235,9 @@ const Profile = () => {
             name="bankNumber"
             label="Số tài khoản ngân hàng"
             placeholder="Nhập số tài khoản ngân hàng"
-            type="string"
+            type="number"
             noResize
+            className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
           <RHFMutiSelectPayment
             options={paymentMethod.map((item) => item.name)}
@@ -251,6 +256,7 @@ const Profile = () => {
               />
             }
             paymentList={paymentMethod}
+            className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
           <InputRectangle
             name="bankOwnerName"
@@ -258,6 +264,7 @@ const Profile = () => {
             placeholder="Nhập tên chủ tài khoản(Viết hoa không dấu, không chứa ký tự đặc biệt)"
             type="string"
             noResize
+            className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
 
           <div className="mb-14 mt-5 flex justify-center">

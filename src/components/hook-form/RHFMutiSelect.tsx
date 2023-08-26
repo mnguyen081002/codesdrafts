@@ -67,7 +67,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                   }}
                   rightSection={<></>}
                   placeholder={props.placeholder}
-                  className="placeholder-light-text-placeholder"
+                  className={`placeholder-light-text-placeholder ${props.className}`}
                 />
               ) : (
                 <Autocomplete
@@ -78,7 +78,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
                   }}
                   size="md"
                   data={props.options || []}
-                  className="placeholder-light-text-placeholder"
+                  className={`placeholder-light-text-placeholder ${props.className}`}
                   placeholder={props.placeholder}
                   rightSection={
                     <div

@@ -38,7 +38,7 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
   const Item = forwardRef<HTMLDivElement, SelectItemProps>(({ label, value, ...others }, ref) => {
     const foundItem = props.paymentList?.find((item) => item.name === label);
     return (
-      <div ref={ref} {...others}>
+      <div ref={ref} {...others} className={props.className}>
         <Flex align="center">
           <Box mr={10}>
             <Image
@@ -116,7 +116,7 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
                   }}
                   rightSection={<></>}
                   placeholder={props.placeholder}
-                  className="placeholder-light-text-placeholder"
+                  className={`placeholder-light-text-placeholder ${props.className}`}
                   itemComponent={Item}
                 />
               ) : (
@@ -128,7 +128,7 @@ export default function RHFMutiSelectPayment(props: RHFInputAutoCompleteProps) {
                     }}
                     size="md"
                     data={props.options || []}
-                    className="overflow-auto placeholder-light-text-placeholder"
+                    className={`overflow-auto placeholder-light-text-placeholder ${props.className}`}
                     placeholder={props.placeholder}
                     itemComponent={AutoCompleteItem}
                     limit={63}

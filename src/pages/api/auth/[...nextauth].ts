@@ -145,7 +145,7 @@ export default NextAuth({
       }
       if (account.provider === 'facebook') {
         user.access_token = account.access_token;
-        user.social_user_id = account.id;
+        user.social_user_id = user.id;
       }
       user.provider = account.provider;
       return true;
