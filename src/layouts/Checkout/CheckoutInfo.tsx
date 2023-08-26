@@ -1,3 +1,6 @@
+import { Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -8,13 +11,16 @@ import type { GetCourseByIDResponse } from '../../api/student/course';
 import { PrimaryButton, PrimaryOutlineButton } from '../../components/Button';
 import { Avatar } from '../../components/sub/avatar';
 import { TOAST_CONFIG } from '../../shared/constants/app';
-import { formatCoursePrice, toastGetErrorMessage } from '../../utils/app';
+import { formatCoursePrice, formatTimeCountDown, toastGetErrorMessage } from '../../utils/app';
 import { ListPaymentMethod } from './ListPaymentMethod';
 
 export function CheckoutInfo() {
   const router = useRouter();
-
-  const [selected, setSelected] = useState<string>('MOMO');
+  const [opened, { open, close }] = useDisclosure(false);
+  const [vietqr, setVietqr] = useState<string>('VIETQR');
+  const [countdown, setCountdown] = useState(0);
+  const [isPaymentAllowed, setIsPaymentAllowed] = useState(true);
+  const [selected, setSelected] = useState<string>('VIETQR');
   const [course, setCourse] = useState<GetCourseByIDResponse>();
   const { query } = router;
   const { id } = query;
@@ -25,17 +31,40 @@ export function CheckoutInfo() {
     total: 0,
   });
 
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+    return () => {};
+  }, [countdown]);
+
   const handlePayment = async () => {
     try {
-      const res = await StudentApi.payment({
-        course_id: Number(id),
-        payment_method: selected,
-      });
-      window.location.href = res.data.data;
+      if (isPaymentAllowed) {
+        const res = await StudentApi.payment({
+          course_id: Number(id),
+          payment_method: selected,
+        });
+        setVietqr(res.data.data.url);
+        setIsPaymentAllowed(false);
+      }
+      setCountdown(900);
+      open();
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    if (countdown <= 0) {
+      setIsPaymentAllowed(true);
+      close();
+    }
+  }, [countdown]);
 
   useEffect(() => {
     if (!router.query.id) return;
@@ -53,6 +82,12 @@ export function CheckoutInfo() {
   }, [router.query.id]);
   return (
     <div className="flex w-full justify-center py-[80px]">
+      <Modal opened={opened} onClose={close} className="flex items-center justify-center">
+        <p className="mb-5 text-center font-lexend-deca text-base font-normal">
+          Giao dịch sẽ hủy sau: {formatTimeCountDown(countdown)}
+        </p>
+        <Image src={vietqr} alt="vietqr-code" width={500} height={500} />
+      </Modal>
       <div className="flex w-fit items-center gap-[40px] rounded-md px-[50px] py-[40px] shadow-md">
         <div className="flex h-[576px] gap-[50px]">
           <div className="flex w-[400px] flex-col justify-between">

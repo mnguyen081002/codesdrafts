@@ -44,7 +44,7 @@ export const listInstructorSidebarItem = [
 
 const InstructorLayout = ({ children }) => {
   return (
-    <div className="h-screen overflow-clip">
+    <div className="h-screen">
       <HeaderManage showAvatar />
       <div className="flex w-full">
         <SidebarManage bottom items={listInstructorSidebarItem} redirectPath="instructor" />

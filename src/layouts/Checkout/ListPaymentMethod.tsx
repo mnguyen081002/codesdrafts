@@ -8,7 +8,7 @@ interface PaymentMethodItemProps {
 
 function PaymentMethodItem(props: PaymentMethodItemProps) {
   return (
-    <div className="flex items-center justify-between rounded-md border border-light-border bg-[#FCFCFC] py-2 px-5">
+    <div className="flex items-center justify-between rounded-md border border-light-border bg-[#FCFCFC] py-3 px-5">
       <div className="flex items-center gap-[10px]">
         <div className="relative h-[20px] w-[20px] rounded-full border border-[#4d4d4d]">
           {props.isSelected && (
@@ -29,18 +29,23 @@ interface ListPaymentMethodProps {
 }
 
 export function ListPaymentMethod(props: ListPaymentMethodProps) {
-  const [selected, setSelected] = useState<string>('MOMO');
+  const [selected, setSelected] = useState<string>('VIETQR');
 
   const PaymentMethod = [
+    // {
+    //   title: 'Thanh toán bằng MoMo',
+    //   image: '/images/icons/momo.png',
+    //   payment_method: 'MOMO',
+    // },
+    // {
+    //   title: 'Thanh toán bằng VNpay',
+    //   image: '/images/icons/vnpay.png',
+    //   payment_method: 'VN_PAY',
+    // },
     {
-      title: 'Thanh toán bằng MoMo',
-      image: '/images/icons/momo.png',
-      payment_method: 'MOMO',
-    },
-    {
-      title: 'Thanh toán bằng VNpay',
-      image: '/images/icons/vnpay.png',
-      payment_method: 'VN_PAY',
+      title: 'Thanh toán bằng VietQR',
+      image: '/images/icons/viet-qr.svg',
+      payment_method: 'VIETQR',
     },
   ];
   return (

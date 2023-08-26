@@ -52,4 +52,13 @@ export function convertTime(time: number): string {
   return result.trim();
 }
 
-export { extractTextFromLastHTMLTag, formatCoursePrice, toastGetErrorMessage };
+function formatTimeCountDown(countdown: number): string {
+  const minutes = Math.floor(countdown / 60);
+  const seconds = countdown % 60;
+
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  return formattedSeconds === '00' ? `${minutes}:00` : `${minutes}:${formattedSeconds}`;
+}
+
+export { extractTextFromLastHTMLTag, formatCoursePrice, formatTimeCountDown, toastGetErrorMessage };

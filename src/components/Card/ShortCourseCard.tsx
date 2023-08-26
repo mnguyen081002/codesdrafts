@@ -81,7 +81,7 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
             <Rating fractions={2} value={course.rating} readOnly />
             <p className="text-sm font-semibold text-[#353535]">{course.rating}</p>
             <Text size="13px" color="dimmed">
-              ({course.total_enrollment})
+              ({course.rating_count})
             </Text>
           </Group>
           <Text size="18px" fw={700}>

@@ -76,9 +76,9 @@ export default NextAuth({
     // The jwt() callback is called when a new token is created.
     async jwt({ token, user }: any) {
       if (user) {
-        if (user.id_token) {
+        if (user.provider === 'google' && user.id_token) {
           const data: ResLogin = await StudentApi.loginSocial({
-            id_token: user.id_token,
+            token: user.id_token,
             social: user.provider || 'google',
           }).then((res) => {
             return res.data; // return the data from the server response (token, user) as a object (token, user) with the type ResLogin
@@ -88,6 +88,34 @@ export default NextAuth({
           user.email = data.user.email;
           user.accessToken = data.token.access_token;
         }
+
+        if (user.provider === 'github' && user.access_token) {
+          const data: ResLogin = await StudentApi.loginSocial({
+            token: user.access_token,
+            social: user.provider || 'github',
+          }).then((res) => {
+            return res.data; // return the data from the server response (token, user) as a object (token, user) with the type ResLogin
+          });
+          user.username = data.user.username;
+          user.avatar = data.user.avatar;
+          user.email = data.user.email;
+          user.accessToken = data.token.access_token;
+        }
+
+        if (user.social_user_id && user.provider === 'facebook') {
+          const data: ResLogin = await StudentApi.loginSocial({
+            token: user.access_token,
+            social: user.provider || 'facebook',
+            social_user_id: user.social_user_id,
+          }).then((res) => {
+            return res.data; // return the data from the server response (token, user) as a object (token, user) with the type ResLogin
+          });
+          user.username = data.user.username;
+          user.avatar = data.user.avatar;
+          user.email = data.user.email;
+          user.accessToken = data.token.access_token;
+        }
+
         return {
           ...token,
           user,
@@ -109,7 +137,16 @@ export default NextAuth({
     },
     async signIn({ user, account }: any) {
       console.log({ user, account });
-      user.id_token = account.id_token;
+      if (account.provider === 'google') {
+        user.id_token = account.id_token;
+      }
+      if (account.provider === 'github') {
+        user.access_token = account.access_token;
+      }
+      if (account.provider === 'facebook') {
+        user.access_token = account.access_token;
+        user.social_user_id = user.id;
+      }
       user.provider = account.provider;
       return true;
     },

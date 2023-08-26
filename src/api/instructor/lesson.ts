@@ -105,6 +105,9 @@ export type UpdateUserInfo = {
   twitter_url: string;
   linkedin_url: string;
   youtube_url: string;
+  bank_owner_name: string;
+  bank_number: string;
+  bank_code: string;
 };
 
 export type UserInfo = {
@@ -123,6 +126,9 @@ export type UserInfo = {
   linkedin_url: string;
   github_url: string;
   youtube_url: string;
+  bank_number: string;
+  bank_owner_name: string;
+  bank_code: string;
 };
 
 export default CodedraftsInstructorLessonApi;
