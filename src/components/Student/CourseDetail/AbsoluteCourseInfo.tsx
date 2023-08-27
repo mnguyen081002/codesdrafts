@@ -14,7 +14,7 @@ function StudentAbsoluteCourseInfo(props: StudentAbsoluteCourseInfoProps) {
     <AbsoluteCourseInfo
       course={props.course}
       actionArea={
-        !props.course.is_bought ? (
+        !props.course.is_bought && props.course.price > 0 ? (
           <PrimaryButton
             className="py-[15px]"
             text="ĐĂNG KÝ NGAY"
