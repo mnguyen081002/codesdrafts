@@ -83,7 +83,7 @@ export default function RHFSelect(props: RHFInputAutoCompleteProps) {
                 <p className="text-base font-normal">{props.label}</p>
               </div>
               <Select
-                value={valueSelect || ''}
+                value={valueSelect === '' ? field.value : valueSelect}
                 onChange={(value) => {
                   field.onChange(value);
                   setValueSelect(value || '');
