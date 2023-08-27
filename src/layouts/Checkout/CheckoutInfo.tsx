@@ -70,8 +70,10 @@ export function CheckoutInfo() {
     if (!router.query.id) return;
     const fetch = async () => {
       try {
-        const r = await StudentApi.calculatePayment({ course_id: Number(id) });
-        const c = await StudentApi.getCourseById(Number(id));
+        const [r, c] = await Promise.all([
+          StudentApi.calculatePayment({ course_id: Number(id) }),
+          StudentApi.getCourseById(Number(id)),
+        ]);
         setPaymentInfo(r.data.data);
         setCourse(c.data.data);
       } catch (error: any) {

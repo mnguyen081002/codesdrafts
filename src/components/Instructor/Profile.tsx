@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Grid } from '@mantine/core';
 import axios from 'axios';
 import Image from 'next/image';
@@ -5,6 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import type { SettingResponse } from '@/api/admin/setting';
 import CodedraftsAdminSettingApi from '@/api/admin/setting';
@@ -13,10 +15,9 @@ import CodedraftsInstructorLessonApi from '@/api/instructor/lesson';
 import { InputRectangle, RFHInputThumbnail } from '@/common/Input';
 
 import { PrimaryButton } from '../Button';
-import { RHFMutiSelect } from '../hook-form';
 import FormProvider from '../hook-form/FormProvider';
 import RHFArea from '../hook-form/RHFArea';
-import RHFMutiSelectPayment from '../hook-form/RHFMutiSelectPayment';
+import RHFSelect from '../hook-form/RHFSelect';
 
 type FormValuesProps = {
   username: string;
@@ -69,8 +70,16 @@ const Profile = () => {
 
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   const [paymentMethod, setPaymentMethod] = useState<PaymentResponse[]>([]);
+  const ProfileSchema = Yup.object().shape({
+    bankOwnerName: Yup.string().matches(
+      /^[a-zA-Z0-9 ]*$/,
+      'Tên chủ tài khoản không được chứa ký tự đặc biệt',
+    ),
+  });
 
-  const methods = useForm<FormValuesProps>({});
+  const methods = useForm<FormValuesProps>({
+    resolver: yupResolver(ProfileSchema),
+  });
 
   const { reset, handleSubmit, setError } = methods;
   const [title, settitle] = useState<SettingResponse>();
@@ -182,13 +191,14 @@ const Profile = () => {
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <RHFMutiSelect
+              <RHFSelect
                 name="title"
                 options={title?.values || []}
                 label={'Chức danh'}
                 placeholder="Chọn chức danh"
                 type="text"
                 noGap
+                searchable
                 rightSection={
                   <Image
                     className="cursor-pointer"
@@ -239,7 +249,7 @@ const Profile = () => {
             noResize
             className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
           />
-          <RHFMutiSelectPayment
+          <RHFSelect
             options={paymentMethod.map((item) => item.name)}
             name="bankCode"
             label="Ngân hàng thụ hưởng"
@@ -257,7 +267,11 @@ const Profile = () => {
             }
             paymentList={paymentMethod}
             className="font-lexend-deca text-base font-light leading-6 text-[#4C4E64]"
+            haveIcon
+            searchable
+            nothingFound="Không tìm thấy ngân hàng"
           />
+
           <InputRectangle
             name="bankOwnerName"
             label="Tên chủ tài khoản"

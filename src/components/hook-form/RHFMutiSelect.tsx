@@ -50,7 +50,7 @@ export default function RHFMutiSelect(props: RHFInputAutoCompleteProps) {
           >
             <div className={`${props.noGap ? 'flex flex-col' : 'flex flex-col gap-[6px]'}`}>
               <div className="flex justify-between">
-                <p className="text-base font-normal ">{props.label}</p>
+                <p className="text-base font-normal">{props.label}</p>
               </div>
               {props.isMulti ? (
                 <MultiSelect
