@@ -30,6 +30,7 @@ interface ThumbnailProps {
 const RFHInputThumbnail = (props: ThumbnailProps) => {
   const { control } = useFormContext();
   const handleGetThumbnail = async () => {};
+  console.log(props.hideCloseIcon);
 
   return (
     <Controller
@@ -46,7 +47,11 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
           error={error ? error?.message : props.helperText}
         >
           {!props.thumbnailUpload && (
-            <div className="flex h-[200px] w-[300px] flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]">
+            <div
+              className={`flex
+            ${props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'}
+            flex-col items-center justify-center gap-[10px] rounded-[5px] border-2 border-dashed border-[#8F9397] py-[20px] px-[37px]`}
+            >
               <img
                 className="h-[55px] w-[55px] rounded-[5px]"
                 src="/images/icons/wallpaper.svg"
@@ -68,7 +73,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
               )}
               <input
                 type="file"
-                className="absolute z-10 h-[200px] w-[300px] cursor-pointer rounded-[5px] opacity-0"
+                className="absolute z-10  cursor-pointer rounded-[5px] opacity-0"
                 onChange={(event) => {
                   if (event.target.files) {
                     props.setThumbnailUpload(event.target.files[0]);
@@ -81,7 +86,9 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
           {props.thumbnailUpload && (
             <div className="relative w-fit">
               <img
-                className=" h-[200px] w-[300px] rounded-[5px]"
+                className={`
+                ${props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'}
+                rounded-[5px]`}
                 src={
                   props.thumbnailUpload instanceof File
                     ? URL.createObjectURL(props.thumbnailUpload)
