@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/display-name */
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren, Ref } from 'react';
 import React from 'react';
@@ -88,33 +87,24 @@ export const Link = ({ attributes, element, children }) => {
   const router = useRouter();
 
   return (
-    <>
-      <span className="relative text-light-primary" {...attributes} href={element.url}>
+    <div className="relative inline">
+      <a className=" text-light-primary" {...attributes} href={element?.url}>
         {children}
-        {selected && focused && (
-          <div className="absolute -bottom-10 left-0 z-30 flex w-fit max-w-[800px] items-center gap-[25px] rounded-md border border-light-border bg-white py-1 px-2">
-            <NextLink
-              href={element.url}
-              onClick={() => {
-                router.push(element.url);
-              }}
-            >
-              <div className="w-fit cursor-pointer text-light-primary">
-                <p className="text-base" contentEditable={false}>
-                  {element.url}
-                </p>
-              </div>
-            </NextLink>
-            <img
-              className="h-[24px] w-[24px] cursor-pointer"
-              src="/svg/link-off.svg"
-              alt=""
-              onClick={() => CustomEditor.removeLink(editor)}
-            />
+      </a>
+      {selected && focused && (
+        <div className="absolute -bottom-10 left-0 z-30 flex w-fit max-w-[800px] items-center gap-[25px] rounded-md border border-light-border bg-white py-1 px-2">
+          <div className="w-fit cursor-pointer text-light-primary">
+            <p className="text-base">{element.url}</p>
           </div>
-        )}
-      </span>
-    </>
+          <img
+            className="h-[24px] w-[24px] cursor-pointer"
+            src="/svg/link-off.svg"
+            alt=""
+            onClick={() => CustomEditor.removeLink(editor)}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

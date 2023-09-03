@@ -107,6 +107,7 @@ const AddLinkButton = () => {
 
   return (
     <InsertLinkIcon
+      className="cursor-pointer"
       pathFill={`${CustomEditor.isLinkActive(editor) ? '#1363DF' : 'black'}`}
       onClick={(event) => {
         event.preventDefault();
