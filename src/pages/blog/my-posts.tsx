@@ -27,7 +27,7 @@ const MyPosts = () => {
       </div>
       <div className="grid w-[1300px] grid-cols-3 py-[50px]">
         {posts.map((e) => (
-          <PostCard href={`/blog/editor/${e.slug}`} key={e.id} post={e} />
+          <PostCard href={`/blog/editor?slug=${e.slug}`} key={e.id} post={e} />
         ))}
       </div>
       <Footer />

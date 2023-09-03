@@ -43,8 +43,8 @@ const Header = (props: HeaderProps) => {
             </Flex>
             {!props.isHiddenNavbar && <HeaderNavbar />}
           </Group>
-          {props.right}
-          <Group spacing="xs">
+          <Group spacing={`${props.right ? 'lg' : 'xs'}`}>
+            {props.right}
             {session.status !== 'unauthenticated' ? (
               <MenuUser />
             ) : (

@@ -1,8 +1,10 @@
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import slugify from 'slugify';
 
 import type { ListPostResponse } from '../../api/codedrafts-api';
 import { StudentApi } from '../../api/codedrafts-api';
+import CreatePostIcon from '../../common/Icons/CreatePostIcon';
 import SwiperListCard from '../../components/Blog/SwiperListCard';
 import Footer from '../../layouts/Footer';
 import Header from '../../layouts/NewHeader';
@@ -44,15 +46,20 @@ const Blog = () => {
   }, []);
 
   return (
-    <div>
-      <Header />
-      <div className="my-[70px] mx-[210px] flex flex-col text-[#081B4B]">
-        <div className="flex flex-col gap-10">
-          <BlogTopic topic="Bài viết phổ biến" posts={posts}></BlogTopic>
-          <BlogTopic topic="Công nghệ" posts={posts}></BlogTopic>
+    <div className="relative h-screen overflow-hidden">
+      <Link href="/blog/editor" className="absolute right-10 bottom-10 h-fit w-fit rounded-full">
+        <CreatePostIcon pathFill="white" className="h-[90px] w-[90px]" />
+      </Link>
+      <div className="h-full overflow-y-scroll">
+        <Header />
+        <div className="my-[70px] mx-[210px] flex flex-col text-[#081B4B]">
+          <div className="flex flex-col gap-10">
+            <BlogTopic topic="Bài viết phổ biến" posts={posts}></BlogTopic>
+            <BlogTopic topic="Công nghệ" posts={posts}></BlogTopic>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };
