@@ -63,7 +63,12 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
   return (
     <div>
       <Head>
-        <title>First Post</title>
+        <title>{props.post.meta_title}</title>
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={props.post.title} />
+        <meta property="og:description" content={props.post.summary} />
+        <meta property="og:image" content={props.post.thumbnail_url} />
       </Head>
       <Script
         src="https://connect.facebook.net/en_US/sdk.js"
