@@ -307,7 +307,7 @@ export const StudentApi = {
     files.forEach((file) => {
       formData.append('files', file);
     });
-    return axiosClient.post('/api/upload', formData, {
+    return axiosClient.post<{ urls: string[] }>('/api/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

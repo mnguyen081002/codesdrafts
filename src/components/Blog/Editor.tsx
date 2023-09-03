@@ -34,6 +34,7 @@ export const BlogComponent: FC<IBlogComponentProps> = (params) => {
           component={params.reference.current}
           isFirst={params.isFirst}
           setRefs={params.setRefs}
+          isReadOnly={params.isReadOnly}
         />
       );
   }

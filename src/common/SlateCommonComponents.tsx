@@ -1,8 +1,10 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/display-name */
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import type { PropsWithChildren, Ref } from 'react';
 import React from 'react';
-import { useSlate, useSlateStatic } from 'slate-react';
+import { useFocused, useSelected, useSlate, useSlateStatic } from 'slate-react';
 
 import CustomEditor from '../utils/CustomEditor';
 
@@ -79,6 +81,43 @@ export const Toolbar = React.forwardRef(
   ),
 );
 
+export const Link = ({ attributes, element, children }) => {
+  const editor = useSlateStatic();
+  const selected = useSelected();
+  const focused = useFocused();
+  const router = useRouter();
+
+  return (
+    <>
+      <span className="relative text-light-primary" {...attributes} href={element.url}>
+        {children}
+        {selected && focused && (
+          <div className="absolute -bottom-10 left-0 z-30 flex w-fit max-w-[800px] items-center gap-[25px] rounded-md border border-light-border bg-white py-1 px-2">
+            <NextLink
+              href={element.url}
+              onClick={() => {
+                router.push(element.url);
+              }}
+            >
+              <div className="w-fit cursor-pointer text-light-primary">
+                <p className="text-base" contentEditable={false}>
+                  {element.url}
+                </p>
+              </div>
+            </NextLink>
+            <img
+              className="h-[24px] w-[24px] cursor-pointer"
+              src="/svg/link-off.svg"
+              alt=""
+              onClick={() => CustomEditor.removeLink(editor)}
+            />
+          </div>
+        )}
+      </span>
+    </>
+  );
+};
+
 // export const FormatButton = ({ format, icon }:any) => {
 //   const editor = useSlate();
 //   return (
@@ -117,27 +156,6 @@ export const BlockButton = ({ format, icon, title }: any) => {
   );
 };
 
-export const InsertImageButton = () => {
-  const editor = useSlateStatic();
-  return (
-    <ToolbarButton
-      data-title={'使用相片連結'}
-      onMouseDown={(event) => {
-        event.preventDefault();
-        const url = window.prompt('加入相片連結:');
-        const alt = null;
-        if (url && !CustomEditor.isImageUrl(url)) {
-          alert('必須填入正確連結');
-          return;
-        }
-        if (!url) return;
-        CustomEditor.insertImage(editor, url, alt);
-      }}
-    >
-      <BlockIcon>image</BlockIcon>
-    </ToolbarButton>
-  );
-};
 // 上傳照片
 // TODO: Open this
 // export const UploadImageButton = () => {

@@ -66,6 +66,7 @@ export type CustomText = {
   underline?: boolean;
   code?: boolean;
   align?: 'left' | 'center' | 'right';
+  link?: string;
 };
 
 declare module 'slate' {

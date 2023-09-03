@@ -1,3 +1,5 @@
+import imageExtensions from 'image-extensions';
+import isUrl from 'is-url';
 import { toast, Zoom } from 'react-toastify';
 
 function extractTextFromLastHTMLTag(htmlString: string): string {
@@ -96,4 +98,19 @@ export function postFormatDate(date?: string): string {
 
   return formattedDate;
 }
-export { extractTextFromLastHTMLTag, formatCoursePrice, formatTimeCountDown, toastGetErrorMessage };
+
+const isImageUrl = (url) => {
+  if (!url) return false;
+  if (!isUrl(url)) return false;
+  const ext = new URL(url).pathname.split('.').pop();
+  if (!ext) return false;
+  return imageExtensions.includes(ext);
+};
+
+export {
+  extractTextFromLastHTMLTag,
+  formatCoursePrice,
+  formatTimeCountDown,
+  isImageUrl,
+  toastGetErrorMessage,
+};

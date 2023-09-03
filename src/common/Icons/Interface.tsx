@@ -17,7 +17,7 @@ export interface BaseIconProps {
 
   pathFill?: string;
 
-  onClick?: () => void;
+  onClick?: (e) => void;
 
   className?: string;
 }
@@ -26,7 +26,7 @@ export interface IconProps {
   width?: string;
   height?: string;
   pathFill?: string;
-  onClick?: () => void;
+  onClick?: (e) => void;
   className?: string;
 }
 

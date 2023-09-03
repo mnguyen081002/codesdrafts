@@ -1,13 +1,23 @@
+/* eslint-disable no-restricted-syntax */
 import { useClickOutside } from '@mantine/hooks';
 import isHotkey from 'is-hotkey';
 import type { CSSProperties, FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import type { Descendant } from 'slate';
-import { createEditor } from 'slate';
+import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, Slate, withReact } from 'slate-react';
+import {
+  Editable,
+  ReactEditor,
+  Slate,
+  useFocused,
+  useSelected,
+  useSlateStatic,
+  withReact,
+} from 'slate-react';
 import slugify from 'slugify';
 
+import CloseIcon from '../common/Icons/CloseIcon';
 import CodeIcon from '../common/Icons/CodeIcon';
 import FormatAlignCenterIcon from '../common/Icons/FormatAlignCenterIcon';
 import FormatAlignLeftIcon from '../common/Icons/FormatAlignLeftIcon';
@@ -24,11 +34,49 @@ import H4Icon from '../common/Icons/H4Icon';
 import StrikeThroughIcon from '../common/Icons/StrikeThroughIcon';
 import Subscript from '../common/Icons/Subscript';
 import Superscript from '../common/Icons/Superscript';
-import { Toolbar } from '../common/SlateCommonComponents';
-import { BlockButton, MarkButton } from '../common/ToolBarButton';
+import { Link, Toolbar } from '../common/SlateCommonComponents';
+import {
+  AddLinkButton,
+  BlockButton,
+  InsertImageButton,
+  MarkButton,
+  withImages,
+} from '../common/ToolBarButton';
 import type { BlogInputTextComponentProps, InputTextComponentPropsV2 } from '../shared/interface';
 import CustomEditor from '../utils/CustomEditor';
 import { BaseComponentV2 } from './BaseComponent';
+
+const ImageLeaf = ({ attributes, children, element }) => {
+  const editor = useSlateStatic();
+  const path = ReactEditor.findPath(editor, element);
+
+  const selected = useSelected();
+  const focused = useFocused();
+  return (
+    <div {...attributes}>
+      {children}
+      <div contentEditable={false} className="relative">
+        <img
+          alt=""
+          src={element.url}
+          className={`max-w-full ${selected && focused ? 'shadow' : ''}`}
+        />
+        <div
+          className={`absolute top-2 right-2 cursor-pointer rounded-full bg-white p-[3px]  ${
+            selected ? 'inline' : 'hidden'
+          }`}
+        >
+          <CloseIcon
+            onClick={() => Transforms.removeNodes(editor, { at: path })}
+            pathFill="black"
+            height="18px"
+            width="18px"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Leaf = ({ attributes, children, leaf }: any) => {
   let child = children;
@@ -58,6 +106,21 @@ const Leaf = ({ attributes, children, leaf }: any) => {
 
   if (leaf.superscript) {
     child = <sup>{child}</sup>;
+  }
+
+  if (leaf.link) {
+    console.log(leaf);
+
+    child = (
+      <a
+        className="text-light-primary underline"
+        href={leaf.text}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {child}
+      </a>
+    );
   }
 
   return <span {...attributes}>{child}</span>;
@@ -151,11 +214,24 @@ const Element = ({ attributes, children, element }: any) => {
           {children}
         </ol>
       );
+
+    case 'image':
+      return (
+        <ImageLeaf attributes={attributes} element={element}>
+          {children}
+        </ImageLeaf>
+      );
+    case 'link':
+      return (
+        <Link attributes={attributes} element={element}>
+          {children}
+        </Link>
+      );
     default:
       return (
-        <p className="!mt-0 text-xl font-normal text-[#171717]" style={style} {...attributes}>
+        <span className="!mt-0 text-xl font-normal" style={style} {...attributes}>
           {children}
-        </p>
+        </span>
       );
   }
 };
@@ -227,8 +303,8 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
       <Slate
         editor={editor}
         value={initialValue}
-        onChange={(v: any) => {
-          params.reference.current.content.html = CustomEditor.serialize({ children: v });
+        onChange={async (v: any) => {
+          params.reference.current.content.html = await CustomEditor.serialize({ children: v });
         }}
       >
         {isHidden && !params.isReadOnly ? (
@@ -298,11 +374,10 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
 
 export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) => {
   const [placeholder, setPlaceholder] = useState('');
-  const [isHidden, setHidden] = useState<boolean>(false);
   const [isShowParagraph, setIsShowParagraph] = useState<boolean>(false);
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
-  const [editor] = useState(withHistory(withReact(createEditor())));
+  const [editor] = useState(withImages(withHistory(withReact(createEditor()))));
   const [reload, setReload] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
@@ -363,11 +438,13 @@ export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) 
       <Slate
         editor={editor}
         value={initialValue}
-        onChange={(v: any) => {
-          params.reference.current.content = CustomEditor.serialize({ children: v });
+        onChange={async (v: any) => {
+          CustomEditor.serialize({ children: v }).then((value) => {
+            params.reference.current.content = value;
+          });
         }}
       >
-        {isHidden && !params.isReadOnly ? (
+        {isFocus && !params.isReadOnly ? (
           <Toolbar>
             <div
               onClick={() => {
@@ -396,11 +473,13 @@ export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) 
               <BlockButton format="left" Icon={FormatAlignLeftIcon} />
               <BlockButton format="center" Icon={FormatAlignCenterIcon} />
               <BlockButton format="right" Icon={FormatAlignRightIcon} />
-            </div>
-            <div className="flex gap-2">
-              {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}
               <BlockButton format="numbered-list" Icon={FormatListNumberedIcon} />
               <BlockButton format="bulleted-list" Icon={FormatListBulletedIcon} />
+            </div>
+            <div className="flex gap-2">
+              <AddLinkButton />
+              <InsertImageButton editor={editor} />
+              {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}
             </div>
           </Toolbar>
         ) : null}
@@ -411,13 +490,13 @@ export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) 
           autoFocus={!params.isReadOnly ? isFocus : false}
           spellCheck
           readOnly={params.isReadOnly}
-          onFocus={() => {
-            setHidden(true);
-          }}
-          onBlur={() => {
-            setPlaceholder('');
-            setHidden(false);
-          }}
+          // onFocus={() => {
+          //   setHidden(true);
+          // }}
+          // onBlur={() => {
+          //   setPlaceholder('');
+          //   setHidden(false);
+          // }}
           onKeyDown={onKeyDown}
           onMouseEnter={() => !params.isReadOnly && setPlaceholder('Bắt đầu nhập')}
           onMouseLeave={() => !isFocus && setPlaceholder('')}

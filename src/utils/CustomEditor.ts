@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 // inlines ,blocks 設定
 import escapeHtml from 'escape-html';
 import imageExtensions from 'image-extensions';
@@ -8,6 +9,7 @@ import type { HistoryEditor } from 'slate-history';
 import { jsx } from 'slate-hyperscript';
 import type { ReactEditor } from 'slate-react';
 
+import { StudentApi } from '../api/codedrafts-api';
 import type {
   CustomText,
   EditableCardElement,
@@ -172,8 +174,11 @@ const CustomEditor = {
       CustomEditor.wrapLink(editor, url);
     }
   },
-
-  // image
+  removeLink(editor: BaseEditor & ReactEditor & HistoryEditor) {
+    if (CustomEditor.isLinkActive(editor)) {
+      CustomEditor.unwrapLink(editor);
+    }
+  },
   insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any, alt: any) {
     const text = { text: '' };
     const image: ImageElement = { type: 'image', url, alt, children: [text] };
@@ -243,7 +248,7 @@ const CustomEditor = {
     return [];
   },
 
-  serialize(node: any): string {
+  async serialize(node: any): Promise<string> {
     if (Text.isText(node)) {
       let string = escapeHtml(node.text);
       const n: CustomText = node;
@@ -273,10 +278,20 @@ const CustomEditor = {
       if (n.superscript) {
         string = `<sup>${string}</sup>`;
       }
+
+      if (n.link) {
+        string = `<a href="${escapeHtml(n.link)}">${string}</a>`;
+      }
       return `${string}`;
     }
 
-    const children = node.children.map((n) => this.serialize(n)).join('');
+    const arrayPromise = node.children.map(async (n) => {
+      const r = await this.serialize(n);
+      return r;
+    });
+
+    const children = (await Promise.all(arrayPromise)).join('');
+
     switch (node.align) {
       case 'left':
         return `<div style="text-align: left">${children}</div>`;
@@ -287,6 +302,8 @@ const CustomEditor = {
       default:
         break;
     }
+
+    console.log('Node type: ', node);
 
     switch (node.type) {
       case 'quote':
@@ -310,6 +327,16 @@ const CustomEditor = {
         return `<li>${children}</li>`;
       case 'numbered-list':
         return `<ol>${children}</ol>`;
+      case 'image':
+        const f = await fetch(node.url)
+          .then((r) => r.blob())
+          .then((blobFile) => {
+            return new File([blobFile], 'fileName', { type: 'image/png' });
+          });
+
+        return StudentApi.uploadFiles([f]).then((r) => {
+          return `<img src="${r.data.urls[0]}" alt="${node.alt}"/>`;
+        });
       default:
         return children;
     }
@@ -382,6 +409,8 @@ const CustomEditor = {
         return jsx('element', { type: 'heading-three' }, children);
       case 'H4':
         return jsx('element', { type: 'heading-four' }, children);
+      case 'IMG':
+        return jsx('element', { type: 'image', url: el.getAttribute('src') }, children);
       default:
         return children;
     }

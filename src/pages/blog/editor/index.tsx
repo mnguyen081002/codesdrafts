@@ -64,7 +64,7 @@ const Editor = () => {
       const uploadRes = await StudentApi.uploadFiles([thumbnailUpload]);
 
       // eslint-disable-next-line prefer-destructuring
-      thumbnail = uploadRes.data.urls[0];
+      thumbnail = uploadRes.data.urls[0]!;
     } else {
       thumbnail = thumbnailUpload;
     }
@@ -226,8 +226,8 @@ const Editor = () => {
         }
       />
       <FormProvider methods={methods}>
-        <div className="flex h-full w-full gap-[25px] px-[200px] pt-[60px]">
-          <div className="flex w-[340px] flex-col items-center gap-[10px] rounded-md border border-light-border p-[20px] text-light-text-primary">
+        <div className="flex h-full w-full gap-[25px] px-[200px] pt-[60px] pb-[800px]">
+          <div className="flex h-fit w-[340px] flex-col items-center gap-[10px] rounded-md border border-light-border p-[20px] text-light-text-primary">
             <div className="w-full">
               <p className="text-lg">Ảnh bìa *</p>
             </div>
