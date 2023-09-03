@@ -55,7 +55,6 @@ const SwiperListCard = ({ classSwiper, posts, haveArrow, slidePerView }: SwiperL
             minWidth: 0,
           }}
           id={classSwiper}
-          direction="horizontal"
           slides-per-view={3}
         >
           {posts.map((p, index) => (
