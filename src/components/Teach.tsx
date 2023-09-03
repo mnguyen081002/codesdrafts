@@ -58,7 +58,7 @@
 //                 <SmallCourseCard
 //                   isLoading={isLoading}
 //                   author="Code Smooth"
-//                   author_avatar="./logo-96.png"
+//                   author_avatar="./svg/logo/new-logo-white.svg"
 //                   completed_percent={30}
 //                   summary={course.summary}
 //                   id={course.id!}

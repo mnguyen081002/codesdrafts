@@ -30,7 +30,7 @@ const Header = () => {
           <Group>
             <Flex justify="center">
               <Link href="/">
-                <Image src="/logo-96.png" width={40} height={40} alt="" />
+                <Image src="/svg/logo/new-logo-white.svg" width={40} height={40} alt="" />
               </Link>
             </Flex>
             <Group className="text-dark-90">

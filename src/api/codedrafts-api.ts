@@ -225,6 +225,11 @@ export const StudentApi = {
       params: props,
     });
   },
+  listMyPost: (props: BaseQuery) => {
+    return axiosClient.get<BaseReadResponse<ListPostResponse[]>>('/api/post/my-posts', {
+      params: props,
+    });
+  },
   getPostBySlug: (slug: string) => {
     return axiosClient.get<BaseReadResponse<GetPostBySlugResponse>>(`/api/post/${slug}`);
   },

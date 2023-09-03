@@ -27,12 +27,12 @@
 //         className="flex h-[40%] flex-row justify-between border-b-2 object-fill"
 //         alt="thumbnail"
 //         onError={(e) => {
-//           e.currentTarget.src = '/logo-96.png';
+//           e.currentTarget.src = '/svg/logo/new-logo-white.svg';
 //         }}
 //       />
 //       <div className="flex h-[30%] flex-col gap-2 overflow-hidden px-3 py-4">
 //         <div className="flex items-center justify-start gap-2">
-//           <img src="/logo-96.png" alt="avatar" className="h-8 w-8 rounded-full" />
+//           <img src="/svg/logo/new-logo-white.svg" alt="avatar" className="h-8 w-8 rounded-full" />
 //           <p className="text-sm">Code Smooth</p>
 //         </div>
 //         <p className="flex-1 text-xl font-medium ">{props.name}</p>

@@ -8,6 +8,7 @@ const ArrowLeftIconV3 = (props: IconProps) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     onClick={props.onClick}
+    className={props.className}
   >
     <rect y="0.5" width="55.2" height="40" rx="10" fill="#EFF2FB" />
     <g clip-path="url(#clip0_2592_6458)">

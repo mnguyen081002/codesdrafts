@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { ListPostResponse } from '../../api/codedrafts-api';
 import { postFormatDate } from '../../utils/app';
 
-const PostCard = ({ post }: { post?: ListPostResponse }) => {
+const PostCard = ({ post, href }: { post?: ListPostResponse; href: string }) => {
   if (!post) return null;
   return (
     <swiper-slide
@@ -15,7 +15,7 @@ const PostCard = ({ post }: { post?: ListPostResponse }) => {
         maxHeight: '100%',
       }}
     >
-      <Link href={`/blog/${post.slug}`}>
+      <Link href={href}>
         <div className="relative h-fit w-[400px] cursor-pointer overflow-hidden rounded-md bg-white shadow-blogCard transition-all duration-500 ease-in-out hover:shadow-blogCardHover">
           <div className="absolute top-3 left-3 h-[38px] rounded-md bg-[#D3DDFF] py-[7px] px-[15px]">
             <p className="text-base font-bold">{post.tags[0]?.title}</p>

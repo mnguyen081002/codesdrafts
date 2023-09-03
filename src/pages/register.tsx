@@ -105,7 +105,7 @@ const Register = (props: Props) => {
             <div>
               <Flex justify="center" mb={45}>
                 <Link href="/">
-                  <Image src="/logo-96.png" width={80} height={80} alt="" />
+                  <Image src="/svg/logo/new-logo-white.svg" width={80} height={80} alt="" />
                 </Link>
               </Flex>
               <Flex direction="column" gap={16}>

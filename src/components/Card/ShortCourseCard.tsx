@@ -34,7 +34,9 @@ const ShortCourseCard = ({ course }: ShortCourseCardProps) => {
         onMouseEnter={handleCardHover}
         onMouseLeave={handleCardLeave}
       >
-        <img src={course.thumbnail} className="h-[212px] w-[318px] rounded-[5px]" alt="Norway" />
+        <div className=" rounded-md border border-light-border">
+          <img src={course.thumbnail} className="h-[212px] w-[318px] rounded-[5px]" alt="Norway" />
+        </div>
         <div className="flex h-[50px] w-full items-center gap-[9px]">
           <img src={course.owner.avatar} className="h-[35px] w-[35px] rounded-full" alt="Avatar" />
           <div className="flex h-[30px] flex-col justify-between">

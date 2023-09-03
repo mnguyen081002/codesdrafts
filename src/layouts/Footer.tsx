@@ -10,7 +10,7 @@ const Footer = () => {
           <Box className="flex w-full justify-between">
             <Box className="flex flex-col gap-5">
               <Link href="/" className="flex gap-[10px] font-bold text-white no-underline">
-                <Image src="/logo-96.png" width={40} height={40} alt="" />
+                <Image src="/svg/logo/new-logo-white.svg" width={40} height={40} alt="" />
                 <Box>
                   <Title className="text-[18px]">Codedrafts</Title>
                   <Text className="text-[9px]">GROW YOUR SKILLS</Text>

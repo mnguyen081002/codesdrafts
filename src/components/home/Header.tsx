@@ -98,7 +98,7 @@ const HeaderHome = () => {
   return (
     <Container fluid className={classes.inner} mx={50} mb={15}>
       <Group>
-        <Image src="/logo-96.png" alt="logo" width={40} height={40} />
+        <Image src="/svg/logo/new-logo-white.svg" alt="logo" width={40} height={40} />
       </Group>
       <Group
         spacing={5}

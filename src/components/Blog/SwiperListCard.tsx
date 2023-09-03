@@ -58,7 +58,7 @@ const SwiperListCard = ({ classSwiper, posts, haveArrow, slidePerView }: SwiperL
           slides-per-view={3}
         >
           {posts.map((p, index) => (
-            <PostCard post={p} key={index} />
+            <PostCard href={`/blog/${p.slug}`} post={p} key={index} />
           ))}
         </swiper-container>
       </div>
