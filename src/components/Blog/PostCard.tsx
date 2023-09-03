@@ -31,7 +31,9 @@ const PostCard = ({ post, href }: { post?: ListPostResponse; href: string }) => 
               <a href="" className="text-[#0069FF]">
                 {post.author.username}
               </a>
-              <p className="text-[#4D5B7C]">{postFormatDate(post?.created_at)} • 3 phút đọc</p>
+              <p className="text-[#4D5B7C]">
+                {postFormatDate(post?.created_at)} • {post.reading_time} phút đọc
+              </p>
             </div>
           </div>
         </div>

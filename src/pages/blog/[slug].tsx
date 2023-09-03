@@ -111,8 +111,8 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
               }`}
             >
               Ngày đăng:{' '}
-              {new Date(props.post ? props.post.created_at : Date.now()).toLocaleDateString()} • 3
-              phút đọc
+              {new Date(props.post ? props.post.created_at : Date.now()).toLocaleDateString()} •{' '}
+              {props.post?.reading_time} phút đọc
             </p>
           </div>
         </div>
