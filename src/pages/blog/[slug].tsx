@@ -63,8 +63,10 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
   return (
     <div>
       <Head>
-        <title>{props.post.meta_title}</title>
-        <meta property="og:url" content={window.location.href} />
+        <title>{props.post.title}</title>
+        <meta name="description" content={props.post.summary} />
+        <meta property="og:site_name" content="CodeDrafts" />
+        <meta property="og:url" content={process.env.HOST + router.asPath} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={props.post.title} />
         <meta property="og:description" content={props.post.summary} />
