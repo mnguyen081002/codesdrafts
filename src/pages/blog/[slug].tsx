@@ -134,7 +134,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
           </div>
           <div className="flex w-[208px] flex-col gap-[10px]">
             <p className="text-base font-semibold">Chia Sẻ</p>
-            <div className="flex justify-between">
+            <div className="flex gap-[20px]">
               <img
                 src="/svg/blog-icon-fb.svg"
                 alt=""
@@ -143,9 +143,16 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
                   shareFacebook(window.location.href);
                 }}
               />
-              <img src="/svg/blog-icon-twitter.svg" alt="" />
-              <img src="/svg/blog-icon-in.svg" alt="" />
-              <img src="/svg/blog-icon-tiktok.svg" alt="" />
+              <a
+                // eslint-disable-next-line tailwindcss/no-custom-classname
+                className="twitter-share-button"
+                href={`https://twitter.com/intent/tweet?text=${props.post?.title}&url=${process.env.HOST}${router.asPath}`}
+              >
+                <img src="/svg/blog-icon-twitter.svg" alt="" onClick={() => {}} />
+              </a>
+
+              {/* <img src="/svg/blog-icon-in.svg" alt="" /> */}
+              {/* <img src="/svg/blog-icon-tiktok.svg" alt="" /> */}
             </div>
             {props.post?.tags.map((e) => {
               return (
