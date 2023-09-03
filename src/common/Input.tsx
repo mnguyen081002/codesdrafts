@@ -73,7 +73,9 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
               )}
               <input
                 type="file"
-                className="absolute z-10  cursor-pointer rounded-[5px] opacity-0"
+                className={`absolute  ${
+                  props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'
+                } z-10  cursor-pointer rounded-[5px] opacity-0`}
                 onChange={(event) => {
                   if (event.target.files) {
                     props.setThumbnailUpload(event.target.files[0]);
@@ -84,7 +86,7 @@ const RFHInputThumbnail = (props: ThumbnailProps) => {
             </div>
           )}
           {props.thumbnailUpload && (
-            <div className="relative w-fit">
+            <div className="relative w-fit rounded-md border border-light-border">
               <img
                 className={`
                 ${props.hideCloseIcon ? 'h-[150px] w-[150px]' : 'h-[200px] w-[300px]'}

@@ -1,4 +1,4 @@
-import { ComponentType } from '@/shared/enum/component';
+import { LessonComponentType } from '@/shared/enum/component';
 
 import { generateId } from './genId';
 
@@ -10,7 +10,7 @@ export const generateLesson = (cate_id: number) => {
         content: {
           html: '',
         },
-        type: ComponentType.Text,
+        type: LessonComponentType.Text,
       },
     ],
     summary: '',

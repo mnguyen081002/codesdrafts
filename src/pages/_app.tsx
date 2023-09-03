@@ -5,6 +5,7 @@ import { MantineProvider, Overlay } from '@mantine/core';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { register } from 'swiper/element/bundle';
 
 import type { AppPropsWithLayout } from '@/types/shared';
 
@@ -23,6 +24,8 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   );
 };
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
+  register();
+
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <SessionProvider session={pageProps.session}>

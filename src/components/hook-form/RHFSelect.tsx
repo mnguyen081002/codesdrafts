@@ -134,3 +134,100 @@ export default function RHFSelect(props: RHFInputAutoCompleteProps) {
     />
   );
 }
+
+interface RHFInputAutoCompletePropsV2 extends InputProps {
+  name: string;
+  options: string[];
+  setValue?: Dispatch<SetStateAction<string[]>>;
+  helperText?: string;
+  isMulti?: boolean;
+  creatable?: boolean;
+  value?: string[] | string;
+  noGap?: boolean;
+  rightSection?: React.ReactNode;
+  paymentList?: PaymentResponse[];
+  searchable?: boolean;
+  nothingFound?: string;
+  itemComponent?: React.FC<any> | undefined;
+}
+
+export function RHFSelectV2(props: RHFInputAutoCompletePropsV2) {
+  const { control } = useFormContext();
+
+  // AutoCompleteItem.displayName = 'AutoCompleteItem';
+
+  const ref = React.useRef<HTMLInputElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [valueSelect, setValueSelect] = useState<string>('');
+
+  return (
+    <Controller
+      name={props.name}
+      control={control}
+      render={({ field, fieldState: { error } }) => {
+        return (
+          <Input.Wrapper
+            {...field}
+            sx={{
+              '.mantine-InputWrapper-error': {
+                paddingTop: '5px',
+              },
+            }}
+            error={error ? error.message : props.helperText}
+          >
+            <div className={`${props.noGap ? 'flex flex-col' : 'flex flex-col gap-[6px]'}`}>
+              <div className="flex justify-between">
+                <p className="text-base font-normal">{props.label}</p>
+              </div>
+              <Select
+                value={valueSelect === '' ? field.value : valueSelect}
+                onChange={(value) => {
+                  field.onChange(value);
+                  setValueSelect(value || '');
+                }}
+                size="md"
+                data={props.options || []}
+                className={`overflow-auto placeholder-light-text-placeholder ${props.className}`}
+                placeholder={props.placeholder}
+                itemComponent={props.itemComponent}
+                limit={63}
+                sx={{
+                  '& .mantine-Autocomplete-dropdown': {
+                    maxHeight: '400px',
+                    overflow: 'scroll',
+                  },
+                  '& .mantine-Input-input': {
+                    height: '46px',
+                  },
+                }}
+                ref={ref}
+                nothingFound={props.nothingFound}
+                rightSection={
+                  <div
+                    onClick={() => {
+                      setIsDropdownOpen(!isDropdownOpen);
+                      ref.current?.click();
+                      ref.current?.focus();
+                    }}
+                  >
+                    {props.rightSection}
+                  </div>
+                }
+                onClick={() => {
+                  setIsDropdownOpen(!isDropdownOpen);
+                }}
+                onDropdownClose={() => {
+                  setIsDropdownOpen(false);
+                }}
+                onDropdownOpen={() => {
+                  setIsDropdownOpen(true);
+                }}
+                searchable={props.searchable}
+              />
+            </div>
+          </Input.Wrapper>
+        );
+      }}
+    />
+  );
+}

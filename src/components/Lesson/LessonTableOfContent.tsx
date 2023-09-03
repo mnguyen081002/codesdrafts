@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import slugify from 'slugify';
 
 import ArrowDownV3Icon from '../../common/Icons/ArrowDownV3';
-import { ComponentType } from '../../shared/enum/component';
+import { LessonComponentType } from '../../shared/enum/component';
 import type { IContent, ITextContent, LessonComponentProps } from '../../shared/interface';
 import { extractTextFromLastHTMLTag } from '../../utils/app';
 
@@ -71,7 +71,7 @@ function LessonTableOfContent(props: LessonTableOfContentProps) {
     if (props.values.length > 0) {
       interval.current = setInterval(() => {
         const texts = props.values.filter(
-          (e) => e.current.type === ComponentType.Text,
+          (e) => e.current.type === LessonComponentType.Text,
         ) as MutableRefObject<LessonComponentProps<ITextContent>>[];
         const headings = texts.reduce(
           (

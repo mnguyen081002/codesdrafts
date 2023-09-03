@@ -1,4 +1,4 @@
-import type { ComponentType } from './enum/component';
+import type { BlogComponentType, LessonComponentType } from './enum/component';
 
 export type IContent = ICodeContent | ITextContent;
 
@@ -53,13 +53,32 @@ export interface IBaseComponentPropsV2<T = IContent> {
   onBlur?: any;
   setRefs?: any;
 }
+
+export interface IBaseBlogComponentProps {
+  onClick?: any;
+  onEnter?: any;
+  children?: any;
+  className?: string;
+  isFirst?: boolean;
+  isReadOnly?: boolean;
+  baseRef?: any;
+  reference: React.MutableRefObject<BlogComponentProps>;
+  onBlur?: any;
+  setRefs?: any;
+}
+
 export interface CodeComponentProps extends IBaseComponentProps {
   component: ICodeContent;
 }
 
 export interface LessonComponentProps<T = IContent> {
-  type: ComponentType;
+  type: LessonComponentType;
   content: T;
+}
+
+export interface BlogComponentProps {
+  type: BlogComponentType;
+  content: string;
 }
 
 export interface InputTextComponentProps extends IBaseComponentProps {
@@ -68,7 +87,12 @@ export interface InputTextComponentProps extends IBaseComponentProps {
 
 export interface InputTextComponentPropsV2 extends IBaseComponentPropsV2<ITextContent> {
   component: ITextComponent;
-  rightOptions: React.ReactNode;
+  rightOptions?: React.ReactNode;
+}
+
+export interface BlogInputTextComponentProps extends IBlogComponentProps {
+  rightOptions?: React.ReactNode;
+  isFirst?: boolean;
 }
 
 export interface ICodeComponentProps extends IBaseComponentProps {
@@ -87,15 +111,19 @@ export interface IComponentPropsV2 extends IBaseComponentPropsV2 {
   component?: LessonComponentProps;
 }
 
+export interface IBlogComponentProps extends IBaseBlogComponentProps {
+  component?: BlogComponentProps;
+}
+
 export interface ITextComponent extends IBaseComponentProps {
   content: ITextContent;
-  type: ComponentType;
+  type: LessonComponentType;
   isFocus?: boolean;
 }
 
 export interface ICodeComponent extends IBaseComponentProps {
   content: ICodeContent;
-  type: ComponentType;
+  type: LessonComponentType;
   isFocus?: boolean;
 }
 

@@ -34,7 +34,7 @@ module.exports = {
             sencondary: 'rgba(76, 78, 100, 0.68)',
             main: '#4D92FF',
             placeholder: '#adb5bd',
-            lessonContent: '#2D2D2D',
+            lessonContent: '#171717',
           },
           error: {
             main: '#FF4D49',
@@ -84,6 +84,8 @@ module.exports = {
         forfun: '#7bc3f9 0px 3px 8px',
         button: '8px 8px 23px #a9b0b7, -8px -8px 23px #ffffff;',
         md: '0 1px 4px 0px rgba(0, 0, 0, 0.25)',
+        blogCard: '0px 6px 20px -6px rgba(11, 43, 158, 0.25)',
+        blogCardHover: 'rgba(11, 43, 158, 0.35) 0px 10px 20px',
       },
       borderColor: {
         selected: '#0076FF',

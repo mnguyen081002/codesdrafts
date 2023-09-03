@@ -1,3 +1,5 @@
+import { toast, Zoom } from 'react-toastify';
+
 function extractTextFromLastHTMLTag(htmlString: string): string {
   // Tạo một DOMParser để phân tích cú pháp chuỗi HTML
   const parser = new DOMParser();
@@ -61,4 +63,37 @@ function formatTimeCountDown(countdown: number): string {
   return formattedSeconds === '00' ? `${minutes}:00` : `${minutes}:${formattedSeconds}`;
 }
 
+export async function toastPromise<T>(
+  api: Promise<T>,
+  { pending = 'Đang xử lý', success = 'Thành công', error = 'Thất bại' },
+) {
+  return toast.promise(
+    api,
+    {
+      pending,
+      success,
+      error,
+    },
+    {
+      autoClose: 500,
+      hideProgressBar: true,
+      transition: Zoom,
+    },
+  );
+}
+
+export function postFormatDate(date?: string): string {
+  // Define options for formatting
+
+  const toDate = new Date(date || new Date());
+
+  // Format the date
+  const formattedDate = new Intl.DateTimeFormat('vi-VN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(toDate);
+
+  return formattedDate;
+}
 export { extractTextFromLastHTMLTag, formatCoursePrice, formatTimeCountDown, toastGetErrorMessage };

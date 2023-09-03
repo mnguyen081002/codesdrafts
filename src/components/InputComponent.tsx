@@ -26,7 +26,7 @@ import Subscript from '../common/Icons/Subscript';
 import Superscript from '../common/Icons/Superscript';
 import { Toolbar } from '../common/SlateCommonComponents';
 import { BlockButton, MarkButton } from '../common/ToolBarButton';
-import type { InputTextComponentPropsV2 } from '../shared/interface';
+import type { BlogInputTextComponentProps, InputTextComponentPropsV2 } from '../shared/interface';
 import CustomEditor from '../utils/CustomEditor';
 import { BaseComponentV2 } from './BaseComponent';
 
@@ -103,7 +103,7 @@ const Element = ({ attributes, children, element }: any) => {
       return (
         <h1
           id={getText(element)}
-          className="!mt-0 font-lexend-deca text-5xl leading-tight"
+          className="!mt-0 text-5xl font-bold leading-tight text-[#171717]"
           {...attributes}
         >
           {children}
@@ -111,19 +111,31 @@ const Element = ({ attributes, children, element }: any) => {
       );
     case 'heading-two':
       return (
-        <h2 id={getText(element)} className="!mt-0 font-lexend-deca text-4xl" {...attributes}>
+        <h2
+          id={getText(element)}
+          className="!mt-0 text-4xl font-bold text-[#171717]"
+          {...attributes}
+        >
           {children}
         </h2>
       );
     case 'heading-three':
       return (
-        <h3 id={getText(element)} className="!mt-0 font-lexend-deca text-3xl" {...attributes}>
+        <h3
+          id={getText(element)}
+          className="!mt-0 text-3xl font-bold text-[#171717]"
+          {...attributes}
+        >
           {children}
         </h3>
       );
     case 'heading-four':
       return (
-        <h4 id={getText(element)} className="!mt-0 font-lexend-deca text-2xl" {...attributes}>
+        <h4
+          id={getText(element)}
+          className="!mt-0 text-2xl font-bold text-[#171717]"
+          {...attributes}
+        >
           {children}
         </h4>
       );
@@ -141,7 +153,7 @@ const Element = ({ attributes, children, element }: any) => {
       );
     default:
       return (
-        <p className="!mt-0 font-lexend-deca text-lg font-light" style={style} {...attributes}>
+        <p className="!mt-0 text-xl font-normal text-[#171717]" style={style} {...attributes}>
           {children}
         </p>
       );
@@ -281,5 +293,140 @@ export const InputTextComponentV2: FC<InputTextComponentPropsV2> = (params) => {
         <div className="absolute right-[-2rem] top-0 flex gap-3">{params.rightOptions}</div>
       )}
     </BaseComponentV2>
+  );
+};
+
+export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) => {
+  const [placeholder, setPlaceholder] = useState('');
+  const [isHidden, setHidden] = useState<boolean>(false);
+  const [isShowParagraph, setIsShowParagraph] = useState<boolean>(false);
+  const renderElement = useCallback((props: any) => <Element {...props} />, []);
+  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const [editor] = useState(withHistory(withReact(createEditor())));
+  const [reload, setReload] = useState<boolean>(false);
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  const onKeyDown = (event) => {
+    const regex = /(<([^>]+)>)/gi;
+    const body = params.reference.current.content;
+    const hasText = !!body?.replace(regex, '').length;
+
+    // shift enter to break line
+    if (event.key === 'Enter' && event.shiftKey) {
+      console.log('shift enter');
+
+      event.preventDefault();
+      editor.insertText('\n');
+      return true;
+    }
+
+    if (isHotkey(NEW_COMPONENT, event as any)) {
+      event.preventDefault();
+      return false;
+    }
+
+    if (event.key === 'Backspace' && !hasText) {
+      console.log('Backspace');
+      if (!hasText) {
+        params.setRefs((prev) => [...prev.filter((item) => item !== params.reference)]);
+      }
+      return false;
+    }
+
+    Object.keys(HOTKEYS).forEach((hotkey) => {
+      if (isHotkey(hotkey, event as any)) {
+        event.preventDefault();
+        const mark = HOTKEYS[hotkey as keyof typeof HOTKEYS];
+        CustomEditor.toggleMark(editor, mark);
+      }
+    });
+    return true;
+  };
+
+  const initialValue: Descendant[] = CustomEditor.deserializeFromHtml(
+    params.reference.current.content,
+  );
+  useEffect(() => {
+    editor.children = CustomEditor.deserializeFromHtml(params.reference.current.content);
+
+    setReload(!reload);
+  }, []);
+  const ref = useClickOutside(() => setIsFocus(false));
+  return (
+    <div
+      onClick={() => {
+        setIsFocus(true);
+      }}
+      ref={ref}
+      className="relative"
+    >
+      <Slate
+        editor={editor}
+        value={initialValue}
+        onChange={(v: any) => {
+          params.reference.current.content = CustomEditor.serialize({ children: v });
+        }}
+      >
+        {isHidden && !params.isReadOnly ? (
+          <Toolbar>
+            <div
+              onClick={() => {
+                setIsShowParagraph(!isShowParagraph);
+              }}
+              onMouseDown={(event: any) => {
+                event.preventDefault();
+              }}
+              className="relative flex cursor-pointer gap-2 border-r pr-4"
+            >
+              <BlockButton format="heading-one" Icon={H1Icon} />
+              <BlockButton format="heading-two" Icon={H2Icon} />
+              <BlockButton format="heading-three" Icon={H3Icon} />
+              <BlockButton format="heading-four" Icon={H4Icon} />
+              <MarkButton format="bold" Icon={FormatBoldIcon} />
+              <MarkButton format="italic" Icon={FormatItalicIcon} />
+              <MarkButton format="underline" Icon={FormatUnderlinedIcon} />
+              <MarkButton format="strikethrough" Icon={StrikeThroughIcon} />
+              <MarkButton format="subscript" Icon={Subscript} />
+              <MarkButton format="superscript" Icon={Superscript} />
+            </div>
+            <div className="flex gap-2 border-r pr-4">
+              <MarkButton format="code" Icon={CodeIcon} />
+            </div>
+            <div className="flex gap-2 border-r pr-4">
+              <BlockButton format="left" Icon={FormatAlignLeftIcon} />
+              <BlockButton format="center" Icon={FormatAlignCenterIcon} />
+              <BlockButton format="right" Icon={FormatAlignRightIcon} />
+            </div>
+            <div className="flex gap-2">
+              {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}
+              <BlockButton format="numbered-list" Icon={FormatListNumberedIcon} />
+              <BlockButton format="bulleted-list" Icon={FormatListBulletedIcon} />
+            </div>
+          </Toolbar>
+        ) : null}
+        <Editable
+          className="text-light-text-lessonContent"
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          autoFocus={!params.isReadOnly ? isFocus : false}
+          spellCheck
+          readOnly={params.isReadOnly}
+          onFocus={() => {
+            setHidden(true);
+          }}
+          onBlur={() => {
+            setPlaceholder('');
+            setHidden(false);
+          }}
+          onKeyDown={onKeyDown}
+          onMouseEnter={() => !params.isReadOnly && setPlaceholder('Bắt đầu nhập')}
+          onMouseLeave={() => !isFocus && setPlaceholder('')}
+          placeholder={params.isFirst ? 'Bắt đầu nhập' : placeholder}
+        />
+      </Slate>
+      {!params.isReadOnly && isFocus && (
+        <div className="absolute right-[-2rem] top-0 flex gap-3">{params.rightOptions}</div>
+      )}
+    </div>
   );
 };

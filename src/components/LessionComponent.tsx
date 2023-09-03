@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
 import CodeIcon from '../common/Icons/CodeIcon';
-import { ComponentType } from '../shared/enum/component';
+import { LessonComponentType } from '../shared/enum/component';
 import type { ICodeComponent, IComponentPropsV2, ITextComponent } from '../shared/interface';
 import { CodeComponent } from './CodeComponent';
 import { InputTextComponentV2 as InputTextComponent } from './InputComponent';
@@ -13,13 +13,13 @@ const NoSSRInputTextComponent = dynamic(() => Promise.resolve(InputTextComponent
 });
 
 export const LessonComponent: FC<IComponentPropsV2> = (params) => {
-  const [type, setType] = useState<ComponentType>(params.reference.current.type);
+  const [type, setType] = useState<LessonComponentType>(params.reference.current.type);
   useEffect(() => {
     setType(params.reference.current.type);
   }, []);
 
   switch (type) {
-    case ComponentType.Text:
+    case LessonComponentType.Text:
       return (
         <NoSSRInputTextComponent
           reference={params.reference as React.MutableRefObject<ITextComponent>}
@@ -32,12 +32,15 @@ export const LessonComponent: FC<IComponentPropsV2> = (params) => {
           setRefs={params.setRefs}
           rightOptions={
             <>
-              <CodeIcon className="cursor-pointer" onClick={() => setType(ComponentType.Code)} />
+              <CodeIcon
+                className="cursor-pointer"
+                onClick={() => setType(LessonComponentType.Code)}
+              />
             </>
           }
         />
       );
-    case ComponentType.Code:
+    case LessonComponentType.Code:
       return (
         <CodeComponent
           reference={params.reference as React.MutableRefObject<ICodeComponent>}
@@ -61,7 +64,10 @@ export const LessonComponent: FC<IComponentPropsV2> = (params) => {
           setRefs={params.setRefs}
           rightOptions={
             <>
-              <CodeIcon className="cursor-pointer" onClick={() => setType(ComponentType.Code)} />
+              <CodeIcon
+                className="cursor-pointer"
+                onClick={() => setType(LessonComponentType.Code)}
+              />
             </>
           }
         />

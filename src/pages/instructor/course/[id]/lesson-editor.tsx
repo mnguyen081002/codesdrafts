@@ -21,7 +21,7 @@ import LessonTableOfContent from '../../../../components/Lesson/LessonTableOfCon
 import LessonSidebar from '../../../../components/Lesson/Sidebar/LessonSidebar';
 import { requireAuth } from '../../../../components/requireAuth';
 import HeaderManage from '../../../../layouts/Manage/Header';
-import { ComponentType } from '../../../../shared/enum/component';
+import { LessonComponentType } from '../../../../shared/enum/component';
 import type { LessonComponentProps } from '../../../../shared/interface';
 
 type FormValuesProps = {
@@ -233,14 +233,14 @@ const LessonEditor = () => {
               onClick={() => {
                 const lastRef = refs[refs.length - 1];
                 if (
-                  lastRef?.current.type === ComponentType.Text &&
+                  lastRef?.current.type === LessonComponentType.Text &&
                   (lastRef.current.content as any).html === '<p></p>'
                 )
                   return;
 
                 const ref: React.MutableRefObject<LessonComponentProps> = React.createRef() as any;
                 ref.current = {
-                  type: ComponentType.Text,
+                  type: LessonComponentType.Text,
                   content: {
                     html: '',
                   },

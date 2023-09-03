@@ -20,7 +20,7 @@ function HeaderNavButton({ label, href }) {
   );
 }
 
-const ListPopularCourse = () => {
+export const HeaderNavbar = () => {
   return (
     <div className="flex">
       <HeaderNavButton label={'Trang chủ'} href={'/home'}></HeaderNavButton>
@@ -177,7 +177,7 @@ const HeaderPrimary = () => {
         <Link href={'/home'}>
           <Image src="/logo-96.png" alt="logo" width={40} height={40} />
         </Link>
-        <ListPopularCourse />
+        <HeaderNavbar />
         <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">
           <input
             className="border-none bg-white"
@@ -188,7 +188,6 @@ const HeaderPrimary = () => {
           />
           <Image src="/images/home/Adornment-End.svg" alt="search" width={25} height={25} />
         </div>
-
         <MenuUser />
       </div>
       <LoadingBar color="#1363DF" progress={progress} onLoaderFinished={() => setProgress(0)} />

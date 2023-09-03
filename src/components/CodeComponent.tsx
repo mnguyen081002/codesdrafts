@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import type { ExecuteResponse } from '../api/codedrafts-api';
 import { StudentApi } from '../api/codedrafts-api';
-import { ComponentType } from '../shared/enum/component';
+import { LessonComponentType } from '../shared/enum/component';
 import type { ICodeComponentPropsV2 } from '../shared/interface';
 import { BaseComponentV2 } from './BaseComponent';
 import { PrimaryButton } from './Button';
@@ -21,10 +21,10 @@ export const CodeComponent: FC<ICodeComponentPropsV2> = (params) => {
   const [isSample, setIsSample] = useState(false);
   const [result, setResult] = useState<ExecuteResponse>();
   params.reference.current =
-    params.reference.current?.type === ComponentType.Code
+    params.reference.current?.type === LessonComponentType.Code
       ? params.reference.current
       : {
-          type: ComponentType.Code,
+          type: LessonComponentType.Code,
           content: {
             isReadOnly: false,
             isExercise: false,
