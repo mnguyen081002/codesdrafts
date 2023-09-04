@@ -90,7 +90,7 @@ const CreateCouse: React.FC = () => {
       const uploadRes = await StudentApi.uploadFiles([thumbnailUpload]);
 
       // eslint-disable-next-line prefer-destructuring
-      thumbnail = uploadRes.data.urls[0];
+      thumbnail = uploadRes.data.urls[0] || '';
     } else {
       thumbnail = thumbnailUpload;
     }
