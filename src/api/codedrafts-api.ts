@@ -187,6 +187,7 @@ export interface GetPostBySlugResponse {
   author: Author;
   title_color: string;
   reading_time: number;
+  series: Series;
 }
 
 export interface Author {
@@ -219,6 +220,21 @@ export interface ListPostResponse {
   tags: Tag[];
   author: Author;
   reading_time: number;
+}
+
+export interface Series {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  author_id: number;
+  posts: SeriesPost[];
+}
+
+export interface SeriesPost {
+  id: number;
+  title: string;
+  slug: string;
 }
 
 export const StudentApi = {
