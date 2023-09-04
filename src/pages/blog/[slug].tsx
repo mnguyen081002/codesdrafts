@@ -119,7 +119,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
         </div>
         <div className="my-[30px] flex w-[1400px] justify-between pl-[150px] text-[20px]">
           <div className="flex max-w-[933px] flex-col gap-[15px]">
-            <Series posts={props.post.series.posts} />
+            <Series series={props.post.series} />
             {props.post?.thumbnail_style === 1 && (
               <img
                 src="https://res.cloudinary.com/titus-nguyen/image/upload/v1693660182/nwiu180o3qqhle73bg4r.jpg"

@@ -459,7 +459,7 @@ export interface GetPostBySlugResponse {
   author: Author;
   title_color: string;
   reading_time: number;
-  series: Series;
+  series: PostSeries;
 }
 
 export interface Author {
@@ -494,7 +494,7 @@ export interface ListPostResponse {
   reading_time: number;
 }
 
-export interface Series {
+export interface PostSeries {
   id: number;
   created_at: string;
   updated_at: string;

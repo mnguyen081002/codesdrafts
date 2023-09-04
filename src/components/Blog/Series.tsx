@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import type { SeriesPost } from '../../api/codedrafts-api';
+import type { PostSeries, SeriesPost } from '../../api/codedrafts-api';
 import ArrowDownV3Icon from '../../common/Icons/ArrowDownV3';
 
 function SeriesItem({ item, index }: { item: SeriesPost; index: number }) {
@@ -27,7 +27,7 @@ function SeriesItem({ item, index }: { item: SeriesPost; index: number }) {
 }
 
 interface SeriesProps {
-  posts: SeriesPost[];
+  series: PostSeries;
 }
 
 function Series(props: SeriesProps) {
@@ -48,7 +48,9 @@ function Series(props: SeriesProps) {
   return (
     <div className="relative flex max-w-2xl flex-col overflow-hidden rounded-md border border-light-border">
       <div className="z-20 flex items-center justify-between bg-white p-[14px]">
-        <p className="text-lg font-bold text-light-primary">Microservice (2 phần)</p>
+        <p className="text-lg font-bold text-light-primary">
+          {props.series.name} ({props.series.posts.length} phần)
+        </p>
         <ArrowDownV3Icon
           className={`${
             !isOpen && '-rotate-180'
@@ -63,7 +65,7 @@ function Series(props: SeriesProps) {
         className="flex flex-col justify-end overflow-hidden transition-all duration-300 ease-in-out"
       >
         <div id="series-list" className={`flex w-full flex-col justify-end`}>
-          {props.posts.map((e, index) => {
+          {props.series.posts.map((e, index) => {
             return <SeriesItem index={index + 1} item={e} key={index}></SeriesItem>;
           })}
         </div>
