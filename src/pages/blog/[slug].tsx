@@ -1,16 +1,15 @@
 import type { NextPageContext } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { getSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import slugify from 'slugify';
 
-import type { GetPostBySlugResponse, ListPostResponse, SeriesPost } from '../../api/codedrafts-api';
+import type { GetPostBySlugResponse, ListPostResponse } from '../../api/codedrafts-api';
 import { StudentApi } from '../../api/codedrafts-api';
-import ArrowDownV3Icon from '../../common/Icons/ArrowDownV3';
 import { BlogComponent } from '../../components/Blog/Editor';
+import Series from '../../components/Blog/Series';
 import SwiperListCard from '../../components/Blog/SwiperListCard';
 import { Avatar } from '../../components/sub/avatar';
 import Footer from '../../layouts/Footer';
@@ -29,73 +28,6 @@ export async function getServerSideProps(context: NextPageContext) {
       post: r.data.data,
     },
   };
-}
-
-function SeriesItem({ item, index }: { item: SeriesPost; index: number }) {
-  const router = useRouter();
-
-  const isCurrent = router.query.slug === item.slug;
-
-  return (
-    <div className="flex items-center gap-[12px] border-t border-light-border p-[12px] opacity-80 transition-all duration-300 ease-in-out hover:opacity-100">
-      <div
-        className={`flex  h-[26px] w-[26px] items-center justify-center rounded-[4px] ${
-          isCurrent ? 'bg-light-primary' : 'bg-[#e9e9e9]'
-        }`}
-      >
-        <span className={`${isCurrent && 'font-bold text-white'} text-base`}>{index}</span>
-      </div>
-      <Link href={`blog/${item.slug}`} className={`text-lg ${isCurrent && 'font-bold'} `}>
-        {item.title}
-      </Link>
-    </div>
-  );
-}
-
-interface SeriesProps {
-  posts: SeriesPost[];
-}
-
-function Series(props: SeriesProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  // get height of series list
-  useEffect(() => {
-    const wrapper = document.getElementById('wrapper');
-    const seriesList = document.getElementById('series-list');
-    if (!wrapper || !seriesList) return;
-    if (isOpen) {
-      wrapper.style.height = `${seriesList.clientHeight}px`;
-    } else {
-      wrapper.style.height = '0px';
-    }
-  }, [isOpen]);
-
-  return (
-    <div className="relative flex max-w-2xl flex-col overflow-hidden rounded-md border border-light-border">
-      <div className="z-20 flex items-center justify-between bg-white p-[14px]">
-        <p className="text-lg font-bold text-light-primary">Microservice (2 phần)</p>
-        <ArrowDownV3Icon
-          className={`${
-            !isOpen && '-rotate-180'
-          } cursor-pointer transition-all duration-300 ease-in-out`}
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        />
-      </div>
-      <div
-        id="wrapper"
-        className="flex flex-col justify-end overflow-hidden transition-all duration-300 ease-in-out"
-      >
-        <div id="series-list" className={`flex w-full flex-col justify-end`}>
-          {props.posts.map((e, index) => {
-            return <SeriesItem index={index + 1} item={e} key={index}></SeriesItem>;
-          })}
-        </div>
-      </div>
-    </div>
-  );
 }
 
 const BlogPost = (props: { post: GetPostBySlugResponse }) => {
@@ -149,7 +81,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
       <Header />
       <div className="flex flex-col items-center gap-[40px] text-[#171717]">
         <div
-          className={`flex max-h-[440px] w-full flex-col items-center justify-center gap-[30px] px-[145px] pt-[80px] lg:h-[440px] ${titleColor}`}
+          className={`flex max-h-[440px] w-full flex-col items-center justify-center gap-[30px] px-[145px] pt-[80px] pb-[40px] ${titleColor}`}
           style={{
             backgroundImage:
               props.post?.thumbnail_style === 2 ? `url(${props.post?.thumbnail_url})` : 'none',
@@ -187,13 +119,13 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
         </div>
         <div className="my-[30px] flex w-[1400px] justify-between pl-[150px] text-[20px]">
           <div className="flex max-w-[933px] flex-col gap-[15px]">
+            <Series posts={props.post.series.posts} />
             {props.post?.thumbnail_style === 1 && (
               <img
                 src="https://res.cloudinary.com/titus-nguyen/image/upload/v1693660182/nwiu180o3qqhle73bg4r.jpg"
                 alt=""
               />
             )}
-            <Series posts={props.post.series.posts} />
             <p>{props.post?.summary}</p>
             {refs.map((c, index) => {
               if (!c.current) return null;
@@ -237,7 +169,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
           </div>
         </div>
       </div>
-      <div className="bg-[#F9FAFE] py-[100px] text-[#081B4B]">
+      <div className="mt-16 bg-[#F9FAFE] py-[100px] text-[#081B4B]">
         <div className="flex flex-col items-center gap-[50px]">
           <p className="text-[36px] font-bold">Bài viết liên quan</p>
           <div className="flex gap-[32px]">

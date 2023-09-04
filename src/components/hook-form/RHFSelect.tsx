@@ -180,10 +180,24 @@ export function RHFSelectV2(props: RHFInputAutoCompletePropsV2) {
                 <p className="text-base font-normal">{props.label}</p>
               </div>
               <Select
+                dropdownPosition="bottom"
                 value={valueSelect === '' ? field.value : valueSelect}
                 onChange={(value) => {
-                  field.onChange(value);
-                  setValueSelect(value || '');
+                  console.log('onChange', value);
+                  if (value && props.options.includes(value)) {
+                    field.onChange(value);
+                    setValueSelect(value);
+                  }
+                }}
+                onSearchChange={(value) => {
+                  console.log('onSearchChange', value);
+
+                  if (value !== '' && props.options.includes(value)) {
+                    field.onChange(value);
+                  } else {
+                    field.onChange('');
+                    setValueSelect(value);
+                  }
                 }}
                 size="md"
                 data={props.options || []}

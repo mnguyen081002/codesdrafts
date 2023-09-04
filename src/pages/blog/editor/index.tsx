@@ -1,42 +1,44 @@
-import { SegmentedControl } from '@mantine/core';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
-import type { CreatePostRequest, ListTagResponse } from '../../../api/codedrafts-api';
+import type {
+  CreatePostRequest,
+  ListTagResponse,
+  MySeriesResponse,
+} from '../../../api/codedrafts-api';
 import { StudentApi } from '../../../api/codedrafts-api';
-import { InputRectangle, RFHInputThumbnail } from '../../../common/Input';
+import { InputRectangle } from '../../../common/Input';
 import { BlogComponent } from '../../../components/Blog/Editor';
-import { PrimaryButton, PrimaryOutlineButton } from '../../../components/Button';
-import { RHFMutiSelect, RHFTextField } from '../../../components/hook-form';
+import { RHFTextField } from '../../../components/hook-form';
 import FormProvider from '../../../components/hook-form/FormProvider';
-import Header from '../../../layouts/NewHeader';
-import { TOAST_CONFIG } from '../../../shared/constants/app';
+import PostEditorHeader from '../../../layouts/Blog/BlogEditorHeader';
+import BlogEditorLeftMenu from '../../../layouts/Blog/BlogEditorLeftMenu';
 import { BlogComponentType } from '../../../shared/enum/component';
 import type { BlogComponentProps } from '../../../shared/interface';
 import { toastPromise } from '../../../utils/app';
 
-type FormValuesProps = {
+export type PostEditorFormValuesProps = {
   file: string;
   title: string;
   slug: string;
   summary: string;
   metaTitles: string[];
   tags: string;
+  series: string;
 };
 
 const Editor = () => {
   const router = useRouter();
 
-  const methods = useForm<FormValuesProps>({
+  const methods = useForm<PostEditorFormValuesProps>({
     defaultValues: {
       summary: '',
       title: '',
       slug: '',
       metaTitles: [],
       tags: '',
+      series: '',
     },
   });
 
@@ -47,12 +49,15 @@ const Editor = () => {
   const [tagOptions, setTagOptions] = useState<ListTagResponse[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [metaTitles, setMetaTitles] = useState<string[]>([]);
+  const [seriesOptions, setSeriesOptions] = useState<MySeriesResponse[]>([]);
   const [titleColor, setTitleColor] = useState<string>('#000000');
   const [postId, setPostId] = useState<number>();
 
   const { handleSubmit, reset, getValues, setError } = methods;
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const onSubmit = async (data: PostEditorFormValuesProps) => {
+    console.log('Series', data.series);
+
     let thumbnail: string;
     if (!thumbnailUpload) {
       setError('file', {
@@ -100,16 +105,13 @@ const Editor = () => {
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const r = await StudentApi.getTags();
-      setTagOptions(r.data.data);
-    };
-    fetch();
-  }, []);
-
-  useEffect(() => {
     if (router.query.slug === undefined) return;
     const fetch = async () => {
+      const p1 = StudentApi.getTags();
+      const p2 = StudentApi.getMySeries();
+      const [r1, r2] = await Promise.all([p1, p2]);
+      setTagOptions(r1.data.data);
+      setSeriesOptions(r2.data.data);
       const r = await StudentApi.getPostBySlug(router.query.slug as string);
 
       const metaTitles = r.data.data.meta_title.split(` ${r.data.data.title}`)[0]?.split(',');
@@ -117,6 +119,7 @@ const Editor = () => {
         title: r.data.data.title,
         summary: r.data.data.summary,
         slug: r.data.data.slug,
+        series: r.data.data.series?.name,
       });
       setRefs(
         r.data.data.components.map((e) => {
@@ -166,139 +169,27 @@ const Editor = () => {
 
   return (
     <div className="h-screen w-full">
-      <Header
-        isHiddenNavbar
-        right={
-          <div className="flex items-center">
-            <Link
-              href={`/blog/${router.query.slug}`}
-              onClick={() => {
-                if (router.query.slug) {
-                  router.push(`/blog/${router.query.slug}`);
-                } else {
-                  toast.error('Vui lòng tạo khóa học trước khi xem trước', TOAST_CONFIG);
-                }
-              }}
-            >
-              <PrimaryOutlineButton
-                className="border-none px-0 hover:bg-white"
-                textHoverClassName="text-[#013F9E]"
-                text="Xem trước"
-                onClick={() => {
-                  if (router.query.slug) {
-                    router.push(`/blog/${router.query.slug}`);
-                  } else {
-                    toast.error('Vui lòng tạo khóa học trước khi xem trước', TOAST_CONFIG);
-                  }
-                }}
-              />
-            </Link>
-
-            {router.query.slug ? (
-              <>
-                <PrimaryOutlineButton
-                  textHoverClassName="text-[#013F9E] px-0"
-                  className="border-none hover:bg-white"
-                  text="Hủy bỏ"
-                  onClick={() => {
-                    router.back();
-                  }}
-                />
-                <PrimaryOutlineButton
-                  bgHoverColor="hover:bg-light-primary"
-                  className="w-fit px-[30px] py-[9px]"
-                  textHoverClassName="text-[#ffffff]"
-                  text="Cập nhật"
-                  type="submit"
-                  onClick={handleSubmit(onSubmit)}
-                />
-              </>
-            ) : (
-              <PrimaryButton
-                className="ml-4 h-[40px] w-fit px-5"
-                text="Tạo"
-                textClassName="text-white"
-                type="submit"
-                onClick={handleSubmit(onSubmit)}
-              />
-            )}
-          </div>
-        }
-      />
+      <PostEditorHeader router={router} handleSubmit={handleSubmit} onSubmit={onSubmit} />
       <FormProvider methods={methods}>
         <div className="flex h-full w-full gap-[25px] px-[200px] pt-[60px] pb-[800px]">
-          <div className="flex h-fit w-[340px] flex-col items-center gap-[10px] rounded-md border border-light-border p-[20px] text-light-text-primary">
-            <div className="w-full">
-              <p className="text-lg">Ảnh bìa *</p>
-            </div>
-            <RFHInputThumbnail
-              name="file"
-              thumbnailUpload={thumbnailUpload}
-              setThumbnailUpload={setThumbnailUpload}
-            />
-            <div className="w-full">
-              <p className="text-lg">Vị trí ảnh bìa</p>
-            </div>
-            <div className="flex w-full items-center justify-center gap-[30px]">
-              {Array.from({ length: 2 }).map((_, index) => {
-                return (
-                  <div
-                    className={`cursor-pointer rounded-md border ${
-                      thumbnailPosition === index + 1
-                        ? 'border-light-primary'
-                        : 'border-light-border'
-                    }`}
-                    key={index}
-                    onClick={() => setThumnailPosition(index + 1)}
-                  >
-                    <img src={`/svg/thumnail-position-${index + 1}.svg`} alt="" />
-                  </div>
-                );
-              })}
-            </div>
-
-            {thumbnailPosition === 2 && (
-              <>
-                <div className="w-full">
-                  <p className="text-lg">Màu tiêu đề </p>
-                </div>
-                <SegmentedControl
-                  value={titleColor}
-                  onChange={setTitleColor}
-                  data={[
-                    { label: 'Trắng', value: '#ffffff' },
-                    { label: 'Đen', value: '#000000' },
-                  ]}
-                />
-              </>
-            )}
-
-            <RHFMutiSelect
-              className="w-[300px]"
-              name="tags"
-              options={tagOptions.map((item) => item.title)}
-              value={tags}
-              setValue={setTags}
-              label={'Tags *'}
-              placeholder="Chọn tags"
-              type="text"
-              isMulti
-              creatable
-            />
-            <RHFMutiSelect
-              className="w-[300px]"
-              options={metaTitles}
-              value={metaTitles}
-              setValue={setMetaTitles}
-              name="metaTitles"
-              label={'Meta title'}
-              maxLength={200}
-              creatable
-              placeholder="Nhập meta title"
-              type="text"
-              isMulti
-            />
-          </div>
+          <BlogEditorLeftMenu
+            getValues={getValues}
+            postId={postId}
+            setPostId={setPostId}
+            thumbnailPosition={thumbnailPosition}
+            setThumnailPosition={setThumnailPosition}
+            thumbnailUpload={thumbnailUpload}
+            setThumbnailUpload={setThumbnailUpload}
+            tagOptions={tagOptions}
+            tags={tags}
+            setTags={setTags}
+            metaTitles={metaTitles}
+            setMetaTitles={setMetaTitles}
+            seriesOptions={seriesOptions}
+            titleColor={titleColor}
+            setTitleColor={setTitleColor}
+            setSeriesOptions={setSeriesOptions}
+          />
           <div className="flex w-[1000px] flex-col gap-[20px]">
             <RHFTextField
               sx={{
