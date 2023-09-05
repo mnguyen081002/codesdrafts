@@ -8,6 +8,7 @@ interface ICodeComponentEditorProps {
   language?: string;
   onChange: (value?: string) => void;
   disableValidation?: boolean;
+  options?: editor.IStandaloneEditorConstructionOptions;
 }
 
 function CodeComponentEditor(props: ICodeComponentEditorProps) {
@@ -19,17 +20,18 @@ function CodeComponentEditor(props: ICodeComponentEditorProps) {
         noSemanticValidation: true,
       });
     }
+
     setMonacoInstance(editor);
   };
 
   monacoInstance?.onDidContentSizeChange(() => {
-    const contentHeight = Math.min(600, monacoInstance.getContentHeight());
+    const contentHeight = Math.min(800, monacoInstance.getContentHeight());
     setH(contentHeight);
   });
   return (
     <div
       style={{
-        height: `${h}px`,
+        height: h,
       }}
     >
       <Editor // value={code}
@@ -47,6 +49,7 @@ function CodeComponentEditor(props: ICodeComponentEditorProps) {
           },
           automaticLayout: true,
           scrollBeyondLastLine: false,
+          ...props.options,
         }}
         language={props.language === 'c++' ? 'c' : props.language}
       />

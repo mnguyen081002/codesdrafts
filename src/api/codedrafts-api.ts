@@ -439,6 +439,7 @@ export interface Tag {
   slug: string;
   meta_title: string;
   content: string;
+  color: string;
 }
 
 export interface GetPostBySlugResponse {

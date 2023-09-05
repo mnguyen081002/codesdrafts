@@ -42,6 +42,7 @@ import {
   MarkButton,
   withImages,
 } from '../common/ToolBarButton';
+import { BlogComponentType } from '../shared/enum/component';
 import type { BlogInputTextComponentProps, InputTextComponentPropsV2 } from '../shared/interface';
 import CustomEditor from '../utils/CustomEditor';
 import { BaseComponentV2 } from './BaseComponent';
@@ -467,9 +468,6 @@ export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) 
               <MarkButton format="superscript" Icon={Superscript} />
             </div>
             <div className="flex gap-2 border-r pr-4">
-              <MarkButton format="code" Icon={CodeIcon} />
-            </div>
-            <div className="flex gap-2 border-r pr-4">
               <BlockButton format="left" Icon={FormatAlignLeftIcon} />
               <BlockButton format="center" Icon={FormatAlignCenterIcon} />
               <BlockButton format="right" Icon={FormatAlignRightIcon} />
@@ -477,6 +475,19 @@ export const BlogInputTextComponent: FC<BlogInputTextComponentProps> = (params) 
               <BlockButton format="bulleted-list" Icon={FormatListBulletedIcon} />
             </div>
             <div className="flex gap-2">
+              <CodeIcon
+                className="cursor-pointer"
+                onClick={() => {
+                  params.reference.current = {
+                    type: BlogComponentType.Code,
+                    content: {
+                      language: 'plaintext',
+                      code: '',
+                    },
+                  } as any;
+                  params.rerender();
+                }}
+              />
               <AddLinkButton />
               <InsertImageButton editor={editor} />
               {/* <BlockButton format="block-quote" icon={<FormatQuoteIcon />} /> */}

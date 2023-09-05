@@ -5,6 +5,7 @@ import { useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 
 import DropdownList from '../components/DropdownList';
+import PrimaryLogo from '../components/PrimaryLogo';
 import MenuUser from './MenuUser';
 
 function HeaderNavButton({ label, href }) {
@@ -48,7 +49,7 @@ const HeaderPrimary = () => {
     <>
       <div className="sticky top-0 z-30 flex h-[64px] w-full items-center justify-between bg-white pl-[30px] pr-[40px] shadow">
         <Link href={'/home'}>
-          <Image src="/svg/logo/new-logo-white.svg" alt="logo" width={180} height={50} />
+          <PrimaryLogo />
         </Link>
         <HeaderNavbar />
         <div className=" flex h-[45px] w-[1100px] rounded-lg border border-light-border px-[12px]">

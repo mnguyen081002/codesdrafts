@@ -31,7 +31,7 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 const BlogPost = (props: { post: GetPostBySlugResponse }) => {
-  const [refs, setRefs] = useState<React.MutableRefObject<BlogComponentProps>[]>([]);
+  const [refs, setRefs] = useState<React.MutableRefObject<BlogComponentProps<any>>[]>([]);
   const [listSuggest, setListSuggest] = useState<ListPostResponse[]>([]);
   const router = useRouter();
   const [titleColor, setTitleColor] = useState<string>('text-[#171717]');
@@ -43,7 +43,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
       StudentApi.listPost({ take: 5, page: 1 }).then((r) => setListSuggest(r.data.data));
       setRefs(
         props.post.components.map((e) => {
-          const ref: React.MutableRefObject<BlogComponentProps> = React.createRef() as any;
+          const ref: React.MutableRefObject<BlogComponentProps<any>> = React.createRef() as any;
           ref.current = {
             type: (e as any).type,
             content: (e as any).content,
@@ -136,7 +136,7 @@ const BlogPost = (props: { post: GetPostBySlugResponse }) => {
           </div>
           <div className="flex w-[208px] flex-col gap-[10px]">
             <p className="text-base font-semibold">Chia Sẻ</p>
-            <div className="flex gap-[20px]">
+            <div className="flex gap-[16px]">
               <img
                 src="/svg/blog-icon-fb.svg"
                 alt=""

@@ -43,7 +43,13 @@ const Editor = () => {
   });
 
   const [thumbnailPosition, setThumnailPosition] = useState(1);
-  const [refs, setRefs] = useState<React.MutableRefObject<BlogComponentProps>[]>([]);
+  const [refs, setRefs] = useState<React.MutableRefObject<BlogComponentProps<any>>[]>([]);
+  const [codeRefs, setCodeRefs] = useState<React.MutableRefObject<BlogComponentProps<any>>>({
+    current: {
+      content: '',
+      type: BlogComponentType.Code,
+    },
+  });
   const [isPreview, setIsPreview] = useState(false);
   const [thumbnailUpload, setThumbnailUpload] = useState<any>();
   const [tagOptions, setTagOptions] = useState<ListTagResponse[]>([]);
@@ -123,7 +129,7 @@ const Editor = () => {
       });
       setRefs(
         r.data.data.components.map((e) => {
-          const ref: React.MutableRefObject<BlogComponentProps> = React.createRef() as any;
+          const ref: React.MutableRefObject<BlogComponentProps<any>> = React.createRef() as any;
           ref.current = {
             type: (e as any).type,
             content: (e as any).content,
@@ -152,7 +158,7 @@ const Editor = () => {
     if (lastRef?.current.type === BlogComponentType.Text && lastRef.current.content === '<p></p>')
       return;
 
-    const ref: React.MutableRefObject<BlogComponentProps> = React.createRef() as any;
+    const ref: React.MutableRefObject<BlogComponentProps<string>> = React.createRef() as any;
     ref.current = {
       type: BlogComponentType.Text,
       content: '',

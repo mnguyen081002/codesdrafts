@@ -1,13 +1,12 @@
 import { Menu, Text } from '@mantine/core';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 
+import PrimaryLogo from '../../components/PrimaryLogo';
 import { Avatar } from '../../components/sub/avatar';
-import { APP_NAME } from '../../shared/constants/app';
 
 const MenuUser = () => {
   const session: any = useSession();
@@ -101,10 +100,8 @@ const HeaderManage = ({
     <>
       <div className="sticky top-0  z-20 flex h-[64px] w-full items-center justify-between bg-white pl-[25px] pr-[40px] shadow">
         <Link href={'/'} className="flex items-center gap-2">
-          <Image src="/svg/logo/new-logo-white.svg" alt="logo" width={40} height={40} />
-          <p className="font-inter text-[20px] font-semibold leading-6">
-            {`${APP_NAME} ${suffix}`}
-          </p>
+          <PrimaryLogo />
+          <p className="font-inter text-[20px] font-semibold leading-6">{`${suffix}`}</p>
         </Link>
         {rightContent}
         {showAvatar && <MenuUser />}

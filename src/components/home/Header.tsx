@@ -2,6 +2,7 @@ import { Center, Container, Divider, Grid, Group, Input, Menu, rem, Text } from 
 import Image from 'next/image';
 import Link from 'next/link';
 
+import PrimaryLogo from '../PrimaryLogo';
 import { homeLink, ListCourse, useStyles } from './mockData';
 
 const HeaderHome = () => {
@@ -98,7 +99,7 @@ const HeaderHome = () => {
   return (
     <Container fluid className={classes.inner} mx={50} mb={15}>
       <Group>
-        <Image src="/svg/logo/new-logo-white.svg" alt="logo" width={40} height={40} />
+        <PrimaryLogo />
       </Group>
       <Group
         spacing={5}

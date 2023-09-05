@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 
+import PrimaryLogo from '../components/PrimaryLogo';
 import { PATH_AUTH } from '../routes/path';
 import { HeaderNavbar } from './HeaderPrimary';
 import MenuUser from './MenuUser';
@@ -38,7 +39,7 @@ const Header = (props: HeaderProps) => {
           <Group className="flex gap-[65px]">
             <Flex justify="center">
               <Link href="/">
-                <img src="/svg/logo/new-logo-white.svg" className="h-[50px] w-[180px]" alt="" />
+                <PrimaryLogo />
               </Link>
             </Flex>
             {!props.isHiddenNavbar && <HeaderNavbar />}

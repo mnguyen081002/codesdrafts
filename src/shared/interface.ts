@@ -54,7 +54,7 @@ export interface IBaseComponentPropsV2<T = IContent> {
   setRefs?: any;
 }
 
-export interface IBaseBlogComponentProps {
+export interface IBaseBlogComponentProps<T> {
   onClick?: any;
   onEnter?: any;
   children?: any;
@@ -62,7 +62,7 @@ export interface IBaseBlogComponentProps {
   isFirst?: boolean;
   isReadOnly?: boolean;
   baseRef?: any;
-  reference: React.MutableRefObject<BlogComponentProps>;
+  reference: React.MutableRefObject<BlogComponentProps<T>>;
   onBlur?: any;
   setRefs?: any;
 }
@@ -76,9 +76,13 @@ export interface LessonComponentProps<T = IContent> {
   content: T;
 }
 
-export interface BlogComponentProps {
+export interface PostCodeContent {
+  code: string;
+  language: string;
+}
+export interface BlogComponentProps<T> {
   type: BlogComponentType;
-  content: string;
+  content: T;
 }
 
 export interface InputTextComponentProps extends IBaseComponentProps {
@@ -90,9 +94,10 @@ export interface InputTextComponentPropsV2 extends IBaseComponentPropsV2<ITextCo
   rightOptions?: React.ReactNode;
 }
 
-export interface BlogInputTextComponentProps extends IBlogComponentProps {
+export interface BlogInputTextComponentProps extends IBlogComponentProps<string> {
   rightOptions?: React.ReactNode;
   isFirst?: boolean;
+  rerender: any;
 }
 
 export interface ICodeComponentProps extends IBaseComponentProps {
@@ -111,8 +116,8 @@ export interface IComponentPropsV2 extends IBaseComponentPropsV2 {
   component?: LessonComponentProps;
 }
 
-export interface IBlogComponentProps extends IBaseBlogComponentProps {
-  component?: BlogComponentProps;
+export interface IBlogComponentProps<T> extends IBaseBlogComponentProps<T> {
+  component?: BlogComponentProps<T>;
 }
 
 export interface ITextComponent extends IBaseComponentProps {

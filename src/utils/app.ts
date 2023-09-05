@@ -107,10 +107,40 @@ const isImageUrl = (url) => {
   return imageExtensions.includes(ext);
 };
 
+function capitalizeFirstLetter(inputString: string): string {
+  if (inputString.length === 0) {
+    return inputString; // Handle empty string if needed
+  }
+
+  let firstChar = '';
+  if (inputString[0]) {
+    firstChar = inputString[0].toUpperCase();
+  }
+  const restOfString = inputString.slice(1);
+
+  return firstChar + restOfString;
+}
+
+function lowerCaseFirstLetter(inputString: string): string {
+  if (inputString.length === 0) {
+    return inputString; // Handle empty string if needed
+  }
+
+  let firstChar = '';
+  if (inputString[0]) {
+    firstChar = inputString[0].toLowerCase();
+  }
+  const restOfString = inputString.slice(1);
+
+  return firstChar + restOfString;
+}
+
 export {
+  capitalizeFirstLetter,
   extractTextFromLastHTMLTag,
   formatCoursePrice,
   formatTimeCountDown,
   isImageUrl,
+  lowerCaseFirstLetter,
   toastGetErrorMessage,
 };

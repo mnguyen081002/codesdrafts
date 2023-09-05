@@ -9,4 +9,5 @@ export const TOAST_CONFIG: ToastOptions = {
   hideProgressBar: true,
   transition: Zoom,
 };
+
 export { APP_NAME };

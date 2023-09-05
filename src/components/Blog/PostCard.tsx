@@ -17,7 +17,9 @@ const PostCard = ({ post, href }: { post?: ListPostResponse; href: string }) => 
     >
       <Link href={href}>
         <div className="relative h-fit w-[400px] cursor-pointer overflow-hidden rounded-md bg-white shadow-blogCard transition-all duration-500 ease-in-out hover:shadow-blogCardHover">
-          <div className="absolute top-3 left-3 h-[38px] rounded-md bg-[#D3DDFF] py-[7px] px-[15px]">
+          <div
+            className={`absolute top-3 left-3 h-[38px] rounded-md ${post.tags[0]?.color} py-[7px] px-[15px]`}
+          >
             <p className="text-base font-bold">{post.tags[0]?.title}</p>
           </div>
           <img

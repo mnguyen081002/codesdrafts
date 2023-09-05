@@ -1,11 +1,12 @@
 import { Button, Flex, Group } from '@mantine/core';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 
 import { PATH_AUTH } from '@/routes/path';
+
+import PrimaryLogo from '../components/PrimaryLogo';
 
 const Header = () => {
   const navigate = useRouter();
@@ -30,7 +31,7 @@ const Header = () => {
           <Group>
             <Flex justify="center">
               <Link href="/">
-                <Image src="/svg/logo/new-logo-white.svg" width={40} height={40} alt="" />
+                <PrimaryLogo />
               </Link>
             </Flex>
             <Group className="text-dark-90">

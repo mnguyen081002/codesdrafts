@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Container, Flex, rem } from '@mantine/core';
 import type { NextPageContext } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
 import { getSession } from 'next-auth/react';
@@ -19,6 +18,7 @@ import RHFPasswordField from '@/components/hook-form/RHFPasswordField';
 import { PATH_AUTH, PATH_DASHBOARD } from '@/routes/path';
 
 import { PrimaryButton } from '../components/Button';
+import PrimaryLogo from '../components/PrimaryLogo';
 import Header from '../layouts/Header';
 import { Social } from './login';
 
@@ -105,7 +105,7 @@ const Register = (props: Props) => {
             <div>
               <Flex justify="center" mb={45}>
                 <Link href="/">
-                  <Image src="/svg/logo/new-logo-white.svg" width={80} height={80} alt="" />
+                  <PrimaryLogo />
                 </Link>
               </Flex>
               <Flex direction="column" gap={16}>
